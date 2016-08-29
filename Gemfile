@@ -11,10 +11,18 @@ gem 'puma', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+gem 'ontohub-models', github: 'ontohub/ontohub-models', branch: 'master'
+
 group :development, :test do
 end
 
+group :production do
+end
+
 group :development do
+  # Models are in a shared gem, but we need the generators in a Rails application
+  gem 'sequel-rails', '~> 0.9.14'
+
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
