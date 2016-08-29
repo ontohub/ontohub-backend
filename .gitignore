@@ -45,3 +45,10 @@ config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
 config/environments/*.local.rb
+
+# We dont want to have migrations in this repository.
+# Put them in ontohub-models.
+db/migrate
+
+# The schema is generated and does not need to reside in the git repository.
+db/schema.rb
