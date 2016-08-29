@@ -7,8 +7,6 @@ default: &default
   template: template0
   encoding: utf8 # Optional
   locale: en_US.UTF-8 # Optional
-  collation: en_US.UTF-8 # Optional
-  ctype: en_US.UTF-8 # Optional
 
 development:
   <<: *default
