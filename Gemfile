@@ -37,3 +37,12 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
+
+group :test do
+  gem 'coveralls', '~> 0.8.15'
+  gem 'rspec', '~> 3.5.0'
+  gem 'rspec-rails', '~> 3.5.2'
+  gem 'database_cleaner', '~> 1.5.3'
+  gem 'factory_girl_rails', '~> 4.7.0'
+  gem 'faker', '~> 1.6.6'
+end
