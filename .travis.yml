@@ -1,0 +1,20 @@
+language: ruby
+
+rvm:
+  - 2.3.1
+
+services:
+  - postgresql
+
+addons:
+  postgresql: '9.4'
+
+notifications:
+  email: false
+
+before_script:
+  - RAILS_ENV=test bin/rails db:create
+  - RAILS_ENV=test bin/rails db:migrate
+
+script:
+  - bundle exec rake
