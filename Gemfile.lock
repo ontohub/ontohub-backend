@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 7e8795f117d0787f83e416b3e091f02ba8de3d8c
-  branch: create_models_as_rails_engine
+  revision: 6c9f92d7c1e7c3214a8a75c37f2a603b04fbf8b7
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)
@@ -177,7 +177,7 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
-    rspec-core (3.5.2)
+    rspec-core (3.5.3)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)

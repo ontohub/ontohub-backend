@@ -11,7 +11,7 @@ gem 'puma', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
-gem 'ontohub-models', github: 'ontohub/ontohub-models', branch: 'create_models_as_rails_engine'
+gem 'ontohub-models', github: 'ontohub/ontohub-models', branch: 'master'
 
 # Use these gems for debugging
 gem 'pry', '~> 0.10.4'
