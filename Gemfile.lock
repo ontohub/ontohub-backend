@@ -42,6 +42,11 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_model_serializers (0.10.2)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      jsonapi (~> 0.1.1.beta2)
+      railties (>= 4.1, < 6)
     activejob (5.0.0.1)
       activesupport (= 5.0.0.1)
       globalid (>= 0.3.6)
@@ -102,7 +107,9 @@ GEM
       activesupport (>= 4.1.0)
     i18n (0.7.0)
     interception (0.5)
-    json (2.0.2)
+    json (1.8.3)
+    jsonapi (0.1.1.beta2)
+      json (~> 1.8)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -236,6 +243,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10.2)
   awesome_print (~> 1.7.0)
   coveralls (~> 0.8.15)
   database_cleaner (~> 1.5.3)

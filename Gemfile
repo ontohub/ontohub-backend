@@ -15,6 +15,8 @@ gem 'rack-cors'
 
 gem 'ontohub-models', github: 'ontohub/ontohub-models', branch: 'master'
 
+gem 'active_model_serializers', '~> 0.10.2'
+
 # Use these gems for debugging
 gem 'pry', '~> 0.10.4'
 gem 'pry-rescue', '~> 1.4.4'
