@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 6c9f92d7c1e7c3214a8a75c37f2a603b04fbf8b7
+  revision: 4e87f95bd118a1178cb1ffb8a7040228eaca49d8
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -254,7 +254,6 @@ DEPENDENCIES
   rails (~> 5.0.0, >= 5.0.0.1)
   rspec (~> 3.5.0)
   rspec-rails (~> 3.5.2)
-  sequel-rails (~> 0.9.14)
   spring
   spring-watcher-listen (~> 2.0.0)
 
