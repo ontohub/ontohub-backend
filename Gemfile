@@ -13,7 +13,8 @@ gem 'puma', '~> 3.0'
 # cross-origin AJAX possible
 gem 'rack-cors'
 
-gem 'ontohub-models', github: 'ontohub/ontohub-models', branch: 'master'
+gem 'ontohub-models', github: 'ontohub/ontohub-models',
+                      branch: 'master'
 
 gem 'active_model_serializers', '~> 0.10.2'
 

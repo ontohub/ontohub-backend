@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 4e87f95bd118a1178cb1ffb8a7040228eaca49d8
+  revision: f8c7eae29a323f11e712e55d202ccbf1f5d5e064
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -61,7 +61,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    arel (7.1.1)
+    arel (7.1.2)
     awesome_print (1.7.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -176,7 +176,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (11.2.2)
+    rake (11.3.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
