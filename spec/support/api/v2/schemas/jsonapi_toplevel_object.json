@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "jsonapi_toplevel_object.json",
+  "title": "JSON API Toplevel Object",
+  "description": "This is a schema for the JSON API toplevel object.",
+
+  "definitions": {
+    "jsonapi": {
+      "type": "object",
+      "required": ["version"],
+      "properties": {
+        "version": {"type": "string"}
+      }
+    }
+  }
+}

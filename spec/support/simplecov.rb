@@ -7,4 +7,8 @@ unless defined?(Coveralls)
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter,
   ]
+  SimpleCov.start do
+    # The schema matcher does not need to be tested.
+    add_filter 'spec/support/json_schema_matcher.rb'
+  end
 end
