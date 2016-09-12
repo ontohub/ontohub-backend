@@ -33,5 +33,12 @@ module OntohubBackend
 
     # The host for URL generators
     routes.default_url_options = {host: 'localhost:3000'}
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: :any
+      end
+    end
   end
 end
