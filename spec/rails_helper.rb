@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['SIMPLECOV_RAILS'] = 'true'
 require_relative 'support/simplecov'
 
