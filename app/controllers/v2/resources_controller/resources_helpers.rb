@@ -52,7 +52,14 @@ module V2
         #   permitted_params %i(name description)
         def permitted_params(*params)
           params = params.first if params.first.is_a?(Array)
-          instance_variable_set(:@permitted_params, params.map(&:to_sym))
+          if params.last.is_a?(Hash)
+            options = params.pop.map do |action, action_params|
+              [action, Array(action_params).map(&:to_sym)]
+            end&.to_h
+          end
+          params.map(&:to_sym)
+          params << options if options
+          instance_variable_set(:@permitted_params, params)
         end
 
         # Specify the actions that should be inherited from the

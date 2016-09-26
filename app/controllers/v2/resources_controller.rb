@@ -43,6 +43,7 @@ module V2
     end
 
     def create
+      permitted_params
       @resource = resource_class.new(resource_params)
       resource.save
       render_resource(:created)
@@ -94,8 +95,17 @@ module V2
       "V2::#{resource_class}Serializer".constantize
     end
 
+    def permitted_params(action = params[:action].to_sym)
+      permitted = self.class.instance_variable_get(:@permitted_params)
+      if permitted.last.is_a?(Hash)
+        permitted.last[action] || permitted[0..2]
+      else
+        permitted
+      end
+    end
+
     def resource_params
-      parse_params(only: self.class.instance_variable_get(:@permitted_params))
+      parse_params(only: permitted_params)
     end
 
     def parse_params(**options)

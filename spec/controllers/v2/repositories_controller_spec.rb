@@ -70,8 +70,7 @@ RSpec.describe V2::RepositoriesController do
 
   describe 'PATCH update' do
     let!(:data) do
-      {attributes: {name: "changed-#{repository.name}",
-                    description: "Changed #{repository.description}"}}
+      {attributes: {description: "Changed #{repository.description}"}}
     end
 
     context 'successful' do
@@ -81,7 +80,6 @@ RSpec.describe V2::RepositoriesController do
       it do
         expect(response).to match_response_schema('v2', 'repository_update')
       end
-      it { expect { repository.reload }.to change { repository.name } }
       it { expect { repository.reload }.to change { repository.description } }
     end
 
@@ -97,9 +95,9 @@ RSpec.describe V2::RepositoriesController do
 
       context 'with unpermitted params' do
         before do
-          new_slug = "changed-#{repository.slug}"
+          new_name = "changed-#{repository.name}"
           patch :update, params: {slug: repository.slug,
-                                  data: data.merge(slug: new_slug)}
+                                  data: data.merge(name: new_name)}
         end
         it { expect(response).to have_http_status(:ok) }
         it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
@@ -108,21 +106,6 @@ RSpec.describe V2::RepositoriesController do
         end
         it 'does not change the repository' do
           expect { repository.reload }.not_to change { repository.slug }
-        end
-      end
-
-      context 'with invalid data' do
-        before do
-          patch :update, params: {slug: repository.slug,
-                                  data: data.merge(attributes: {name: 'n'})}
-        end
-        it { expect(response).to have_http_status(:unprocessable_entity) }
-        it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
-        it do
-          expect(response).to match_response_schema('v2', 'validation_error')
-        end
-        it 'does not change the repository' do
-          expect { repository.reload }.not_to change { repository.name }
         end
       end
     end
