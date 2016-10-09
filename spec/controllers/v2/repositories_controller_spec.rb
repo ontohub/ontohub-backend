@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe V2::RepositoriesController do
   let!(:repository) { create :repository }
+  let!(:namespace) { repository.namespace }
+
   let(:bad_slug) { "notThere-#{repository.slug}" }
 
   describe 'GET index' do
-    before { get :index }
+    before { get :index, params: {namespace_slug: namespace.to_param} }
     it { expect(response).to have_http_status(:ok) }
     it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
     it { expect(response).to match_response_schema('v2', 'repository_index') }
@@ -15,14 +17,20 @@ RSpec.describe V2::RepositoriesController do
 
   describe 'GET show' do
     context 'successful' do
-      before { get :show, params: {slug: repository.slug} }
+      before do
+        get :show, params: {namespace_slug: namespace.to_param,
+                            slug: repository.slug}
+      end
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
       it { expect(response).to match_response_schema('v2', 'repository_show') }
     end
 
     context 'failing with an inexistent URL' do
-      before { get :show, params: {slug: bad_slug} }
+      before do
+        get :show, params: {namespace_slug: namespace.to_param,
+                            slug: bad_slug}
+      end
       it { expect(response).to have_http_status(:not_found) }
       it { expect(response.body.strip).to be_empty }
     end
@@ -33,9 +41,10 @@ RSpec.describe V2::RepositoriesController do
       let(:name) { "new-#{repository.name}" }
       before do
         data = {attributes:
-                {name: name,
+                {namespace_id: repository.namespace.id,
+                 name: name,
                  description: "New #{repository.description}"}}
-        post :create, params: {data: data}
+        post :create, params: {namespace_slug: namespace.to_param, data: data}
       end
       it { expect(response).to have_http_status(:created) }
       it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
@@ -49,12 +58,13 @@ RSpec.describe V2::RepositoriesController do
 
     context 'failing' do
       context 'with invalid data' do
+        # Name too short
         let(:name) { 'n' }
         before do
           data = {attributes:
                   {name: name,
                    description: "New #{repository.description}"}}
-          post :create, params: {data: data}
+          post :create, params: {namespace_slug: namespace.to_param, data: data}
         end
         it { expect(response).to have_http_status(:unprocessable_entity) }
         it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
@@ -74,7 +84,10 @@ RSpec.describe V2::RepositoriesController do
     end
 
     context 'successful' do
-      before { patch :update, params: {slug: repository.slug, data: data} }
+      before do
+        patch :update, params: {namespace_slug: namespace.to_param,
+                                slug: repository.slug, data: data}
+      end
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
       it do
@@ -85,7 +98,10 @@ RSpec.describe V2::RepositoriesController do
 
     context 'failing' do
       context 'with an inexistent URL' do
-        before { patch :update, params: {slug: bad_slug, data: data} }
+        before do
+          patch :update, params: {namespace_slug: namespace.to_param,
+                                  slug: bad_slug, data: data}
+        end
         it { expect(response).to have_http_status(:not_found) }
         it { expect(response.body.strip).to be_empty }
         it 'does not change the repository' do
@@ -96,7 +112,8 @@ RSpec.describe V2::RepositoriesController do
       context 'with unpermitted params' do
         before do
           new_name = "changed-#{repository.name}"
-          patch :update, params: {slug: repository.slug,
+          patch :update, params: {namespace_slug: namespace.to_param,
+                                  slug: repository.slug,
                                   data: data.merge(name: new_name)}
         end
         it { expect(response).to have_http_status(:ok) }
@@ -113,7 +130,10 @@ RSpec.describe V2::RepositoriesController do
 
   describe 'DELETE destroy' do
     context 'successful' do
-      before { delete :destroy, params: {slug: repository.slug} }
+      before do
+        delete :destroy, params: {namespace_slug: namespace.to_param,
+                                  slug: repository.slug}
+      end
       it { expect(response).to have_http_status(:no_content) }
       it { expect(response.body.strip).to be_empty }
       it 'deletes the repository' do
@@ -122,7 +142,10 @@ RSpec.describe V2::RepositoriesController do
     end
 
     context 'failing' do
-      before { delete :destroy, params: {slug: bad_slug} }
+      before do
+        delete :destroy, params: {namespace_slug: namespace.to_param,
+                                  slug: bad_slug}
+      end
       it { expect(response).to have_http_status(:not_found) }
       it { expect(response.body.strip).to be_empty }
       it 'does not delete the repository' do

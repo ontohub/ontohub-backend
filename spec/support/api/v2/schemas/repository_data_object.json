@@ -7,7 +7,7 @@
   "definitions": {
     "repository": {
       "type": "object",
-      "required": ["id", "type", "links", "attributes"],
+      "required": ["id", "type", "links", "attributes", "relationships"],
       "properties": {
         "id": {"type": "string"},
         "type": {"type": "string"},
@@ -25,6 +25,15 @@
             "slug": {"type": "string"},
             "name": {"type": "string"},
             "description": {"type": "string"}
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "required": ["namespace"],
+          "properties": {
+            "namespace": {
+              "$ref": "namespace_relationship_object.json#definitions/namespace"
+            }
           }
         }
       }
