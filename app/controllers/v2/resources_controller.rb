@@ -25,6 +25,7 @@ module V2
     def self.inherited(subclass)
       subclass.infer_resource_class
       subclass.find_param(:id)
+      subclass.permitted_params([])
       super(subclass)
     end
 
