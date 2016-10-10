@@ -1,18 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "namespace_relationship_object.json",
-  "title": "Namespace Relationship Object",
-  "description": "This is a schema for the Namespace relationship object.",
+  "id": "repository_relationship_object.json",
+  "title": "Repository Relationship Object",
+  "description": "This is a schema for the Repository relationship object.",
 
   "definitions": {
-    "namespace": {
+    "repository": {
       "type": "object",
       "required": ["data", "links"],
       "properties": {
         "data": {
-          "type": "object",
+          "type": "array",
           "required": ["id", "type"],
-          "properties": {
+          "items": {
             "id": {"type": "string"},
             "type": {"type": "string"}
           }

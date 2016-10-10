@@ -10,5 +10,12 @@ module V2
       url_for(controller: 'v2/namespaces', action: 'show',
               slug: object.to_param)
     end
+
+    has_many :repositories, serializer: V2::RepositorySerializer do
+      link :related do
+        url_for(controller: 'v2/repositories', action: 'index',
+                namespace_slug: object.to_param)
+      end
+    end
   end
 end
