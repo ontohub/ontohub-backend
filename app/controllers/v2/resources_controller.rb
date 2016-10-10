@@ -88,12 +88,22 @@ module V2
              serializer: ActiveModel::Serializer::ErrorSerializer
     end
 
+    def resource_params
+      @resource_params ||= parse_params(only: permitted_params)
+    end
+
+    private
+
     def resource_class
       self.class.instance_variable_get(:@resource_class)
     end
 
     def resource_serializer
       "V2::#{resource_class}Serializer".constantize
+    end
+
+    def parse_params(**options)
+      ActiveModelSerializers::Deserialization.jsonapi_parse!(params, **options)
     end
 
     def permitted_params(action = params[:action].to_sym)
@@ -103,14 +113,6 @@ module V2
       else
         permitted
       end
-    end
-
-    def resource_params
-      parse_params(only: permitted_params)
-    end
-
-    def parse_params(**options)
-      ActiveModelSerializers::Deserialization.jsonapi_parse!(params, **options)
     end
   end
 end
