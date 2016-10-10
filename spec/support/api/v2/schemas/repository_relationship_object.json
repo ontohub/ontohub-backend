@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "repository_relationship_object.json",
+  "title": "Repository Relationship Object",
+  "description": "This is a schema for the Repository relationship object.",
+
+  "definitions": {
+    "repository": {
+      "type": "object",
+      "required": ["data", "links"],
+      "properties": {
+        "data": {
+          "type": "array",
+          "required": ["id", "type"],
+          "items": {
+            "id": {"type": "string"},
+            "type": {"type": "string"}
+          }
+        },
+        "links": {
+          "type": "object",
+          "required": ["related"],
+          "properties": {
+            "related": {"type": "uri"}
+          }
+        }
+      }
+    }
+  }
+}

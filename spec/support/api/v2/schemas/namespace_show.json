@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "namespace_show.json",
+  "title": "Namespace Show Schema",
+  "description": "This is a schema for the show action of the NamespacesController.",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "namespace_data_object.json#definitions/namespace"
+    },
+    "included": {
+      "type": "array",
+      "items": {
+        "$ref": "repository_data_object.json#definitions/repository"
+      }
+    },
+    "jsonapi": { "$ref": "jsonapi_toplevel_object.json#definitions/jsonapi" }
+  }
+}

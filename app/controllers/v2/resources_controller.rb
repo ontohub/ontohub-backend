@@ -25,6 +25,8 @@ module V2
     def self.inherited(subclass)
       subclass.infer_resource_class
       subclass.find_param(:id)
+      subclass.permitted_params([])
+      subclass.permitted_includes([])
       super(subclass)
     end
 
@@ -78,7 +80,8 @@ module V2
     def render_resource(status = :ok)
       render status: status,
              json: resource,
-             serializer: resource_serializer
+             serializer: resource_serializer,
+             include: permitted_includes
     end
 
     def render_error(status)
@@ -86,6 +89,18 @@ module V2
              json: resource,
              serializer: ActiveModel::Serializer::ErrorSerializer
     end
+
+    def resource_params
+      @resource_params ||= parse_params(only: permitted_params)
+    end
+
+    def permitted_includes
+      permitted = self.class.instance_variable_get(:@permitted_includes)
+      requested = params[:include]&.split(',') || []
+      @permitted_includes ||= requested & permitted
+    end
+
+    private
 
     def resource_class
       self.class.instance_variable_get(:@resource_class)
@@ -95,6 +110,10 @@ module V2
       "V2::#{resource_class}Serializer".constantize
     end
 
+    def parse_params(**options)
+      ActiveModelSerializers::Deserialization.jsonapi_parse!(params, **options)
+    end
+
     def permitted_params(action = params[:action].to_sym)
       permitted = self.class.instance_variable_get(:@permitted_params)
       if permitted.last.is_a?(Hash)
@@ -102,14 +121,6 @@ module V2
       else
         permitted
       end
-    end
-
-    def resource_params
-      parse_params(only: permitted_params)
-    end
-
-    def parse_params(**options)
-      ActiveModelSerializers::Deserialization.jsonapi_parse!(params, **options)
     end
   end
 end

@@ -49,6 +49,7 @@ module V2
         # create and update actions.
         # Example:
         #   permitted_params :name, :description
+        #   permitted_params :description, create: %i(name description)
         #   permitted_params %i(name description)
         def permitted_params(*params)
           params = params.first if params.first.is_a?(Array)
@@ -60,6 +61,18 @@ module V2
           params.map(&:to_sym)
           params << options if options
           instance_variable_set(:@permitted_params, params)
+        end
+
+        # Specify the permitted includes. Only these will be allowed in the
+        # +include+ GET parameter of the JSON API.
+        # Example:
+        #   permitted_includes 'ontologies.*', 'mappings'
+        #   permitted_includes %w(ontologies.* mappings)
+        def permitted_includes(*includes)
+          includes = includes.first if includes.first.is_a?(Array)
+          includes ||= []
+          includes.map!(&:to_s)
+          instance_variable_set(:@permitted_includes, includes)
         end
 
         # Specify the actions that should be inherited from the
@@ -82,6 +95,7 @@ module V2
           klass = to_s.split(':').last.sub(/Controller\z/, '').singularize.
             constantize
           resource_class(klass)
+        # rubocop:disable HandleExceptions
         rescue NameError
           # Suppress error if the class could not be found.
           # Otherwise loading controllers with non-standard names will fail
