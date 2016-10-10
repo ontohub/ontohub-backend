@@ -3,7 +3,6 @@
 module V2
   # The serializer for Repositories, API version 2
   class RepositorySerializer < ApplicationSerializer
-    attribute :slug
     attribute :name
     attribute :description
 
@@ -18,6 +17,10 @@ module V2
       url_for(controller: 'v2/repositories', action: 'show',
               namespace_slug: object.namespace.to_param,
               slug: object.slug)
+    end
+
+    def id
+      object.slug
     end
   end
 end

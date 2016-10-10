@@ -41,7 +41,7 @@ RSpec.describe V2::RepositoriesController do
       let(:name) { "new-#{repository.name}" }
       before do
         data = {attributes:
-                {namespace_id: repository.namespace.id,
+                {namespace_id: repository.namespace.to_param,
                  name: name,
                  description: "New #{repository.description}"}}
         post :create, params: {namespace_slug: namespace.to_param, data: data}

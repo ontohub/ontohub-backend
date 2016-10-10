@@ -20,10 +20,9 @@
         },
         "attributes": {
           "type": "object",
-          "required": ["name", "slug"],
+          "required": ["name"],
           "properties": {
-            "name": {"type": "string"},
-            "slug": {"type": "string"}
+            "name": {"type": "string"}
           }
         },
         "relationships": {
