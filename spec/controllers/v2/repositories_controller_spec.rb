@@ -11,7 +11,7 @@ RSpec.describe V2::RepositoriesController do
   describe 'GET index' do
     before { get :index, params: {namespace_slug: namespace.to_param} }
     it { expect(response).to have_http_status(:ok) }
-    it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+    it { expect(response).to match_response_schema('v2', 'jsonapi') }
     it { expect(response).to match_response_schema('v2', 'repository_index') }
   end
 
@@ -22,7 +22,7 @@ RSpec.describe V2::RepositoriesController do
                             slug: repository.slug}
       end
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
       it { expect(response).to match_response_schema('v2', 'repository_show') }
     end
 
@@ -47,7 +47,7 @@ RSpec.describe V2::RepositoriesController do
         post :create, params: {namespace_slug: namespace.to_param, data: data}
       end
       it { expect(response).to have_http_status(:created) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
       it do
         expect(response).to match_response_schema('v2', 'repository_create')
       end
@@ -67,7 +67,7 @@ RSpec.describe V2::RepositoriesController do
           post :create, params: {namespace_slug: namespace.to_param, data: data}
         end
         it { expect(response).to have_http_status(:unprocessable_entity) }
-        it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+        it { expect(response).to match_response_schema('v2', 'jsonapi') }
         it do
           expect(response).to match_response_schema('v2', 'validation_error')
         end
@@ -89,7 +89,7 @@ RSpec.describe V2::RepositoriesController do
                                 slug: repository.slug, data: data}
       end
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
       it do
         expect(response).to match_response_schema('v2', 'repository_update')
       end
@@ -117,7 +117,7 @@ RSpec.describe V2::RepositoriesController do
                                   data: data.merge(name: new_name)}
         end
         it { expect(response).to have_http_status(:ok) }
-        it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+        it { expect(response).to match_response_schema('v2', 'jsonapi') }
         it do
           expect(response).to match_response_schema('v2', 'repository_update')
         end

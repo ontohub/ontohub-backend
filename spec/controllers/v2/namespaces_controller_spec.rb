@@ -10,7 +10,7 @@ RSpec.describe V2::NamespacesController do
     context 'successful' do
       before { get :show, params: {slug: subject.slug} }
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
       it { expect(response).to match_response_schema('v2', 'namespace_show') }
     end
 
@@ -20,7 +20,7 @@ RSpec.describe V2::NamespacesController do
         get :show, params: {slug: subject.slug, include: 'repositories'}
       end
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
       it { expect(response).to match_response_schema('v2', 'namespace_show') }
     end
 
