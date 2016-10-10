@@ -49,6 +49,7 @@ module V2
         # create and update actions.
         # Example:
         #   permitted_params :name, :description
+        #   permitted_params :description, create: %i(name description)
         #   permitted_params %i(name description)
         def permitted_params(*params)
           params = params.first if params.first.is_a?(Array)
