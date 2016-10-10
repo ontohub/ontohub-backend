@@ -5,5 +5,6 @@ module V2
   class NamespacesController < ResourcesController
     find_param :slug
     actions :show
+    permitted_includes 'repositories'
   end
 end

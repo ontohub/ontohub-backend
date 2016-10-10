@@ -26,6 +26,7 @@ module V2
       subclass.infer_resource_class
       subclass.find_param(:id)
       subclass.permitted_params([])
+      subclass.permitted_includes([])
       super(subclass)
     end
 
@@ -90,6 +91,12 @@ module V2
 
     def resource_params
       @resource_params ||= parse_params(only: permitted_params)
+    end
+
+    def permitted_includes
+      permitted = self.class.instance_variable_get(:@permitted_includes)
+      requested = params[:include]&.split(',') || []
+      @permitted_includes ||= requested & permitted
     end
 
     private
