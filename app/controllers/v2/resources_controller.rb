@@ -80,7 +80,8 @@ module V2
     def render_resource(status = :ok)
       render status: status,
              json: resource,
-             serializer: resource_serializer
+             serializer: resource_serializer,
+             include: permitted_includes
     end
 
     def render_error(status)

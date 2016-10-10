@@ -14,6 +14,16 @@ RSpec.describe V2::NamespacesController do
       it { expect(response).to match_response_schema('v2', 'namespace_show') }
     end
 
+    context 'successful with included repositories' do
+      before do
+        2.times { create :repository, namespace: subject }
+        get :show, params: {slug: subject.slug, include: 'repositories'}
+      end
+      it { expect(response).to have_http_status(:ok) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi', false) }
+      it { expect(response).to match_response_schema('v2', 'namespace_show') }
+    end
+
     context 'failing with an inexistent URL' do
       before { get :show, params: {slug: bad_slug} }
       it { expect(response).to have_http_status(:not_found) }
