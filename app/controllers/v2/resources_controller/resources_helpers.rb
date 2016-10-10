@@ -95,6 +95,7 @@ module V2
           klass = to_s.split(':').last.sub(/Controller\z/, '').singularize.
             constantize
           resource_class(klass)
+        # rubocop:disable HandleExceptions
         rescue NameError
           # Suppress error if the class could not be found.
           # Otherwise loading controllers with non-standard names will fail
