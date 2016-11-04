@@ -5,6 +5,8 @@ module V2
   class RepositorySerializer < ApplicationSerializer
     attribute :name
     attribute :description
+    attribute :content_type
+    attribute :public_access
 
     has_one :namespace, serializer: V2::NamespaceSerializer do
       link :related do
