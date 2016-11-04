@@ -9,7 +9,7 @@ module V2
     has_one :namespace, serializer: V2::NamespaceSerializer do
       link :related do
         url_for(controller: 'v2/namespaces', action: 'show',
-                slug: object.to_param)
+                slug: object.namespace.to_param)
       end
     end
 
