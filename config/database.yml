@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   username: postgres
   # password:
-  host: localhost # Optional
+  # host: localhost # Optional
   port: 5432 # Optional
   template: template0
   encoding: utf8 # Optional
