@@ -20,10 +20,12 @@
         },
         "attributes": {
           "type": "object",
-          "required": ["name", "description"],
+          "required": ["name", "description", "content_type", "public_access"],
           "properties": {
             "name": {"type": "string"},
-            "description": {"type": "string"}
+            "description": {"type": "string"},
+            "content_type": {"type": "string"},
+            "public_access": {"type": "bool"}
           }
         },
         "relationships": {
