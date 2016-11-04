@@ -5,7 +5,9 @@ module V2
   class RepositoriesController < ResourcesController
     find_param :slug
     actions :all
-    permitted_params :description, create: [:name, :description, :namespace_id]
+    permitted_params :description, :content_type, :public_access,
+      create: [:name, :namespace_id, :description, :content_type,
+               :public_access]
 
     def create
       # On objects that are identified by the slug, we must translate the given
