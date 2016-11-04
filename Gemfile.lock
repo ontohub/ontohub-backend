@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 42377569bccb8cc117e35267c1da9a21dfabe6b5
+  revision: fd02bfafc894154079e10ec64881099eb1b1a06c
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -13,7 +13,7 @@ GIT
       pry-rescue (~> 1.4.4)
       pry-stack_explorer (~> 0.4.9.2)
       rails (~> 5.0.0, >= 5.0.0.1)
-      sequel (~> 4.39.0)
+      sequel (~> 4.40.0)
       sequel-devise (~> 0.0.9)
       sequel-rails (~> 0.9.14)
       sequel_pg (~> 1.6.17)
@@ -221,7 +221,7 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    sequel (4.39.0)
+    sequel (4.40.0)
     sequel-devise (0.0.9)
       devise
       orm_adapter-sequel
