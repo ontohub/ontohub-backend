@@ -8,10 +8,4 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-begin
-  require 'rspec/core/rake_task'
-  RSpec::Core::RakeTask.new(:spec)
-  task default: :spec
-rescue LoadError
-  $stderr.puts 'RSpec not available. Not running specs.'
-end
+# default task is rspec, as defined by rspec-rails
