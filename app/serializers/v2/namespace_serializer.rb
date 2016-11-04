@@ -10,7 +10,8 @@ module V2
               slug: object.to_param)
     end
 
-    has_many :repositories, serializer: V2::RepositorySerializer do
+    has_many :repositories do
+      include_data false
       link :related do
         url_for(controller: 'v2/repositories', action: 'index',
                 namespace_slug: object.to_param)

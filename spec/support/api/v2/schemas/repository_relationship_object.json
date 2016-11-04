@@ -7,16 +7,8 @@
   "definitions": {
     "repository": {
       "type": "object",
-      "required": ["data", "links"],
+      "required": ["links"],
       "properties": {
-        "data": {
-          "type": "array",
-          "required": ["id", "type"],
-          "items": {
-            "id": {"type": "string"},
-            "type": {"type": "string"}
-          }
-        },
         "links": {
           "type": "object",
           "required": ["related"],
