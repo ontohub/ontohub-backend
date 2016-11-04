@@ -43,7 +43,9 @@ RSpec.describe V2::RepositoriesController do
         data = {attributes:
                 {namespace_id: repository.namespace.to_param,
                  name: name,
-                 description: "New #{repository.description}"}}
+                 description: "New #{repository.description}",
+                 content_type: repository.content_type,
+                 public_access: repository.public_access}}
         post :create, params: {namespace_slug: namespace.to_param, data: data}
       end
       it { expect(response).to have_http_status(:created) }
@@ -63,7 +65,9 @@ RSpec.describe V2::RepositoriesController do
         before do
           data = {attributes:
                   {name: name,
-                   description: "New #{repository.description}"}}
+                   description: "New #{repository.description}",
+                   content_type: repository.content_type,
+                   public_access: repository.public_access}}
           post :create, params: {namespace_slug: namespace.to_param, data: data}
         end
         it { expect(response).to have_http_status(:unprocessable_entity) }
