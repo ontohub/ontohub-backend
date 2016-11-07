@@ -131,6 +131,24 @@ RSpec.describe V2::RepositoriesController do
         end
       end
     end
+
+    context 'with invalid data' do
+      let(:bad_content_type) { "Bad-#{repository.content_type}" }
+      before do
+        patch :update, params: {slug: repository.slug,
+                                data: data.
+                                  merge(attributes: data[:attributes].
+                                    merge(content_type: bad_content_type))}
+      end
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
+      it do
+        expect(response).to match_response_schema('v2', 'validation_error')
+      end
+      it 'does not create the repository' do
+        expect(Repository.find(slug: repository.slug)).to eq(repository)
+      end
+    end
   end
 
   describe 'DELETE destroy' do
