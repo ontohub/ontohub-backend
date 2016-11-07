@@ -17,12 +17,11 @@ module V2
 
     link :self do
       url_for(controller: 'v2/repositories', action: 'show',
-              namespace_slug: object.namespace.to_param,
-              slug: object.slug)
+              slug: object.to_param)
     end
 
     def id
-      object.slug
+      object.to_param
     end
   end
 end

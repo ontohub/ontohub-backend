@@ -64,11 +64,12 @@ RSpec.describe V2::RepositoriesController do
         let(:name) { 'n' }
         before do
           data = {attributes:
-                  {name: name,
+                  {namespace_id: repository.namespace.to_param,
+                   name: name,
                    description: "New #{repository.description}",
                    content_type: repository.content_type,
                    public_access: repository.public_access}}
-          post :create, params: {namespace_slug: namespace.to_param, data: data}
+          post :create, params: {data: data}
         end
         it { expect(response).to have_http_status(:unprocessable_entity) }
         it { expect(response).to match_response_schema('v2', 'jsonapi') }

@@ -9,14 +9,21 @@ module V2
         def collection
           return @collection if @collection
           klass = self.class.instance_variable_get(:@resource_class)
-          @collection = klass.all
+          @collection = klass.where(parent_params).all
         end
 
         def resource
           return @resource if @resource
           klass = self.class.instance_variable_get(:@resource_class)
           find_param = self.class.instance_variable_get(:@find_param)
-          @resource = klass.find(find_param => params[find_param])
+          @resource = klass.find(find_param => params[find_param],
+                                 **parent_params)
+        end
+
+        protected
+
+        def parent_params
+          {}
         end
       end
 
