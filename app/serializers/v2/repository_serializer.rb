@@ -16,8 +16,10 @@ module V2
     end
 
     link :self do
+      parts = object.to_param.split('/', 2)
       url_for(controller: 'v2/repositories', action: 'show',
-              slug: object.to_param)
+              slug: object.to_param).
+        sub(parts.join('%2F'), object.to_param)
     end
 
     def id
