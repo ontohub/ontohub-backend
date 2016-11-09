@@ -9,10 +9,20 @@ RSpec.describe V2::RepositoriesController do
   let(:bad_slug) { "notThere-#{repository.slug}" }
 
   describe 'GET index' do
+    let!(:another_repository) { create :repository, namespace: namespace }
+    let!(:other_namespace) { create :namespace }
+    let!(:other_repository) { create :repository, namespace: other_namespace }
+
     before { get :index, params: {namespace_slug: namespace.to_param} }
+
     it { expect(response).to have_http_status(:ok) }
     it { expect(response).to match_response_schema('v2', 'jsonapi') }
     it { expect(response).to match_response_schema('v2', 'repository_index') }
+
+    it 'returns only repositories from the requested namespace' do
+      expect(JSON.parse(response.body)['data'].size).
+        to eq(namespace.repositories.count)
+    end
   end
 
   describe 'GET show' do
