@@ -23,5 +23,7 @@ Rails.application.routes.draw do
       except: %i(index new edit),
       param: :slug,
       constraints: {slug: %r{[^/]+/[^/]+}}
+
+    get 'search', controller: 'v2/search', action: 'search'
   end
 end
