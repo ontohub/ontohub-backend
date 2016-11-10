@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+module V2
+  # The serializer for Users, API version 2
+  class UserSerializer < ApplicationSerializer
+    attribute :name
+    attribute :display_name
+    attribute :email
+
+    def id
+      object.slug
+    end
+
+    link :self do
+      url_for(controller: 'v2/users', action: :show, slug: object.to_param)
+    end
+
+    # This needs to be implemented properly when the teams are implemented
+    has_many(:teams) do
+      []
+    end
+  end
+end

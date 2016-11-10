@@ -2,6 +2,11 @@
 
 Rails.application.routes.draw do
   scope format: false do
+    resources :users,
+      controller: 'v2/users',
+      only: :show,
+      param: :slug
+
     resources :namespaces,
       controller: 'v2/namespaces',
       only: :show,
