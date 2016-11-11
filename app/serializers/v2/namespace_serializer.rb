@@ -19,7 +19,7 @@ module V2
     end
 
     def id
-      object.slug
+      object.to_param
     end
   end
 end

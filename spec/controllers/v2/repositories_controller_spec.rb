@@ -9,10 +9,20 @@ RSpec.describe V2::RepositoriesController do
   let(:bad_slug) { "notThere-#{repository.slug}" }
 
   describe 'GET index' do
+    let!(:another_repository) { create :repository, namespace: namespace }
+    let!(:other_namespace) { create :namespace }
+    let!(:other_repository) { create :repository, namespace: other_namespace }
+
     before { get :index, params: {namespace_slug: namespace.to_param} }
+
     it { expect(response).to have_http_status(:ok) }
     it { expect(response).to match_response_schema('v2', 'jsonapi') }
     it { expect(response).to match_response_schema('v2', 'repository_index') }
+
+    it 'returns only repositories from the requested namespace' do
+      expect(JSON.parse(response.body)['data'].size).
+        to eq(namespace.repositories.count)
+    end
   end
 
   describe 'GET show' do
@@ -64,11 +74,12 @@ RSpec.describe V2::RepositoriesController do
         let(:name) { 'n' }
         before do
           data = {attributes:
-                  {name: name,
+                  {namespace_id: repository.namespace.to_param,
+                   name: name,
                    description: "New #{repository.description}",
                    content_type: repository.content_type,
                    public_access: repository.public_access}}
-          post :create, params: {namespace_slug: namespace.to_param, data: data}
+          post :create, params: {data: data}
         end
         it { expect(response).to have_http_status(:unprocessable_entity) }
         it { expect(response).to match_response_schema('v2', 'jsonapi') }
@@ -128,6 +139,24 @@ RSpec.describe V2::RepositoriesController do
         it 'does not change the repository' do
           expect { repository.reload }.not_to change { repository.slug }
         end
+      end
+    end
+
+    context 'with invalid data' do
+      let(:bad_content_type) { "Bad-#{repository.content_type}" }
+      before do
+        patch :update, params: {slug: repository.slug,
+                                data: data.
+                                  merge(attributes: data[:attributes].
+                                    merge(content_type: bad_content_type))}
+      end
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+      it { expect(response).to match_response_schema('v2', 'jsonapi') }
+      it do
+        expect(response).to match_response_schema('v2', 'validation_error')
+      end
+      it 'does not create the repository' do
+        expect(Repository.find(slug: repository.slug)).to eq(repository)
       end
     end
   end
