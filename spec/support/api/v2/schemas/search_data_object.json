@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "search_data_object.json",
+  "title": "Search Data Object",
+  "description": "This is a schema for the Search data object.",
+
+  "definitions": {
+    "search": {
+      "type": "object",
+      "required": ["id", "type", "attributes", "relationships"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^searchresult$"
+        },
+        "type": {"type": "string"},
+        "attributes": {
+          "type": "object",
+          "required": ["results_count", "repositories_count", "users_count"],
+          "properties": {
+            "results_count": {"type": "integer"},
+            "repositories_count": {"type": "integer"},
+            "users_count": {"type": "integer"}
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "required": ["repositories", "users"],
+          "properties": {
+            "repositories": {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "type"],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_\-]+/[A-Za-z0-9_\-]+$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "pattern": "^repositories$"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "users": {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "type"],
+                    "properties": {
+                      "id": {"type": "string"},
+                      "type": {
+                        "type": "string",
+                        "pattern": "^users$"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
