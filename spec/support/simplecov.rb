@@ -10,5 +10,8 @@ unless defined?(Coveralls)
   SimpleCov.start do
     # The schema matcher does not need to be tested.
     add_filter 'spec/support/json_schema_matcher.rb'
+
+    # The config of the 'config' gem does not need to be tested.
+    add_filter 'config/initializers/config.rb'
   end
 end
