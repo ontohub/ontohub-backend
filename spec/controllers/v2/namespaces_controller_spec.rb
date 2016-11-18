@@ -12,6 +12,14 @@ RSpec.describe V2::NamespacesController do
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to match_response_schema('v2', 'jsonapi') }
       it { expect(response).to match_response_schema('v2', 'namespace_show') }
+
+      context 'Settings key' do
+        it 'respects the Settings.server_url' do
+          response_hash = JSON.parse(response.body)
+          expect(response_hash['data']['links']['self']).
+            to match(/\A#{Settings.server_url}/)
+        end
+      end
     end
 
     context 'successful with included repositories' do
