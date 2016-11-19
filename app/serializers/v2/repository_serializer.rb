@@ -10,16 +10,18 @@ module V2
 
     has_one :namespace, serializer: V2::NamespaceSerializer do
       link :related do
-        url_for(controller: 'v2/namespaces', action: 'show',
-                slug: object.namespace.to_param)
+        path = url_for(controller: 'v2/namespaces', action: 'show',
+                       slug: object.namespace.to_param, only_path: true)
+        [Settings.server_url, path].join('/')
       end
     end
 
     link :self do
       parts = object.to_param.split('/', 2)
-      url_for(controller: 'v2/repositories', action: 'show',
-              slug: object.to_param).
+      path = url_for(controller: 'v2/repositories', action: 'show',
+                     slug: object.to_param, only_path: true).
         sub(parts.join('%2F'), object.to_param)
+      [Settings.server_url, path].join('/')
     end
 
     def id

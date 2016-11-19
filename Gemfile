@@ -17,6 +17,7 @@ gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
 gem 'active_model_serializers', '~> 0.10.2'
+gem 'config', '~> 1.3.0'
 
 # Use these gems for debugging
 gem 'pry', '~> 0.10.4'

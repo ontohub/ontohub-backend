@@ -6,15 +6,17 @@ module V2
     attribute :name
 
     link :self do
-      url_for(controller: 'v2/namespaces', action: 'show',
-              slug: object.to_param)
+      path = url_for(controller: 'v2/namespaces', action: 'show',
+                     slug: object.to_param, only_path: true)
+      [Settings.server_url, path].join('/')
     end
 
     has_many :repositories do
       include_data false
       link :related do
-        url_for(controller: 'v2/repositories', action: 'index',
-                namespace_slug: object.to_param)
+        path = url_for(controller: 'v2/repositories', action: 'index',
+                       namespace_slug: object.to_param, only_path: true)
+        [Settings.server_url, path].join('/')
       end
     end
 
