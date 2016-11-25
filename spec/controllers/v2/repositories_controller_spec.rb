@@ -51,12 +51,15 @@ RSpec.describe V2::RepositoriesController do
       let(:name) { "new-#{repository.name}" }
       before do
         data = {attributes:
-                {namespace_id: repository.namespace.to_param,
-                 name: name,
+                {name: name,
                  description: "New #{repository.description}",
                  content_type: repository.content_type,
-                 public_access: repository.public_access}}
-        post :create, params: {namespace_slug: namespace.to_param, data: data}
+                 public_access: repository.public_access},
+                relationships:
+                 {namespace:
+                  {data:
+                   {type: 'namespaces', id: repository.namespace.to_param}}}}
+        post :create, params: {data: data}
       end
       it { expect(response).to have_http_status(:created) }
       it { expect(response).to match_response_schema('v2', 'jsonapi') }
@@ -74,11 +77,14 @@ RSpec.describe V2::RepositoriesController do
         let(:name) { 'n' }
         before do
           data = {attributes:
-                  {namespace_id: repository.namespace.to_param,
-                   name: name,
+                  {name: name,
                    description: "New #{repository.description}",
                    content_type: repository.content_type,
-                   public_access: repository.public_access}}
+                   public_access: repository.public_access},
+                  relationships:
+                   {namespace:
+                    {data:
+                     {type: 'namespaces', id: repository.namespace.to_param}}}}
           post :create, params: {data: data}
         end
         it { expect(response).to have_http_status(:unprocessable_entity) }

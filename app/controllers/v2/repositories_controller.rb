@@ -6,7 +6,7 @@ module V2
     find_param :slug
     actions :all
     permitted_params :description, :content_type, :public_access,
-      create: [:name, :namespace_id, :description, :content_type,
+      create: [:name, :namespace, :description, :content_type,
                :public_access]
 
     def create
