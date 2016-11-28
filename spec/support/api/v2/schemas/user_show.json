@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "user_show.json",
+  "title": "User Show Schema",
+  "description": "This is a schema for the show action of the UsersController.",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "user_data_object.json#definitions/user"
+    },
+    "jsonapi": { "$ref": "jsonapi_toplevel_object.json#definitions/jsonapi" }
+  }
+}

@@ -15,8 +15,12 @@
 end
 
 namespace_count = Namespace.count
+content_types = %w(ontology model specification)
 %w(repo1 repo2 repo3 repo4).each_with_index do |name, index|
-  r = Repository.new(name: name, content_type: 'ontology', public_access: true)
+  r = Repository.new(name: name,
+                     content_type: content_types[index % content_types.size],
+                     public_access: true,
+                     description: 'This is a dummy repository.')
   r.namespace = Namespace.all[index % namespace_count]
   r.save
 end
