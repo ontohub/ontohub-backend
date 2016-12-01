@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "repository_data_object.json",
-  "title": "Repository Data Object",
-  "description": "This is a schema for the Repository data object.",
+  "id": "repository_resource_object.json",
+  "title": "Repository Resource Object",
+  "description": "This is a schema for the Repository resource object.",
 
   "definitions": {
     "repository": {
@@ -10,7 +10,10 @@
       "required": ["id", "type", "links", "attributes", "relationships"],
       "properties": {
         "id": {"type": "string"},
-        "type": {"type": "string"},
+        "type": {
+          "type": "string",
+          "pattern": "^repositories$"
+        },
         "links": {
           "type": "object",
           "required": ["self"],
@@ -27,7 +30,10 @@
           "properties": {
             "name": {"type": "string"},
             "description": {"type": "string"},
-            "content_type": {"type": "string"},
+            "content_type": {
+              "type": "string",
+              "pattern": "^(ontology|model|specification)$"
+            },
             "public_access": {"type": "bool"}
           }
         },

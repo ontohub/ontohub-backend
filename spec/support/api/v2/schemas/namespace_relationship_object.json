@@ -19,9 +19,9 @@
         },
         "links": {
           "type": "object",
-          "required": ["related"],
+          "required": ["self"],
           "properties": {
-            "related": {"type": "uri"}
+            "self": {"type": "uri"}
           }
         }
       }

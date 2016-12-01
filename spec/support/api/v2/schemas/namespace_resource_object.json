@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "namespace_data_object.json",
-  "title": "Namespace Data Object",
-  "description": "This is a schema for the Repository data object.",
+  "id": "namespace_resource_object.json",
+  "title": "Namespace Resource Object",
+  "description": "This is a schema for the Namespace resource object.",
 
   "definitions": {
     "namespace": {
@@ -10,7 +10,10 @@
       "required": ["id", "type", "links", "attributes", "relationships"],
       "properties": {
         "id": {"type": "string"},
-        "type": {"type": "string"},
+        "type": {
+          "type": "string",
+          "pattern": "^namespaces$"
+        },
         "links": {
           "type": "object",
           "required": ["self"],

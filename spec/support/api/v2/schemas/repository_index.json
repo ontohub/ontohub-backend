@@ -10,7 +10,7 @@
     "data": {
       "type": "array",
       "items": {
-        "$ref": "repository_data_object.json#definitions/repository"
+        "$ref": "repository_resource_object.json#definitions/repository"
       }
     },
     "jsonapi": { "$ref": "jsonapi_toplevel_object.json#definitions/jsonapi" }

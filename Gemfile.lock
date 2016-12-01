@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 88f971fe5c54b896dd9b8bb4cc17e0c7718b2e8b
+  revision: ace46e17055a827dab789aa09bd93fe039209f57
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -293,4 +293,4 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
 
 BUNDLED WITH
-   1.13.2
+   1.13.6
