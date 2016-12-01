@@ -17,7 +17,7 @@ Lists all information on the user with the ID `ada`.
 ## Response Objects
 ### Resource Object
 ###### Fields
-* `id` [String]: The name of the user.
+* `id` [String]: The ID of the user.
 * `type` [String]: *Always* `"users"`.
 * `attributes` [Object]: See [Attributes](#attributes).
 * `relationships` [Object]: See [Relationships](#relationships).
@@ -35,7 +35,7 @@ Lists all information on the user with the ID `ada`.
 
 ### Relationship Object
 ###### Fields
-* `id` [String]: The name of the user.
+* `id` [String]: The ID of the user.
 * `type` [String]: *Always* `"users"`.
 
 ###### Links

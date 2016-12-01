@@ -5,7 +5,7 @@
 ###### Route
     POST /repositories
 ###### Example Command
-    $ http POST :3000/repositories data:='{"attributes":{"namespace_id": "ada", "name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description"}}'
+    $ http POST :3000/repositories data:='{"attributes":{"name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description" }, "relationships": {"namespace": {"data": {"type": "namespaces", "id": "ada"}}}}'
 ###### Description
 Creates a repository.
 
@@ -41,11 +41,11 @@ Lists all repositories in the given namespace.
 ### Read
 ###### Route
     GET /repositories/:repository_id
-Note that a `repository_id` includes the ID of the namespace.
+**Note that a `repository_id` includes the ID of the namespace.**
 ###### Example Command
     $ http -j :3000/repositories/ada/repo1
 ###### Description
-Lists all information on the repository with the ID `repo1`.
+Lists all information on the repository with the ID `ada/repo1`.
 
 #### Response Data
 * 200/OK: Contains the [Resource Object](#resource-object).
@@ -55,11 +55,11 @@ Lists all information on the repository with the ID `repo1`.
 ### Update
 ###### Route
     PATCH /repositories/:repository_id
-Note that a `repository_id` includes the ID of the namespace.
+**Note that a `repository_id` includes the ID of the namespace.**
 ###### Example Command
     $ http PATCH :3000/repositories/ada/repo1 data:='{"attributes":{"description": "a new description"}}'
 ###### Description
-Changes attributes of the repository.
+Changes attributes of the repository `ada/repo1`.
 
 #### Request Data
 ##### Optional
@@ -76,9 +76,11 @@ Changes attributes of the repository.
 ### Delete
 ###### Route
     DELETE /repositories/:repository_id
-Note that a `repository_id` includes the ID of the namespace.
+**Note that a `repository_id` includes the ID of the namespace.**
 ###### Example Command
     $ http DELETE :3000/repositories/ada/repo1
+###### Description
+Deletes the repository `ada/repo1`.
 
 #### Response Data
 * 204/No Content: Successfully deleted (No response body)
@@ -88,7 +90,7 @@ Note that a `repository_id` includes the ID of the namespace.
 ## Response Objects
 ### Resource Object
 ###### Fields
-* `id` [String]: The name of the repository.
+* `id` [String]: The ID of the repository (including the ID of the namespace).
 * `type` [String]: *Always* `"repositories"`.
 * `attributes` [Object]: See [Attributes](#attributes).
 * `relationships` [Object]: See [Relationships](#relationships).

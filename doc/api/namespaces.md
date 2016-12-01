@@ -17,7 +17,7 @@ Lists all information on the namespace with the ID `ada`.
 ## Response Objects
 ### Resource Object
 ###### Fields
-* `id` [String]: The name of the namespace.
+* `id` [String]: The ID of the namespace.
 * `type` [String]: *Always* `"namespaces"`.
 * `attributes` [Object]: See [Attributes](#attributes).
 * `relationships` [Object]: See [Relationships](#relationships).
@@ -34,7 +34,7 @@ Lists all information on the namespace with the ID `ada`.
 
 ### Relationship Object
 ###### Fields
-* `id` [String]: The name of the namespace.
+* `id` [String]: The ID of the namespace.
 * `type` [String]: *Always* `"namespaces"`.
 
 ###### Links
