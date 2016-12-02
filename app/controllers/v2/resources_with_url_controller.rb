@@ -42,9 +42,5 @@ module V2
         self.class.resource_url_path(r)
       end
     end
-
-    def route_prefix
-      self.class.instance_variable_get(:@route_prefix)
-    end
   end
 end
