@@ -42,7 +42,7 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', '~> 0.8.15'
+  gem 'coveralls', '~> 0.8.16'
   gem 'rspec', '~> 3.5.0'
   gem 'rspec-rails', '~> 3.5.2'
   gem 'database_cleaner', '~> 1.5.3'
