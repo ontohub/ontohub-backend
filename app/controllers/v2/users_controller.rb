@@ -2,7 +2,7 @@
 
 module V2
   # Handles user show requests
-  class UsersController < ResourcesController
+  class UsersController < ResourcesWithURLController
     find_param :slug
     actions :show
   end

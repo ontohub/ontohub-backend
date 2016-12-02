@@ -69,6 +69,11 @@ RSpec.describe V2::RepositoriesController do
       it 'creates the repository' do
         expect(Repository.find(name: name)).not_to be(nil)
       end
+      it 'sets the correct url' do
+        found_repository = Repository.find(name: name)
+        expect(found_repository.url_path).
+          to eq("/repositories/#{found_repository.to_param}")
+      end
     end
 
     context 'failing' do

@@ -11,7 +11,7 @@ module V2
     end
 
     attribute :name
-    attribute :display_name
+    attribute :real_name
     attribute :email
 
     def id
@@ -19,7 +19,7 @@ module V2
     end
 
     link :self do
-      url_for(controller: 'v2/users', action: :show, slug: object.to_param)
+      object.url(Settings.server_url)
     end
 
     # This needs to be implemented properly when the teams are implemented

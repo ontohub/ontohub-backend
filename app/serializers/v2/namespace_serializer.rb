@@ -15,7 +15,7 @@ module V2
     link :self do
       path = url_for(controller: 'v2/namespaces', action: 'show',
                      slug: object.to_param, only_path: true)
-      [Settings.server_url, path].join('/')
+      [Settings.server_url, path].join
     end
 
     has_many :repositories,
@@ -24,7 +24,7 @@ module V2
       link :self do
         path = url_for(controller: 'v2/repositories', action: 'index',
                        namespace_slug: object.to_param, only_path: true)
-        [Settings.server_url, path].join('/')
+        [Settings.server_url, path].join
       end
     end
 
