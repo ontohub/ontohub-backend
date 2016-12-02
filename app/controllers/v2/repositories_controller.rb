@@ -16,12 +16,7 @@ module V2
       # parameter to the id.
       namespace = Namespace.find(slug: resource_params[:namespace_id])
       resource_params[:namespace_id] = namespace&.id
-
       super
-
-      resource.url_path_method = lambda do |repository|
-        [route_prefix, repository.to_param].join
-      end
     end
 
     def parent_params

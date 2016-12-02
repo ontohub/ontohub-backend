@@ -30,7 +30,18 @@ module V2
         select { |p| p.is_a?(String) }.join
     end
 
+    def self.resource_url_path(resource)
+      [@route_prefix, resource.to_param].join
+    end
+
     protected
+
+    def build_resource
+      super
+      resource.url_path_method = lambda do |r|
+        self.class.resource_url_path(r)
+      end
+    end
 
     def route_prefix
       self.class.instance_variable_get(:@route_prefix)
