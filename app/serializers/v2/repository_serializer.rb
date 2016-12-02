@@ -19,16 +19,12 @@ module V2
       link :self do
         path = url_for(controller: 'v2/namespaces', action: 'show',
                        slug: object.namespace.to_param, only_path: true)
-        [Settings.server_url, path].join('/')
+        [Settings.server_url, path].join
       end
     end
 
     link :self do
-      parts = object.to_param.split('/', 2)
-      path = url_for(controller: 'v2/repositories', action: 'show',
-                     slug: object.to_param, only_path: true).
-        sub(parts.join('%2F'), object.to_param)
-      [Settings.server_url, path].join('/')
+      object.url(Settings.server_url)
     end
 
     def id
