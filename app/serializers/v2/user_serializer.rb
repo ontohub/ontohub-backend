@@ -11,7 +11,7 @@ module V2
     end
 
     attribute :name
-    attribute :display_name
+    attribute :real_name
     attribute :email
 
     def id

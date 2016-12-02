@@ -20,10 +20,10 @@
         },
         "attributes": {
           "type": "object",
-          "required": ["name", "display_name", "email"],
+          "required": ["name", "real_name", "email"],
           "properties": {
             "name": {"type": "string"},
-            "display_name": {"type": "string"},
+            "real_name": {"type": "string"},
             "email": {
               "type": "string",
               "pattern": "[^@]+@[^@]+"

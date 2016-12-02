@@ -2,22 +2,27 @@
 
 module V2
   # Handles all requests for repository CRUD operations
-  class RepositoriesController < ResourcesController
+  class RepositoriesController < ResourcesWithURLController
     find_param :slug
     actions :all
     permitted_params :description, :content_type, :public_access,
       create: [:name, :namespace, :description, :content_type,
                :public_access]
 
-    def create
+    protected
+
+    def build_resource
       # On objects that are identified by the slug, we must translate the given
       # parameter to the id.
       namespace = Namespace.find(slug: resource_params[:namespace_id])
       resource_params[:namespace_id] = namespace&.id
-      super
-    end
 
-    protected
+      super
+
+      resource.url_path_method = lambda do |repository|
+        [route_prefix, repository.to_param].join
+      end
+    end
 
     def parent_params
       return @parent_params unless @parent_params.nil?

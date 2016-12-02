@@ -45,8 +45,7 @@ module V2
     end
 
     def create
-      permitted_params
-      @resource = resource_class.new(resource_params)
+      build_resource
       resource.save
       render_resource(:created)
     rescue Sequel::ValidationFailed
@@ -98,6 +97,11 @@ module V2
       permitted = self.class.instance_variable_get(:@permitted_includes)
       requested = params[:include]&.split(',') || []
       @permitted_includes ||= requested & permitted
+    end
+
+    def build_resource
+      permitted_params
+      @resource = resource_class.new(resource_params)
     end
 
     private
