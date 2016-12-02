@@ -23,7 +23,7 @@ gem 'config', '~> 1.3.0'
 gem 'pry', '~> 0.10.4'
 gem 'pry-rescue', '~> 1.4.4'
 gem 'pry-stack_explorer', '~> 0.4.9.2'
-gem 'pry-byebug', '~> 3.4.0'
+gem 'pry-byebug', '~> 3.4.1'
 gem 'pry-rails', '~> 0.3.4'
 gem 'awesome_print', '~> 1.7.0'
 
@@ -42,7 +42,7 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', '~> 0.8.15'
+  gem 'coveralls', '~> 0.8.16'
   gem 'rspec', '~> 3.5.0'
   gem 'rspec-rails', '~> 3.5.2'
   gem 'database_cleaner', '~> 1.5.3'
