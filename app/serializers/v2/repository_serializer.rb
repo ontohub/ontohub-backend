@@ -16,7 +16,7 @@ module V2
     attribute :public_access
 
     has_one :namespace, serializer: V2::NamespaceSerializer::Relationship do
-      link :self do
+      link :related do
         path = url_for(controller: 'v2/namespaces', action: 'show',
                        slug: object.namespace.to_param, only_path: true)
         [Settings.server_url, path].join

@@ -104,6 +104,7 @@ Deletes the repository `ada/repo1`.
 
 ###### Relationships
 * `namespace` [[Namespace Relationship Object](namespaces.md#relationship-object)]: The read action of the repository's namespace.
+  * The link to this relationship is in the `related` key.
 
 ###### Links
 * `self` [URL]: The URL of the resource itself.

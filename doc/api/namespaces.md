@@ -28,6 +28,7 @@ Lists all information on the namespace with the ID `ada`.
 
 ###### Relationships
 * `repositories` - [[Repository Relationship Object](repositories.md#relationship-object)]: The index of the repositories in this namespace.
+  * The link to this relationship is in the `related` key.
 
 ###### Links
 * `self` [URL]: The URL of the namespace itself.

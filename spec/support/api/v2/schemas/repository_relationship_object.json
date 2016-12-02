@@ -11,9 +11,9 @@
       "properties": {
         "links": {
           "type": "object",
-          "required": ["self"],
+          "required": ["related"],
           "properties": {
-            "self": {
+            "related": {
               "type": "uri",
               "pattern": "/[A-Za-z0-9_\-]+/[A-Za-z0-9_\-]+$"
             }
