@@ -22,8 +22,9 @@ module V2
       object.url(Settings.server_url)
     end
 
-    # This needs to be implemented properly when the teams are implemented
-    has_many(:teams) do
+    # This needs to be implemented properly when the organizations
+    # are implemented
+    has_many(:organizations) do
       []
     end
   end

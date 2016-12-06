@@ -32,10 +32,10 @@
         },
         "relationships": {
           "type": "object",
-          "required": ["teams"],
+          "required": ["organizations"],
           "properties": {
-            "teams": {
-              "$ref": "team_relationship_object.json#definitions/team"
+            "organizations": {
+              "$ref": "organization_relationship_object.json#definitions/organization"
             }
           }
         }

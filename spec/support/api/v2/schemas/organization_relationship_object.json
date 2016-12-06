@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "organization_relationship_object.json",
+  "title": "Organization Relationship Object",
+  "description": "This is a schema for the Organization relationship object.",
+
+  "definitions": {
+    "organization": {}
+  }
+}

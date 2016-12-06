@@ -44,7 +44,7 @@ An example is
         {
             "detail": "is not present",
             "source": {
-                "pointer": "/data/attributes/namespace_id"
+                "pointer": "/data/attributes/owner_id"
             }
         },
         {

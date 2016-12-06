@@ -28,7 +28,7 @@ Lists all information on the user with the ID `ada`.
 * `email`: [String]: The email address of the user.
 
 ###### Relationships
-* `teams` - [Array of [Team Relationship Objects](teams.md#relationship-object)]: The index of the teams this user belongs to.
+* `organizations` - [Array of [Organization Relationship Objects](organizations.md#relationship-object)]: The index of the organizations this user belongs to.
 
 ###### Links
 * `self` [URL]: The URL of the user itself.

@@ -6,7 +6,7 @@ RSpec.describe V2::SearchController do
   let(:num_objects) { 2 }
   before do
     num_objects.times { create :user }
-    User.each { |user| create :repository, namespace: user.namespace }
+    User.each { |user| create :repository, owner: user }
   end
 
   describe 'GET search' do
