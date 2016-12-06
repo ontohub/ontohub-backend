@@ -20,14 +20,13 @@ end
 url_path_method = lambda do |repository|
   V2::RepositoriesController.resource_url_path(repository)
 end
-namespace_count = Namespace.count
+user_count = User.count
 content_types = %w(ontology model specification)
 %w(repo1 repo2 repo3 repo4).each_with_index do |name, index|
-  r = Repository.new(name: name,
-                     content_type: content_types[index % content_types.size],
-                     public_access: true,
-                     description: 'This is a dummy repository.',
-                     url_path_method: url_path_method)
-  r.namespace = Namespace.all[index % namespace_count]
-  r.save
+  Repository.new(owner: User.all[index % user_count],
+                 name: name,
+                 content_type: content_types[index % content_types.size],
+                 public_access: true,
+                 description: 'This is a dummy repository.',
+                 url_path_method: url_path_method).save
 end
