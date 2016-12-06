@@ -39,4 +39,4 @@ Lists all information on the user with the ID `ada`.
 * `type` [String]: *Always* `"users"`.
 
 ###### Links
-* `self` [URL]: The URL of the user itself.
+* `related` [URL]: The URL of the user itself.

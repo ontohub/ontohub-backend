@@ -4,8 +4,9 @@
 ### Create
 ###### Route
     POST /repositories
-###### Example Command
+###### Example Commands
     $ http POST :3000/repositories data:='{"attributes":{"name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description" }, "relationships": {"owner": {"data": {"type": "users", "id": "ada"}}}}'
+    $ http POST :3000/repositories data:='{"attributes":{"name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description" }, "relationships": {"owner": {"data": {"type": "organizations", "id": "all-users"}}}}'
 ###### Description
 Creates a repository.
 
@@ -118,4 +119,4 @@ Deletes the repository `ada/repo1`.
 * `type` [String]: *Always* `"repositories"`.
 
 ###### Links
-* `self` [URL]: The URL of the repository itself.
+* `related` [URL]: The URL of the repository itself.
