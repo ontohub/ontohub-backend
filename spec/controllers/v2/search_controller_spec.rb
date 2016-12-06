@@ -6,7 +6,10 @@ RSpec.describe V2::SearchController do
   let(:num_objects) { 2 }
   before do
     num_objects.times { create :user }
-    User.each { |user| create :repository, owner: user }
+    User.each do |user|
+      create :repository, owner: user
+      create :organization
+    end
   end
 
   describe 'GET search' do
@@ -19,7 +22,7 @@ RSpec.describe V2::SearchController do
       it 'presents the correct results_count' do
         json = JSON.parse(response.body)
         expect(json['data']['attributes']['results_count']).
-          to eq(2 * num_objects)
+          to eq(3 * num_objects)
       end
 
       it 'presents the correct repositories_count' do
@@ -34,6 +37,12 @@ RSpec.describe V2::SearchController do
           to eq(num_objects)
       end
 
+      it 'presents the correct organizations_count' do
+        json = JSON.parse(response.body)
+        expect(json['data']['attributes']['organizations_count']).
+          to eq(num_objects)
+      end
+
       it 'lists the correct number of repositories' do
         json = JSON.parse(response.body)
         expect(json['data']['relationships']['repositories']['data'].size).
@@ -43,6 +52,12 @@ RSpec.describe V2::SearchController do
       it 'lists the correct number of users' do
         json = JSON.parse(response.body)
         expect(json['data']['relationships']['users']['data'].size).
+          to eq(num_objects)
+      end
+
+      it 'lists the correct number of organizations' do
+        json = JSON.parse(response.body)
+        expect(json['data']['relationships']['organizations']['data'].size).
           to eq(num_objects)
       end
     end
