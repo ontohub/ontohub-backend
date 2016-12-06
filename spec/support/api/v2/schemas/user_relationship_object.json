@@ -1,18 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "organization_relationship_object.json",
-  "title": "Organization Relationship Object",
-  "description": "This is a schema for the Organization relationship object.",
+  "id": "user_relationship_object.json",
+  "title": "User Relationship Object",
+  "description": "This is a schema for the User relationship object.",
 
   "definitions": {
-    "organization": {
+    "user": {
       "type": "object",
       "required": ["id", "type"],
       "properties": {
         "id": {"type": "string"},
         "type": {
           "type": "string",
-          "pattern": "^organizations$"
+          "pattern": "^users$"
         }
       }
     }
