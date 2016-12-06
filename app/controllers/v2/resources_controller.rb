@@ -121,7 +121,7 @@ module V2
     def permitted_params(action = params[:action].to_sym)
       permitted = self.class.instance_variable_get(:@permitted_params)
       if permitted.last.is_a?(Hash)
-        permitted.last[action] || permitted[0..2]
+        permitted.last[action] || permitted[0..-2]
       else
         permitted
       end
