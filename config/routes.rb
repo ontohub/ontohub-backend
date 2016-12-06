@@ -2,13 +2,8 @@
 
 Rails.application.routes.draw do
   scope format: false do
-    resources :users,
-      controller: 'v2/users',
-      only: :show,
-      param: :slug
-
-    resources :namespaces,
-      controller: 'v2/namespaces',
+    resources :organizations,
+      controller: 'v2/organizations',
       only: :show,
       param: :slug do
         resources :repositories,
@@ -16,8 +11,17 @@ Rails.application.routes.draw do
           only: :index
       end
 
-    # Repositories is actually nested in namespaces, but its slug contains the
-    # namespace's slug, separated by a slash.
+    resources :users,
+      controller: 'v2/users',
+      only: :show,
+      param: :slug do
+        resources :repositories,
+          controller: 'v2/repositories',
+          only: :index
+      end
+
+    # Repositories are actually nested in users/organizations, but its slug
+    # contains the owner's slug, separated by a slash.
     resources :repositories,
       controller: 'v2/repositories',
       except: %i(index new edit),
