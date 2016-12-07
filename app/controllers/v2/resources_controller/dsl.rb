@@ -3,7 +3,7 @@
 module V2
   class ResourcesController
     # Defines methods for detecting the resource class
-    module ResourcesHelpers
+    module DSL
       # Instance methods to use in a controller
       module InstanceMethods
         def collection

@@ -19,8 +19,8 @@ module V2
   # access to the requested data.
   class ResourcesController < ApplicationController
     # Simplify calling of resource and collection
-    include ResourcesHelpers::InstanceMethods
-    extend ResourcesHelpers::ClassMethods
+    include DSL::InstanceMethods
+    extend DSL::ClassMethods
 
     def self.inherited(subclass)
       subclass.infer_resource_class
