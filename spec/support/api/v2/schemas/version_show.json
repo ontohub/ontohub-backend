@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "version_show.json",
+  "title": "Version Show Schema",
+  "description": "This is a schema for the show action of the VersionController.",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "version_object.json#definitions/version"
+    },
+    "jsonapi": { "$ref": "jsonapi_toplevel_object.json#definitions/jsonapi" }
+  }
+}
