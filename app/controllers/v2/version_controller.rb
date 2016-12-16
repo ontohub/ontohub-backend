@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module V2
-
+  # Handles requests for version show operations
   class VersionController < ApplicationController
     def show
       render status: :ok,

@@ -28,7 +28,9 @@ RSpec.describe Version do
         end
 
         it 'fails to determine the version' do
-          expect { Version.load_version }.to raise_error(Version::CouldNotDetermineVersion)
+          expect { Version.load_version }.to(
+            raise_error(Version::CouldNotDetermineVersion)
+          )
         end
       end
     end
@@ -56,7 +58,9 @@ RSpec.describe Version do
         end
 
         it 'fails to determine the version' do
-          expect { Version.load_version }.to raise_error(Version::CouldNotDetermineVersion)
+          expect { Version.load_version }.to(
+            raise_error(Version::CouldNotDetermineVersion)
+          )
         end
       end
     end

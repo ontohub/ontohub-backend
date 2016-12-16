@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+# The Version is a non-persistent object that represents thet version of the
+# backend
 class Version < ActiveModelSerializers::Model
-
+  # The exception thrown, when the version of the backend could not be
+  # determined; be it by using the VERSION file or by git command
   class CouldNotDetermineVersion < StandardError
     def initialize(msg = 'Could not determine backend version.')
       super(msg)
@@ -25,17 +28,32 @@ class Version < ActiveModelSerializers::Model
   def self.read_version_file
     File.read(Rails.root.join('VERSION')).strip
   rescue Errno::ENOENT => _
-    ""
+    ''
   end
 
   def self.read_version_from_git
     `git describe --long --tags`.strip
   end
 
+  def self.exception_message
+    msg = 'Could not determin the backend version. '
+    msg +=
+      if production?
+        'Does the VERSION file exist?'
+      else
+        'Is this a git repository?'
+      end
+    msg
+  end
+
   def self.load_version
-    version = production? ? read_version_file : read_version_from_git
-    exception_text = production? ? 'Does the VERSION file exist?' : 'Is this a git repository?'
-    raise CouldNotDetermineVersion, 'Could not determin the backend version. ' + exception_text if version.empty?
+    version =
+      if production?
+        read_version_file
+      else
+        read_version_from_git
+      end
+    raise CouldNotDetermineVersion, exception_message if version.empty?
     version
   end
 
