@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rubocop:disable Metrics/BlockLength
 
 Rails.application.routes.draw do
   scope format: false do
@@ -30,5 +31,16 @@ Rails.application.routes.draw do
 
     get 'search', controller: 'v2/search', action: 'search'
     get 'version', controller: 'v2/version', action: 'show'
+
+    scope '/organizational_units' do
+      get '/:slug',
+        controller: 'v2/organizational_units',
+        action: :show
+    end
+
+    get '/:slug',
+      controller: 'v2/organizational_units',
+      action: :show,
+      as: :organizational_unit
   end
 end
