@@ -25,5 +25,6 @@ Rails.application.routes.draw do
       constraints: {slug: %r{[^/]+/[^/]+}}
 
     get 'search', controller: 'v2/search', action: 'search'
+    get 'version', controller: 'v2/version', action: 'show'
   end
 end
