@@ -34,7 +34,8 @@ class Version < ActiveModelSerializers::Model
 
   def self.load_version
     version = production? ? read_version_file : read_version_from_git
-    raise CouldNotDetermineVersion if version.empty?
+    exception_text = production? ? 'Does the VERSION file exist?' : 'Is this a git repository?'
+    raise CouldNotDetermineVersion, 'Could not determin the backend version. ' + exception_text if version.empty?
     version
   end
 
