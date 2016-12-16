@@ -14,9 +14,11 @@ The backend is then reachable from the browser at [http://localhost:3000](http:/
 
 ## Dependencies
 
-The backend is implemented in [Ruby on Rails](http://rubyonrails.org).
-First, the Ruby version referenced in the file [.ruby-version](.ruby-version) needs to be installed, as well as the gem [bundler](http://bundler.io).
-Invoking the command `bundle install` in the directory of this repository will then install all dependencies of the backend.
+The backend is implemented in [Ruby on Rails](http://rubyonrails.org).  First,
+the Ruby version referenced in the file [.ruby-version](.ruby-version) needs to
+be installed, as well as the gem [bundler](http://bundler.io). `git` needs to
+be installed as well.  Invoking the command `bundle install` in the directory
+of this repository will then install all dependencies of the backend.
 
 ## Set up a development environment
 

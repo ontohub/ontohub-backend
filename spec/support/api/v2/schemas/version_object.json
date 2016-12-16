@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "version_object.json",
+  "title": "Version Data Object",
+  "description": "This is a schema for the Version data object.",
+
+  "definitions": {
+    "version": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string"},
+        "type": {"type": "string"},
+        "attributes": {
+          "type": "object",
+          "required": ["commit", "tag", "full", "commits_since_tag"],
+          "properties": {
+            "commit": {"type": "string"},
+            "tag": {"type": "string"},
+            "full": {"type": "string"},
+            "commits_since_tag": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}
