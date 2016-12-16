@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class Version < ActiveModelSerializers::Model
+
+  class CouldNotDetermineVersion < StandardError
+    def initialize(msg = 'Could not determine backend version.')
+      super(msg)
+    end
+  end
+
   attr_accessor :commit, :tag, :full, :commits_since_tag
 
   def initialize(version_string)
@@ -11,14 +18,24 @@ class Version < ActiveModelSerializers::Model
           commit: match[3])
   end
 
+  def self.production?
+    Rails.env.production?
+  end
+
+  def self.read_version_file
+    File.read(Rails.root.join('VERSION')).strip
+  rescue Errno::ENOENT => _
+    ""
+  end
+
+  def self.read_version_from_git
+    `git describe --long --tags`.strip
+  end
+
   def self.load_version
-    if Rails.env == 'production'
-      File.read(Rails.root.join('VERSION')).strip
-    else
-      git_version = `git describe --long --tags`.strip
-      raise 'Could not determine backend version via git.' if git_version.empty?
-      git_version
-    end
+    version = production? ? read_version_file : read_version_from_git
+    raise CouldNotDetermineVersion if version.empty?
+    version
   end
 
   VERSION = load_version
