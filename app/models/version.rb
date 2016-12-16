@@ -14,47 +14,51 @@ class Version < ActiveModelSerializers::Model
   attr_accessor :commit, :tag, :full, :commits_since_tag
 
   def initialize(version_string)
-    match = /(.+)-(\d+)-g([a-z0-9]{7})/.match(version_string)
+    match = /(.+)-(\d+)-g([a-z0-9]{7,40})/.match(version_string)
     super(full: version_string,
           tag: match[1],
           commits_since_tag: match[2].to_i,
           commit: match[3])
   end
 
-  def self.production?
-    Rails.env.production?
-  end
+  class << self
+    def load_version
+      version =
+        if production?
+          read_version_file
+        else
+          read_version_from_git
+        end
+      raise CouldNotDetermineVersion, exception_message if version.empty?
+      version
+    end
 
-  def self.read_version_file
-    File.read(Rails.root.join('VERSION')).strip
-  rescue Errno::ENOENT => _
-    ''
-  end
+    private
 
-  def self.read_version_from_git
-    `git describe --long --tags`.strip
-  end
+    def production?
+      Rails.env.production?
+    end
 
-  def self.exception_message
-    msg = 'Could not determin the backend version. '
-    msg +=
-      if production?
-        'Does the VERSION file exist?'
-      else
-        'Is this a git repository?'
-      end
-    msg
-  end
+    def read_version_file
+      File.read(Rails.root.join('VERSION')).strip
+    rescue Errno::ENOENT
+      ''
+    end
 
-  def self.load_version
-    version =
-      if production?
-        read_version_file
-      else
-        read_version_from_git
-      end
-    raise CouldNotDetermineVersion, exception_message if version.empty?
-    version
+    def read_version_from_git
+      `git describe --long --tags`.strip
+    end
+
+    def exception_message
+      msg = 'Could not determine the backend version. '
+      msg +=
+        if production?
+          'Does the VERSION file exist?'
+        else
+          'Is this a git repository?'
+        end
+      msg
+    end
   end
 
   VERSION = load_version
