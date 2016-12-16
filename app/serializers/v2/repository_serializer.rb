@@ -15,11 +15,10 @@ module V2
     attribute :content_type
     attribute :public_access
 
-    has_one :namespace, serializer: V2::NamespaceSerializer::Relationship do
+    has_one :owner,
+      serializer: V2::OrganizationalUnitSerializer::Relationship do
       link :related do
-        path = url_for(controller: 'v2/namespaces', action: 'show',
-                       slug: object.namespace.to_param, only_path: true)
-        [Settings.server_url, path].join
+        object.owner.url(Settings.server_url)
       end
     end
 

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "organizational_unit_relationship_object.json",
+  "title": "Repository Relationship Object",
+  "description": "This is a schema for the Repository relationship object.",
+
+  "definitions": {
+    "organizational_unit": {
+      "type": "object",
+      "required": ["links"],
+      "properties": {
+        "links": {
+          "type": "object",
+          "required": ["related"],
+          "properties": {
+            "related": {
+              "type": "uri"
+            }
+          }
+        }
+      }
+    }
+  }
+}

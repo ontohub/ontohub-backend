@@ -2,7 +2,7 @@
 
 module V2
   # The serializer for Users, API version 2
-  class UserSerializer < ApplicationSerializer
+  class OrganizationSerializer < ApplicationSerializer
     # The serializer for the relationship object
     class Relationship < ApplicationSerializer
       def id
@@ -12,7 +12,6 @@ module V2
 
     attribute :name
     attribute :real_name
-    attribute :email
 
     def id
       object.to_param
@@ -22,7 +21,6 @@ module V2
       object.url(Settings.server_url)
     end
 
-    has_many(:organizations,
-             serializer: V2::OrganizationSerializer::Relationship)
+    has_many(:members, serializer: V2::UserSerializer::Relationship)
   end
 end

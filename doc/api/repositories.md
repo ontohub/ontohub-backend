@@ -4,17 +4,20 @@
 ### Create
 ###### Route
     POST /repositories
-###### Example Command
-    $ http POST :3000/repositories data:='{"attributes":{"name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description" }, "relationships": {"namespace": {"data": {"type": "namespaces", "id": "ada"}}}}'
+###### Example Commands
+    $ http POST :3000/repositories data:='{"attributes":{"name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description" }, "relationships": {"owner": {"data": {"type": "users", "id": "ada"}}}}'
+    $ http POST :3000/repositories data:='{"attributes":{"name": "some repository", "content_type": "ontology", "public_access": "true", "description": "some description" }, "relationships": {"owner": {"data": {"type": "organizations", "id": "all-users"}}}}'
 ###### Description
 Creates a repository.
 
 #### Request Data
 ##### Required
-* `namespace_id` [String]: The ID of the namespace that this repository should reside in.
 * `name` [String]: The name of the repository to be created.
 * `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`.
 * `public_access` [Boolean]: Describes whether or not this repository is publicly accessible. Must be one of `true`, `false`.
+
+###### Required Relationships
+* `owner` [[User Relationship Object](users.md#relationship-object) / [Organization Relationship Object](organizations.md#relationship-object)]: The repository owner.
 
 ##### Optional
 * `description` [String]: A short descriptive text.
@@ -27,11 +30,12 @@ Creates a repository.
 
 ### Index
 ###### Route
-    GET /namespaces/:namespace_id/repositories
+    GET /users/:user_id/repositories
+    GET /organizations/:organization_id/repositories
 ###### Example Command
-    $ http -j :3000/namespaces/ada/repositories
+    $ http -j :3000/users/ada/repositories
 ###### Description
-Lists all repositories in the given namespace.
+Lists all repositories of the given owner.
 
 #### Response Data
 * 200/OK: Contains an array of [Resource Objects](#resource-object).
@@ -41,7 +45,7 @@ Lists all repositories in the given namespace.
 ### Read
 ###### Route
     GET /repositories/:repository_id
-**Note that a `repository_id` includes the ID of the namespace.**
+**Note that a `repository_id` includes the ID of the owner.**
 ###### Example Command
     $ http -j :3000/repositories/ada/repo1
 ###### Description
@@ -55,7 +59,7 @@ Lists all information on the repository with the ID `ada/repo1`.
 ### Update
 ###### Route
     PATCH /repositories/:repository_id
-**Note that a `repository_id` includes the ID of the namespace.**
+**Note that a `repository_id` includes the ID of the owner.**
 ###### Example Command
     $ http PATCH :3000/repositories/ada/repo1 data:='{"attributes":{"description": "a new description"}}'
 ###### Description
@@ -76,7 +80,7 @@ Changes attributes of the repository `ada/repo1`.
 ### Delete
 ###### Route
     DELETE /repositories/:repository_id
-**Note that a `repository_id` includes the ID of the namespace.**
+**Note that a `repository_id` includes the ID of the owner.**
 ###### Example Command
     $ http DELETE :3000/repositories/ada/repo1
 ###### Description
@@ -90,7 +94,7 @@ Deletes the repository `ada/repo1`.
 ## Response Objects
 ### Resource Object
 ###### Fields
-* `id` [String]: The ID of the repository (including the ID of the namespace).
+* `id` [String]: The ID of the repository (including the ID of the owner).
 * `type` [String]: *Always* `"repositories"`.
 * `attributes` [Object]: See [Attributes](#attributes).
 * `relationships` [Object]: See [Relationships](#relationships).
@@ -103,7 +107,7 @@ Deletes the repository `ada/repo1`.
 * `description` [String]: A short descriptive text.
 
 ###### Relationships
-* `namespace` [[Namespace Relationship Object](namespaces.md#relationship-object)]: The read action of the repository's namespace.
+* `owner` [[User Relationship Object](users.md#relationship-object) / [Organization Relationship Object](organizations.md#relationship-object)]: The repository owner.
   * The link to this relationship is in the `related` key.
 
 ###### Links
@@ -115,4 +119,4 @@ Deletes the repository `ada/repo1`.
 * `type` [String]: *Always* `"repositories"`.
 
 ###### Links
-* `self` [URL]: The URL of the repository itself.
+* `related` [URL]: The URL of the repository itself.

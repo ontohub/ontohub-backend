@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module V2
-  # Handles all requests for repository CRUD operations
-  class NamespacesController < ResourcesController
+  # Handles user show requests
+  class OrganizationsController < ResourcesWithURLController
     find_param :slug
     actions :show
     permitted_includes 'repositories'

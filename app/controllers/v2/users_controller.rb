@@ -5,5 +5,6 @@ module V2
   class UsersController < ResourcesWithURLController
     find_param :slug
     actions :show
+    permitted_includes 'repositories'
   end
 end

@@ -58,15 +58,11 @@ module V2
         #   permitted_params :name, :description
         #   permitted_params :description, create: %i(name description)
         #   permitted_params %i(name description)
-        def permitted_params(*params)
+        def permitted_params(*params, **opts)
           params = params.first if params.first.is_a?(Array)
-          if params.last.is_a?(Hash)
-            options = params.pop.map do |action, action_params|
-              [action, Array(action_params).map(&:to_sym)]
-            end&.to_h
-          end
-          params.map(&:to_sym)
-          params << options if options
+          opts = permitted_params_options(params, opts)
+          params = params.map(&:to_sym)
+          params << opts unless opts.empty?
           instance_variable_set(:@permitted_params, params)
         end
 
@@ -117,6 +113,15 @@ module V2
           to_remove = Array(to_keep.pop[:except]) if to_keep.last.is_a?(Hash)
           to_remove += ACTIONS - to_keep unless to_keep.first == :all
           to_remove.map(&:to_sym).uniq
+        end
+
+        def permitted_params_options(params, opts)
+          if params.last.is_a?(Hash)
+            opts.merge(params.pop.map do |action, action_params|
+              [action, Array(action_params).map(&:to_sym)]
+            end&.to_h)
+          end
+          opts
         end
       end
     end

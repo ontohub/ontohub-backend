@@ -1,33 +1,36 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database
-# with its default values.
-# The data can then be loaded with the rails db:seed command (or created
-# alongside the database with db:setup).
-#
-# Examples:
-#
-#  movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#  Character.create(name: 'Luke', movie: movies.first)
-
-url_path_method = lambda do |user|
-  V2::UsersController.resource_url_path(user)
+# Create users.
+url_path_method = lambda do |resource|
+  V2::UsersController.resource_url_path(resource)
 end
 %w(ada bob).each do |name|
-  User.new(name: name, url_path_method: url_path_method).save
+  User.new(name: name,
+           email: "#{name}@example.com",
+           url_path_method: url_path_method).save
 end
 
+# Create organizations.
+url_path_method = lambda do |resource|
+  V2::OrganizationsController.resource_url_path(resource)
+end
+Organization.new(name: 'All Users', url_path_method: url_path_method).save
+organization = Organization.first
+User.all do |user|
+  organization.add_member(user)
+end
+
+# Create repositories.
 url_path_method = lambda do |repository|
   V2::RepositoriesController.resource_url_path(repository)
 end
-namespace_count = Namespace.count
+owner_count = OrganizationalUnit.count
 content_types = %w(ontology model specification)
-%w(repo1 repo2 repo3 repo4).each_with_index do |name, index|
-  r = Repository.new(name: name,
-                     content_type: content_types[index % content_types.size],
-                     public_access: true,
-                     description: 'This is a dummy repository.',
-                     url_path_method: url_path_method)
-  r.namespace = Namespace.all[index % namespace_count]
-  r.save
+(0..(2 * owner_count - 1)).each do |index|
+  Repository.new(owner: OrganizationalUnit.find(id: index % owner_count + 1),
+                 name: "repo#{index}",
+                 content_type: content_types[index % content_types.size],
+                 public_access: true,
+                 description: 'This is a dummy repository.',
+                 url_path_method: url_path_method).save
 end
