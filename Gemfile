@@ -20,12 +20,12 @@ gem 'active_model_serializers', '~> 0.10.2'
 gem 'config', '~> 1.3.0'
 
 # Use these gems for debugging
+gem 'awesome_print', '~> 1.7.0'
 gem 'pry', '~> 0.10.4'
-gem 'pry-rescue', '~> 1.4.4'
-gem 'pry-stack_explorer', '~> 0.4.9.2'
 gem 'pry-byebug', '~> 3.4.1'
 gem 'pry-rails', '~> 0.3.4'
-gem 'awesome_print', '~> 1.7.0'
+gem 'pry-rescue', '~> 1.4.4'
+gem 'pry-stack_explorer', '~> 0.4.9.2'
 
 group :development, :test do
 end
@@ -43,10 +43,10 @@ end
 
 group :test do
   gem 'coveralls', '~> 0.8.16'
-  gem 'rspec', '~> 3.5.0'
-  gem 'rspec-rails', '~> 3.5.2'
   gem 'database_cleaner', '~> 1.5.3'
   gem 'factory_girl_rails', '~> 4.7.0'
   gem 'faker', '~> 1.6.6'
   gem 'json-schema', '~> 2.7.0'
+  gem 'rspec', '~> 3.5.0'
+  gem 'rspec-rails', '~> 3.5.2'
 end
