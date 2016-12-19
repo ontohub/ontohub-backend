@@ -42,7 +42,7 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', '~> 0.8.16'
+  gem 'coveralls', '~> 0.8.17'
   gem 'database_cleaner', '~> 1.5.3'
   gem 'factory_girl_rails', '~> 4.7.0'
   gem 'faker', '~> 1.6.6'
