@@ -4,7 +4,7 @@ dist: trusty
 language: ruby
 
 rvm:
-  - 2.3.3
+  - 2.4.0
   - rbx-3.73
 
 services:
