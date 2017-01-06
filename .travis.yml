@@ -4,20 +4,20 @@ dist: trusty
 language: ruby
 
 rvm:
-  - 2.3.1
+  - 2.3.3
+  - rbx-3.69
 
 services:
   - postgresql
 
 addons:
-  postgresql: '9.4'
+  postgresql: '9.6'
 
 notifications:
   email: false
 
 before_script:
-  - RAILS_ENV=test bin/rails db:create
-  - RAILS_ENV=test bin/rails db:migrate
+  - RAILS_ENV=test bin/rails db:recreate
 
 script:
   - bundle exec rake

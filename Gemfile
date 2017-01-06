@@ -22,10 +22,10 @@ gem 'config', '~> 1.3.0'
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.7.0'
 gem 'pry', '~> 0.10.4'
-gem 'pry-byebug', '~> 3.4.1'
+gem 'pry-byebug', '~> 3.4.1', platform: :mri
 gem 'pry-rails', '~> 0.3.4'
-gem 'pry-rescue', '~> 1.4.4'
-gem 'pry-stack_explorer', '~> 0.4.9.2'
+gem 'pry-rescue', '~> 1.4.4', platform: :mri
+gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
 group :development, :test do
 end
