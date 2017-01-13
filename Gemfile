@@ -45,7 +45,7 @@ group :test do
   gem 'coveralls', '~> 0.8.17'
   gem 'database_cleaner', '~> 1.5.3'
   gem 'factory_girl_rails', '~> 4.8.0'
-  gem 'faker', '~> 1.6.6'
+  gem 'faker', '~> 1.7.2'
   gem 'json-schema', '~> 2.7.0'
   gem 'rspec', '~> 3.5.0'
   gem 'rspec-rails', '~> 3.5.2'
