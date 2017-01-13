@@ -17,7 +17,7 @@ gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
 gem 'active_model_serializers', '~> 0.10.4'
-gem 'config', '~> 1.3.0'
+gem 'config', '~> 1.4.0'
 
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.7.0'
