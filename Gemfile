@@ -16,8 +16,8 @@ gem 'rack-cors'
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
-gem 'active_model_serializers', '~> 0.10.3'
-gem 'config', '~> 1.3.0'
+gem 'active_model_serializers', '~> 0.10.4'
+gem 'config', '~> 1.4.0'
 
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.7.0'
@@ -45,7 +45,7 @@ group :test do
   gem 'coveralls', '~> 0.8.17'
   gem 'database_cleaner', '~> 1.5.3'
   gem 'factory_girl_rails', '~> 4.8.0'
-  gem 'faker', '~> 1.6.6'
+  gem 'faker', '~> 1.7.2'
   gem 'json-schema', '~> 2.7.0'
   gem 'rspec', '~> 3.5.0'
   gem 'rspec-rails', '~> 3.5.2'
