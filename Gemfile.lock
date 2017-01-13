@@ -1,15 +1,15 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 40b200fbe1d5e5078d03a6a4d4432b9090d61872
+  revision: dfe3a7cd3e11e243f68d592d7daa5e112d140d6b
   branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)
-      chewy (~> 0.8.4)
+      chewy (~> 0.9.0)
       devise (~> 4.2.0)
       pry (~> 0.10.4)
       rails (~> 5.0.1)
-      sequel (~> 4.41.0)
+      sequel (~> 4.42.1)
       sequel-devise (~> 0.0.9)
       sequel-rails (~> 0.9.14)
       sequel_pg (~> 1.6.17)
@@ -67,7 +67,7 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (9.0.6)
-    chewy (0.8.4)
+    chewy (0.9.0)
       activesupport (>= 3.2)
       elasticsearch (>= 1.0.0)
     coderay (1.1.1)
@@ -217,7 +217,7 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     ruby_dep (1.5.0)
-    sequel (4.41.0)
+    sequel (4.42.1)
     sequel-devise (0.0.9)
       devise
       orm_adapter-sequel
