@@ -1,2 +1,5 @@
 # The base URL for URL generation without trailing slash
 server_url: 'http://localhost:3000'
+
+jwt:
+  expiration_hours: 24
