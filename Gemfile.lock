@@ -280,7 +280,7 @@ DEPENDENCIES
   json-schema (~> 2.7.0)
   listen (~> 3.1.5)
   ontohub-models!
-  orm_adapter-sequel
+  orm_adapter-sequel (~> 0.1.0)
   pry (~> 0.10.4)
   pry-byebug (~> 3.4.1)
   pry-rails (~> 0.3.4)
