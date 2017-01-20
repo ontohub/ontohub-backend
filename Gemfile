@@ -27,6 +27,8 @@ gem 'pry-rails', '~> 0.3.4'
 gem 'pry-rescue', '~> 1.4.4', platform: :mri
 gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
+gem 'orm_adapter-sequel'
+
 group :development, :test do
 end
 

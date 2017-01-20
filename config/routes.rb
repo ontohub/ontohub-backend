@@ -3,6 +3,8 @@
 
 Rails.application.routes.draw do
   scope format: false do
+    root to: 'v2/search#search'
+    devise_for :users
     resources :organizations,
       controller: 'v2/organizations',
       only: :show,
