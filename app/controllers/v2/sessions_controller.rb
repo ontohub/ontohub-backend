@@ -33,27 +33,21 @@ module V2
     end
 
     def parse_params
-      params.merge!(user: ActiveModelSerializers::Deserialization.jsonapi_parse!(params, only: %i(username password)))
+      params.merge!(user: ActiveModelSerializers::Deserialization.jsonapi_parse!(params, only: %i(name password)))
     end
 
     def generate_token
-      expiration = Time.current.to_i + Settings.jwt.expiration_hours.hours
-      payload = {user_id: current_user.id,
-                 exp: expiration}
-      ecdsa_key = OpenSSL::PKey::EC.new('prime521v1')
-      ecdsa_key.generate_key
-      ecdsa_public = OpenSSL::PKey::EC.new(ecdsa_key)
-      ecdsa_public.private_key = nil
-      AuthenticationToken.new(token: JWT.encode(payload, ecdsa_key, 'ES512'))
+      payload = {user_id: current_user.id}
+      AuthenticationToken.new(token: JWTWrapper.encode(payload))
     end
 
-    def decode
-      begin
-        decoded_token = JWT.decode(token, ecdsa_public,
-                                   true, {:algorithm => 'ES512'})
-      rescue JWT::ExpiredSignature
-        render status: :unauthorized
-      end
-    end
+    # def decode
+    #   begin
+    #     decoded_token = JWT.decode(token, ecdsa_public,
+    #                      true, {:algorithm => 'ES256'})
+    #   rescue JWT::ExpiredSignature
+    #     render status: :unauthorized
+    #   end
+    # end
   end
 end
