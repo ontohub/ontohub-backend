@@ -11,7 +11,7 @@ module Devise
         return fail! unless claims
         return fail! unless claims.has_key?('user_id')
 
-        success! User.find_by_id claims['user_id']
+        success! User.find(users__id: claims['user_id'])
       end
 
       protected
@@ -21,7 +21,7 @@ module Devise
 
         return nil if (strategy || '').downcase != 'bearer'
 
-        JWTWrapper.decode(token) rescue nil
+        JWTWrapper.decode(token)
       end
     end
   end

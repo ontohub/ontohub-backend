@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 module JWTWrapper
-  def self.generate_public_key
+  def self.generate_private_key
     key = OpenSSL::PKey::EC.new('prime256v1')
     key.generate_key
   end
   PRIVATE_KEY = generate_private_key
 
   def self.generate_public_key
-    ecdsa_public = OpenSSL::PKey::EC.new(PRIVATE_KEY)
-    ecdsa_public.private_key = nil
+    key = OpenSSL::PKey::EC.new(PRIVATE_KEY)
+    key.private_key = nil
+    key
   end
   PUBLIC_KEY = generate_public_key
 
