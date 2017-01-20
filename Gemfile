@@ -28,6 +28,7 @@ gem 'pry-rescue', '~> 1.4.4', platform: :mri
 gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
 gem 'orm_adapter-sequel', '~> 0.1.0'
+gem 'jwt', '~> 1.5.6'
 
 group :development, :test do
 end
