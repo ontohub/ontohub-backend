@@ -32,7 +32,7 @@
         },
         "relationships": {
           "type": "object",
-          "required": ["organizations"],
+          "required": ["organizations", "repositories"],
           "properties": {
             "organizations": {
               "type": "object",
@@ -42,6 +42,19 @@
                   "type": "array",
                   "items": {
                     "$ref": "organization_relationship_object.json#definitions/organization"
+                  }
+                }
+              }
+            },
+            "repositories": {
+              "type": "object",
+              "required": ["links"],
+              "properties": {
+                "links": {
+                  "type": "object",
+                  "required": ["related"],
+                  "properties": {
+                    "related": {"type": "uri"}
                   }
                 }
               }
