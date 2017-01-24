@@ -39,6 +39,10 @@ class Version < ActiveModelSerializers::Model
       Rails.env.production?
     end
 
+    def test?
+      Rails.env.test?
+    end
+
     def read_version_file
       File.read(Rails.root.join('VERSION')).strip
     rescue Errno::ENOENT
@@ -61,5 +65,5 @@ class Version < ActiveModelSerializers::Model
     end
   end
 
-  VERSION = load_version
+  VERSION = load_version unless test?
 end
