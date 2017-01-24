@@ -28,6 +28,7 @@ Lists all information on the organization with the ID `all-users`.
 
 ###### Relationships
 * `members` - [Array of [User Relationship Objects](users.md#relationship-object)]: The index of the organizations this organization belongs to.
+* `repositories` - [Object]: See [Repositories Relationship Object](#repositories-relationship-object)
 
 ###### Links
 * `self` [URL]: The URL of the organizations itself.
@@ -39,3 +40,7 @@ Lists all information on the organization with the ID `all-users`.
 
 ###### Links
 * `related` [URL]: The URL of the organization itself.
+
+### Repositories Relationship Object
+###### Links
+* `related` [URL]: The URL to a list of repositories owned by the user

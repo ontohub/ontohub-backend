@@ -29,6 +29,7 @@ Lists all information on the user with the ID `ada`.
 
 ###### Relationships
 * `organizations` - [Array of [Organization Relationship Objects](organizations.md#relationship-object)]: The index of the organizations this user belongs to.
+* `repositories` - [Object]: See [Repositories Relationship Object](#repositories-relationship-object)
 
 ###### Links
 * `self` [URL]: The URL of the user itself.
@@ -40,3 +41,7 @@ Lists all information on the user with the ID `ada`.
 
 ###### Links
 * `related` [URL]: The URL of the user itself.
+
+### Repositories Relationship Object
+###### Links
+* `related` [URL]: The URL to a list of repositories owned by the user
