@@ -19,7 +19,6 @@ RSpec.describe V2::Users::SessionsController do
         it { expect(response).to have_http_status(:created) }
         it { expect(JSON.parse(response.body)['data']['attributes']['token']).
              not_to be_empty }
-
       end
 
       context 'incorrect' do
@@ -32,8 +31,5 @@ RSpec.describe V2::Users::SessionsController do
         it { expect(JSON.parse(response.body)['error']).not_to be_empty }
       end
     end
-
-    # context 'with token' do
-    # end
   end
 end
