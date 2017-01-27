@@ -2,6 +2,7 @@
 
 ENV['SIMPLECOV_RAILS'] = 'true'
 require_relative 'support/simplecov'
+require_relative 'support/controller_helpers'
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
@@ -55,4 +56,5 @@ RSpec.configure do |config|
 
   # Use Devise in tests
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include ControllerHelpers, type: :controller
 end
