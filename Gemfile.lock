@@ -126,6 +126,7 @@ GEM
       jsonapi-renderer (= 0.1.1.beta1)
     jsonapi-parser (0.1.1.beta3)
     jsonapi-renderer (0.1.1.beta1)
+    jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -278,8 +279,10 @@ DEPENDENCIES
   factory_girl_rails (~> 4.8.0)
   faker (~> 1.7.2)
   json-schema (~> 2.7.0)
+  jwt (~> 1.5.6)
   listen (~> 3.1.5)
   ontohub-models!
+  orm_adapter-sequel (~> 0.1.0)
   pry (~> 0.10.4)
   pry-byebug (~> 3.4.1)
   pry-rails (~> 0.3.4)
