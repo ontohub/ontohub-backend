@@ -2,7 +2,7 @@
 
 module Devise
   module Strategies
-    # strategy for a user guest
+    # strategy for a user guest, sets the current user to instance of object
     class Guest < Base
       def authenticate!
         guest = Object.new
