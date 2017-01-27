@@ -4,7 +4,10 @@ module Devise
   module Strategies
     class JsonWebToken < Base
       def valid?
-        request.headers['Authorization'].present?
+        if request.headers['Authorization'].present?
+          strategy, _token = strategy_and_token
+          (strategy || '').downcase == 'bearer'
+        end
       end
 
       def authenticate!
@@ -16,11 +19,12 @@ module Devise
 
       protected
 
+      def strategy_and_token
+        @strategy_and_token ||= request.headers['Authorization'].split(' ')
+      end
+
       def claims
-        strategy, token = request.headers['Authorization'].split(' ')
-
-        return nil if (strategy || '').downcase != 'bearer'
-
+        _strategy, token = strategy_and_token
         JWTWrapper.decode(token)
       end
     end
