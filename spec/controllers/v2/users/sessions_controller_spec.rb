@@ -18,7 +18,7 @@ RSpec.describe V2::Users::SessionsController do
         end
         it { expect(response).to have_http_status(:created) }
         it do
-          expect(JSON.parse(response.body)['data']['attributes']['token']).
+          expect(response_data['attributes']['token']).
             not_to be_empty
         end
       end
@@ -30,7 +30,7 @@ RSpec.describe V2::Users::SessionsController do
           format: :json
         end
         it { expect(response).to have_http_status(:unauthorized) }
-        it { expect(JSON.parse(response.body)['error']).not_to be_empty }
+        it { expect(response_hash['error']).not_to be_empty }
       end
     end
   end

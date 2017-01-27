@@ -20,32 +20,27 @@ RSpec.describe V2::SearchController do
       it { expect(response).to match_response_schema('v2', 'search_search') }
 
       it 'presents the correct results_count' do
-        json = JSON.parse(response.body)
-        expect(json['data']['attributes']['results_count']).
+        expect(response_data['attributes']['results_count']).
           to eq(3 * num_objects)
       end
 
       it 'presents the correct repositories_count' do
-        json = JSON.parse(response.body)
-        expect(json['data']['attributes']['repositories_count']).
+        expect(response_data['attributes']['repositories_count']).
           to eq(num_objects)
       end
 
       it 'presents the correct organizational_units_count' do
-        json = JSON.parse(response.body)
-        expect(json['data']['attributes']['organizational_units_count']).
+        expect(response_data['attributes']['organizational_units_count']).
           to eq(2 * num_objects)
       end
 
       it 'lists the correct number of repositories' do
-        json = JSON.parse(response.body)
-        expect(json['data']['relationships']['repositories']['data'].size).
+        expect(response_data['relationships']['repositories']['data'].size).
           to eq(num_objects)
       end
 
       it 'lists the correct number of organizational_units' do
-        json = JSON.parse(response.body)
-        org_units = json['data']['relationships']['organizational_units']
+        org_units = response_data['relationships']['organizational_units']
         expect(org_units['data'].size).to eq(2 * num_objects)
       end
     end

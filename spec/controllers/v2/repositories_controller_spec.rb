@@ -21,8 +21,7 @@ RSpec.describe V2::RepositoriesController do
       it { expect(response).to match_response_schema('v2', 'repository_index') }
 
       it 'returns only repositories from the requested user' do
-        expect(JSON.parse(response.body)['data'].size).
-          to eq(owner.repositories.count)
+        expect(response_data.size).to eq(owner.repositories.count)
       end
     end
 
@@ -220,8 +219,7 @@ RSpec.describe V2::RepositoriesController do
       it { expect(response).to match_response_schema('v2', 'repository_index') }
 
       it 'returns only repositories from the requested organization' do
-        expect(JSON.parse(response.body)['data'].size).
-          to eq(owner.repositories.count)
+        expect(response_data.size).to eq(owner.repositories.count)
       end
     end
 
