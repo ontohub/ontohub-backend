@@ -6,8 +6,8 @@ url_path_method = lambda do |resource|
 end
 %w(ada bob).each do |name|
   user = User.new(name: name,
-           email: "#{name}@example.com",
-           url_path_method: url_path_method)
+                  email: "#{name}@example.com",
+                  url_path_method: url_path_method)
   user.password = 'changeme'
   user.save
 end

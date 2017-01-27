@@ -2,9 +2,9 @@
 
 module Devise
   module Strategies
+    # strategy for a user guest
     class Guest < Base
       def authenticate!
-        #binding.pry
         guest = Object.new
         %i(to_key authenticatable_salt).each do |method|
           guest.define_singleton_method(method) { :guest }

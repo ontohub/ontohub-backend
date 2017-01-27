@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# JWT Wrapper for generating keys
 module JWTWrapper
   def self.generate_private_key
     key = OpenSSL::PKey::EC.new('prime256v1')
@@ -14,7 +15,7 @@ module JWTWrapper
   end
   PUBLIC_KEY = generate_public_key
 
-  extend self
+  extend module_function
 
   def encode(payload, expiration = nil)
     expiration ||= Settings.jwt.expiration_hours
@@ -26,12 +27,10 @@ module JWTWrapper
   end
 
   def decode(token)
-    begin
-      decoded_token = JWT.decode(token, PUBLIC_KEY, true, {:algorithm => 'ES256'})
-      decoded_token.first
-    rescue JWT::DecodeError
-      nil
-    end
+    decoded_token = JWT.decode(token, PUBLIC_KEY, true, algorithm: 'ES256')
+    decoded_token.first
+  rescue JWT::DecodeError
+    nil
   end
 
   def keys

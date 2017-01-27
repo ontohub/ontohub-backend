@@ -2,17 +2,18 @@
 
 module Devise
   module Strategies
+    # strategy for login with jwt
     class JsonWebToken < Base
       def valid?
-        if request.headers['Authorization'].present?
-          strategy, _token = strategy_and_token
-          (strategy || '').downcase == 'bearer'
-        end
+        return false unless request.headers['Authorization'].present?
+
+        strategy, _token = strategy_and_token
+        (strategy || '').casecmp 'bearer'
       end
 
       def authenticate!
         return fail! unless claims
-        return fail! unless claims.has_key?('user_id')
+        return fail! unless claims.key?('user_id')
 
         success! User.find(users__id: claims['user_id'])
       end

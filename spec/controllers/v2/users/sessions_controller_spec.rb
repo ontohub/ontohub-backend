@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe V2::Users::SessionsController do
   context 'login' do
     before(:each) do
-      @request.env["devise.mapping"] = Devise.mappings[:user]
+      @request.env['devise.mapping'] = Devise.mappings[:user]
     end
     let!(:user) { create :user }
 
@@ -17,8 +17,10 @@ RSpec.describe V2::Users::SessionsController do
           format: :json
         end
         it { expect(response).to have_http_status(:created) }
-        it { expect(JSON.parse(response.body)['data']['attributes']['token']).
-             not_to be_empty }
+        it do
+          expect(JSON.parse(response.body)['data']['attributes']['token']).
+            not_to be_empty
+        end
       end
 
       context 'incorrect' do
