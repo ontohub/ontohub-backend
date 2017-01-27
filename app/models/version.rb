@@ -35,19 +35,29 @@ class Version < ActiveModelSerializers::Model
 
     private
 
+    # :nocov:
     def production?
       Rails.env.production?
     end
+    # :nocov:
 
+    def test?
+      Rails.env.test?
+    end
+
+    # :nocov:
     def read_version_file
       File.read(Rails.root.join('VERSION')).strip
     rescue Errno::ENOENT
       ''
     end
+    # :nocov:
 
+    # :nocov:
     def read_version_from_git
       `git describe --long --tags`.strip
     end
+    # :nocov:
 
     def exception_message
       msg = 'Could not determine the backend version. '
@@ -61,5 +71,5 @@ class Version < ActiveModelSerializers::Model
     end
   end
 
-  VERSION = load_version
+  VERSION = load_version unless test?
 end
