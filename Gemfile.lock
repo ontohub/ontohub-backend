@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: dfe3a7cd3e11e243f68d592d7daa5e112d140d6b
+  revision: 0242713c9fe4129dd8cd7129362e833addca6535
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -66,7 +66,7 @@ GEM
     bcrypt (3.1.11)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    builder (3.2.2)
+    builder (3.2.3)
     byebug (9.0.6)
     case_transform (0.2)
       activesupport
@@ -95,12 +95,12 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    elasticsearch (5.0.0)
-      elasticsearch-api (= 5.0.0)
-      elasticsearch-transport (= 5.0.0)
-    elasticsearch-api (5.0.0)
+    elasticsearch (5.0.1)
+      elasticsearch-api (= 5.0.1)
+      elasticsearch-transport (= 5.0.1)
+    elasticsearch-api (5.0.1)
       multi_json
-    elasticsearch-transport (5.0.0)
+    elasticsearch-transport (5.0.1)
       faraday
       multi_json
     erubis (2.7.0)
@@ -111,7 +111,7 @@ GEM
       railties (>= 3.0.0)
     faker (1.7.2)
       i18n (~> 0.5)
-    faraday (0.10.1)
+    faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
     globalid (0.3.7)
@@ -261,9 +261,9 @@ GEM
     tins (1.13.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    warden (1.2.6)
+    warden (1.2.7)
       rack (>= 1.0)
-    websocket-driver (0.6.4)
+    websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
 

@@ -5,7 +5,7 @@ language: ruby
 
 rvm:
   - 2.3.3
-  - rbx-3.69
+  - rbx-3.70
 
 services:
   - postgresql
