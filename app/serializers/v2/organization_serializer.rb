@@ -22,5 +22,15 @@ module V2
     end
 
     has_many(:members, serializer: V2::UserSerializer::Relationship)
+
+    has_many :repositories,
+      serializer: V2::RepositorySerializer::Relationship do
+      include_data false
+      link :related do
+        path = url_for(controller: 'v2/repositories', action: 'index',
+                       organization_slug: object.to_param, only_path: true)
+        [Settings.server_url, path].join
+      end
+    end
   end
 end

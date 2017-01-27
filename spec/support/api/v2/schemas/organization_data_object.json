@@ -28,7 +28,7 @@
         },
         "relationships": {
           "type": "object",
-          "required": ["members"],
+          "required": ["members", "repositories"],
           "properties": {
             "members": {
               "type": "object",
@@ -38,6 +38,19 @@
                   "type": "array",
                   "items": {
                     "$ref": "user_relationship_object.json#definitions/user"
+                  }
+                }
+              }
+            },
+            "repositories": {
+              "type": "object",
+              "required": ["links"],
+              "properties": {
+                "links": {
+                  "type": "object",
+                  "required": ["related"],
+                  "properties": {
+                    "related": {"type": "uri"}
                   }
                 }
               }
