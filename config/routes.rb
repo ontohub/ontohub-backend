@@ -4,7 +4,7 @@
 Rails.application.routes.draw do
   scope format: false do
     root to: 'v2/search#search'
-    devise_for :users, controllers: {sessions: 'v2/users/sessions'}
+    devise_for :users, controllers: {sessions: 'v2/users/sessions'}, defaults: {format: :json}
     resources :organizations,
       controller: 'v2/organizations',
       only: :show,

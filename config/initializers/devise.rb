@@ -1,7 +1,7 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-  config.navigational_formats = [:json]
+  config.navigational_formats = []
   # Ensure you have defined default url options in your environments files. Here
   # is an example of default_url_options appropriate for a development environment
   # in config/environments/development.rb:
