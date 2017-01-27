@@ -16,17 +16,16 @@
         "type": {"type": "string"},
         "attributes": {
           "type": "object",
-          "required": ["results_count", "repositories_count", "users_count", "organizations_count"],
+          "required": ["results_count", "repositories_count", "organizational_units_count"],
           "properties": {
             "results_count": {"type": "integer"},
             "repositories_count": {"type": "integer"},
-            "users_count": {"type": "integer"},
-            "organizations_count": {"type": "integer"}
+            "organizational_units_count": {"type": "integer"}
           }
         },
         "relationships": {
           "type": "object",
-          "required": ["repositories", "users", "organizations"],
+          "required": ["repositories", "organizational_units"],
           "properties": {
             "repositories": {
               "type": "object",
@@ -51,7 +50,7 @@
                 }
               }
             },
-            "users": {
+            "organizational_units": {
               "type": "object",
               "required": ["data"],
               "properties": {
@@ -64,27 +63,7 @@
                       "id": {"type": "string"},
                       "type": {
                         "type": "string",
-                        "pattern": "^users$"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "organizations": {
-              "type": "object",
-              "required": ["data"],
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": ["id", "type"],
-                    "properties": {
-                      "id": {"type": "string"},
-                      "type": {
-                        "type": "string",
-                        "pattern": "^organizations$"
+                        "pattern": "^(users)|(organizations)$"
                       }
                     }
                   }
