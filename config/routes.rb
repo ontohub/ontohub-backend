@@ -1,10 +1,24 @@
 # frozen_string_literal: true
 # rubocop:disable Metrics/BlockLength
 
+# :nocov:
+def rake_task?(tasks = [])
+  defined?(Rake) && tasks.any? do |task|
+    Rake.application.top_level_tasks.include?(task)
+  end
+end
+# :nocov:
+
 Rails.application.routes.draw do
   scope format: false, defaults: {format: :json} do
     root to: 'v2/search#search'
-    devise_for :users, controllers: {sessions: 'v2/users/sessions'}
+
+    # We exclude the devise routes from these rake tasks because they load the
+    # models. When loading the models, the database needs to exist, or else it
+    # throws an error.
+    unless rake_task?(%w(db:create db:migrate db:drop))
+      devise_for :users, controllers: {sessions: 'v2/users/sessions'}
+    end
     resources :organizations,
       controller: 'v2/organizations',
       only: :show,
