@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/models/version_model.json",
   "title": "Version Model",
   "description": "Version Model",
 

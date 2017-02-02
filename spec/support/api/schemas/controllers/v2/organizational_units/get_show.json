@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/controllers/v2/organizational_units/get_show.json",
   "title": "V2 Organizational Units Controller: GET/show",
   "description": "V2 Organizational Units Controller: GET/show",
 
@@ -8,8 +7,8 @@
   "required": ["data", "jsonapi"],
   "properties": {
     "data": {
-      "$ref": "https://apidoc.ontohub.org/models/organization_model.json"
+      "$ref": "../../../models/organization_model.json"
     },
-    "jsonapi": { "$ref": "https://apidoc.ontohub.org/controllers/v2/jsonapi_toplevel_object.json" }
+    "jsonapi": { "$ref": "../../../controllers/v2/jsonapi_toplevel_object.json" }
   }
 }

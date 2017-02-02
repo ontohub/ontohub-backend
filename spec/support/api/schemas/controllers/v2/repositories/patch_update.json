@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/controllers/v2/repositories/patch_update.json",
   "title": "V2 Repositories Controller: PATCH/update",
   "description": "V2 Repositories Controller: PATCH/update",
 
@@ -8,8 +7,8 @@
   "required": ["data", "jsonapi"],
   "properties": {
     "data": {
-      "$ref": "https://apidoc.ontohub.org/models/repository_model.json"
+      "$ref": "../../../models/repository_model.json"
     },
-    "jsonapi": { "$ref": "https://apidoc.ontohub.org/controllers/v2/jsonapi_toplevel_object.json" }
+    "jsonapi": { "$ref": "../../../controllers/v2/jsonapi_toplevel_object.json" }
   }
 }

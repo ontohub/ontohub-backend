@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/models/repository_model.json",
   "title": "Repository Model",
   "description": "Repository Model",
 
@@ -40,7 +39,7 @@
       "required": ["owner"],
       "properties": {
         "owner": {
-          "$ref": "https://apidoc.ontohub.org/relationships/organizational_unit_relationship.json"
+          "$ref": "../relationships/organizational_unit_relationship.json"
         }
       }
     }

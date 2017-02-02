@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/models/search_model.json",
   "title": "Search Model",
   "description": "Search Model",
 

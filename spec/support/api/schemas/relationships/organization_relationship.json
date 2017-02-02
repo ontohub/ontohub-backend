@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/relationships/organization_relationship.json",
   "title": "Organization Relationship",
   "description": "Organization Relationship",
 

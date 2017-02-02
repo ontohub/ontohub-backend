@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/controllers/v2/validation_error.json",
+  "id": "./controllers/v2/validation_error.json",
   "title": "Validation Error",
   "description": "Validation errors of resourceful controllers.",
 

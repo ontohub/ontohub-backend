@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/models/user_model.json",
   "title": "User Model",
   "description": "User Model",
 
@@ -39,7 +38,7 @@
             "data": {
               "type": "array",
               "items": {
-                "$ref": "https://apidoc.ontohub.org/relationships/organization_relationship.json"
+                "$ref": "../relationships/organization_relationship.json"
               }
             }
           }

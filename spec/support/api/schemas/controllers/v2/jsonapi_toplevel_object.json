@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://apidoc.ontohub.org/controllers/v2/jsonapi_toplevel_object.json",
   "title": "JSON API Toplevel Object",
   "description": "JSON API Toplevel Object",
 
