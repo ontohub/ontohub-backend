@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://apidoc.ontohub.org/relationships/repository_relationship.json",
+  "title": "Repository Relationship",
+  "description": "Repository Relationship",
+
+  "type": "object",
+  "required": ["links"],
+  "properties": {
+    "links": {
+      "type": "object",
+      "required": ["related"],
+      "properties": {
+        "related": {
+          "type": "uri",
+          "pattern": "/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://apidoc.ontohub.org/controllers/v2/repositories/get_index.json",
+  "title": "V2 Repositories Controller: GET/index",
+  "description": "V2 Repositories Controller: GET/index",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "https://apidoc.ontohub.org/models/repository_model.json"
+      }
+    },
+    "jsonapi": { "$ref": "https://apidoc.ontohub.org/controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}

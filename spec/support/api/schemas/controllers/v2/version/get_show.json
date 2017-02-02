@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://apidoc.ontohub.org/controllers/v2/version/get_show.json",
+  "title": "V2 Version Controller: GET/show",
+  "description": "V2 Version Controller: GET/show",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "https://apidoc.ontohub.org/models/version_model.json"
+    },
+    "jsonapi": { "$ref": "https://apidoc.ontohub.org/controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}

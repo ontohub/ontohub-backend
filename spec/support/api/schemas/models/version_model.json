@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://apidoc.ontohub.org/models/version_model.json",
+  "title": "Version Model",
+  "description": "Version Model",
+
+  "type": "object",
+  "required": ["id", "type"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {"type": "string"},
+    "attributes": {
+      "type": "object",
+      "required": ["commit", "tag", "full", "commits_since_tag"],
+      "properties": {
+        "commit": {"type": "string"},
+        "tag": {"type": "string"},
+        "full": {"type": "string"},
+        "commits_since_tag": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
