@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://apidoc.ontohub.org/controllers/v2/users/sessions/post_create_fail.json",
+  "title": "V2 Users Sessions Controller: POST/create/fail",
+  "description": "V2 Users Sessions Controller: POST/create/fail",
+
+  "type": "object",
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "type": "string",
+      "pattern": "^Invalid name or password\\.$"
+    }
+  }
+}

@@ -30,7 +30,7 @@ def validate_special_schema(response, schema_root, controller, schema)
                                  validateschema: true)
 end
 
-RSpec::Matchers.define :comply_with_api do |schema = nil|
+RSpec::Matchers.define :comply_with_api do |schema = nil, verify_jsonapi = true|
   errors = []
   match do |data|
     example, response = data
@@ -45,8 +45,11 @@ RSpec::Matchers.define :comply_with_api do |schema = nil|
       else
         validate_controller_action(response, schema_root, controller, context)
       end
-    errors += validate_special_schema(response, schema_root, controller,
-                                      'jsonapi.json')
+
+    if verify_jsonapi
+      errors += validate_special_schema(response, schema_root, controller,
+                                        'jsonapi.json')
+    end
 
     errors.empty?
   end
