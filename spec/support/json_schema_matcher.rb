@@ -9,7 +9,7 @@ end
 # finds the innermost context and transforms it from "GET show" to "get_show".
 def normalized_context(example)
   example_group = example.example_group
-  while (!(example_group.description =~ /\A(get|put|post|patch|delete)\s+/i))
+  until example_group.description =~ /\A(get|put|post|patch|delete)\s+/i
     example_group = example_group.parent
   end
   example_group&.description&.parameterize&.underscore
