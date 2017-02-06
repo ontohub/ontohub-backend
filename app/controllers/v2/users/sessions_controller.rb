@@ -18,7 +18,7 @@ module V2
       protected
 
       def generate_token
-        payload = {user_id: current_user.id}
+        payload = {user_id: current_user.to_param}
         AuthenticationToken.new(token: JWTWrapper.encode(payload))
       end
     end
