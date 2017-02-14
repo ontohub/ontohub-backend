@@ -43,5 +43,12 @@ module OntohubBackend
     end
 
     config.autoload_paths << Rails.root.join('lib')
+
+    config.after_initialize do
+      SettingsPresenceValidator.new(Settings).call
+      SettingsNormalizer.new(Settings).call
+      SettingsInitializer.new(Settings).call
+      SettingsValidator.new(Settings).call
+    end
   end
 end
