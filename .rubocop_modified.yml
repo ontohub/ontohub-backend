@@ -1,0 +1,18 @@
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/AlignParameters:
+  Enabled: false
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
