@@ -16,6 +16,11 @@ addons:
 notifications:
   email: false
 
+addons:
+  apt:
+    packages:
+    - git-svn
+
 before_script:
   - RAILS_ENV=test bin/rails db:recreate
 
