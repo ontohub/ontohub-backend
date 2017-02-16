@@ -1,29 +1,34 @@
 # frozen_string_literal: true
 
 RSpec.describe(Git::Pulling) do
-  let(:path) { 'clone.git' }
-  let(:commit_count) { 3 }
+  before(:all) do
+    @path = 'clone.git'
+    @commit_count = 3
+    @branch_count = 3
+  end
+  let(:path) { @path }
+  let(:commit_count) { @commit_count }
+  let(:branch_count) { @branch_count }
 
-  context 'from a remote git repository' do
-    let(:remote) { create(:git) }
-    let(:commit_count) { 3 }
+  context 'from a remote git repository', :git_repository do
+    git_subject do
+      @remote = create(:git)
 
-    subject { Git.clone(path, "file://#{remote.path}") }
-
-    before do
       # clone the repository
-      subject
+      @subject = Git.clone(@path, "file://#{@remote.path}")
 
       # create commits
-      commit_count.times { remote.commit_file(create(:git_commit_info)) }
+      @commit_count.times { @remote.commit_file(create(:git_commit_info)) }
 
       # create branches
-      remote.create_branch('branch1', 'master~1')
-      remote.create_branch('branch2', 'master~2')
+      @remote.create_branch('branch1', 'master~1')
+      @remote.create_branch('branch2', 'master~2')
 
       # pull
-      subject.pull
+      @subject.pull
+      @subject
     end
+    let(:remote) { @remote }
 
     it 'yields a repository with the correct branch names' do
       expect(subject.branch_names).to match_array(%w(master branch1 branch2))
@@ -42,40 +47,37 @@ RSpec.describe(Git::Pulling) do
   end
 
   context 'from a remote svn repository' do
-    context 'with an svn standard layout' do
-      let(:branch_count) { 3 }
-      let(:remote_paths) do
-        create(:svn_repository, :with_svn_standard_layout)
-      end
-      let(:svn_work_path) { remote_paths.last }
-      subject { Git.clone(path, "file://#{remote_paths.first}") }
+    context 'with an svn standard layout', :git_repository do
+      git_subject do
+        remote_paths = create(:svn_repository, :with_svn_standard_layout)
+        @svn_work_path = remote_paths.last
 
-      before do
         # clone the repository
-        subject
+        @subject = Git.clone(@path, "file://#{remote_paths.first}")
 
         # create branches
-        branch_count.times do
+        @branch_count.times do
           branch = generate(:svn_branch_name)
-          full_filepath = File.join(svn_work_path, 'branches', branch)
+          full_filepath = File.join(@svn_work_path, 'branches', branch)
           FileUtils.mkdir_p(full_filepath)
-          exec_silently("svn add #{full_filepath}", svn_work_path)
+          exec_silently("svn add #{full_filepath}", @svn_work_path)
         end
-        exec_silently("svn commit -m 'Add branches.'", svn_work_path)
+        exec_silently("svn commit -m 'Add branches.'", @svn_work_path)
 
         # create commits
-        commit_count.times do
-          full_filepath = File.join(svn_work_path, 'trunk', generate(:filepath))
+        @commit_count.times do
+          full_filepath = File.join(@svn_work_path, 'trunk', generate(:filepath))
           FileUtils.mkdir_p(File.dirname(full_filepath))
           File.write(full_filepath, "#{Faker::Lorem.sentence}\n")
           exec_silently("svn add '#{File.dirname(full_filepath)}'",
-                        svn_work_path)
+                        @svn_work_path)
           exec_silently("svn commit -m '#{generate(:commit_message)}'",
-                        svn_work_path)
+                        @svn_work_path)
         end
 
         # pull
-        subject.pull
+        @subject.pull
+        @subject
       end
 
       it 'yields a repository with the correct branch names' do
@@ -97,28 +99,28 @@ RSpec.describe(Git::Pulling) do
       end
     end
 
-    context 'without an svn standard layout' do
-      let(:remote_paths) { create(:svn_repository) }
-      let(:svn_work_path) { remote_paths.last }
-      subject { Git.clone(path, "file://#{remote_paths.first}") }
+    context 'without an svn standard layout', :git_repository do
+      git_subject do
+        remote_paths = create(:svn_repository)
+        @svn_work_path = remote_paths.last
 
-      before do
         # clone the repository
-        subject
+        @subject = Git.clone(@path, "file://#{remote_paths.first}")
 
         # create commits
-        commit_count.times do
-          full_filepath = File.join(svn_work_path, generate(:filepath))
+        @commit_count.times do
+          full_filepath = File.join(@svn_work_path, generate(:filepath))
           FileUtils.mkdir_p(File.dirname(full_filepath))
           File.write(full_filepath, "#{Faker::Lorem.sentence}\n")
           exec_silently("svn add '#{File.dirname(full_filepath)}'",
-                        svn_work_path)
+                        @svn_work_path)
           exec_silently("svn commit -m '#{generate(:commit_message)}'",
-                        svn_work_path)
+                        @svn_work_path)
         end
 
         # pull
-        subject.pull
+        @subject.pull
+        @subject
       end
 
       it 'yields a repository with the correct branch names' do

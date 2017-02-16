@@ -25,7 +25,7 @@ class Git
   end
 
   def initialize(path)
-    @gitlab = Gitlab::Git::Repository.new(path)
+    @gitlab = Gitlab::Git::Repository.new(path.to_s)
   end
 
   def repo_exists?
