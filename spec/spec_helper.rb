@@ -5,7 +5,7 @@ require_relative 'support/simplecov'
 require 'rspec'
 require 'database_cleaner'
 require 'factory_girl_rails'
-require 'ontohub_models/factories'
+require 'ontohub-models/factories'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
