@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/BlockLength
 
 # :nocov:
@@ -16,7 +17,8 @@ Rails.application.routes.draw do
     # We exclude the devise routes from these rake tasks because they load the
     # models. When loading the models, the database needs to exist, or else it
     # throws an error.
-    unless rake_task?(%w(db:create db:migrate db:drop))
+    unless rake_task?(%w(db:create db:migrate db:drop
+                         db:recreate db:recreate:seed))
       devise_for :users, controllers: {sessions: 'v2/users/sessions'}
     end
     resources :organizations,
