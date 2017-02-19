@@ -4,6 +4,7 @@ module V2
   # Handles all requests for repository CRUD operations
   class RepositoriesController < ResourcesWithURLController
     PERMITTED_PARAMS = %i(description content_type public_access).freeze
+    resource_class RepositoryCompound
     find_param :slug
     actions :all
     permitted_params PERMITTED_PARAMS,

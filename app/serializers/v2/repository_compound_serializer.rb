@@ -2,14 +2,16 @@
 
 module V2
   # The serializer for Repositories, API version 2
-  class RepositorySerializer < ApplicationSerializer
+  class RepositoryCompoundSerializer < ApplicationSerializer
     # The serializer for the relationship object
     class Relationship < ApplicationSerializer
+      type :repositories
       def id
         object.to_param
       end
     end
 
+    type :repositories
     attribute :name
     attribute :description
     attribute :content_type

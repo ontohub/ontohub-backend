@@ -26,7 +26,7 @@ module V2
              serializer: V2::OrganizationSerializer::Relationship)
 
     has_many :repositories,
-      serializer: V2::RepositorySerializer::Relationship do
+      serializer: V2::RepositoryCompoundSerializer::Relationship do
       include_data false
       link :related do
         path = url_for(controller: 'v2/repositories', action: 'index',
