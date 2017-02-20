@@ -33,5 +33,31 @@ RSpec.describe V2::Users::SessionsController do
         it { expect(response_hash['error']).not_to be_empty }
       end
     end
+
+    context 'with token' do
+      context 'correct' do
+        before do
+          payload = {user_id: user.id}
+          token = JWTWrapper.encode(payload)
+          request.env['HTTP_AUTHORIZATION'] = "Bearer #{token}"
+          post :create, format: :json
+        end
+        it { expect(response).to have_http_status(:created) }
+        it do
+          expect(response_data['attributes']['token']).
+            not_to be_empty
+        end
+      end
+
+      context 'incorrect' do
+        before do
+          request.env['HTTP_AUTHORIZATION'] = 'Bearer foobar'
+          post :create,
+          format: :json
+        end
+        it { expect(response).to have_http_status(:unauthorized) }
+        it { expect(response_hash['error']).not_to be_empty }
+      end
+    end
   end
 end

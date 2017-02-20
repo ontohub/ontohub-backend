@@ -5,7 +5,7 @@ module Devise
     # strategy for login with jwt
     class JsonWebToken < Base
       def valid?
-        return false unless request.headers['Authorization'].present?
+        return false unless request.headers['HTTP_AUTHORIZATION'].present?
 
         strategy, _token = strategy_and_token
         (strategy || '').casecmp 'bearer'
@@ -20,7 +20,7 @@ module Devise
       protected
 
       def strategy_and_token
-        @strategy_and_token ||= request.headers['Authorization'].split(' ')
+        @strategy_and_token ||= request.headers['HTTP_AUTHORIZATION'].split(' ')
       end
 
       def claims
