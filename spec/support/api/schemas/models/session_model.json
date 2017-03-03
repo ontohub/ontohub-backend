@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Session Model",
+  "description": "Session Model",
+
+  "type": "object",
+  "required": ["id", "type", "attributes"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^authenticationtoken$"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^authentication_tokens$"
+    },
+    "attributes": {
+      "type": "object",
+      "required": ["token"],
+      "properties": {
+        "token": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_/\\.\\-+]+$"
+        }
+      }
+    }
+  }
+}

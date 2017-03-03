@@ -18,8 +18,9 @@ RSpec.describe V2::OrganizationalUnitsController do
       context 'successful' do
         before { get :show, params: {slug: subject.slug} }
         it { expect(response).to have_http_status(:ok) }
-        it { expect(response).to match_response_schema('v2', 'jsonapi') }
-        it { expect(response).to match_response_schema('v2', 'user_show') }
+        it do |example|
+          expect([example, response]).to comply_with_api('users/get_show')
+        end
       end
     end
   end
@@ -31,9 +32,9 @@ RSpec.describe V2::OrganizationalUnitsController do
       context 'successful' do
         before { get :show, params: {slug: subject.slug} }
         it { expect(response).to have_http_status(:ok) }
-        it { expect(response).to match_response_schema('v2', 'jsonapi') }
-        it do
-          expect(response).to match_response_schema('v2', 'organization_show')
+        it do |example|
+          expect([example, response]).
+            to comply_with_api('organizations/get_show')
         end
       end
     end

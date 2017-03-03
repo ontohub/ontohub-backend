@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Organization Model",
+  "description": "Organization Model",
+
+  "type": "object",
+  "required": ["id", "type", "links", "attributes", "relationships"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {"type": "string"},
+    "links": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": {"type": "uri"}
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "required": ["name", "real_name"],
+      "properties": {
+        "name": {"type": "string"},
+        "real_name": {"type": "string"}
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "required": ["members", "repositories"],
+      "properties": {
+        "members": {
+          "type": "object",
+          "required": ["data"],
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "$ref": "../relationships/user_relationship.json"
+              }
+            }
+          }
+        },
+        "repositories": {
+          "type": "object",
+          "required": ["links"],
+          "properties": {
+            "links": {
+              "type": "object",
+              "required": ["related"],
+              "properties": {
+                "related": {"type": "uri"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

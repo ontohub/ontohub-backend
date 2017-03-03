@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V2 Organizations Controller: GET/show",
+  "description": "V2 Organizations Controller: GET/show",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "../../../models/organization_model.json"
+    },
+    "jsonapi": { "$ref": "../../../controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}

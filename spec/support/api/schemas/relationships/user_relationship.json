@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "User Relationship",
+  "description": "User Relationship",
+
+  "type": "object",
+  "required": ["id", "type"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {
+      "type": "string",
+      "pattern": "^users$"
+    }
+  }
+}

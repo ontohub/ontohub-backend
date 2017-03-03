@@ -16,8 +16,7 @@ RSpec.describe V2::SearchController do
     context 'successful' do
       before { get :search }
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi') }
-      it { expect(response).to match_response_schema('v2', 'search_search') }
+      it { |example| expect([example, response]).to comply_with_api }
 
       it 'presents the correct results_count' do
         expect(response_data['attributes']['results_count']).

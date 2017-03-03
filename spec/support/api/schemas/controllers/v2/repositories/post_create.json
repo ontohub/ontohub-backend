@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V2 Repositories Controller: POST/create",
+  "description": "V2 Repositories Controller: POST/create",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "../../../models/repository_model.json"
+    },
+    "jsonapi": { "$ref": "../../../controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}

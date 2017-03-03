@@ -9,7 +9,6 @@ RSpec.describe V2::VersionController do
     end
     before { get :show }
     it { expect(response).to have_http_status(:ok) }
-    it { expect(response).to match_response_schema('v2', 'jsonapi') }
-    it { expect(response).to match_response_schema('v2', 'version_show') }
+    it { |example| expect([example, response]).to comply_with_api }
   end
 end

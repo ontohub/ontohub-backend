@@ -10,10 +10,7 @@ RSpec.describe V2::OrganizationsController do
     context 'successful' do
       before { get :show, params: {slug: subject.slug} }
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response).to match_response_schema('v2', 'jsonapi') }
-      it do
-        expect(response).to match_response_schema('v2', 'organization_show')
-      end
+      it { |example| expect([example, response]).to comply_with_api }
     end
 
     context 'failing with an inexistent URL' do

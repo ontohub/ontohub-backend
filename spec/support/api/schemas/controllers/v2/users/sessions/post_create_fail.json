@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V2 Users Sessions Controller: POST/create/fail",
+  "description": "V2 Users Sessions Controller: POST/create/fail",
+
+  "type": "object",
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "type": "string",
+      "pattern": "^Invalid name or password\\.$"
+    }
+  }
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "validation_error.json",
-  "title": "Validation Error Schema",
-  "description": "This is a schema for validation errors of the resourceful controllers.",
+  "id": "./controllers/v2/validation_error.json",
+  "title": "Validation Error",
+  "description": "Validation errors of resourceful controllers.",
 
   "type": "object",
   "required": ["errors"],

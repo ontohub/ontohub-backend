@@ -9,27 +9,31 @@ RSpec.describe V2::Users::SessionsController do
     end
     let!(:user) { create :user }
 
-    context 'with credentials' do
+    context 'POST create' do
       context 'correct' do
         before do
           post :create,
-          params: {user: {name: user.name, password: user.password}},
-          format: :json
+            params: {user: {name: user.name, password: user.password}},
+            format: :json
         end
         it { expect(response).to have_http_status(:created) }
+        it { |example| expect([example, response]).to comply_with_api }
         it do
-          expect(response_data['attributes']['token']).
-            not_to be_empty
+          expect(response_data['attributes']['token']).not_to be_empty
         end
       end
 
       context 'incorrect' do
         before do
           post :create,
-          params: {user: {name: user.name, password: user.password + 'foo'}},
-          format: :json
+            params: {user: {name: user.name, password: user.password + 'bad'}},
+            format: :json
         end
         it { expect(response).to have_http_status(:unauthorized) }
+        it do |example|
+          expect([example, response]).
+            to comply_with_api('users/sessions/post_create_fail', false)
+        end
         it { expect(response_hash['error']).not_to be_empty }
       end
     end

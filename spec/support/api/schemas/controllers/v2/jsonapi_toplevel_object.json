@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "JSON API Toplevel Object",
+  "description": "JSON API Toplevel Object",
+
+  "type": "object",
+  "required": ["version"],
+  "properties": {
+    "version": {"type": "string"}
+  }
+}

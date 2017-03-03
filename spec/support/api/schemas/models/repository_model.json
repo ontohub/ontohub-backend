@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Repository Model",
+  "description": "Repository Model",
+
+  "type": "object",
+  "required": ["id", "type", "links", "attributes", "relationships"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {
+      "type": "string",
+      "pattern": "^repositories$"
+    },
+    "links": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": {
+          "type": "uri",
+          "pattern": "/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$"
+        }
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "required": ["name", "description", "content_type", "public_access"],
+      "properties": {
+        "name": {"type": "string"},
+        "description": {"type": "string"},
+        "content_type": {
+          "type": "string",
+          "pattern": "^(ontology|model|specification)$"
+        },
+        "public_access": {"type": "bool"}
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "required": ["owner"],
+      "properties": {
+        "owner": {
+          "$ref": "../relationships/organizational_unit_relationship.json"
+        }
+      }
+    }
+  }
+}
