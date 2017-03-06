@@ -12,6 +12,7 @@ module V2
 
     attribute :name
     attribute :real_name
+    attribute :description
 
     def id
       object.to_param
