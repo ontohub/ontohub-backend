@@ -25,7 +25,7 @@ class RepositoryCompound < ActiveModelSerializers::Model
 
   attr_reader :repository
 
-  delegate *(Repository.instance_methods - Object.instance_methods),
+  delegate :to_param, *(Repository.instance_methods - Object.instance_methods),
            to: :repository
 
   def initialize(*repository_params)
@@ -44,11 +44,19 @@ class RepositoryCompound < ActiveModelSerializers::Model
     true
   end
 
-  protected
-
   def git
     @git ||= Git.new(git_path) unless repository.nil?
   end
+
+  def url(prefix)
+    "#{prefix.sub(%r{/$}, '')}#{url_path}"
+  end
+
+  def url_path
+    "/#{repository.to_param}"
+  end
+
+  protected
 
   def git_path
     GIT_DIRECTORY.join("#{repository.to_param}.git")
