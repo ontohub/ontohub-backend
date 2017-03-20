@@ -8,6 +8,19 @@ module V2
     resource_class Blob
     permitted_params %i(path content encoding commit_message previous_head_sha)
 
+    def show
+      if resource
+        render_resource
+      elsif resource_tree
+        render status: :ok,
+               json: resource_tree,
+               serializer: V2::TreeSerializer,
+               include: []
+      else # nil
+        render status: :not_found
+      end
+    end
+
     def create
       build_resource
       resource.create
@@ -47,6 +60,12 @@ module V2
 
     def ref
       params[:ref] || git.default_branch
+    end
+
+    def resource_tree
+      @resource_tree ||= Tree.find(repository_id: repository.to_param,
+                                   branch: ref,
+                                   path: params[:path])
     end
 
     def resource
