@@ -27,7 +27,7 @@ url_path_method = lambda do |repository|
   V2::RepositoriesController.resource_url_path(repository)
 end
 owner_count = OrganizationalUnit.count
-content_types = %w(ontology model specification)
+content_types = %w(ontology model specification mathematical)
 (0..(2 * owner_count - 1)).each do |index|
   Repository.new(owner: OrganizationalUnit.find(id: index % owner_count + 1),
                  name: "repo#{index}",

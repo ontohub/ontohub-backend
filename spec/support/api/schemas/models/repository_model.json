@@ -28,8 +28,7 @@
         "name": {"type": "string"},
         "description": {"type": "string"},
         "content_type": {
-          "type": "string",
-          "pattern": "^(ontology|model|specification)$"
+          "enum": ["ontology", "model", "specification", "mathematical"]
         },
         "public_access": {"type": "bool"}
       }

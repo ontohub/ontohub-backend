@@ -13,7 +13,7 @@ Creates a repository.
 #### Request Data
 ##### Required
 * `name` [String]: The name of the repository to be created.
-* `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`.
+* `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`, `"mathematical"`.
 * `public_access` [Boolean]: Describes whether or not this repository is publicly accessible. Must be one of `true`, `false`.
 
 ###### Required Relationships
@@ -68,7 +68,7 @@ Changes attributes of the repository `ada/repo1`.
 #### Request Data
 ##### Optional
 * `description` [String]: A short descriptive text.
-* `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`.
+* `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`, `"mathematical"`.
 * `public_access` [Boolean]: Describes whether or not this repository is publicly accessible. Must be one of `true`, `false`.
 
 #### Response Data
@@ -102,7 +102,7 @@ Deletes the repository `ada/repo1`.
 
 ###### Attributes
 * `name` [String]: The name of the repository to be created.
-* `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`.
+* `content_type` [String]: The content type of the repository. Must be one of `"ontology"`, `"model"`, `"specification"`, `"mathematical"`.
 * `public_access` [Boolean]: Describes whether or not this repository is publicly accessible. Must be one of `true`, `false`.
 * `description` [String]: A short descriptive text.
 
