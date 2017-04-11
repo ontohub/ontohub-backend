@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 8370a0b07bebf9b075eff4cd2c9a671bf9aabfa5
+  revision: f6d62b0196dbb7e741af209bf1f2770bc6187060
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -224,7 +224,7 @@ GEM
     sequel-devise (0.0.9)
       devise
       orm_adapter-sequel
-    sequel-rails (0.9.14)
+    sequel-rails (0.9.15)
       actionpack (>= 3.2.0)
       activemodel
       railties (>= 3.2.0)
