@@ -17,6 +17,9 @@ class RepositoryCompound < ActiveModelSerializers::Model
 
     def wrap(repository)
       return repository if repository.is_a?(RepositoryCompound)
+      unless repository.is_a?(Repository)
+        raise "Object given to ##{__method__} is not a repository"
+      end
       object = new
       object.instance_variable_set(:@repository, repository)
       object

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Tree Model",
+  "description": "Tree Model",
+
+  "type": "object",
+  "required": ["id", "type", "attributes", "links"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {
+      "type": "string",
+      "format": "^trees$"
+    },
+    "attributes": {
+      "type": "object",
+      "required": ["entries", "path"],
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "path", "type"],
+            "properties": {
+              "name": {"type": "string"},
+              "path": {"type": "string"},
+              "type": {
+                "type": "string",
+                "format": "^(blobs|trees)$"
+              }
+            }
+          }
+        },
+        "path": {"type": "string"}
+      }
+    },
+    "links": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

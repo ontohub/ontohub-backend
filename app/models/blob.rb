@@ -185,6 +185,7 @@ class Blob < ActiveModelSerializers::Model
     file_version =
       FileVersion.new(path: path,
                       commit_sha: commit_sha,
+                      repository_id: repository.pk,
                       url_path_method: ->(_file_version) { url_path })
     file_version.save
     file_version
