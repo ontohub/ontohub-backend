@@ -67,7 +67,7 @@ RSpec.describe(Git::Cloning) do
     end
   end
 
-  context 'git svn clone' do
+  context 'git svn clone', :svn do
     context 'on an empty remote', :git_repository do
       git_subject do
         remote_paths = create(:svn_repository)
@@ -82,7 +82,8 @@ RSpec.describe(Git::Cloning) do
     end
 
     context 'with an svn-standard layout' do
-      context 'on a remote without branches and no additional commits', :git_repository do
+      context 'on a remote without branches and no additional commits',
+        :git_repository do
         git_subject do
           remote_paths = create(:svn_repository, :with_svn_standard_layout)
           Git.clone(@path, "file://#{remote_paths.first}")
@@ -101,12 +102,13 @@ RSpec.describe(Git::Cloning) do
         end
       end
 
-      context 'on a remote with branches, but no additional commits', :git_repository do
+      context 'on a remote with branches, but no additional commits',
+        :git_repository do
         git_subject do
           remote_paths =
             create(:svn_repository, :with_svn_standard_layout,
                    :with_svn_branches, branch_count: @branch_count)
-            Git.clone(@path, "file://#{remote_paths.first}")
+          Git.clone(@path, "file://#{remote_paths.first}")
         end
 
         it_behaves_like 'a valid clone'
@@ -166,10 +168,12 @@ RSpec.describe(Git::Cloning) do
       end
     end
 
-    context 'without an svn-standard layout but with commits', :git_repository do
+    context 'without an svn-standard layout but with commits',
+      :git_repository do
       git_subject do
         remote_paths =
-          create(:svn_repository, :with_svn_commits, commit_count: @commit_count)
+          create(:svn_repository, :with_svn_commits,
+                 commit_count: @commit_count)
         Git.clone(@path, "file://#{remote_paths.first}")
       end
 

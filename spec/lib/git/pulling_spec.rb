@@ -46,7 +46,7 @@ RSpec.describe(Git::Pulling) do
     end
   end
 
-  context 'from a remote svn repository' do
+  context 'from a remote svn repository', :svn do
     context 'with an svn standard layout', :git_repository do
       git_subject do
         remote_paths = create(:svn_repository, :with_svn_standard_layout)
@@ -66,7 +66,8 @@ RSpec.describe(Git::Pulling) do
 
         # create commits
         @commit_count.times do
-          full_filepath = File.join(@svn_work_path, 'trunk', generate(:filepath))
+          full_filepath =
+            File.join(@svn_work_path, 'trunk', generate(:filepath))
           FileUtils.mkdir_p(File.dirname(full_filepath))
           File.write(full_filepath, "#{Faker::Lorem.sentence}\n")
           exec_silently("svn add '#{File.dirname(full_filepath)}'",
