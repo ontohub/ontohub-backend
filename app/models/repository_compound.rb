@@ -17,9 +17,12 @@ class RepositoryCompound < ActiveModelSerializers::Model
 
     def wrap(repository)
       return repository if repository.is_a?(RepositoryCompound)
+      # :nocov:
+      # We only need this check for development as an assertion.
       unless repository.is_a?(Repository)
         raise "Object given to ##{__method__} is not a repository"
       end
+      # :nocov:
       object = new
       object.instance_variable_set(:@repository, repository)
       object
@@ -36,15 +39,19 @@ class RepositoryCompound < ActiveModelSerializers::Model
   end
 
   def save
-    repository.save
-    @git = Git.create(git_path) if repository.exists?
-    true
+    Sequel::Model.db.transaction do
+      repository.save
+      @git = Git.create(git_path) if repository.exists?
+      true
+    end
   end
 
   def destroy
-    repository.destroy
-    git.path.rmtree if git.path.exist?
-    true
+    Sequel::Model.db.transaction do
+      repository.destroy
+      git.path.rmtree if git.path.exist?
+      true
+    end
   end
 
   def git

@@ -154,7 +154,7 @@ class Blob < ActiveModelSerializers::Model
       @errors.add(:content, 'content must exist')
     end
     unless content.is_a?(String)
-      @errors.add(:content, 'content must be a String')
+      @errors.add(:content, 'content must be a string')
     end
     unless commit_message.present?
       @errors.add(:commit_message, 'commit_message is not present')

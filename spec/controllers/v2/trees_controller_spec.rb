@@ -348,7 +348,7 @@ RSpec.describe V2::TreesController do
         it { expect(response).to have_http_status(:ok) }
         it { |example| expect([example, response]).to comply_with_api }
 
-        it 'moves the file and ' do
+        it 'moves the file and changes the content' do
           expect(git.blob(branch, updated_path).data).to eq(updated_content)
         end
       end
