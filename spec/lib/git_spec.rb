@@ -84,7 +84,7 @@ RSpec.describe(Git) do
     let(:filepath) { generate(:filepath) }
     let(:content) { 'some content' }
     let!(:sha) do
-      subject.commit_file(create(:git_commit_info,
+      subject.create_file(create(:git_commit_info,
                                  filepath: filepath,
                                  content: content,
                                  branch: branch))
@@ -130,13 +130,13 @@ RSpec.describe(Git) do
     let(:filepath2) { generate(:filepath) }
     let(:content) { 'some content' }
     let!(:sha1) do
-      subject.commit_file(create(:git_commit_info,
+      subject.create_file(create(:git_commit_info,
                                  filepath: filepath1,
                                  content: content,
                                  branch: branch))
     end
     let!(:sha2) do
-      subject.commit_file(create(:git_commit_info,
+      subject.create_file(create(:git_commit_info,
                                  filepath: filepath2,
                                  content: content,
                                  branch: branch))
@@ -205,7 +205,7 @@ RSpec.describe(Git) do
       commit_info[:commit][:message] = message
       commit_info
     end
-    let!(:sha) { subject.commit_file(commit_info) }
+    let!(:sha) { subject.create_file(commit_info) }
 
     it 'finds a commit by branch' do
       expect(subject.commit(branch)).to be_a(Gitlab::Git::Commit)
@@ -257,7 +257,7 @@ RSpec.describe(Git) do
   context 'path_exists?' do
     let(:filepath) { generate(:filepath) }
     let!(:sha) do
-      subject.commit_file(create(:git_commit_info,
+      subject.create_file(create(:git_commit_info,
                                  filepath: filepath,
                                  branch: branch))
     end
@@ -281,7 +281,7 @@ RSpec.describe(Git) do
 
   context 'branch_sha' do
     let!(:sha) do
-      subject.commit_file(create(:git_commit_info, branch: branch))
+      subject.create_file(create(:git_commit_info, branch: branch))
     end
 
     it 'is the correct sha if the branch exists' do
@@ -305,7 +305,7 @@ RSpec.describe(Git) do
       before do
         commit_info = create(:git_commit_info)
         commit_info[:commit][:branch] = default_branch
-        subject.commit_file(commit_info)
+        subject.create_file(commit_info)
       end
 
       it 'is that branch' do
@@ -320,13 +320,13 @@ RSpec.describe(Git) do
       before do
         commit_info = create(:git_commit_info)
         commit_info[:commit][:branch] = default_branch
-        subject.commit_file(commit_info)
+        subject.create_file(commit_info)
 
         subject.create_branch(other_branch, default_branch)
 
         commit_info = create(:git_commit_info)
         commit_info[:commit][:branch] = other_branch
-        subject.commit_file(commit_info)
+        subject.create_file(commit_info)
       end
 
       it 'is the first created branch' do
@@ -350,20 +350,20 @@ RSpec.describe(Git) do
       before do
         commit_info = create(:git_commit_info)
         commit_info[:commit][:branch] = default_branch
-        subject.commit_file(commit_info)
+        subject.create_file(commit_info)
 
         subject.create_branch(other_branch, default_branch)
 
         commit_info = create(:git_commit_info)
         commit_info[:commit][:branch] = other_branch
-        subject.commit_file(commit_info)
+        subject.create_file(commit_info)
 
         master_branch = 'master'
         subject.create_branch(master_branch, default_branch)
 
         commit_info = create(:git_commit_info)
         commit_info[:commit][:branch] = master_branch
-        subject.commit_file(commit_info)
+        subject.create_file(commit_info)
       end
 
       it 'is the master' do
@@ -384,11 +384,11 @@ RSpec.describe(Git) do
 
   context 'create_branch' do
     let!(:sha1) do
-      subject.commit_file(create(:git_commit_info, branch: branch))
+      subject.create_file(create(:git_commit_info, branch: branch))
     end
 
     let!(:sha2) do
-      subject.commit_file(create(:git_commit_info, branch: branch))
+      subject.create_file(create(:git_commit_info, branch: branch))
     end
 
     let(:new_branch) { 'new_branch' }
@@ -425,7 +425,7 @@ RSpec.describe(Git) do
     let(:filepaths) { (1..5).map { generate(:filepath) } }
     before do
       filepaths.each do |filepath|
-        subject.commit_file(create(:git_commit_info, filepath: filepath))
+        subject.create_file(create(:git_commit_info, filepath: filepath))
       end
     end
 

@@ -18,7 +18,7 @@ RSpec.describe(Git::Pulling) do
       @subject = Git.clone(@path, "file://#{@remote.path}")
 
       # create commits
-      @commit_count.times { @remote.commit_file(create(:git_commit_info)) }
+      @commit_count.times { @remote.create_file(create(:git_commit_info)) }
 
       # create branches
       @remote.create_branch('branch1', 'master~1')

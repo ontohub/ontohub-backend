@@ -14,7 +14,7 @@ RSpec.describe(Git::Committing) do
           let!(:additional_commit) { nil }
         else
           let!(:additional_commit) do
-            subject.commit_file(create(:git_commit_info,
+            subject.create_file(create(:git_commit_info,
                                        filepath: 'first_file'))
           end
           before { subject.create_branch(branch, 'master') }
@@ -24,7 +24,7 @@ RSpec.describe(Git::Committing) do
         context 'adding a file' do
           let(:filepath) { generate(:filepath) }
           let!(:sha) do
-            subject.commit_file(create(:git_commit_info,
+            subject.create_file(create(:git_commit_info,
                                        filepath: filepath,
                                        branch: branch))
           end
@@ -55,13 +55,13 @@ RSpec.describe(Git::Committing) do
         context 'updating a file' do
           let(:filepath) { generate(:filepath) }
           let!(:sha1) do
-            subject.commit_file(create(:git_commit_info,
+            subject.create_file(create(:git_commit_info,
                                        filepath: filepath,
                                        branch: branch))
           end
           let!(:content1) { subject.blob(branch, filepath).data }
           let!(:sha2) do
-            subject.commit_file(create(:git_commit_info,
+            subject.update_file(create(:git_commit_info,
                                        filepath: filepath,
                                        branch: branch),
                                 sha1)
@@ -86,7 +86,7 @@ RSpec.describe(Git::Committing) do
           let(:filepath1) { generate(:filepath) }
           let(:filepath2) { generate(:filepath) }
           let!(:sha1) do
-            subject.commit_file(create(:git_commit_info,
+            subject.create_file(create(:git_commit_info,
                                        filepath: filepath1,
                                        branch: branch))
           end
@@ -118,7 +118,7 @@ RSpec.describe(Git::Committing) do
         context 'deleting a file' do
           let(:filepath) { generate(:filepath) }
           let!(:sha1) do
-            subject.commit_file(create(:git_commit_info,
+            subject.create_file(create(:git_commit_info,
                                        filepath: filepath,
                                        branch: branch))
           end
@@ -170,7 +170,7 @@ RSpec.describe(Git::Committing) do
 
     context 'adding a file' do
       before do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: 'first_file',
                                    branch: branch))
       end
@@ -179,7 +179,7 @@ RSpec.describe(Git::Committing) do
 
       it 'raises an error' do
         expect do
-          subject.commit_file(create(:git_commit_info,
+          subject.create_file(create(:git_commit_info,
                                      filepath: filepath,
                                      branch: branch),
                               invalid_sha)
@@ -190,14 +190,14 @@ RSpec.describe(Git::Committing) do
     context 'updating a file' do
       let(:filepath) { generate(:filepath) }
       let!(:sha) do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: filepath,
                                    branch: branch))
       end
 
       it 'raises an error' do
         expect do
-          subject.commit_file(create(:git_commit_info,
+          subject.update_file(create(:git_commit_info,
                                      filepath: filepath,
                                      branch: branch),
                               invalid_sha)
@@ -209,7 +209,7 @@ RSpec.describe(Git::Committing) do
       let(:filepath1) { generate(:filepath) }
       let(:filepath2) { generate(:filepath) }
       let!(:sha) do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: filepath1,
                                    branch: branch))
       end
@@ -230,7 +230,7 @@ RSpec.describe(Git::Committing) do
     context 'deleting a file' do
       let(:filepath) { generate(:filepath) }
       let!(:sha) do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: filepath,
                                    branch: branch))
       end
@@ -247,7 +247,7 @@ RSpec.describe(Git::Committing) do
 
     context 'creating a directory' do
       before do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: 'first_file',
                                    branch: branch))
       end
@@ -270,7 +270,7 @@ RSpec.describe(Git::Committing) do
     context 'creating a directory' do
       let!(:path) { 'dir/with/subdir' }
       before do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: path,
                                    branch: branch))
       end
@@ -278,7 +278,8 @@ RSpec.describe(Git::Committing) do
       it 'raises an error' do
         expect do
           subject.mkdir(path, create(:git_commit_info, branch: branch))
-        end.to raise_error(Git::InvalidPathError, /as a file/)
+        end.to raise_error(Gitlab::Git::Repository::InvalidBlobName,
+                           /Directory already exists as a file/)
       end
     end
   end
@@ -290,7 +291,7 @@ RSpec.describe(Git::Committing) do
     context 'creating a directory' do
       let!(:path) { 'dir/with/subdir' }
       before do
-        subject.commit_file(create(:git_commit_info,
+        subject.create_file(create(:git_commit_info,
                                    filepath: File.join(path, 'some_file'),
                                    branch: branch))
       end
@@ -298,7 +299,8 @@ RSpec.describe(Git::Committing) do
       it 'raises an error' do
         expect do
           subject.mkdir(path, create(:git_commit_info, branch: branch))
-        end.to raise_error(Git::InvalidPathError, /as a directory/)
+        end.to raise_error(Gitlab::Git::Repository::InvalidBlobName,
+                           /Directory already exists/)
       end
     end
   end

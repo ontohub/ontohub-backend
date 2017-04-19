@@ -52,6 +52,7 @@ class Blob < ActiveModelSerializers::Model
   end
 
   def update(params)
+    self.previous_path ||= path if params.keys.map(&:to_sym).include?(:path)
     params.each do |field, value|
       send("#{field}_will_change!") if %w(content path).include?(field.to_s)
       attributes[field] = value
@@ -65,7 +66,7 @@ class Blob < ActiveModelSerializers::Model
   def create
     reset_validation_state
     valid?(:create)
-    save
+    save(mode: :create)
   end
 
   def destroy
@@ -76,14 +77,16 @@ class Blob < ActiveModelSerializers::Model
     raise ValidationFailed
   end
 
-  def save
+  def save(mode: nil)
     raise ValidationFailed, @errors.messages.to_json unless valid?
     commit_sha =
       begin
         if rename_file?
           git.rename_file(commit_info, previous_head_sha)
+        elsif mode == :create
+          git.create_file(commit_info, previous_head_sha)
         else
-          git.commit_file(commit_info, previous_head_sha)
+          git.update_file(commit_info, previous_head_sha)
         end
       rescue Git::Committing::HeadChangedError
         @errors.add(:branch,

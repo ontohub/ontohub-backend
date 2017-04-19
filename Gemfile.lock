@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: b2175f307c36f480b1dc3e55380e2baf7fdd5559
-  branch: update_to_gitlab_edb8ed36
+  revision: f242d68f674400c5475980a6919b4e2cc7f75f49
+  branch: update_to_9.0.5
   specs:
     gitlab_git (10.7.0)
       activesupport (>= 4.0)

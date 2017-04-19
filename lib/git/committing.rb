@@ -16,6 +16,34 @@ class Git
       end
     end
 
+    # Create a file in repository and return commit sha
+    #
+    # options should contain next structure:
+    #   file: {
+    #     content: 'Lorem ipsum...',
+    #     path: 'documents/story.txt'
+    #   },
+    #   author: {
+    #     email: 'user@example.com',
+    #     name: 'Test User',
+    #     time: Time.now    # optional - default: Time.now
+    #   },
+    #   committer: {
+    #     email: 'user@example.com',
+    #     name: 'Test User',
+    #     time: Time.now    # optional - default: Time.now
+    #   },
+    #   commit: {
+    #     message: 'Wow such commit',
+    #     branch: 'master',    # optional - default: 'master'
+    #     update_ref: false    # optional - default: true
+    #   }
+    def create_file(options, previous_head_sha = nil)
+      commit_with(options, previous_head_sha) do |index_options|
+        Gitlab::Git::Index.new(gitlab).create(index_options)
+      end
+    end
+
     # Commit (add or update) file in repository and return commit sha
     #
     # options should contain next structure:
@@ -38,15 +66,13 @@ class Git
     #     branch: 'master',    # optional - default: 'master'
     #     update_ref: false    # optional - default: true
     #   }
-    def commit_file(options, previous_head_sha = nil)
-      insert_defaults(options)
+    def update_file(options, previous_head_sha = nil)
+      previous_path = options[:file].delete(:previous_path)
+      action = previous_path && previous_path != path ? :move : :update
 
-      branch = options[:commit][:branch]
-      path = options[:file][:path]
-      options[:file][:update] =
-        branch_exists?(branch) && path_exists?(branch, path)
-
-      commit_change(options, :add_or_update, previous_head_sha)
+      commit_with(options, previous_head_sha) do |index_options|
+        Gitlab::Git::Index.new(gitlab).send(action, index_options)
+      end
     end
 
     # Remove file from repository and return commit sha
@@ -70,7 +96,9 @@ class Git
     #     branch: 'master'    # optional - default: 'master'
     #   }
     def remove_file(options, previous_head_sha = nil)
-      commit_change(options, :remove, previous_head_sha)
+      commit_with(options, previous_head_sha) do |index_options|
+        Gitlab::Git::Index.new(gitlab).delete(index_options)
+      end
     end
 
     # Rename file from repository and return commit sha
@@ -98,7 +126,9 @@ class Git
     #   }
     #
     def rename_file(options, previous_head_sha = nil)
-      commit_change(options, :rename, previous_head_sha)
+      commit_with(options, previous_head_sha) do |index_options|
+        Gitlab::Git::Index.new(gitlab).move(index_options)
+      end
     end
 
     # Create a new directory with a .gitkeep file. Creates
@@ -121,39 +151,23 @@ class Git
     #     update_ref: false    # optional - default: true
     #   }
     def mkdir(path, options, previous_head_sha = nil)
+      options[:file][:path] = path
       insert_defaults(options)
-      prevent_overwriting_tree(path, options) unless empty?
-      options[:file] = {path: File.join(path, '.gitkeep'), content: ''}
-      commit_file(options, previous_head_sha)
+      commit_with(options, previous_head_sha) do |index_options|
+        Gitlab::Git::Index.new(gitlab).create_dir(index_options)
+      end
     end
 
     protected
 
-    # TODO: This needs to be mutexed accross all backend processes/threads and
-    # Git-SSH.
-    def commit_change(options, action, previous_head_sha)
-      insert_defaults(options)
-      prevent_overwriting_previous_changes(options, previous_head_sha)
-      Gitlab::Git::Blob.commit(gitlab, options, action)
-    end
-
     # TODO: Instead of comparing the HEAD with the previous commit_sha, actually
     # try merging and only raise if there is a conflict. Add the merge conflict
-    # to the Error
+    # to the Error.
+    # See issue #97.
     def prevent_overwriting_previous_changes(options, previous_head_sha)
       return unless conflict?(options, previous_head_sha)
       raise HeadChangedError.new('The branch has changed since editing.',
                                  options)
-    end
-
-    # rubocop:disable Style/GuardClause
-    def prevent_overwriting_tree(path, options)
-      unless blob(options[:commit][:branch], path).nil?
-        raise InvalidPathError, 'Path already exists as a file.'
-      end
-      if tree(options[:commit][:branch], path).any?
-        raise InvalidPathError, 'Path already exists as a directory.'
-      end
     end
 
     def conflict?(options, previous_head_sha)
@@ -173,5 +187,58 @@ class Git
       return if options[:commit][:branch].start_with?('refs/')
       options[:commit][:branch] = 'refs/heads/' + options[:commit][:branch]
     end
+
+    # TODO: This needs to be mutexed accross all backend processes/threads and
+    # Git-SSH.
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/MethodLength
+    def commit_with(options, previous_head_sha)
+      insert_defaults(options)
+      prevent_overwriting_previous_changes(options, previous_head_sha)
+
+      commit = options[:commit]
+      ref = commit[:branch]
+      ref = 'refs/heads/' + ref unless ref.start_with?('refs/')
+      update_ref = commit[:update_ref].nil? ? true : commit[:update_ref]
+
+      index = Gitlab::Git::Index.new(gitlab)
+
+      parents = []
+      unless empty?
+        rugged_ref = rugged.references[ref]
+        unless rugged_ref
+          raise Gitlab::Git::Repository::InvalidRef, 'Invalid branch name'
+        end
+        last_commit = rugged_ref.target
+        index.read_tree(last_commit.tree)
+        parents = [last_commit]
+      end
+
+      file = options[:file]
+      index_options = {}
+      index_options[:file_path] = file[:path] if file[:path]
+      index_options[:content] = file[:content] if file[:content]
+      index_options[:encoding] = file[:encoding] if file[:encoding]
+      if file[:previous_path]
+        index_options[:previous_path] = file[:previous_path]
+      end
+      yield(index_options)
+
+      opts = {}
+      opts[:tree] = index.write_tree
+      opts[:author] = options[:author]
+      opts[:committer] = options[:committer]
+      opts[:message] = commit[:message]
+      opts[:parents] = parents
+      opts[:update_ref] = ref if update_ref
+
+      Rugged::Commit.create(rugged, opts)
+    end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/MethodLength
   end
 end

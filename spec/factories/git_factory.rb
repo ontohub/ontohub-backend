@@ -75,7 +75,7 @@ FactoryGirl.define do
     after(:create) do |git, evaluator|
       commit_files = (1..evaluator.commit_count).map { generate(:filepath) }
       commit_files.each do |filepath|
-        git.commit_file(create(:git_commit_info, filepath: filepath))
+        git.create_file(create(:git_commit_info, filepath: filepath))
       end
     end
   end

@@ -10,7 +10,7 @@ class Git
 
   attr_reader :gitlab
   delegate :bare?, :branches, :branch_count, :branch_exists?, :branch_names,
-           :commit_count, :find_commits, :empty?, :log, :ls_files,
+           :commit_count, :find_commits, :empty?, :log, :ls_files, :rugged,
            to: :gitlab
 
   def self.create(path)
@@ -69,7 +69,7 @@ class Git
 
   def default_branch=(name)
     ref = "refs/heads/#{name}" unless name.start_with?('refs/heads/')
-    gitlab.rugged.head = ref
+    rugged.head = ref
   end
 
   # Create a branch with name +name+ at the reference +ref+.
