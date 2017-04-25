@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Blob Model",
+  "description": "Blob Model",
+
+  "type": "object",
+  "required": ["id", "type", "attributes", "links"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {
+      "type": "string",
+      "format": "^blobs$"
+    },
+    "attributes": {
+      "type": "object",
+      "required": ["content", "encoding", "path"],
+      "properties": {
+        "content": {"type": "string"},
+        "encoding": {
+          "type": "string",
+          "enum": ["plain", "base64"]
+        },
+        "path": {"type": "string"}
+      }
+    },
+    "links": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,17 @@
 GIT
+  remote: git://github.com/ontohub/gitlab_git.git
+  revision: f242d68f674400c5475980a6919b4e2cc7f75f49
+  branch: update_to_9.0.5
+  specs:
+    gitlab_git (10.7.0)
+      activesupport (>= 4.0)
+      charlock_holmes (~> 0.7.3)
+      github-linguist (~> 4.7.0)
+      rugged (~> 0.24.0)
+
+GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 409babc7879413b3f3eb191123af4788e6e13f5f
+  revision: 7263c41b474abf7df297b602649ef6fb3b5886e7
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -70,6 +81,7 @@ GEM
     byebug (9.0.6)
     case_transform (0.2)
       activesupport
+    charlock_holmes (0.7.3)
     chewy (0.9.0)
       activesupport (>= 3.2)
       elasticsearch (>= 1.0.0)
@@ -104,6 +116,7 @@ GEM
       faraday
       multi_json
     erubis (2.7.0)
+    escape_utils (1.1.1)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.8.0)
@@ -114,11 +127,16 @@ GEM
     faraday (0.12.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
-    globalid (0.3.7)
-      activesupport (>= 4.1.0)
+    github-linguist (4.7.6)
+      charlock_holmes (~> 0.7.3)
+      escape_utils (~> 1.1.0)
+      mime-types (>= 1.19)
+      rugged (>= 0.23.0b)
+    globalid (0.4.0)
+      activesupport (>= 4.2.0)
     i18n (0.8.1)
     interception (0.5)
-    json (2.0.3)
+    json (2.0.4)
     json-schema (2.7.0)
       addressable (>= 2.4)
     jsonapi-renderer (0.1.2)
@@ -220,6 +238,7 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     ruby_dep (1.5.0)
+    rugged (0.24.6.1)
     sequel (4.42.1)
     sequel-devise (0.0.9)
       devise
@@ -274,6 +293,7 @@ DEPENDENCIES
   database_cleaner (~> 1.5.3)
   factory_girl_rails (~> 4.8.0)
   faker (~> 1.7.2)
+  gitlab_git!
   json-schema (~> 2.7.0)
   jwt (~> 1.5.6)
   listen (~> 3.1.5)

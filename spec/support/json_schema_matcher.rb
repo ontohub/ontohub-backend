@@ -36,7 +36,7 @@ RSpec::Matchers.define :comply_with_api do |schema = nil, verify_jsonapi = true|
     example, response = data
     controller = normalized_controller(example)
     context = normalized_context(example)
-    schema_root = "#{Dir.pwd}/spec/support/api/schemas"
+    schema_root = "#{Rails.root}/spec/support/api/schemas"
 
     errors =
       if schema

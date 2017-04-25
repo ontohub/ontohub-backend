@@ -3,3 +3,8 @@ server_url: 'http://localhost:3000'
 
 jwt:
   expiration_hours: 24
+
+# The data directory contains all the git repositories. A relative path is
+# interpreted relative to the application root directory.
+# This directory will be created if it does not exist.
+data_directory: 'data'

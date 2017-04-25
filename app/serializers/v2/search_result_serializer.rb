@@ -9,7 +9,8 @@ module V2
     delegate :id, :results_count,
       :repositories_count, :organizational_units_count, to: :object
 
-    has_many(:repositories, serializer: V2::RepositorySerializer::Relationship)
+    has_many(:repositories,
+             serializer: V2::RepositoryCompoundSerializer::Relationship)
     has_many(:organizational_units,
              serializer: V2::UserSerializer::Relationship)
   end

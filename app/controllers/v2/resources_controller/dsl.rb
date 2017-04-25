@@ -9,7 +9,12 @@ module V2
         def collection
           return @collection if @collection
           klass = self.class.instance_variable_get(:@resource_class)
-          @collection = klass.where(parent_params).all
+          @collection = klass.where(parent_params)
+          if @collection.respond_to?(:all)
+            @collection = @collection.all
+          else
+            @collection
+          end
         end
 
         def resource

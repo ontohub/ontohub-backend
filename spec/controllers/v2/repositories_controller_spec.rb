@@ -64,6 +64,12 @@ RSpec.describe V2::RepositoriesController do
         it 'creates the repository' do
           expect(Repository.find(name: name)).not_to be(nil)
         end
+        it 'creates the git repository' do
+          repository = Repository.find(name: name)
+          git_path = Settings.data_directory.join('git',
+                                                  "#{repository.to_param}.git")
+          expect(Git.new(git_path).repo_exists?).to be(true)
+        end
         it 'sets the correct url' do
           found_repository = Repository.find(name: name)
           expect(found_repository.url_path).
@@ -169,6 +175,11 @@ RSpec.describe V2::RepositoriesController do
         it { expect(response.body.strip).to be_empty }
         it 'deletes the repository' do
           expect(Repository.find(slug: repository.slug)).to be(nil)
+        end
+        it 'deletes the git repository' do
+          git_path = Settings.data_directory.join('git',
+                                                  "#{repository.to_param}.git")
+          expect(Git.new(git_path).repo_exists?).to be(false)
         end
       end
 
