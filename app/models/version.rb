@@ -42,7 +42,7 @@ class Version < ActiveModelSerializers::Model
     # :nocov:
 
     def test?
-      Rails.env.test?
+      Rails.env.test? && !ENV['ONTOHUB_SYSTEM_TEST']
     end
 
     # :nocov:
@@ -70,9 +70,6 @@ class Version < ActiveModelSerializers::Model
       msg
     end
   end
-  begin
-    VERSION = load_version
-  rescue CouldNotDetermineVersion => e
-    raise e unless test?
-  end
+
+  VERSION = load_version unless test?
 end
