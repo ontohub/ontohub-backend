@@ -3,7 +3,6 @@
 # This class combines the Repository model and the Git library.
 # It forwards model methods directly to the Repository object.
 class RepositoryCompound < ActiveModelSerializers::Model
-  GIT_DIRECTORY = Settings.data_directory.join('git').freeze
 
   class << self
     def find(*args)
@@ -26,6 +25,10 @@ class RepositoryCompound < ActiveModelSerializers::Model
       object = new
       object.instance_variable_set(:@repository, repository)
       object
+    end
+
+    def git_directory
+      Settings.data_directory.join('git').freeze
     end
   end
 
@@ -69,6 +72,6 @@ class RepositoryCompound < ActiveModelSerializers::Model
   protected
 
   def git_path
-    GIT_DIRECTORY.join("#{repository.to_param}.git")
+    self.class.git_directory.join("#{repository.to_param}.git")
   end
 end
