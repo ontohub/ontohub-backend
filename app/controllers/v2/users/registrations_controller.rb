@@ -4,6 +4,8 @@ module V2
   module Users
     # Handles registration, editing and deletion of Users
     class RegistrationsController < Devise::RegistrationsController
+      include ::Recaptcha::Verify
+
       # POST /resource
       def create
         super
@@ -46,6 +48,11 @@ module V2
       def build_resource(hash = nil)
         self.resource = resource_class.new_with_session(hash || {}, session)
         resource.url_path_method = ->(user) { "/users/#{user.to_param}" }
+        captcha = params['data']['attributes']['captcha']
+        return if verify_recaptcha(model: resource,
+                                   attribute: :captcha,
+                                   response: captcha)
+        raise Sequel::ValidationFailed
       end
 
       # This is overwriting the original method.
