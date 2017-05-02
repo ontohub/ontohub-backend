@@ -6,7 +6,7 @@ FactoryGirl.define do
       repository { create(:repository) }
       git do
         create(:git, :with_commits,
-               path: RepositoryCompound::GIT_DIRECTORY.
+               path: RepositoryCompound.git_directory.
                  join("#{repository.to_param}.git"))
       end
     end
