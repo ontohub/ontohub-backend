@@ -71,5 +71,5 @@ class Version < ActiveModelSerializers::Model
     end
   end
 
-  VERSION = load_version unless test?
+  VERSION = load_version
 end
