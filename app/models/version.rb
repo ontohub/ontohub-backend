@@ -70,6 +70,9 @@ class Version < ActiveModelSerializers::Model
       msg
     end
   end
-
-  VERSION = load_version
+  begin
+    VERSION = load_version
+  rescue CouldNotDetermineVersion => e
+    raise e unless test?
+  end
 end
