@@ -72,12 +72,7 @@ module V2
       @resource ||= Blob.find(repository_id: repository.to_param,
                               branch: ref,
                               path: params[:path])
-      # Use @resource&.user = current_user as soon as
-      # https://github.com/rubinius/rubinius/issues/3739
-      # is fixed.
-      # rubocop:disable Style/SafeNavigation
-      @resource.user = current_user unless @resource.nil?
-      # rubocop:enable Style/SafeNavigation
+      @resource&.user = current_user
       @resource
     end
 
