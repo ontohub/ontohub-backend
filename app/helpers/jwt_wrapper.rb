@@ -8,14 +8,14 @@ module JWTWrapper
     key = OpenSSL::PKey::EC.new('prime256v1')
     key.generate_key
   end
-  PRIVATE_KEY = generate_private_key
+  PRIVATE_KEY = OpenSSL::PKey::EC.new(Rails.application.secrets.jwt['private'])
 
-  def generate_public_key
-    key = OpenSSL::PKey::EC.new(PRIVATE_KEY)
+  def generate_public_key(private_key)
+    key = OpenSSL::PKey::EC.new(private_key)
     key.private_key = nil
     key
   end
-  PUBLIC_KEY = generate_public_key
+  PUBLIC_KEY = OpenSSL::PKey::EC.new(Rails.application.secrets.jwt['public'])
 
   def encode(payload, expiration = nil)
     expiration ||= Settings.jwt.expiration_hours
