@@ -5,6 +5,6 @@ module V2
   class ApplicationController < ActionController::API
     # Accept and generate JSON API data
     include ActionController::MimeResponds
-    before_action :authenticate_user!
+    before_action :current_user
   end
 end

@@ -77,5 +77,13 @@ RSpec.describe V2::Users::SessionsController do
         it { expect(response_hash['error']).not_to be_empty }
       end
     end
+
+    context 'empty request' do
+      before do
+        post :create, format: :json
+      end
+      it { expect(response).to have_http_status(:unauthorized) }
+      it { expect(response_hash['error']).not_to be_empty }
+    end
   end
 end
