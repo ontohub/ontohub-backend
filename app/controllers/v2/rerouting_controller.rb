@@ -7,6 +7,8 @@ module V2
     protected
 
     def send_controller_action(action, resource)
+      return render status: :not_found unless resource
+
       @resource = resource
       @other_controller = controller_class(resource).new
       define_state

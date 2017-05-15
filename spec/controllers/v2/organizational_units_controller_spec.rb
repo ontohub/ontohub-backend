@@ -39,4 +39,16 @@ RSpec.describe V2::OrganizationalUnitsController do
       end
     end
   end
+
+  context 'non-existant organizational unit' do
+    subject { organization }
+
+    describe 'GET show' do
+      context 'unsuccessful' do
+        before { get :show, params: {slug: subject.slug + 'bad'} }
+        it { expect(response).to have_http_status(:not_found) }
+        it { expect(response.body.strip).to be_empty }
+      end
+    end
+  end
 end
