@@ -14,7 +14,7 @@ gem 'puma', '~> 3.0'
 gem 'rack-cors'
 
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: 'master'
+                      branch: '68-registration_and_deletion_of_users'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'

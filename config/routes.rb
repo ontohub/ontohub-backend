@@ -69,10 +69,6 @@ Rails.application.routes.draw do
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
         end
       end
-      scope '/organizational_units' do
-        get 'by_name/:name',
-          controller: 'v2/organizational_units', action: 'show_by_name'
-      end
     end
     resources :organizations,
       controller: 'v2/organizations',

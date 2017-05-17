@@ -17,9 +17,8 @@
     },
     "attributes": {
       "type": "object",
-      "required": ["name", "real_name", "description"],
+      "required": ["real_name", "description"],
       "properties": {
-        "name": {"type": "string"},
         "real_name": {"type": "string"},
         "description": {"type": "string"}
       }

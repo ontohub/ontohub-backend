@@ -16,7 +16,9 @@ end
 url_path_method = lambda do |resource|
   V2::OrganizationsController.resource_url_path(resource)
 end
-Organization.new(name: 'Seed User Organization',
+Organization.new(name: 'seed-user-organization',
+                 real_name: 'Seed User Organization',
+                 description: 'All users that are created in the seeds',
                  url_path_method: url_path_method).save
 organization = Organization.first
 User.all do |user|

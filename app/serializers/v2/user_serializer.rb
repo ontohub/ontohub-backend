@@ -10,7 +10,6 @@ module V2
       end
     end
 
-    attribute :name
     attribute :real_name
     attribute :email
 
