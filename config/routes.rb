@@ -59,8 +59,8 @@ Rails.application.routes.draw do
         controllers: {registrations: 'v2/users/registrations',
                       sessions: 'v2/users/sessions'},
         skip: [:registrations, :sessions]
-      devise_scope :user do
-        scope 'users' do
+      scope 'users' do
+        devise_scope :user do
           post '', controller: 'v2/users/registrations', action: 'create'
           patch '', controller: 'v2/users/registrations', action: 'update'
           delete '', controller: 'v2/users/registrations', action: 'destroy'
@@ -68,6 +68,7 @@ Rails.application.routes.draw do
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
         end
+        get '/me', controller: 'v2/users', action: 'show_current_user'
       end
     end
     resources :organizations,
