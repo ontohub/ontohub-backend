@@ -11,13 +11,14 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 90fe919846ce6635153170726fe8925e480331cb
+  revision: c60734a2bf20936418f6f7a7fad2138128469b8c
   branch: 68-registration_and_deletion_of_users
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)
       chewy (~> 0.9.0)
       devise (~> 4.2.0)
+      orm_adapter-sequel (~> 0.1.0)
       pry (~> 0.10.4)
       rails (~> 5.0.1)
       sequel (~> 4.42.1)
@@ -301,7 +302,6 @@ DEPENDENCIES
   jwt (~> 1.5.6)
   listen (~> 3.1.5)
   ontohub-models!
-  orm_adapter-sequel (~> 0.1.0)
   pry (~> 0.10.4)
   pry-byebug (~> 3.4.1)
   pry-rails (~> 0.3.4)
