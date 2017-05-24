@@ -283,6 +283,8 @@ Devise.setup do |config|
     # Adding the new JWT Strategy to the top of Warden's list,
     # Scoped by what Devise would scope (typically :user)
     manager.default_strategies(scope: :user).unshift :jwt
+
+    manager.failure_app = JsonApiFailureApp
   end
 
   # ==> Mountable engine configurations When using Devise inside an engine,

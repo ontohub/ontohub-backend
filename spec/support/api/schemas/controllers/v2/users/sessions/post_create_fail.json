@@ -4,11 +4,20 @@
   "description": "V2 Users Sessions Controller: POST/create/fail",
 
   "type": "object",
-  "required": ["error"],
+  "required": ["errors"],
   "properties": {
-    "error": {
-      "type": "string",
-      "pattern": "^Invalid name or password\\.$"
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["detail"],
+        "properties": {
+          "detail": {
+            "type": "string",
+            "pattern": "^Invalid name or password\\.$"
+          }
+        }
+      }
     }
   }
 }
