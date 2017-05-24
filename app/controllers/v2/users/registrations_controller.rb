@@ -5,6 +5,7 @@ module V2
     # Handles registration, editing and deletion of Users
     class RegistrationsController < Devise::RegistrationsController
       include ::Recaptcha::Verify
+      DISABLE_CAPTCHA = ENV['DISABLE_CAPTCHA'] == 'true'
 
       def create
         super
@@ -20,8 +21,8 @@ module V2
         super
         if resource.modified? # Resource could not be saved in +super+
           render status: :unprocessable_entity,
-                json: resource,
-                serializer: ActiveModel::Serializer::ErrorSerializer
+                 json: resource,
+                 serializer: ActiveModel::Serializer::ErrorSerializer
         else
           render status: :ok, json: resource, serializer: UserSerializer
         end
@@ -40,15 +41,20 @@ module V2
       def build_resource(hash = nil)
         self.resource = resource_class.new_with_session(hash || {}, session)
         resource.url_path_method = ->(user) { "/users/#{user.to_param}" }
-        attributes = params['data']['attributes']
-        captcha = attributes['captcha'] if attributes
-        return if verify_recaptcha(model: resource,
-                                   attribute: :captcha,
-                                   response: captcha)
-        # +verify_recaptcha+ is always +true+ in the test environment
+        return if !DISABLE_CAPTCHA && captcha_ok?
+        # +captcha_ok?+ is always +true+ in the test environment
         # :nocov:
         raise Sequel::ValidationFailed
         # :nocov:
+      end
+
+      def captcha_ok?
+        attributes = params['data']['attributes']
+        captcha = attributes['captcha'] if attributes
+        # +verify_recaptcha+ is always +true+ in the test environment
+        verify_recaptcha(model: resource,
+                         attribute: :captcha,
+                         response: captcha)
       end
 
       # This is overwriting the original method.
