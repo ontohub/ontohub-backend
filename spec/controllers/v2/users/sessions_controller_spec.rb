@@ -55,9 +55,7 @@ RSpec.describe V2::Users::SessionsController do
     context 'with token' do
       context 'correct' do
         before do
-          payload = {user_id: user.to_param}
-          token = JWTWrapper.encode(payload)
-          request.env['HTTP_AUTHORIZATION'] = "Bearer #{token}"
+          set_token_header(user)
           post :create, format: :json
         end
         it { expect(response).to have_http_status(:created) }

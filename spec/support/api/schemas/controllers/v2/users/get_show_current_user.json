@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "V2 Users Controller: GET/show_by_name",
-  "description": "V2 Users Controller: GET/show_by_name",
+  "title": "V2 Users Controller: GET/show_current_user",
+  "description": "V2 Users Controller: GET/show_current_user",
 
   "type": "object",
   "required": ["data", "jsonapi"],

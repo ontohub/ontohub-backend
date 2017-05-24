@@ -26,4 +26,23 @@ RSpec.describe V2::UsersController do
       it { expect(response.body.strip).to be_empty }
     end
   end
+
+  describe 'GET show_current_user' do
+    context 'successful' do
+      before do
+        create_user_and_set_token_header
+        get :show_current_user
+      end
+      it { expect(response).to have_http_status(:ok) }
+      it { |example| expect([example, response]).to comply_with_api }
+    end
+
+    context 'without being signed in' do
+      before do
+        get :show_current_user
+      end
+      it { expect(response).to have_http_status(:not_found) }
+      it { expect(response.body.strip).to be_empty }
+    end
+  end
 end
