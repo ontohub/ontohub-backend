@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 0495718b1795e2010f47f6af6d397349bd3e745c
+  revision: 8f8c70b47d7d4bdcdd576ca16fecddcb664794a4
   branch: 68-registration_and_deletion_of_users
   specs:
     ontohub-models (0.1.0)
