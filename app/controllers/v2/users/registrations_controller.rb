@@ -6,7 +6,6 @@ module V2
     class RegistrationsController < Devise::RegistrationsController
       include ::Recaptcha::Verify
 
-      # POST /resource
       def create
         super
         render status: :created, json: resource, serializer: UserSerializer
@@ -16,28 +15,21 @@ module V2
                serializer: ActiveModel::Serializer::ErrorSerializer
       end
 
-      # PATCH /resource
       def update
+        return render status: :unauthorized unless current_user
         super
-        if resource.is_a?(resource_class)
-          render status: :created, json: resource, serializer: UserSerializer
+        if resource.modified? # Resource could not be saved in +super+
+          render status: :unprocessable_entity,
+                json: resource,
+                serializer: ActiveModel::Serializer::ErrorSerializer
         else
-          render status: :not_found
+          render status: :ok, json: resource, serializer: UserSerializer
         end
-      rescue Sequel::ValidationFailed
-        render status: :unprocessable_entity,
-               json: resource,
-               serializer: ActiveModel::Serializer::ErrorSerializer
       end
 
-      # DELETE /resource
       def destroy
-        if resource
-          resource.destroy
-          render status: :no_content
-        else
-          render status: :not_found
-        end
+        resource.destroy
+        render status: :no_content
       end
 
       protected
@@ -48,11 +40,15 @@ module V2
       def build_resource(hash = nil)
         self.resource = resource_class.new_with_session(hash || {}, session)
         resource.url_path_method = ->(user) { "/users/#{user.to_param}" }
-        captcha = params['data']['attributes']['captcha']
+        attributes = params['data']['attributes']
+        captcha = attributes['captcha'] if attributes
         return if verify_recaptcha(model: resource,
                                    attribute: :captcha,
                                    response: captcha)
+        # +verify_recaptcha+ is always +true+ in the test environment
+        # :nocov:
         raise Sequel::ValidationFailed
+        # :nocov:
       end
 
       # This is overwriting the original method.

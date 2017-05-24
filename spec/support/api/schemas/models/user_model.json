@@ -19,7 +19,12 @@
       "type": "object",
       "required": ["real_name", "email"],
       "properties": {
-        "real_name": {"type": "string"},
+        "real_name": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "string"}
+          ]
+        },
         "email": {
           "type": "string",
           "pattern": "[^@]+@[^@]+"
