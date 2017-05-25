@@ -17,7 +17,7 @@ gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
-                  branch: 'master'
+                  branch: 'ontohub-backend-104-outsource_the_git_layer_to_gitlab_git'
 
 gem 'active_model_serializers', '~> 0.10.4'
 gem 'config', '~> 1.4.0'

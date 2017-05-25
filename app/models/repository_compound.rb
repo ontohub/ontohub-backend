@@ -3,7 +3,6 @@
 # This class combines the Repository model and the Git library.
 # It forwards model methods directly to the Repository object.
 class RepositoryCompound < ActiveModelSerializers::Model
-
   class << self
     def find(*args)
       repository = Repository.find(*args)
@@ -44,7 +43,7 @@ class RepositoryCompound < ActiveModelSerializers::Model
   def save
     Sequel::Model.db.transaction do
       repository.save
-      @git = Git.create(git_path) if repository.exists?
+      @git = Gitlab::Git::Wrapper.create(git_path) if repository.exists?
       true
     end
   end
@@ -58,7 +57,7 @@ class RepositoryCompound < ActiveModelSerializers::Model
   end
 
   def git
-    @git ||= Git.new(git_path) unless repository.nil?
+    @git ||= Gitlab::Git::Wrapper.new(git_path) unless repository.nil?
   end
 
   def url(prefix)

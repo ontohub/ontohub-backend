@@ -10,12 +10,20 @@ module Tempdir
     end
   end
 
+  # Call +Tempdir.path+ outside of an +it+ to get the current temp directory.
   def self.path
+    # :nocov:
+    # This is not yet used. Remove nocov as soon as it's used
     instance_variable_get(:@tempdir)
+    # :nocov:
   end
 
+  # Call +tempdir+ inside an +it+ to get the current temp directory.
   def tempdir
+    # :nocov:
+    # This is not yet used. Remove nocov as soon as it's used
     Tempdir.path
+    # :nocov:
   end
 
   RSpec.configure do |config|

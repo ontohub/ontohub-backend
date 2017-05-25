@@ -6,10 +6,6 @@ FactoryGirl.define do
     Faker::Crypto.sha1
   end
 
-  sequence(:git_repository_path) do |n|
-    File.join(Dir.pwd, 'git_repositories', n.to_s).to_s
-  end
-
   sequence(:git_user) do |n|
     {email: "git-user-#{n}@example.com",
      name: "git-user#-#{n}",
@@ -59,12 +55,12 @@ FactoryGirl.define do
     end
   end
 
-  factory :git, class: Git do
+  factory :git, class: Gitlab::Git::Wrapper do
     transient do
       path { generate(:git_repository_path) }
     end
     skip_create
-    initialize_with { Git.create(path) }
+    initialize_with { Gitlab::Git::Wrapper.create(path) }
   end
 
   trait :with_commits do

@@ -88,7 +88,7 @@ class Blob < ActiveModelSerializers::Model
         else
           git.update_file(commit_info, previous_head_sha)
         end
-      rescue Git::Committing::HeadChangedError
+      rescue Gitlab::Git::Committing::HeadChangedError
         @errors.add(:branch,
                     'Could not save the file in the git repository '\
                     'because it has changed in the meantime. '\
