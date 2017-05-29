@@ -104,13 +104,17 @@ module V2
                     repository: repository,
                     user: current_user}
       # Only for moving the file
-      attributes[:path] = resource_params[:path] if resource_params[:path]
-      # Only if changing the content
-      if resource_params[:content]
-        attributes[:content] = resource_params[:content]
-        attributes[:encoding] = resource_params[:encoding]
+      if resource_params[:path]
+        attributes[:path] = resource_params[:path]
+        attributes[:previous_path] = params[:path]
+      else
+        attributes[:path] = params[:path]
+        attributes[:previous_path] = nil
       end
-      attributes[:previous_path] = params[:path]
+      # Only if changing the content
+      attributes[:content] = resource_params[:content]
+      attributes[:encoding] = resource_params[:encoding]
+
       resource.update(attributes)
       resource.save
     end

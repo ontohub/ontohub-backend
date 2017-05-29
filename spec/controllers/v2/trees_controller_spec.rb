@@ -166,21 +166,58 @@ RSpec.describe V2::TreesController do
       let(:updated_content) { 'some updated content' }
 
       context 'successful' do
-        before do
-          patch :update,
-            params: {repository_slug: repository.to_param,
-                     path: path,
-                     data: {attributes: {content: updated_content,
-                                         encoding: 'plain',
-                                         commit_message: commit_message,
-                                         path: updated_path}}}
+        context 'with a content change, with renaming' do
+          before do
+            patch :update,
+              params: {repository_slug: repository.to_param,
+                       path: path,
+                       data: {attributes: {content: updated_content,
+                                           encoding: 'plain',
+                                           commit_message: commit_message,
+                                           path: updated_path}}}
+          end
+
+          it { expect(response).to have_http_status(:ok) }
+          it { |example| expect([example, response]).to comply_with_api }
+
+          it 'moves the file and changes its content' do
+            expect(git.blob(branch, updated_path).data).to eq(updated_content)
+          end
         end
 
-        it { expect(response).to have_http_status(:ok) }
-        it { |example| expect([example, response]).to comply_with_api }
+        context 'with a content change, without renaming' do
+          before do
+            patch :update,
+              params: {repository_slug: repository.to_param,
+                       path: path,
+                       data: {attributes: {content: updated_content,
+                                           encoding: 'plain',
+                                           commit_message: commit_message}}}
+          end
 
-        it 'moves the file and ' do
-          expect(git.blob(branch, updated_path).data).to eq(updated_content)
+          it { expect(response).to have_http_status(:ok) }
+          it { |example| expect([example, response]).to comply_with_api }
+
+          it 'changes the file content' do
+            expect(git.blob(branch, path).data).to eq(updated_content)
+          end
+        end
+
+        context 'without a content change, with renaming' do
+          before do
+            patch :update,
+              params: {repository_slug: repository.to_param,
+                       path: path,
+                       data: {attributes: {commit_message: commit_message,
+                                           path: updated_path}}}
+          end
+
+          it { expect(response).to have_http_status(:ok) }
+          it { |example| expect([example, response]).to comply_with_api }
+
+          it 'only moves the file' do
+            expect(git.blob(branch, updated_path).data).to eq(content)
+          end
         end
       end
 
@@ -200,22 +237,6 @@ RSpec.describe V2::TreesController do
           it { expect(response.body.strip).to be_empty }
         end
 
-        context 'because no path and no content is given' do
-          before do
-            patch :update,
-              params: {repository_slug: repository.to_param,
-                       path: path,
-                       data: {attributes: {encoding: 'plain',
-                                           commit_message: commit_message}}}
-          end
-          it_behaves_like 'a failing TreesController on PATCH update'
-
-          it 'shows the content error' do
-            expect(response_hash['errors'].first).
-              to include('source' => {'pointer' => '/data/attributes/content'})
-          end
-        end
-
         context 'because no encoding is given' do
           before do
             patch :update,
@@ -227,9 +248,8 @@ RSpec.describe V2::TreesController do
           end
           it_behaves_like 'a failing TreesController on PATCH update'
 
-          it 'shows the content error' do
-            expect(response_hash['errors'].first).
-              to include('source' => {'pointer' => '/data/attributes/encoding'})
+          it 'shows the encoding error' do
+            expect(validation_error_at?('encoding')).to be(true)
           end
         end
       end
