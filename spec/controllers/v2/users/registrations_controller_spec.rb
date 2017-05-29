@@ -8,7 +8,7 @@ RSpec.describe V2::Users::RegistrationsController do
   let(:user) { build(:user) }
   let(:attributes) do
     {name: user.name,
-     real_name: user.real_name,
+     display_name: user.display_name,
      email: user.email,
      password: '1234567890',
      captcha: 'my-captcha-token'}
@@ -48,7 +48,7 @@ RSpec.describe V2::Users::RegistrationsController do
 
   describe 'PATCH update' do
     let(:new_attributes) do
-      {real_name: "changed-#{existing_user.real_name}",
+      {display_name: "changed-#{existing_user.display_name}",
        email: "changed-#{existing_user.email}",
        password: "changed-#{existing_user.password}",
        current_password: existing_user.password}
@@ -62,7 +62,7 @@ RSpec.describe V2::Users::RegistrationsController do
           patch :update, params: {data: {attributes: new_attributes}}
         end
         it { expect(response).to have_http_status(:ok) }
-        %i(email real_name encrypted_password).each do |attribute|
+        %i(email display_name encrypted_password).each do |attribute|
           it "updates the #{attribute}" do
             expect { existing_user.reload }.
               to change { existing_user.send(attribute) }
@@ -89,7 +89,7 @@ RSpec.describe V2::Users::RegistrationsController do
           it 'current_password has the correct error message' do
             expect(validation_errors_at(:current_password)).to include('invalid')
           end
-          %i(email real_name encrypted_password).each do |attribute|
+          %i(email display_name encrypted_password).each do |attribute|
             it "does not update the #{attribute}" do
               expect { existing_user.reload }.
                 not_to change { existing_user.send(attribute) }
@@ -101,7 +101,7 @@ RSpec.describe V2::Users::RegistrationsController do
           before do
             patch :update,
               params: {data: {attributes: new_attributes.
-                merge(real_name: 'a'*101,
+                merge(display_name: 'a'*101,
                       email: 'not-an-email',
                       password: 'too short')}}
           end
@@ -111,7 +111,7 @@ RSpec.describe V2::Users::RegistrationsController do
             expect([example, response]).to comply_with_api('validation_error')
           end
           # captcha validation is disabled in the tests
-          %i(real_name email password).each do |attribute|
+          %i(display_name email password).each do |attribute|
             it "has an error at #{attribute}" do
               expect(validation_error_at?(attribute)).to be(true)
             end

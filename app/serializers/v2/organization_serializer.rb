@@ -10,7 +10,7 @@ module V2
       end
     end
 
-    attribute :real_name
+    attribute :display_name
     attribute :description
 
     def id

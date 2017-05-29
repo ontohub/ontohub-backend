@@ -59,11 +59,11 @@ module V2
 
       # This is overwriting the original method.
       def sign_up_params
-        parse_params(only: %i(real_name name email password))
+        parse_params(only: %i(display_name name email password))
       end
 
       def account_update_params
-        parse_params(only: %i(real_name email password current_password))
+        parse_params(only: %i(display_name email password current_password))
       end
 
       def parse_params(**options)

@@ -17,9 +17,9 @@
     },
     "attributes": {
       "type": "object",
-      "required": ["real_name", "email"],
+      "required": ["display_name", "email"],
       "properties": {
-        "real_name": {
+        "display_name": {
           "oneOf": [
             {"type": "null"},
             {"type": "string"}

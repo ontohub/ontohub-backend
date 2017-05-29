@@ -206,7 +206,7 @@ class Blob < ActiveModelSerializers::Model
 
   def user_info(time = nil)
     {email: user.email,
-     name: user.real_name || user.slug,
+     name: user.display_name || user.slug,
      time: time || Time.now}
   end
 end
