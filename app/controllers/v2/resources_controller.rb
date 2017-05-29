@@ -76,10 +76,10 @@ module V2
 
     protected
 
-    def render_resource(status = :ok)
+    def render_resource(status = :ok, serializer: resource_serializer)
       render status: status,
              json: resource,
-             serializer: resource_serializer,
+             serializer: serializer,
              include: permitted_includes
     end
 

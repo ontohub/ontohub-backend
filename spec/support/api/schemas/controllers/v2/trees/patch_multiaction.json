@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V2 Trees Controller: PATCH/multiaction",
+  "description": "V2 Trees Controller: PATCH/multiaction",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "type": "object",
+      "required": ["id", "type", "attributes"],
+      "properties": {
+        "id": {"type": "string"},
+        "type": {
+          "type": "string",
+          "enum": ["mutliblob"]
+        },
+        "attributes": {
+          "type": "object",
+          "required": ["blobs"],
+          "properties": {
+            "blobs": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": ["path", "applied_action"],
+                    "properties": {
+                      "path": {"type": "string"},
+                      "applied_action": {
+                        "type": "string",
+                        "enum": ["removed"]
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": ["id", "path", "url", "applied_action"],
+                    "properties": {
+                      "id": {"type": "string"},
+                      "path": {"type": "string"},
+                      "url": {"type": "url"},
+                      "applied_action": {
+                        "type": "string",
+                        "enum": ["created", "updated", "renamed"]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "jsonapi": { "$ref": "../../../controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}

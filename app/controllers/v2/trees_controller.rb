@@ -48,6 +48,18 @@ module V2
       render_error(:unprocessable_entity)
     end
 
+    def multiaction
+      @resource = MultiBlob.new(files: params[:data][:attributes][:files],
+                                commit_message:
+                                  resource_params[:commit_message],
+                                branch: ref,
+                                repository: repository,
+                                user: current_user)
+      render_resource(:ok, serializer: V2::MultiBlobSerializer) if resource.save
+    rescue MultiBlob::ValidationFailed
+      render_error(:unprocessable_entity)
+    end
+
     protected
 
     def repository
@@ -69,9 +81,10 @@ module V2
     end
 
     def resource
-      @resource ||= Blob.find(repository_id: repository.to_param,
-                              branch: ref,
-                              path: params[:path])
+      return @resource if @resource
+      @resource = Blob.find(repository_id: repository.to_param,
+                            branch: ref,
+                            path: params[:path])
       @resource&.user = current_user
       @resource
     end
