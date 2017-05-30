@@ -6,6 +6,11 @@
   "type": "object",
   "required": ["version"],
   "properties": {
-    "version": {"type": "string"}
+    "version": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "The used version of JSON API (http://jsonapi.org)",
+      "example": "1.0"
+    }
   }
 }

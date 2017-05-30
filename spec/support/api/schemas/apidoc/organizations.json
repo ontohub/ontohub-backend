@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Organizations",
+  "description": "Endpoints for organizations",
+
+  "type": {"$ref": "../models/organization_model.json#/type"},
+  "required": {"$ref": "../models/organization_model.json#/required"},
+  "properties": {"$ref": "../models/organization_model.json#/properties"},
+
+  "links": [
+    {
+      "title": "Show (explicit)",
+      "description": "Show the details of a specific organization. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/organizations/:organization_id",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/organizations/get_show.json"},
+      "mediaType": "application/vnd.api+json"
+    },
+    {
+      "title": "Show (inferred)",
+      "description": "Show the details of a specific organization. If the :organization_id parameter is an organization's ID, it responds with an organization. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/:organization_id",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/organizations/get_show.json"},
+      "mediaType": "application/vnd.api+json"
+    },
+    {
+      "title": "Show Repositories",
+      "description": "Show the repositories that a specific organization owns. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/organizations/:organization_id/repositories",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/repositories/get_index.json"},
+      "mediaType": "application/vnd.api+json"
+    }
+  ]
+}

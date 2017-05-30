@@ -6,21 +6,36 @@
   "type": "object",
   "required": ["id", "type", "attributes", "links"],
   "properties": {
-    "id": {"type": "string"},
+    "id": {
+      "type": "string",
+      "description": "The id of the blob. It always contains a full commit sha hash and is always a URL relative to the host address.",
+      "example": "/ada/repo1/ref/2717d0608cb6b7ef0bfb4e76dbd79efcd6c550db/tree/documents/story.txt"
+    },
     "type": {
       "type": "string",
-      "format": "^blobs$"
+      "enum": ["blobs"],
+      "description": "The type of the resource. This is always \"blobs\".",
+      "example": "blobs"
     },
     "attributes": {
       "type": "object",
       "required": ["content", "encoding", "path"],
       "properties": {
-        "content": {"type": "string"},
+        "content": {
+          "type": "string",
+          "description": "The content of the file",
+          "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nNullam congue, neque ut fermentum pretium"
+        },
         "encoding": {
           "type": "string",
-          "enum": ["plain", "base64"]
+          "description": "The encoding of the content. This is either \"plain\" for plain text or \"base64\" for Base64-encoded binary data.",
+          "enum": ["plain", "base64"],
+          "example": "plain"
         },
-        "path": {"type": "string"}
+        "path": {
+          "type": "string",
+          "description": "The file path relative to the repository root"
+        }
       }
     },
     "links": {
@@ -29,7 +44,9 @@
       "properties": {
         "self": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "A canonical URL to this resource",
+          "example": "http://localhost:3000/ada/repo1/ref/2717d0608cb6b7ef0bfb4e76dbd79efcd6c550db/tree/documents/story.txt"
         }
       }
     }

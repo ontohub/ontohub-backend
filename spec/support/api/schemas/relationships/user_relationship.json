@@ -6,10 +6,16 @@
   "type": "object",
   "required": ["id", "type"],
   "properties": {
-    "id": {"type": "string"},
+    "id": {
+      "type": "string",
+      "description": "The id of the user",
+      "example": "ada"
+    },
     "type": {
       "type": "string",
-      "pattern": "^users$"
+      "enum": ["users"],
+      "description": "The type of the user. This is always \"users\".",
+      "example": "users"
     }
   }
 }

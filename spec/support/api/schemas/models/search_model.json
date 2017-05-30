@@ -8,16 +8,35 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^searchresult$"
+      "enum": ["searchresult"],
+      "description": "The id of the search data. This is always \"searchresult\".",
+      "example": "searchresult"
     },
-    "type": {"type": "string"},
+    "type": {
+      "type": "string",
+      "enum": ["search_results"],
+      "description": "The type of the search data. This is always \"search_results\".",
+      "example": "search_results"
+    },
     "attributes": {
       "type": "object",
       "required": ["results_count", "repositories_count", "organizational_units_count"],
       "properties": {
-        "results_count": {"type": "integer"},
-        "repositories_count": {"type": "integer"},
-        "organizational_units_count": {"type": "integer"}
+        "results_count": {
+          "type": "integer",
+          "description": "The number of search results",
+          "example": 2
+        },
+        "repositories_count": {
+          "type": "integer",
+          "description": "The number of repositories in the search results",
+          "example": 1
+        },
+        "organizational_units_count": {
+          "type": "integer",
+          "description": "The number of organizational units in the search results",
+          "example": 1
+        }
       }
     },
     "relationships": {
@@ -36,11 +55,14 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$"
+                    "pattern": "^[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$",
+                    "description": "The ID of the repository",
+                    "example": "ada/repo1"
                   },
                   "type": {
                     "type": "string",
-                    "pattern": "^repositories$"
+                    "enum": ["repositories"],
+                    "example": "repositories"
                   }
                 }
               }
@@ -57,10 +79,15 @@
                 "type": "object",
                 "required": ["id", "type"],
                 "properties": {
-                  "id": {"type": "string"},
+                  "id": {
+                    "type": "string",
+                    "description": "The ID of the user",
+                    "example": "ada"
+                  },
                   "type": {
                     "type": "string",
-                    "pattern": "^(users)|(organizations)$"
+                    "enum": ["users", "organizations"],
+                    "example": "users"
                   }
                 }
               }

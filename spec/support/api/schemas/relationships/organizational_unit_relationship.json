@@ -11,7 +11,9 @@
       "required": ["related"],
       "properties": {
         "related": {
-          "type": "uri"
+          "type": "uri",
+          "description": "The URL of this resource's owner",
+          "example": "http://localhost:3000/ada"
         }
       }
     }
