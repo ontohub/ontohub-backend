@@ -3,10 +3,10 @@
 if RUBY_ENGINE == 'ruby' # not 'rbx'
   unless defined?(Coveralls)
     require 'simplecov'
-    require 'coveralls'
+    require 'codecov'
     SimpleCov.formatters = [
       SimpleCov::Formatter::HTMLFormatter,
-      Coveralls::SimpleCov::Formatter,
+      SimpleCov::Formatter::Codecov
     ]
     SimpleCov.start do
       # The schema matcher does not need to be tested.
