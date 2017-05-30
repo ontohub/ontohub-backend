@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 if RUBY_ENGINE == 'ruby' # not 'rbx'
-  unless defined?(Coveralls)
+  unless defined?(SimpleCov)
     require 'simplecov'
     require 'codecov'
     SimpleCov.formatters = [
