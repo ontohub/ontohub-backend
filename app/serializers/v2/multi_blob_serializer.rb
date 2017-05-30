@@ -3,7 +3,7 @@
 module V2
   # The serializer for Repositories, API version 2
   class MultiBlobSerializer < ApplicationSerializer
-    type :mutliblob
+    type :mutliblobs
 
     attribute :blobs
 

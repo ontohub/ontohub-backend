@@ -163,7 +163,7 @@ class MultiBlob < ActiveModelSerializers::Model
     unless user.is_a?(User)
       @errors.add(:user, 'must be a user')
     end
-    unless branch_exists?
+    if !git&.empty? && !git&.branch_exists?(branch)
       @errors.add(:branch, "branch does not exist: #{branch}")
     end
     unless commit_message.present?

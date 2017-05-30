@@ -10,10 +10,16 @@
       "type": "object",
       "required": ["id", "type", "attributes"],
       "properties": {
-        "id": {"type": "string"},
+        "id": {
+          "type": "string",
+          "description": "The id of the commit multiaction. It contains the repository's ID and the date/time of when the action was performed.",
+          "example": "ada/repo1/master/commit-multiaction/ada/2017-05-30-20-39-28-409616000000"
+        },
         "type": {
           "type": "string",
-          "enum": ["mutliblob"]
+          "enum": ["mutliblobs"],
+          "description": "The type of the repository. This is always `multiblobs`.",
+          "example": "multiblobs"
         },
         "attributes": {
           "type": "object",
@@ -25,25 +31,45 @@
                 "oneOf": [
                   {
                     "type": "object",
-                    "required": ["path", "applied_action"],
+                    "required": ["id", "path", "url", "applied_action"],
                     "properties": {
-                      "path": {"type": "string"},
+                      "id": {
+                        "type": "string",
+                        "description": "The id of the file",
+                        "example": "/ada/repo1/ref/2717d0608cb6b7ef0bfb4e76dbd79efcd6c550db/tree/documents/story.txt"
+                      },
+                      "path": {
+                        "type": "string",
+                        "description": "The path of the file that has been affected, relative to the host",
+                        "example": "/ada/repo1/ref/2717d0608cb6b7ef0bfb4e76dbd79efcd6c550db/tree/documents/story.txt"
+                      },
+                      "url": {
+                        "type": "url",
+                        "description": "The url of the file that has been affected, including the host",
+                        "example": "http://localhost:3000/ada/repo1/ref/2717d0608cb6b7ef0bfb4e76dbd79efcd6c550db/tree/documents/story.txt"
+                      },
                       "applied_action": {
                         "type": "string",
-                        "enum": ["removed"]
+                        "enum": ["created", "updated", "renamed"],
+                        "description": "The action that has been applied to the file",
+                        "example": "created"
                       }
                     }
                   },
                   {
                     "type": "object",
-                    "required": ["id", "path", "url", "applied_action"],
+                    "required": ["path", "applied_action"],
                     "properties": {
-                      "id": {"type": "string"},
-                      "path": {"type": "string"},
-                      "url": {"type": "url"},
+                      "path": {
+                        "type": "string",
+                        "description": "The path of the file that has been removed, relative to the repository root",
+                        "example": "documents/story.txt"
+                      },
                       "applied_action": {
                         "type": "string",
-                        "enum": ["created", "updated", "renamed"]
+                        "enum": ["removed"],
+                        "description": "The action that has been applied to the file",
+                        "example": "removed"
                       }
                     }
                   }
