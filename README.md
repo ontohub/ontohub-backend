@@ -23,3 +23,27 @@ of this repository will then install all dependencies of the backend.
 ## Set up a development environment
 
 In order to set up a complete environment, please refer to the [wiki](https://github.com/ontohub/ontohub-backend/wiki) page [Setting up the development environment](https://github.com/ontohub/ontohub-backend/wiki/Setting-up-the-development-environment).
+
+## Build the API documentation
+
+We maintain API documentation with a JSON schema description.
+The schemas are located at [spec/support/api/schemas](https://github.com/ontohub/ontohub-backend/tree/master/spec/support/api/schemas).
+You can build an HTML-representation of it with [doca](https://github.com/cloudflare/doca).
+This requires the tools `npm` and `yarn` to be installed on your system and be in your `PATH`.
+
+First, you need to install doca with npm.
+We created a Rake task for this:
+
+    rails apidoc:prepare
+
+Next, you need to create the documentation server files:
+
+    rails apidoc:init
+
+This initialization must be run whenever new schema files are created.
+
+And finally, you can run the API documentation server (the default port is 8000):
+
+    PORT=8001 rails apidoc:run
+
+This server listens to changes on the JSON schema files and updates the documentation.

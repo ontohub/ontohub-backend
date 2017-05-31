@@ -52,3 +52,6 @@ db/migrate
 
 # The schema is generated and does not need to reside in the git repository.
 db/schema.rb
+
+# Don't put the API doc into the repository.
+/apidoc/
