@@ -55,7 +55,21 @@ Rails.application.routes.draw do
     # throws an error.
     unless rake_task?(%w(db:create db:migrate db:drop
                          db:recreate db:recreate:seed))
-      devise_for :users, controllers: {sessions: 'v2/users/sessions'}
+      devise_for :users,
+        controllers: {registrations: 'v2/users/registrations',
+                      sessions: 'v2/users/sessions'},
+        skip: [:registrations, :sessions]
+      scope 'users' do
+        devise_scope :user do
+          post '', controller: 'v2/users/registrations', action: 'create'
+          patch '', controller: 'v2/users/registrations', action: 'update'
+          delete '', controller: 'v2/users/registrations', action: 'destroy'
+
+          post 'sign_in', controller: 'v2/users/sessions', action: 'create'
+          delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
+        end
+        get '/me', controller: 'v2/users', action: 'show_current_user'
+      end
     end
     resources :organizations,
       controller: 'v2/organizations',

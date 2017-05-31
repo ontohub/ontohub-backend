@@ -13,7 +13,7 @@ RSpec.describe V2::Users::SessionsController do
       context 'correct' do
         before do
           post :create,
-            params: {user: {name: user.name, password: user.password}},
+            params: {user: {name: user.to_param, password: user.password}},
             format: :json
         end
         it { expect(response).to have_http_status(:created) }
@@ -26,7 +26,10 @@ RSpec.describe V2::Users::SessionsController do
       context 'incorrect password' do
         before do
           post :create,
-            params: {user: {name: user.name, password: user.password + 'bad'}},
+            params: {user: {
+              name: user.to_param,
+              password: "#{user.password}bad",
+            }},
             format: :json
         end
         it { expect(response).to have_http_status(:unauthorized) }
@@ -34,13 +37,16 @@ RSpec.describe V2::Users::SessionsController do
           expect([example, response]).
             to comply_with_api('users/sessions/post_create_fail', false)
         end
-        it { expect(response_hash['error']).not_to be_empty }
+        it { expect(response_hash['errors']).not_to be_empty }
       end
 
       context 'incorrect username' do
         before do
           post :create,
-            params: {user: {name: user.name + 'bad', password: user.password}},
+            params: {user: {
+              name: "#{user.to_param}bad",
+              password: user.password,
+            }},
             format: :json
         end
         it { expect(response).to have_http_status(:unauthorized) }
@@ -48,16 +54,14 @@ RSpec.describe V2::Users::SessionsController do
           expect([example, response]).
             to comply_with_api('users/sessions/post_create_fail', false)
         end
-        it { expect(response_hash['error']).not_to be_empty }
+        it { expect(response_hash['errors']).not_to be_empty }
       end
     end
 
     context 'with token' do
       context 'correct' do
         before do
-          payload = {user_id: user.to_param}
-          token = JWTWrapper.encode(payload)
-          request.env['HTTP_AUTHORIZATION'] = "Bearer #{token}"
+          set_token_header(user)
           post :create, format: :json
         end
         it { expect(response).to have_http_status(:created) }
@@ -74,7 +78,7 @@ RSpec.describe V2::Users::SessionsController do
           format: :json
         end
         it { expect(response).to have_http_status(:unauthorized) }
-        it { expect(response_hash['error']).not_to be_empty }
+        it { expect(response_hash['errors']).not_to be_empty }
       end
     end
 
@@ -83,7 +87,7 @@ RSpec.describe V2::Users::SessionsController do
         post :create, format: :json
       end
       it { expect(response).to have_http_status(:unauthorized) }
-      it { expect(response_hash['error']).not_to be_empty }
+      it { expect(response_hash['errors']).not_to be_empty }
     end
   end
 end

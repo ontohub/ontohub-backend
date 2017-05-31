@@ -173,12 +173,12 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 10..128
+  # config.password_length = 10..128
 
   # Email regex used to validate email formats. It simply asserts that one (and
   # only one) @ exists in the given string. This is mainly to give user
   # feedback and not to assert the e-mail validity.
-  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  # config.email_regexp = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/
 
   # ==> Configuration for :timeoutable The time you want to timeout the user
   # session without activity. After this time the user will be asked for
@@ -283,6 +283,8 @@ Devise.setup do |config|
     # Adding the new JWT Strategy to the top of Warden's list,
     # Scoped by what Devise would scope (typically :user)
     manager.default_strategies(scope: :user).unshift :jwt
+
+    manager.failure_app = JsonApiFailureApp
   end
 
   # ==> Mountable engine configurations When using Devise inside an engine,

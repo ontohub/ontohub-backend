@@ -4,11 +4,23 @@
   "description": "V2 Users Sessions Controller: POST/create/fail",
 
   "type": "object",
-  "required": ["error"],
+  "required": ["errors"],
   "properties": {
-    "error": {
-      "type": "string",
-      "pattern": "^Invalid name or password\\.$"
+    "errors": {
+      "description": "The error messages on a failed sign in attempt",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["detail"],
+        "properties": {
+          "detail": {
+            "type": "string",
+            "enum": ["Invalid name or password."],
+            "description": "The error message on a failed sign in attempt",
+            "example": "Invalid name or password."
+          }
+        }
+      }
     }
   }
 }

@@ -57,5 +57,6 @@ RSpec.configure do |config|
   # Use Devise in tests
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
-  config.extend ControllerLoginHelpers, type: :controller
+  config.include ControllerLoginHelpers::InstanceHelpers, type: :controller
+  config.extend ControllerLoginHelpers::ClassHelpers, type: :controller
 end

@@ -4,10 +4,10 @@
 url_path_method = lambda do |resource|
   V2::UsersController.resource_url_path(resource)
 end
-%w(ada bob).each do |name|
-  user = User.new(name: name,
-                  email: "#{name}@example.com",
-                  url_path_method: url_path_method)
+[{name: 'ada', display_name: 'Ada Lovelace'}, {name: 'bob'}].each do |userinfo|
+  user = User.new(userinfo.merge(
+                  email: "#{userinfo[:name]}@example.com",
+                  url_path_method: url_path_method))
   user.password = 'changeme'
   user.save
 end
@@ -16,7 +16,9 @@ end
 url_path_method = lambda do |resource|
   V2::OrganizationsController.resource_url_path(resource)
 end
-Organization.new(name: 'Seed User Organization',
+Organization.new(name: 'seed-user-organization',
+                 display_name: 'Seed User Organization',
+                 description: 'All users that are created in the seeds',
                  url_path_method: url_path_method).save
 organization = Organization.first
 User.all do |user|
