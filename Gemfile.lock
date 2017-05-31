@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: ac69de7e36e12b0d4fee6181d868404a31fa4d9c
-  branch: 68-registration_and_deletion_of_users
+  revision: eea968dda08d8e1ba49c0d8bbf6c2410bddaad04
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)
@@ -135,7 +135,7 @@ GEM
       rugged (>= 0.23.0b)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    i18n (0.8.1)
+    i18n (0.8.4)
     interception (0.5)
     json (2.0.4)
     json-schema (2.7.0)
