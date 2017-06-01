@@ -8,4 +8,7 @@ Types::Version = GraphQL::ObjectType.define do
   field :commitsSinceTag, !types.String do
     resolve ->(obj, args, ctx) { obj.commits_since_tag }
   end
+  field :semver, !types.String do
+    resolve ->(obj, args, ctx) { "#{obj.tag}-#{obj.commits_since_tag}" }
+  end
 end
