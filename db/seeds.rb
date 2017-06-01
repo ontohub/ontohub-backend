@@ -8,7 +8,7 @@ end
   user = User.new(userinfo.merge(
                   email: "#{userinfo[:name]}@example.com",
                   url_path_method: url_path_method))
-  user.password = 'changeme'
+  user.password = 'changemenow'
   user.save
 end
 
