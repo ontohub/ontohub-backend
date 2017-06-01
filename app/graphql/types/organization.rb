@@ -8,7 +8,7 @@ Types::Organization = GraphQL::ObjectType.define do
     resolve ->(obj, _args, _ctx) { obj.slug }
   end
   field :displayName, types.String do
-    resolve ->(obj, _args, _ctx) { obj.name }
+    resolve ->(obj, _args, _ctx) { obj.display_name }
   end
   field :description, types.String
   field :members, types[!Types::User] do

@@ -13,7 +13,7 @@ Types::User = GraphQL::ObjectType.define do
     resolve ->(obj, _args, _ctx) { Digest::MD5.hexdigest(obj.email) }
   end
   field :displayName, types.String do
-    resolve ->(obj, _args, _ctx) { obj.name }
+    resolve ->(obj, _args, _ctx) { obj.display_name }
   end
   field :organizations, types[!Types::Organization] do
     resolve ->(obj, _args, _ctx) { obj.organizations }

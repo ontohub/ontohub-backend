@@ -11,6 +11,10 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve ->(_obj, _args, _ctx) { 'Hello World!' }
   end
 
+  field :version, !Types::Version do
+    resolve ->(_obj, _args, _ctx) { Version.new(Version::VERSION) }
+  end
+
   field :me, Types::User do
     resolve ->(_obj, _args, ctx) { ctx[:current_user] }
   end
