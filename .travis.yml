@@ -23,6 +23,7 @@ addons:
 
 before_script:
   - RAILS_ENV=test bin/rails db:recreate
+  - bundle exec rake graphql:compare
 
 script:
   - bundle exec rake

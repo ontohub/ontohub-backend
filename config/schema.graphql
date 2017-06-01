@@ -1,0 +1,45 @@
+type Organization implements OrganizationalUnit {
+  # ID of the organization
+  id: ID!
+  displayName: String
+  description: String
+  members: [User!]
+}
+
+interface OrganizationalUnit {
+  id: ID!
+  displayName: String
+}
+
+type Query {
+  # An example field added by the generator
+  testField: String
+  version: Version!
+  me: User
+  organizationalUnit(id: ID!): OrganizationalUnit
+
+  # Get a single user with the given id
+  user(id: ID!): User
+
+  # Get a single organization with the given id
+  organization(id: ID!): Organization
+}
+
+type User implements OrganizationalUnit {
+  # ID of the user
+  id: ID!
+  displayName: String
+  email: String
+
+  # MD5 hash of the email address
+  emailHash: String!
+  organizations: [Organization!]
+}
+
+type Version {
+  full: String!
+  tag: String!
+  commit: String!
+  commitsSinceTag: String!
+  semver: String!
+}
