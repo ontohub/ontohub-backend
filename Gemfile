@@ -22,6 +22,9 @@ gem 'gitlab_git', github: 'ontohub/gitlab_git',
 gem 'active_model_serializers', '~> 0.10.4'
 gem 'config', '~> 1.4.0'
 
+gem 'graphql'
+gem 'graphql-batch'
+
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.7.0'
 gem 'pry', '~> 0.10.4'
@@ -41,6 +44,8 @@ end
 
 group :development do
   gem 'listen', '~> 3.1.5'
+  gem 'sprockets-rails', require: 'sprockets/railtie'
+  gem 'graphiql-rails'
   # Spring speeds up development by keeping your application running in the
   # background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -56,3 +61,4 @@ group :test do
   gem 'rspec', '~> 3.6.0'
   gem 'rspec-rails', '~> 3.6.0'
 end
+
