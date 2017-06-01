@@ -11,6 +11,10 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve ->(_obj, _args, _ctx) { 'Hello World!' }
   end
 
+  field :me, Types::User do
+    resolve ->(_obj, _args, ctx) { ctx[:current_user] }
+  end
+
   field :organizationalUnit do
     type Types::OrganizationalUnit
     argument :id, !types.ID
