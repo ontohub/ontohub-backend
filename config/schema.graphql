@@ -1,3 +1,7 @@
+type Mutation {
+  signIn(username: String!, password: String!): Session
+}
+
 type Organization implements OrganizationalUnit {
   # ID of the organization
   id: ID!
@@ -23,6 +27,11 @@ type Query {
 
   # Get a single organization with the given id
   organization(id: ID!): Organization
+}
+
+type Session {
+  token: String!
+  user: User!
 }
 
 type User implements OrganizationalUnit {
