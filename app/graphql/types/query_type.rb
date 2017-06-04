@@ -38,4 +38,10 @@ Types::QueryType = GraphQL::ObjectType.define do
     description 'Get a single organization with the given id'
     resolve ->(_obj, args, _ctx) { Organization.find(slug: args['id']) }
   end
+
+  field :repository do
+    type Types::Repository
+    argument :id, !types.ID
+    resolve ->(_obj, args, _ctx) { Repository.find(slug: args['id']) }
+  end
 end

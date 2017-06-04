@@ -16,6 +16,20 @@ Types::User = GraphQL::ObjectType.define do
     resolve ->(obj, _args, _ctx) { obj.display_name }
   end
   field :organizations, types[!Types::Organization] do
-    resolve ->(obj, _args, _ctx) { obj.organizations }
+    argument :limit, types.Int, 'Maximum number of repositories'
+    argument :offset, types.Int, 'Skip the first n repositories'
+    resolve ->(obj, args, _ctx) { obj.organizations_dataset.limit(args[:limit], args[:offset]) }
+  end
+  field :repositories, !types[Types::Repository] do
+    argument :limit, types.Int, 'Maximum number of repositories'
+    argument :offset, types.Int, 'Skip the first n repositories'
+    argument :accessible, types.Boolean
+    resolve ->(obj, args, _ctx) {
+      if args[:accessible]
+        repos = obj.accessible_repositories_dataset
+      else
+        repos = obj.repositories_dataset
+      end
+      repos.limit(args[:limit], args[:offset]) }
   end
 end
