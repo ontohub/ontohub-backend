@@ -48,7 +48,7 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', '~> 0.8.17'
+  gem 'codecov', '~> 0.1.10', require: false
   gem 'database_cleaner', '~> 1.6.1'
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'faker', '~> 1.7.2'
