@@ -7,6 +7,7 @@ Types::Repository = GraphQL::ObjectType.define do
     resolve ->(obj, _args, _ctx) { obj.slug }
   end
   field :owner, !Types::OrganizationalUnit
+  field :name, !types.String
   field :description, !types.String
   field :contentType, !Types::RepositoryContent do
     resolve ->(obj, _args, _ctx) { obj.content_type }

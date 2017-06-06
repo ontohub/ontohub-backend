@@ -1,11 +1,25 @@
 class GraphqlController < ApplicationController
+  def execute_single(query, context)
+    variables = ensure_hash(query[:variables])
+    query = query[:query]
+    OntohubBackendSchema.execute(query, variables: variables, context: context)
+  end
+
   def execute
-    variables = ensure_hash(params[:variables])
-    query = params[:query]
     context = {
       current_user: current_user
     }
-    result = OntohubBackendSchema.execute(query, variables: variables, context: context)
+    if params[:_json]
+      # Batched request
+      queries = params[:_json]
+      result = queries.map do |query|
+        execute_single(query, context)
+      end
+    else
+      result = execute_single({query: params[:query],
+			       variables: params[:variables]}, context)
+    end
+
     render json: result
   end
 

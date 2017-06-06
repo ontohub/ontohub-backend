@@ -21,4 +21,4 @@ test:
 
 production:
   <<: *default
-  database: ontohub
+  database: ontohub_development
