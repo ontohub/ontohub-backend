@@ -14,7 +14,7 @@ module Devise
       def authenticate!
         throw(:warden) unless claims&.key?('user_id')
 
-        success! User.find(organizational_units__slug: claims['user_id'])
+        success! User.find(Sequel[:organizational_units][:slug] => claims['user_id'])
       end
 
       protected
