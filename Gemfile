@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.1.1'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use Redis adapter to run Action Cable in production
@@ -49,10 +49,10 @@ end
 
 group :test do
   gem 'coveralls', '~> 0.8.17'
-  gem 'database_cleaner', '~> 1.5.3'
+  gem 'database_cleaner', '~> 1.6.1'
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'faker', '~> 1.7.2'
-  gem 'json-schema', '~> 2.7.0'
-  gem 'rspec', '~> 3.5.0'
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'json-schema', '~> 2.8.0'
+  gem 'rspec', '~> 3.6.0'
+  gem 'rspec-rails', '~> 3.6.0'
 end

@@ -6,8 +6,8 @@ class Sequel::Model
   # orm_adapter-sequel's development is stale.
   class OrmAdapter < ::OrmAdapter::Base
     def get(id)
-      column = "#{klass.table_name}__#{klass.primary_key}"
-      klass.find(wrap_key(column.to_sym => id))
+      column = Sequel[klass.table_name][klass.primary_key]
+      klass.find(wrap_key(column => id))
     end
   end
 end
