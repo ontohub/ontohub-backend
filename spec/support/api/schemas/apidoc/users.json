@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Users",
+  "description": "Endpoints for users",
+
+  "type": {"$ref": "../models/user_model.json#/type"},
+  "required": {"$ref": "../models/user_model.json#/required"},
+  "properties": {"$ref": "../models/user_model.json#/properties"},
+
+  "links": [
+    {
+      "title": "Show the current user",
+      "description": "Show the details of the signed in user. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/me",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/users/get_show_current_user.json"},
+      "mediaType": "application/vnd.api+json"
+    },
+    {
+      "title": "Show (explicit)",
+      "description": "Show the details of a specific user. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/user/:user_id",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/users/get_show.json"},
+      "mediaType": "application/vnd.api+json"
+    },
+    {
+      "title": "Show (inferred)",
+      "description": "Show the details of a specific user. If the :user_id parameter is a user's ID, it responds with a user. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/:user_id",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/users/get_show.json"},
+      "mediaType": "application/vnd.api+json"
+    },
+    {
+      "title": "Show Repositories",
+      "description": "Show the repositories that a specific user owns. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/users/:user_id/repositories",
+      "method": "GET",
+      "targetSchema": {"$ref": "../controllers/v2/repositories/get_index.json"},
+      "mediaType": "application/vnd.api+json"
+    }
+  ]
+}

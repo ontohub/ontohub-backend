@@ -6,10 +6,16 @@
   "type": "object",
   "required": ["id", "type"],
   "properties": {
-    "id": {"type": "string"},
+    "id": {
+      "type": "string",
+      "description": "The id of the organization",
+      "example": "seed-users"
+    },
     "type": {
       "type": "string",
-      "pattern": "^organizations$"
+      "enum": ["organizations"],
+      "description": "The type of the organization. This is always \"organizations\".",
+      "example": "organizations"
     }
   }
 }

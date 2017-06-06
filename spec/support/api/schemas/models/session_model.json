@@ -8,11 +8,15 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^authenticationtoken$"
+      "enum": ["authenticationtoken"],
+      "description": "The id of the session model. This is always \"authenticationtoken\".",
+      "example": "authenticationtoken"
     },
     "type": {
       "type": "string",
-      "pattern": "^authentication_tokens$"
+      "enum": ["authentication_tokens"],
+      "description": "The type of the session model. This is always \"authentication_tokens\".",
+      "example": "authentication_tokens"
     },
     "attributes": {
       "type": "object",
@@ -20,7 +24,9 @@
       "properties": {
         "token": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9_/\\.\\-+]+$"
+          "pattern": "^[A-Za-z0-9_/\\.\\-+]+$",
+          "description": "The token that the user needs to supply to show that they are authenticated. Send it in the HTTP-Header \"Authorization: Bearer $TOKEN\" in future requests.",
+          "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJ1c2VyX2lkIjoiYWRhIiwiZXhwIjoxNDk2MTUzOTE4fQ.oENJruTivv7q7PdP1W1tTuZIfpjK-wuzLuSei-tbUMW_CAZ0xwYvfIRFJiHEcFq1AtLM_zYdpq-TVfmlSSNlqQ"
         }
       }
     }

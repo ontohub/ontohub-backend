@@ -78,11 +78,7 @@ Rails.application.routes.draw do
       param: :slug do
         resources :repositories,
           controller: 'v2/repositories',
-          only: :index do
-            resources :files,
-              controller: 'v2/files',
-              only: %i(create show)
-          end
+          only: :index
       end
 
     resources :users,

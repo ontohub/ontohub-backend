@@ -6,10 +6,17 @@
   "type": "object",
   "required": ["id", "type", "links", "attributes", "relationships"],
   "properties": {
-    "id": {"type": "string"},
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$",
+      "description": "The id of the repository. It always starts with the owner's ID, followed by a slash.",
+      "example": "ada/repo1"
+    },
     "type": {
       "type": "string",
-      "pattern": "^repositories$"
+      "enum": ["repositories"],
+      "description": "The type of the repository. This is always \"repositories\".",
+      "example": "repositories"
     },
     "links": {
       "type": "object",
@@ -17,7 +24,9 @@
       "properties": {
         "self": {
           "type": "uri",
-          "pattern": "/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$"
+          "pattern": "/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+$",
+          "description": "A link to this resource",
+          "example": "http://localhost:3000/ada/repo1"
         }
       }
     },
@@ -25,12 +34,26 @@
       "type": "object",
       "required": ["name", "description", "content_type", "public_access"],
       "properties": {
-        "name": {"type": "string"},
-        "description": {"type": "string"},
-        "content_type": {
-          "enum": ["ontology", "model", "specification", "mathematical"]
+        "name": {
+          "type": "string",
+          "description": "The name of the repository. Its ID is derive from this",
+          "example": "Repo1"
         },
-        "public_access": {"type": "bool"}
+        "description": {
+          "type": "string",
+          "description": "A short description of the repository",
+          "example": "The first test repository"
+        },
+        "content_type": {
+          "enum": ["ontology", "model", "specification", "mathematical"],
+          "description": "What the repository's OMS are about",
+          "example": "mathematical"
+        },
+        "public_access": {
+          "type": "bool",
+          "description": "The repository is publicly available if this is true. Otherwise only the owner(s) have access to it.",
+          "example": true
+        }
       }
     },
     "relationships": {

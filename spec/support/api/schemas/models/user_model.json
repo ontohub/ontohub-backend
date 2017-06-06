@@ -6,13 +6,26 @@
   "type": "object",
   "required": ["id", "type", "links", "attributes", "relationships"],
   "properties": {
-    "id": {"type": "string"},
-    "type": {"type": "string"},
+    "id": {
+      "type": "string",
+      "description": "The id of the user",
+      "example": "ada"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["users"],
+      "description": "The type of the user. This is always \"users\".",
+      "example": "users"
+    },
     "links": {
       "type": "object",
       "required": ["self"],
       "properties": {
-        "self": {"type": "uri"}
+        "self": {
+          "type": "uri",
+          "description": "A link to this resource",
+          "example": "http://localhost:3000/users/ada"
+        }
       }
     },
     "attributes": {
@@ -21,13 +34,23 @@
       "properties": {
         "display_name": {
           "oneOf": [
-            {"type": "null"},
-            {"type": "string"}
+            {
+              "type": "string",
+              "description": "The name of the user as it should be displayed",
+              "example": "Ada Lovelace"
+            },
+            {
+              "type": "null",
+              "description": "The name of the user as it should be displayed",
+              "example": null
+            }
           ]
         },
         "email": {
           "type": "string",
-          "pattern": "[^@]+@[^@]+"
+          "pattern": "[^@]+@[^@]+",
+          "description": "The email of the user",
+          "example": "ada@example.com"
         }
       }
     },
@@ -55,7 +78,10 @@
               "type": "object",
               "required": ["related"],
               "properties": {
-                "related": {"type": "uri"}
+                "related": {
+                  "type": "uri",
+                  "example": "http://localhost:3000/ada/repo1"
+                }
               }
             }
           }
