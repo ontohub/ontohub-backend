@@ -42,6 +42,13 @@ RSpec.shared_examples 'a failing TreesController on PATCH update' do
   end
 end
 
+RSpec.shared_examples 'a failing TreesController on PATCH multiaction' do
+  it { expect(response).to have_http_status(:unprocessable_entity) }
+  it do |example|
+    expect([example, response]).to comply_with_api('validation_error')
+  end
+end
+
 RSpec.describe V2::TreesController do
   create_user_and_sign_in
   let!(:repository) { create(:repository_compound) }
@@ -159,21 +166,58 @@ RSpec.describe V2::TreesController do
       let(:updated_content) { 'some updated content' }
 
       context 'successful' do
-        before do
-          patch :update,
-            params: {repository_slug: repository.to_param,
-                     path: path,
-                     data: {attributes: {content: updated_content,
-                                         encoding: 'plain',
-                                         commit_message: commit_message,
-                                         path: updated_path}}}
+        context 'with a content change, with renaming' do
+          before do
+            patch :update,
+              params: {repository_slug: repository.to_param,
+                       path: path,
+                       data: {attributes: {content: updated_content,
+                                           encoding: 'plain',
+                                           commit_message: commit_message,
+                                           path: updated_path}}}
+          end
+
+          it { expect(response).to have_http_status(:ok) }
+          it { |example| expect([example, response]).to comply_with_api }
+
+          it 'moves the file and changes its content' do
+            expect(git.blob(branch, updated_path).data).to eq(updated_content)
+          end
         end
 
-        it { expect(response).to have_http_status(:ok) }
-        it { |example| expect([example, response]).to comply_with_api }
+        context 'with a content change, without renaming' do
+          before do
+            patch :update,
+              params: {repository_slug: repository.to_param,
+                       path: path,
+                       data: {attributes: {content: updated_content,
+                                           encoding: 'plain',
+                                           commit_message: commit_message}}}
+          end
 
-        it 'moves the file and ' do
-          expect(git.blob(branch, updated_path).data).to eq(updated_content)
+          it { expect(response).to have_http_status(:ok) }
+          it { |example| expect([example, response]).to comply_with_api }
+
+          it 'changes the file content' do
+            expect(git.blob(branch, path).data).to eq(updated_content)
+          end
+        end
+
+        context 'without a content change, with renaming' do
+          before do
+            patch :update,
+              params: {repository_slug: repository.to_param,
+                       path: path,
+                       data: {attributes: {commit_message: commit_message,
+                                           path: updated_path}}}
+          end
+
+          it { expect(response).to have_http_status(:ok) }
+          it { |example| expect([example, response]).to comply_with_api }
+
+          it 'only moves the file' do
+            expect(git.blob(branch, updated_path).data).to eq(content)
+          end
         end
       end
 
@@ -193,22 +237,6 @@ RSpec.describe V2::TreesController do
           it { expect(response.body.strip).to be_empty }
         end
 
-        context 'because no path and no content is given' do
-          before do
-            patch :update,
-              params: {repository_slug: repository.to_param,
-                       path: path,
-                       data: {attributes: {encoding: 'plain',
-                                           commit_message: commit_message}}}
-          end
-          it_behaves_like 'a failing TreesController on PATCH update'
-
-          it 'shows the content error' do
-            expect(response_hash['errors'].first).
-              to include('source' => {'pointer' => '/data/attributes/content'})
-          end
-        end
-
         context 'because no encoding is given' do
           before do
             patch :update,
@@ -220,9 +248,8 @@ RSpec.describe V2::TreesController do
           end
           it_behaves_like 'a failing TreesController on PATCH update'
 
-          it 'shows the content error' do
-            expect(response_hash['errors'].first).
-              to include('source' => {'pointer' => '/data/attributes/encoding'})
+          it 'shows the encoding error' do
+            expect(validation_error_at?('encoding')).to be(true)
           end
         end
       end
@@ -417,6 +444,143 @@ RSpec.describe V2::TreesController do
           it 'does not delete the file from the git' do
             expect(git.blob(branch, path)).not_to be(nil)
           end
+        end
+      end
+    end
+  end
+
+  context 'PATCH multiaction' do
+    let(:num_setup_files) { 6 }
+    let!(:file_range) { (0..num_setup_files - 1) }
+    let!(:old_files) { file_range.map { generate(:filepath) } }
+    let!(:new_files) { file_range.map { generate(:filepath) } }
+    let!(:old_contents) { file_range.map { generate(:content) } }
+    let!(:new_contents) { file_range.map { generate(:content) } }
+    let!(:setup_commit) do
+      info = create(:git_commit_info, branch: branch)
+      info.delete(:file)
+      info[:files] = []
+      file_range.each do |i|
+        info[:files] << {path: old_files[i],
+                         content: old_contents[i],
+                         action: :create}
+      end
+      git.commit_multichange(info)
+    end
+    let(:files) do
+      [{path: new_files[0],
+        content: new_contents[0],
+        encoding: 'plain',
+        action: 'create'},
+
+       {path: new_files[1],
+        previous_path: old_files[1],
+        action: 'rename'},
+
+       {path: old_files[2],
+        content: new_contents[2],
+        encoding: 'plain',
+        action: 'update'},
+
+       {path: new_files[3],
+        content: new_contents[3],
+        encoding: 'plain',
+        previous_path: old_files[3],
+        action: 'update'},
+
+       {path: old_files[4],
+        action: 'remove'},
+
+       {path: new_files[5],
+        action: 'mkdir'}]
+    end
+
+    context 'successful' do
+      before do
+        commit_message = generate(:commit_message)
+        patch :multiaction,
+          params: {repository_slug: repository.to_param,
+                   ref: branch,
+                   data: {attributes: {files: files,
+                                       commit_message: commit_message}}}
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+      it { |example| expect([example, response]).to comply_with_api }
+
+      it 'performs the create action' do
+        expect(git.blob(branch, new_files[0]).data).to eq(new_contents[0])
+      end
+
+      it 'performs the rename action: the new filename exists' do
+        expect(git.blob(branch, new_files[1]).data).to eq(old_contents[1])
+      end
+
+      it 'performs the rename action: the old filename does not exist' do
+        expect(git.blob(branch, old_files[1])).to be_nil
+      end
+
+      it 'performs the non-renaming update action: new content correct' do
+        expect(git.blob(branch, old_files[2]).data).to eq(new_contents[2])
+      end
+
+      it 'performs the non-renaming update action: old content not there' do
+        expect(git.blob(branch, old_files[2]).data).not_to eq(old_contents[2])
+      end
+
+      it 'performs the renaming update action: new filename and content' do
+        expect(git.blob(branch, new_files[3]).data).to eq(new_contents[3])
+      end
+
+      it 'performs the renaming update action: the old content is gone' do
+        expect(git.blob(branch, new_files[3]).data).not_to eq(old_contents[3])
+      end
+
+      it 'performs the renaming update action: '\
+        'the old filename does not exist' do
+        expect(git.blob(branch, old_files[3])).to be_nil
+      end
+
+      it 'performs the removing action' do
+        expect(git.blob(branch, old_files[4])).to be_nil
+      end
+
+      it 'performs the mkdir action: no blob exists at path' do
+        expect(git.blob(branch, new_files[5])).to be_nil
+      end
+
+      it 'performs the mkdir action: .gitkeep exists under path' do
+        expect(git.tree(branch, new_files[5]).first.path).
+          to end_with('/.gitkeep')
+      end
+
+      it 'only adds one log entry' do
+        expect(git.log(ref: "#{branch}~").first.oid).to eq(setup_commit)
+      end
+    end
+
+    context 'failing' do
+      context 'by validation error' do
+        let(:files) do
+          [{path: old_files[0],
+            content: new_contents[0],
+            encoding: 'plain',
+            action: 'create'}]
+        end
+
+        before do
+          commit_message = generate(:commit_message)
+          patch :multiaction,
+            params: {repository_slug: repository.to_param,
+                     ref: branch,
+                     data: {attributes: {files: files,
+                                         commit_message: commit_message}}}
+        end
+
+        it_behaves_like 'a failing TreesController on PATCH multiaction'
+        it 'has the correct validation error' do
+          expect(validation_errors_at('files/0/path')).
+            to include(/path already exists/)
         end
       end
     end

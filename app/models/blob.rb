@@ -71,32 +71,29 @@ class Blob < ActiveModelSerializers::Model
 
   def destroy
     self.commit_message = attributes[:commit_message] = "Delete #{path}."
-    git.remove_file(commit_info, previous_head_sha)
-  rescue Gitlab::Git::Repository::InvalidRef
-    @errors.add(:branch, "branch does not exist: #{branch}")
-    raise ValidationFailed
+    multi_blob = MultiBlob.new(multi_blob_params('remove'))
+    multi_blob.save
+  rescue MultiBlob::ValidationFailed
+    convert_errors_and_raise(multi_blob)
   end
 
   def save(mode: nil)
-    raise ValidationFailed, @errors.messages.to_json unless valid?
-    commit_sha =
-      begin
-        if rename_file?
-          git.rename_file(commit_info, previous_head_sha)
-        elsif mode == :create
-          git.create_file(commit_info, previous_head_sha)
-        else
-          git.update_file(commit_info, previous_head_sha)
-        end
-      rescue Git::Committing::HeadChangedError
-        @errors.add(:branch,
-                    'Could not save the file in the git repository '\
-                    'because it has changed in the meantime. '\
-                    'Please try again after checking out the current revision.')
-        raise ValidationFailed
+    multi_blob =
+      if mode == :create
+        MultiBlob.new(multi_blob_params('create'))
+      elsif rename_file? && content.nil?
+        params = multi_blob_params('rename')
+        reset_content
+        MultiBlob.new(params)
+      else
+        MultiBlob.new(multi_blob_params('update'))
       end
-    self.commit_id = commit_sha
-    create_file_version(commit_sha)
+    self.commit_id =
+      begin
+        multi_blob.save
+      rescue MultiBlob::ValidationFailed
+        convert_errors_and_raise(multi_blob)
+      end
 
     changes_applied
 
@@ -121,92 +118,41 @@ class Blob < ActiveModelSerializers::Model
   protected
 
   def rename_file?
-    previous_path.present? && previous_path != path
+    !previous_path.nil?
   end
-
-  # rubocop:disable Style/IfUnlessModifier
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
-  def valid?(mode = :save)
-    return @errors.blank? if @validated
-    case mode
-    when :create
-      if !git&.empty? && git&.branch_exists?(branch) &&
-         git&.path_exists?(branch, path)
-        @errors.add(:path, "path already exists: #{path}")
-      end
-    when :update
-      if !content_changed? && !path_changed?
-        @errors.add(:content, 'either content or path must be changed')
-      end
-    end
-    unless repository.is_a?(RepositoryCompound)
-      @errors.add(:repository, 'repository must be set')
-    end
-    if user.blank?
-      @errors.add(:user, 'No user set')
-    end
-    if !git&.empty? && !git&.branch_exists?(branch)
-      @errors.add(:branch, "branch does not exist: #{branch}")
-    end
-    unless ENCODINGS.include?(encoding)
-      @errors.add(:encoding, "encoding not supported: #{encoding}. "\
-                           "Must be one of #{ENCODINGS.join(',')}")
-    end
-    if content.nil?
-      @errors.add(:content, 'content must exist')
-    end
-    unless content.is_a?(String)
-      @errors.add(:content, 'content must be a string')
-    end
-    unless commit_message.present?
-      @errors.add(:commit_message, 'commit_message is not present')
-    end
-    @validated = true
-    @errors.blank?
-  end
-  # rubocop:enable Style/IfUnlessModifier
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/PerceivedComplexity
 
   def reset_validation_state
     @errors.clear
     @validated = false
   end
 
-  def decoded_content
-    @decoded_content ||=
-      case encoding
-      when 'base64'
-        Base64.decode64(content)
-      when 'plain'
-        content
+  def reset_content
+    return unless content.nil?
+    blob = repository.git.blob(branch, previous_path)
+    self.content = blob.data
+    self.encoding = blob.binary ? 'base64' : 'plain'
+  end
+
+  def multi_blob_params(mutli_blob_action)
+    params = {files: [{path: path,
+                       content: content,
+                       encoding: encoding,
+                       action: mutli_blob_action}],
+              previous_head_sha: previous_head_sha,
+              commit_message: commit_message,
+              branch: branch,
+              repository: repository,
+              user: user}
+    params[:files].first[:previous_path] = previous_path if rename_file?
+    params
+  end
+
+  def convert_errors_and_raise(multi_blob)
+    multi_blob.errors.messages.each do |attribute, messages|
+      messages.each do |message|
+        @errors.add(attribute.to_s.sub('files/0/', ''), message)
       end
-  end
-
-  def create_file_version(commit_sha)
-    file_version =
-      FileVersion.new(path: path,
-                      commit_sha: commit_sha,
-                      repository_id: repository.pk,
-                      url_path_method: ->(_file_version) { url_path })
-    file_version.save
-    file_version
-  end
-
-  def commit_info
-    now = Time.now
-    @commit_info ||= {file: {content: decoded_content, path: path},
-                      author: user_info(now),
-                      committer: user_info(now),
-                      commit: {message: commit_message, branch: branch}}
-    @commit_info[:file][:previous_path] = previous_path if rename_file?
-    @commit_info
-  end
-
-  def user_info(time = nil)
-    {email: user.email,
-     name: user.display_name || user.slug,
-     time: time || Time.now}
+    end
+    raise ValidationFailed, @errors.messages.to_json
   end
 end

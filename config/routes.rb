@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   # We need these routes multiple times:
   routes_under_repository = lambda do
     scope '/tree' do
+      patch '/', controller: 'v2/trees', action: 'multiaction'
       post '/', controller: 'v2/trees', action: 'create'
       get '/', controller: 'v2/trees', action: 'show', defaults: {path: ''}
       patch '/:path',

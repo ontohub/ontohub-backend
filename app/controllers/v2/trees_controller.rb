@@ -48,6 +48,18 @@ module V2
       render_error(:unprocessable_entity)
     end
 
+    def multiaction
+      @resource = MultiBlob.new(files: params[:data][:attributes][:files],
+                                commit_message:
+                                  resource_params[:commit_message],
+                                branch: ref,
+                                repository: repository,
+                                user: current_user)
+      render_resource(:ok, serializer: V2::MultiBlobSerializer) if resource.save
+    rescue MultiBlob::ValidationFailed
+      render_error(:unprocessable_entity)
+    end
+
     protected
 
     def repository
@@ -69,9 +81,10 @@ module V2
     end
 
     def resource
-      @resource ||= Blob.find(repository_id: repository.to_param,
-                              branch: ref,
-                              path: params[:path])
+      return @resource if @resource
+      @resource = Blob.find(repository_id: repository.to_param,
+                            branch: ref,
+                            path: params[:path])
       @resource&.user = current_user
       @resource
     end
@@ -91,13 +104,17 @@ module V2
                     repository: repository,
                     user: current_user}
       # Only for moving the file
-      attributes[:path] = resource_params[:path] if resource_params[:path]
-      # Only if changing the content
-      if resource_params[:content]
-        attributes[:content] = resource_params[:content]
-        attributes[:encoding] = resource_params[:encoding]
+      if resource_params[:path]
+        attributes[:path] = resource_params[:path]
+        attributes[:previous_path] = params[:path]
+      else
+        attributes[:path] = params[:path]
+        attributes[:previous_path] = nil
       end
-      attributes[:previous_path] = params[:path]
+      # Only if changing the content
+      attributes[:content] = resource_params[:content]
+      attributes[:encoding] = resource_params[:encoding]
+
       resource.update(attributes)
       resource.save
     end

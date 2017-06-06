@@ -68,7 +68,7 @@ RSpec.describe V2::RepositoriesController do
           repository = Repository.find(name: name)
           git_path = Settings.data_directory.join('git',
                                                   "#{repository.to_param}.git")
-          expect(Git.new(git_path).repo_exists?).to be(true)
+          expect(Gitlab::Git::Wrapper.new(git_path).repo_exists?).to be(true)
         end
         it 'sets the correct url' do
           found_repository = Repository.find(name: name)
@@ -179,7 +179,7 @@ RSpec.describe V2::RepositoriesController do
         it 'deletes the git repository' do
           git_path = Settings.data_directory.join('git',
                                                   "#{repository.to_param}.git")
-          expect(Git.new(git_path).repo_exists?).to be(false)
+          expect(Gitlab::Git::Wrapper.new(git_path).repo_exists?).to be(false)
         end
       end
 

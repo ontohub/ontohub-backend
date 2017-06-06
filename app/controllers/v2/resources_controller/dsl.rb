@@ -11,7 +11,10 @@ module V2
           klass = self.class.instance_variable_get(:@resource_class)
           @collection = klass.where(parent_params)
           if @collection.respond_to?(:all)
+            # :nocov:
+            # This is not yet used. Remove nocov as soon as it's used
             @collection = @collection.all
+            # :nocov:
           else
             @collection
           end
@@ -122,9 +125,12 @@ module V2
 
         def permitted_params_options(params, opts)
           if params.last.is_a?(Hash)
+            # :nocov:
+            # This is not yet used. Remove nocov as soon as it's used
             opts.merge(params.pop.map do |action, action_params|
               [action, Array(action_params).map(&:to_sym)]
             end&.to_h)
+            # :nocov:
           end
           opts
         end
