@@ -15,6 +15,9 @@ RSpec.describe V2::Users::RegistrationsController do
   end
   let!(:existing_user) { create(:user) }
   let!(:existing_organization) { create(:organization) }
+  before do
+    existing_user.confirm
+  end
 
   describe 'POST create' do
     context 'successful' do
@@ -62,11 +65,16 @@ RSpec.describe V2::Users::RegistrationsController do
           patch :update, params: {data: {attributes: new_attributes}}
         end
         it { expect(response).to have_http_status(:ok) }
-        %i(email display_name encrypted_password).each do |attribute|
+        %i(display_name encrypted_password).each do |attribute|
           it "updates the #{attribute}" do
             expect { existing_user.reload }.
               to change { existing_user.send(attribute) }
           end
+        end
+
+        it "updates the unconfirmed_email" do
+          expect { existing_user.reload }.
+            to change { existing_user.unconfirmed_email }
         end
       end
 
