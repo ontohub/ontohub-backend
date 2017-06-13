@@ -65,13 +65,21 @@ Rails.application.routes.draw do
                          db:recreate db:recreate:seed))
       devise_for :users,
         controllers: {registrations: 'v2/users/registrations',
+                      confirmations: 'v2/users/confirmations',
                       sessions: 'v2/users/sessions'},
-        skip: [:registrations, :sessions]
+        skip: [:registrations, :confirmations, :sessions]
       scope 'users' do
         devise_scope :user do
           post '', controller: 'v2/users/registrations', action: 'create'
           patch '', controller: 'v2/users/registrations', action: 'update'
           delete '', controller: 'v2/users/registrations', action: 'destroy'
+
+          post '/confirmation',
+            controller: 'v2/users/confirmations', action: 'create',
+            as: nil
+          patch '/confirmation',
+            controller: 'v2/users/confirmations', action: 'update',
+            as: :user_confirmation
 
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Confirmation",
+  "description": "Endpoint to confirm a user's email address",
+
+  "links": [
+    {
+      "title": "Confirm the email address",
+      "description": "Confirms the email address. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/users/confirmation",
+      "method": "PATCH",
+
+      "requestHeaders": {
+        "required": ["Content-Type"],
+        "properties": {
+          "Content-Type": {
+            "enum": ["application/json"],
+            "example": "application/json"
+          }
+        }
+      },
+
+      "schema": {
+        "type": "object",
+        "required": ["confirmation_token"],
+        "properties": {
+          "confirmation_token": {
+            "description": "The confirmation token from the confirmation email",
+            "example": "1uDG4m9cPbyra57zjs71",
+            "type": "string"
+          }
+        }
+      },
+      "targetSchema": {"$ref": "../controllers/v2/users/confirmations/get_show.json"}
+    },
+    {
+      "title": "Re-send the confirmation email",
+      "description": "Request to re-send the confirmation email. Returns HTTP 201 (Created).",
+      "rel": "self",
+      "href": "/users/confirmation",
+      "method": "POST",
+
+      "requestHeaders": {
+        "required": ["Content-Type"],
+        "properties": {
+          "Content-Type": {
+            "enum": ["application/json"],
+            "example": "application/json"
+          }
+        }
+      },
+
+      "schema": {
+        "type": "object",
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["attributes"],
+            "properties": {
+              "attributes": {
+                "description": "Attributes of the user to send the confirmation email to",
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "description": "The email address of the user to send the confirmation email to",
+                    "example": "ada@example.com",
+                    "type": "string",
+                    "pattern": "[^@]+@[^@]+"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "targetSchema": {"$ref": "../controllers/v2/users/confirmations/post_create.json"}
+    }
+  ]
+}
