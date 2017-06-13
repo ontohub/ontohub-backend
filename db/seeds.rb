@@ -5,10 +5,11 @@ url_path_method = lambda do |resource|
   V2::UsersController.resource_url_path(resource)
 end
 [{name: 'ada', display_name: 'Ada Lovelace'}, {name: 'bob'}].each do |userinfo|
-  user = User.new(userinfo.merge(
-                  email: "#{userinfo[:name]}@example.com",
-                  url_path_method: url_path_method))
+  user = User.new(userinfo.
+                  merge(email: "#{userinfo[:name]}@example.com",
+                        url_path_method: url_path_method))
   user.password = 'changemenow'
+  user.confirmed_at = Time.now
   user.save
 end
 
