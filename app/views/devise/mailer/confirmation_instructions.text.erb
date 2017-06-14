@@ -1,0 +1,9 @@
+Welcome <%= @resource.display_name || @resource.to_param %>!
+
+You can confirm your account email by visiting the following URL:
+
+<%= confirmation_url(@resource, confirmation_token: @token) %>
+
+Your confirmation token is: <%= @token%>
+
+You can access your unconfirmed account for <%= (Devise.allow_unconfirmed_access_for / ActiveSupport::Duration::SECONDS_PER_DAY).to_i%> days.
