@@ -9,7 +9,7 @@ module V2
       def create
         super
         message =
-          'A email with instructions to reset the password has been sent to '\
+          'An email with instructions to reset the password has been sent to '\
           "#{resource.email} "\
           'if a user is registered by this email address.'
         render status: :created, json: {meta: {action: message},
@@ -46,6 +46,12 @@ module V2
       # Disable responding (rendering) of the parent class.
       # This should be done manually in this class.
       def respond_with(*args); end
+
+      # Disable the reset_password_token check (before_action) for +edit+.
+      def assert_reset_token_passed(*args); end
+
+      # Disable redirecting to the login form after resetting the password.
+      def after_resetting_password_path_for(*args); end
     end
   end
 end

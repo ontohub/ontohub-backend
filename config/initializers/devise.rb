@@ -129,7 +129,7 @@ Devise.setup do |config|
   # config.pepper = '0791a10890d80e7da9293fcb28179b1a966b9101fa2d7cb0e638b75ce2a211ba2349f845940294ddaf19a1e1d3d6e547e1c1ea4f246fc1f30c19ba525f094f1b'
 
   # Send a notification email when the user's password is changed
-  # config.send_password_change_notification = false
+  config.send_password_change_notification = true
 
   # ==> Configuration for :confirmable A period that the user is allowed to
   # access the website even without confirming their account. For instance, if
@@ -214,7 +214,7 @@ Devise.setup do |config|
   # ==> Configuration for :recoverable
   #
   # Defines which key will be used when recovering the password for an account
-  # config.reset_password_keys = [:email]
+  config.reset_password_keys = [:email]
 
   # Time interval you can reset your password with a reset password key.  Don't
   # put a too small interval or your users won't have the time to change their
@@ -224,7 +224,7 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their
   # password is reset. Defaults to true, so a user is signed in automatically
   # after a reset.
-  # config.sign_in_after_reset_password = true
+  config.sign_in_after_reset_password = false
 
   # ==> Configuration for :encryptable Allow you to use another hashing or
   # encryption algorithm besides bcrypt (default).  You can use :sha1, :sha512

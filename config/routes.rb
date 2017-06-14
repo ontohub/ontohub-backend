@@ -66,8 +66,9 @@ Rails.application.routes.draw do
       devise_for :users,
         controllers: {registrations: 'v2/users/registrations',
                       confirmations: 'v2/users/confirmations',
-                      sessions: 'v2/users/sessions'},
-        skip: [:registrations, :confirmations, :sessions]
+                      sessions: 'v2/users/sessions',
+                      passwords: 'v2/users/passwords'},
+        skip: [:registrations, :confirmations, :sessions, :passwords]
       scope 'users' do
         devise_scope :user do
           post '', controller: 'v2/users/registrations', action: 'create'
@@ -80,6 +81,12 @@ Rails.application.routes.draw do
           patch '/confirmation',
             controller: 'v2/users/confirmations', action: 'update',
             as: :user_confirmation
+
+          get '/password',
+            controller: 'v2/users/passwords', action: 'edit',
+            as: :edit_user_password
+          post '/password', controller: 'v2/users/passwords', action: 'create'
+          patch '/password', controller: 'v2/users/passwords', action: 'update'
 
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
