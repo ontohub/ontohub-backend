@@ -101,14 +101,18 @@ RSpec.describe V2::Users::RegistrationsController do
         it { expect(response).to have_http_status(:ok) }
         %i(display_name encrypted_password).each do |attribute|
           it "updates the #{attribute}" do
+            # rubocop:disable Lint/AmbiguousBlockAssociation
             expect { existing_user.reload }.
               to change { existing_user.send(attribute) }
+            # rubocop:enable Lint/AmbiguousBlockAssociation
           end
         end
 
         it 'updates the unconfirmed_email' do
+          # rubocop:disable Lint/AmbiguousBlockAssociation
           expect { existing_user.reload }.
             to change { existing_user.unconfirmed_email }
+          # rubocop:enable Lint/AmbiguousBlockAssociation
         end
 
         it 'sends a confirmation email and two notification emails' do
@@ -208,12 +212,15 @@ RSpec.describe V2::Users::RegistrationsController do
             end
           end
           it 'current_password has the correct error message' do
-            expect(validation_errors_at(:current_password)).to include('invalid')
+            expect(validation_errors_at(:current_password)).
+              to include('invalid')
           end
           %i(email display_name encrypted_password).each do |attribute|
             it "does not update the #{attribute}" do
+              # rubocop:disable Lint/AmbiguousBlockAssociation
               expect { existing_user.reload }.
                 not_to change { existing_user.send(attribute) }
+              # rubocop:enable Lint/AmbiguousBlockAssociation
             end
           end
         end
@@ -222,7 +229,7 @@ RSpec.describe V2::Users::RegistrationsController do
           before do
             patch :update,
               params: {data: {attributes: new_attributes.
-                merge(display_name: 'a'*101,
+                merge(display_name: 'a' * 101,
                       email: 'not-an-email',
                       password: 'too short')}}
           end
