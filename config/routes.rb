@@ -67,8 +67,9 @@ Rails.application.routes.draw do
         controllers: {registrations: 'v2/users/registrations',
                       confirmations: 'v2/users/confirmations',
                       sessions: 'v2/users/sessions',
+                      unlocks: 'v2/users/unlocks',
                       passwords: 'v2/users/passwords'},
-        skip: [:registrations, :confirmations, :sessions, :passwords]
+        skip: [:registrations, :confirmations, :sessions, :unlocks, :passwords]
       scope 'users' do
         devise_scope :user do
           post '', controller: 'v2/users/registrations', action: 'create'
@@ -90,6 +91,13 @@ Rails.application.routes.draw do
 
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
+
+          post '/unlock',
+            controller: 'v2/users/unlocks', action: 'create',
+            as: nil
+          patch '/unlock',
+            controller: 'v2/users/unlocks', action: 'update',
+            as: :user_unlock
         end
         get '/me', controller: 'v2/users', action: 'show_current_user'
       end

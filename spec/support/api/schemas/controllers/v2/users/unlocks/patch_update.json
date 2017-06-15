@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V2 Users Unlocks Controller: PATCH/update",
+  "description": "V2 Users Unlocks Controller: PATCH/update",
+
+  "type": "object",
+  "required": ["data", "jsonapi"],
+  "properties": {
+    "data": {
+      "$ref": "../../../../models/user_model.json"
+    },
+    "jsonapi": { "$ref": "../../../../controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}
