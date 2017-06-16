@@ -5,7 +5,11 @@ language: ruby
 
 rvm:
   - 2.4.1
-  - rbx-3.77
+  - rbx-3.81
+
+matrix:
+  allow_failures:
+  - rvm: rbx-3.81
 
 services:
   - postgresql
