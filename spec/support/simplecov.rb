@@ -11,9 +11,8 @@ if RUBY_ENGINE == 'ruby' # not 'rbx'
       add_filter 'config/initializers/config.rb'
     end
     require 'codecov'
-    SimpleCov.formatters = [
-      SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::Codecov
-    ]
+    formatters = [SimpleCov::Formatter::HTMLFormatter]
+    formatters << SimpleCov::Formatter::Codecov if ENV['CI']
+    SimpleCov.formatters = formatters
   end
 end
