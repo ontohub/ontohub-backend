@@ -26,7 +26,8 @@ addons:
     - git-svn
 
 before_script:
-  - RAILS_ENV=test bin/rails db:recreate
+  - RAILS_ENV=test bundle exec rails db:recreate
+  - RAILS_ENV=development bundle exec rails db:recreate:seed
 
 script:
   - bundle exec rake
