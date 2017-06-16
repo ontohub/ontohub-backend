@@ -32,6 +32,8 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
 gem 'jwt', '~> 1.5.6'
 gem 'recaptcha', '~> 4.1.0'
+gem 'graphql', '~> 1.6.3'
+gem 'graphql-batch', '~> 0.3.3'
 
 group :development, :test do
 end
@@ -45,6 +47,8 @@ group :development do
   # background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'sprockets-rails', require: 'sprockets/railtie'
+  gem 'graphiql-rails'
 end
 
 group :test do
