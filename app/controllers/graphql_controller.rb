@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Controller for the GraphQL API endpoint
 class GraphqlController < ApplicationController
   def execute
     variables = ensure_hash(params[:variables])
@@ -6,13 +9,18 @@ class GraphqlController < ApplicationController
       # Query context goes here, for example:
       # current_user: current_user,
     }
-    result = OntohubBackendSchema.execute(query, variables: variables, context: context)
+    result = OntohubBackendSchema.execute(
+      query,
+      variables: variables,
+      context: context
+    )
     render json: result
   end
 
   private
 
   # Handle form data, JSON body, or a blank value
+  # rubocop:disable Metrics/MethodLength
   def ensure_hash(ambiguous_param)
     case ambiguous_param
     when String
@@ -29,4 +37,5 @@ class GraphqlController < ApplicationController
       raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
     end
   end
+  # rubocop:enable Metrics/MethodLength
 end

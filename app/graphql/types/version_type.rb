@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Types::VersionType = GraphQL::ObjectType.define do
   name 'Version'
   field :full,
@@ -9,7 +11,8 @@ Types::VersionType = GraphQL::ObjectType.define do
   field :tag,
         !types.String,
         'Last published version'
-  field :commits_since_tag,
-        !types.Int,
-        'Amount of commits since the last version bump'
+  field :commitsSinceTag, !types.Int do
+    description 'Amount of commits since the last version bump'
+    resolve ->(obj, _args, _ctx) { obj.commits_since_tag }
+  end
 end
