@@ -16,6 +16,13 @@ end
 # :nocov:
 
 Rails.application.routes.draw do
+  if Rails.env.development?
+    # :nocov:
+    mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql'
+    # :nocov:
+  end
+
+  post '/graphql', to: 'graphql#execute'
   # The router normalizes the paths of all routes and of all requests. This
   # also removes doubles slashes. That removal needs to be suppressed for the
   # requests because our URLs use double and even triple slashes. The following
