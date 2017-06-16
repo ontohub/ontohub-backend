@@ -4,17 +4,27 @@
 module JWTWrapper
   extend module_function
 
+  # :nocov:
+  # This is only used before the application starts to set up the keys
   def generate_private_key
     key = OpenSSL::PKey::EC.new('prime256v1')
     key.generate_key
   end
-  PRIVATE_KEY = OpenSSL::PKey::EC.new(Rails.application.secrets.jwt[:private])
 
   def generate_public_key(private_key)
     key = OpenSSL::PKey::EC.new(private_key)
     key.private_key = nil
     key
   end
+
+  def generate_key_pair
+    private_key = generate_private_key
+    public_key = generate_public_key(private_key)
+    {public: public_key, private: private_key}
+  end
+  # :nocov:
+
+  PRIVATE_KEY = OpenSSL::PKey::EC.new(Rails.application.secrets.jwt[:private])
   PUBLIC_KEY = OpenSSL::PKey::EC.new(Rails.application.secrets.jwt[:public])
 
   def encode(payload, expiration = nil)
