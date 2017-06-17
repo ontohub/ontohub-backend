@@ -59,7 +59,7 @@ RSpec.describe V2::Users::SessionsController do
 
       context 'locking after failed sign in attempts', type: :mailer,
                                                        no_transaction: true do
-        let(:original_unlock_in) { 1.day }
+        let(:original_unlock_in) { 10.minutes }
         before { User.unlock_in = original_unlock_in }
         after { User.unlock_in = original_unlock_in }
 
@@ -133,7 +133,7 @@ RSpec.describe V2::Users::SessionsController do
           before { user.lock_access! }
           context 'with timeout not yet reached' do
             before do
-              User.unlock_in = 1.day
+              User.unlock_in = 10.minutes
               post :create,
                 params: {user: {name: user.to_param, password: user.password}},
                 format: :json
@@ -149,7 +149,7 @@ RSpec.describe V2::Users::SessionsController do
 
           context 'with timeout reached' do
             before do
-              User.unlock_in = -1.day
+              User.unlock_in = -10.minutes
               post :create,
                 params: {user: {name: user.to_param, password: user.password}},
                 format: :json
