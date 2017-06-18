@@ -11,7 +11,7 @@ RSpec.describe OntohubBackendSchema do
   end
 
   let(:context) { {} }
-  let(:variables) { {"id" => subject.slug} }
+  let(:variables) { {'id' => subject.slug} }
 
   let(:result) do
     res = OntohubBackendSchema.execute(

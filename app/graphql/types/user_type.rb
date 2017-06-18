@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 Types::UserType = GraphQL::ObjectType.define do
   name 'User'
   interfaces [Types::OrganizationalUnitType]
@@ -19,7 +20,7 @@ Types::UserType = GraphQL::ObjectType.define do
   field :emailHash, !types.String do
     description 'MD5 hash of the user\'s email address'
     resolve(lambda do |user, _args, _ctx|
-      Digest::MD5.hexdigest(user.email)  
+      Digest::MD5.hexdigest(user.email)
     end)
   end
 
@@ -37,3 +38,4 @@ Types::UserType = GraphQL::ObjectType.define do
     end)
   end
 end
+# rubocop:enable Metrics/BlockLength

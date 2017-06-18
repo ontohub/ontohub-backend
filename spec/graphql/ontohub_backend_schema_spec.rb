@@ -3,7 +3,9 @@
 require 'spec_helper'
 
 RSpec.describe OntohubBackendSchema do
-  let(:current_schema) { GraphQL::Schema::Printer.print_schema(OntohubBackendSchema) }
+  let(:current_schema) do
+    GraphQL::Schema::Printer.print_schema(OntohubBackendSchema)
+  end
 
   describe 'Schema' do
     it 'matches the generated schema' do
