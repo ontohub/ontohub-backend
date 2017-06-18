@@ -13,6 +13,6 @@ Types::VersionType = GraphQL::ObjectType.define do
         'Last published version'
   field :commitsSinceTag, !types.Int do
     description 'Amount of commits since the last version bump'
-    resolve ->(obj, _args, _ctx) { obj.commits_since_tag }
+    property :commits_since_tag
   end
 end
