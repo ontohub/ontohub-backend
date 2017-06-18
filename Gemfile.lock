@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: cbcdbab844ed416a4cf9a9c23aba4b864d36f275
-  branch: master
+  revision: 05b737bd31c1f0c183499142455bc97ea9751a01
+  branch: add_email_hash_field
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)

@@ -19,9 +19,7 @@ Types::UserType = GraphQL::ObjectType.define do
 
   field :emailHash, !types.String do
     description 'MD5 hash of the user\'s email address'
-    resolve(lambda do |user, _args, _ctx|
-      Digest::MD5.hexdigest(user.email)
-    end)
+    property :email_hash
   end
 
   field :organizations, !types[Types::OrganizationType] do
