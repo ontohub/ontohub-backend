@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OntohubBackendSchema do
+RSpec.describe Types::UserType do
   let!(:user) { create :user }
   let!(:organization1) { create :organization }
   let!(:organization2) { create :organization }
@@ -15,26 +15,24 @@ RSpec.describe OntohubBackendSchema do
     organization3.add_member(user)
   end
 
-  describe 'OrganizationType' do
-    subject { user }
-    let(:user_type) { OntohubBackendSchema.types['User'] }
+  subject { user }
+  let(:user_type) { OntohubBackendSchema.types['User'] }
 
-    describe 'members field' do
-      let(:organizations_field) { user_type.fields['organizations'] }
-      it 'returns only the organizations to user is a member in' do
-        organizations = organizations_field.resolve(user, {}, {})
-        expect(organizations.count).to be(3)
-      end
+  context 'members field' do
+    let(:organizations_field) { user_type.fields['organizations'] }
+    it 'returns only the organizations to user is a member in' do
+      organizations = organizations_field.resolve(user, {}, {})
+      expect(organizations.count).to be(3)
+    end
 
-      it 'limits the organization list' do
-        organizations = organizations_field.resolve(user, {limit: 1}, {})
-        expect(organizations.count).to be(1)
-      end
+    it 'limits the organization list' do
+      organizations = organizations_field.resolve(user, {limit: 1}, {})
+      expect(organizations.count).to be(1)
+    end
 
-      it 'skips a number of organizations' do
-        organizations = organizations_field.resolve(user, {skip: 1}, {})
-        expect(organizations.count).to be(2)
-      end
+    it 'skips a number of organizations' do
+      organizations = organizations_field.resolve(user, {skip: 1}, {})
+      expect(organizations.count).to be(2)
     end
   end
 end

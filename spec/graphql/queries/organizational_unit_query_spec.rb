@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OntohubBackendSchema do
+RSpec.describe 'OrganizationalUnit query' do
   let!(:user) { create :user }
   let!(:organization) { create :organization }
 
@@ -23,62 +23,60 @@ RSpec.describe OntohubBackendSchema do
     res
   end
 
-  describe 'OrganizationalUnit query' do
-    let(:query_string) do
-      <<-QUERY
-      query OrganizationalUnit($id: ID!) {
-        organizationalUnit(id: $id) {
-          id
-          displayName
-          ... on User {
-            email
-            emailHash
-            organizations {
-              id
-            }
+  let(:query_string) do
+    <<-QUERY
+    query OrganizationalUnit($id: ID!) {
+      organizationalUnit(id: $id) {
+        id
+        displayName
+        ... on User {
+          email
+          emailHash
+          organizations {
+            id
           }
-          ... on Organization {
-            description
-            members {
-              id
-            }
+        }
+        ... on Organization {
+          description
+          members {
+            id
           }
         }
       }
-      QUERY
+    }
+    QUERY
+  end
+
+  context 'User' do
+    subject { user }
+
+    it 'returns the user fields' do
+      user = result['data']['organizationalUnit']
+      expect(user).to include(
+        'id' => subject.slug,
+        'displayName' => subject.display_name,
+        'email' => subject.email,
+        'emailHash' => subject.email_hash,
+        'organizations' => [
+          {'id' => organization.slug}
+        ]
+      )
     end
+  end
 
-    describe 'User' do
-      subject { user }
+  context 'Organization' do
+    subject { organization }
 
-      it 'returns the user fields' do
-        user = result['data']['organizationalUnit']
-        expect(user).to include(
-          'id' => subject.slug,
-          'displayName' => subject.display_name,
-          'email' => subject.email,
-          'emailHash' => Digest::MD5.hexdigest(subject.email),
-          'organizations' => [
-            {'id' => organization.slug}
-          ]
-        )
-      end
-    end
-
-    describe 'Organization' do
-      subject { organization }
-
-      it 'returns the organization fields' do
-        organization = result['data']['organizationalUnit']
-        expect(organization).to include(
-          'id' => subject.slug,
-          'displayName' => subject.display_name,
-          'description' => subject.description,
-          'members' => [
-            {'id' => user.slug}
-          ]
-        )
-      end
+    it 'returns the organization fields' do
+      organization = result['data']['organizationalUnit']
+      expect(organization).to include(
+        'id' => subject.slug,
+        'displayName' => subject.display_name,
+        'description' => subject.description,
+        'members' => [
+          {'id' => user.slug}
+        ]
+      )
     end
   end
 end
