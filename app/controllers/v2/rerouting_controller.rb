@@ -45,7 +45,7 @@ module V2
     def rename_model_based_params_key
       current_key = model_based_params_key(self)
       target_key = model_based_params_key(@other_controller)
-      params[target_key] = params.delete(current_key).to_h
+      params[target_key] = params.delete(current_key).to_unsafe_h
     end
   end
 end

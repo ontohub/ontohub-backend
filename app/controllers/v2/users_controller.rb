@@ -9,11 +9,7 @@ module V2
 
     def show_current_user
       @resource = current_user
-      if @resource
-        render_resource
-      else
-        render status: :not_found
-      end
+      render_resource
     end
   end
 end
