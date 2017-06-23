@@ -32,7 +32,7 @@
           }
         }
       },
-      "targetSchema": {"$ref": "../controllers/v2/users/unlocks/patch_update.json"}
+      "targetSchema": {"$ref": "../controllers/v2/users/unlock/patch_unlock_account.json"}
     },
     {
       "title": "Re-send the unlock instructions email",
@@ -76,7 +76,7 @@
           }
         }
       },
-      "targetSchema": {"$ref": "../controllers/v2/users/unlocks/post_create.json"}
+      "targetSchema": {"$ref": "../controllers/v2/users/unlock/post_resend_unlocking_email.json"}
     }
   ]
 }

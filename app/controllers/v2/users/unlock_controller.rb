@@ -3,7 +3,7 @@
 module V2
   module Users
     # Unlocks a locked user account after too many failed sign in attempts.
-    class UnlocksController < Devise::UnlocksController
+    class UnlockController < Devise::UnlocksController
       # Re-send an unlock token to the user's email address
       def create
         super

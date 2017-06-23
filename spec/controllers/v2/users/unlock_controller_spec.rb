@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe V2::Users::UnlocksController do
+RSpec.describe V2::Users::UnlockController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
   let!(:user) { create(:user) }

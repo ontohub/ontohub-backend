@@ -99,10 +99,10 @@ Rails.application.routes.draw do
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
 
           post '/unlock',
-            controller: 'v2/users/unlocks', action: 'create',
+            controller: 'v2/users/unlock', action: 'create',
             as: nil
           patch '/unlock',
-            controller: 'v2/users/unlocks', action: 'update',
+            controller: 'v2/users/unlock', action: 'update',
             as: :user_unlock
         end
         get '/me', controller: 'v2/users', action: 'show_current_user'
