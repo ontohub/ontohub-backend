@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "V2 Users Unlocks Controller: POST/create",
-  "description": "V2 Users Unlocks Controller: POST/create",
+  "title": "V2 Users Unlocks Controller: POST/resend_unlocking_email",
+  "description": "V2 Users Unlocks Controller: POST/resend_unlocking_email",
 
   "type": "object",
   "required": ["meta", "jsonapi"],

@@ -8,9 +8,10 @@ RSpec.describe V2::Users::UnlockController do
   let!(:user) { create(:user) }
   let!(:token) { user.lock_access! }
 
-  describe 'POST create', type: :mailer, no_transaction: true do
+  describe 'POST resend_unlocking_email', type: :mailer, no_transaction: true do
     before do
-      post :create, params: {data: {attributes: {email: user.email}}}
+      post :resend_unlocking_email,
+        params: {data: {attributes: {email: user.email}}}
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }
@@ -46,10 +47,10 @@ RSpec.describe V2::Users::UnlockController do
     end
   end
 
-  describe 'PATCH update' do
+  describe 'PATCH unlock_account' do
     context 'successful' do
       before do
-        patch :update, params: {unlock_token: token}
+        patch :unlock_account, params: {unlock_token: token}
       end
 
       it { expect(response).to have_http_status(:ok) }
@@ -61,7 +62,7 @@ RSpec.describe V2::Users::UnlockController do
 
     context 'bad token' do
       before do
-        patch :update,
+        patch :unlock_account,
           params: {unlock_token: "bad-#{token}"}
       end
 

@@ -5,8 +5,8 @@ module V2
     # Unlocks a locked user account after too many failed sign in attempts.
     class UnlockController < Devise::UnlocksController
       # Re-send an unlock token to the user's email address
-      def create
-        super
+      def resend_unlocking_email
+        create
         message =
           'An email with instructions to unlock the account has been sent to '\
           "#{resource.email} "\
@@ -16,7 +16,7 @@ module V2
       end
 
       # unlock the account
-      def update
+      def unlock_account
         # This is actually implemented in the show action of devise, but it
         # technically belongs in the PATCH/update action.
         show
