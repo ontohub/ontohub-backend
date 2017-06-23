@@ -77,10 +77,12 @@ Rails.application.routes.draw do
           delete '', controller: 'v2/users/account', action: 'destroy'
 
           post '/confirmation',
-            controller: 'v2/users/confirmation', action: 'create',
+            controller: 'v2/users/confirmation',
+            action: 'resend_confirmation_email',
             as: nil
           patch '/confirmation',
-            controller: 'v2/users/confirmation', action: 'update',
+            controller: 'v2/users/confirmation',
+            action: 'confirm_email_address',
             as: :user_confirmation
 
           get '/password',

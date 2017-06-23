@@ -5,8 +5,9 @@ module V2
     # Confirmation controller confirms a user's email address
     class ConfirmationController < Devise::ConfirmationsController
       # Re-send the confirmation email to the user's email address
-      def create
-        super
+      def resend_confirmation_email
+        # Devise implements this in the create action
+        create
         message =
           "A new confirmation email has been sent to #{resource.email} "\
           'if a user is registered by this email address.'
@@ -15,7 +16,7 @@ module V2
       end
 
       # Confirm the user's email address
-      def update
+      def confirm_email_address
         # This is actually implemented in the show action of devise, but it
         # technically belongs in the PATCH/update action.
         show

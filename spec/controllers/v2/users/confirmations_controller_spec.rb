@@ -7,10 +7,11 @@ RSpec.describe V2::Users::ConfirmationController do
 
   let(:user) { create(:user) }
 
-  describe 'PATCH update' do
+  describe 'PATCH confirm_email_address' do
     context 'successful' do
       before do
-        patch :update, params: {confirmation_token: user.confirmation_token}
+        patch :confirm_email_address,
+          params: {confirmation_token: user.confirmation_token}
       end
 
       it { expect(response).to have_http_status(:ok) }
@@ -22,7 +23,7 @@ RSpec.describe V2::Users::ConfirmationController do
 
     context 'bad token' do
       before do
-        patch :update,
+        patch :confirm_email_address,
           params: {confirmation_token: "bad-#{user.confirmation_token}"}
       end
 
@@ -36,9 +37,10 @@ RSpec.describe V2::Users::ConfirmationController do
     end
   end
 
-  describe 'POST create' do
+  describe 'POST resend_confirmation_email' do
     before do
-      post :create, params: {data: {attributes: {email: user.email}}}
+      post :resend_confirmation_email,
+        params: {data: {attributes: {email: user.email}}}
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }
