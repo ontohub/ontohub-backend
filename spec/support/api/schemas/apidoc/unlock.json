@@ -32,7 +32,7 @@
           }
         }
       },
-      "targetSchema": {"$ref": "../controllers/v2/users/unlocks/get_show.json"}
+      "targetSchema": {"$ref": "../controllers/v2/users/unlocks/patch_update.json"}
     },
     {
       "title": "Re-send the unlock instructions email",
