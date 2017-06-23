@@ -65,16 +65,39 @@ Rails.application.routes.draw do
                          db:recreate db:recreate:seed))
       devise_for :users,
         controllers: {registrations: 'v2/users/registrations',
-                      sessions: 'v2/users/sessions'},
-        skip: [:registrations, :sessions]
+                      confirmations: 'v2/users/confirmations',
+                      sessions: 'v2/users/sessions',
+                      unlocks: 'v2/users/unlocks',
+                      passwords: 'v2/users/passwords'},
+        skip: [:registrations, :confirmations, :sessions, :unlocks, :passwords]
       scope 'users' do
         devise_scope :user do
           post '', controller: 'v2/users/registrations', action: 'create'
           patch '', controller: 'v2/users/registrations', action: 'update'
           delete '', controller: 'v2/users/registrations', action: 'destroy'
 
+          post '/confirmation',
+            controller: 'v2/users/confirmations', action: 'create',
+            as: nil
+          patch '/confirmation',
+            controller: 'v2/users/confirmations', action: 'update',
+            as: :user_confirmation
+
+          get '/password',
+            controller: 'v2/users/passwords', action: 'edit',
+            as: :edit_user_password
+          post '/password', controller: 'v2/users/passwords', action: 'create'
+          patch '/password', controller: 'v2/users/passwords', action: 'update'
+
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
+
+          post '/unlock',
+            controller: 'v2/users/unlocks', action: 'create',
+            as: nil
+          patch '/unlock',
+            controller: 'v2/users/unlocks', action: 'update',
+            as: :user_unlock
         end
         get '/me', controller: 'v2/users', action: 'show_current_user'
       end

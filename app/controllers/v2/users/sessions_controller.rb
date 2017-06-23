@@ -4,12 +4,9 @@ module V2
   module Users
     # Session controller generates token
     class SessionsController < Devise::SessionsController
-      # POST /resource/sign_in
+      # Check the credentials and respond with the token
       def create
-        self.resource = warden.authenticate!(auth_options)
-        sign_in(resource_name, resource)
-        yield resource if block_given?
-        return false unless user_signed_in?
+        super
         render status: :created,
                json: generate_token,
                serializer: AuthenticationTokenSerializer
@@ -21,6 +18,14 @@ module V2
         payload = {user_id: current_user.to_param}
         AuthenticationToken.new(token: JWTWrapper.encode(payload))
       end
+
+      # Disable the flash
+      # rubocop:disable Style/AccessorMethodName
+      def set_flash_message!(*args); end
+      # rubocop:enable Style/AccessorMethodName
+
+      # Disable redirecting
+      def respond_with(*args); end
     end
   end
 end

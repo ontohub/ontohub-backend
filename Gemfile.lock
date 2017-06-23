@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: e08af098718772b6f3ca0890f7c46e4d12ace744
+  revision: cbcdbab844ed416a4cf9a9c23aba4b864d36f275
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -22,7 +22,7 @@ GIT
       pry (~> 0.10.4)
       rails (~> 5.1.1)
       sequel (~> 4.46.0)
-      sequel-devise (~> 0.0.9)
+      sequel-devise (~> 0.0.11)
       sequel-rails (~> 0.9.14)
       sequel_pg (~> 1.6.17)
 
@@ -133,9 +133,9 @@ GEM
       rugged (>= 0.25.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    graphiql-rails (1.4.1)
+    graphiql-rails (1.4.2)
       rails
-    graphql (1.6.3)
+    graphql (1.6.4)
     graphql-batch (0.3.3)
       graphql (>= 0.8, < 2)
       promise.rb (~> 0.7.2)
@@ -152,7 +152,7 @@ GEM
       ruby_dep (~> 1.2)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
-    mail (2.6.5)
+    mail (2.6.6)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
     mime-types (3.1)
@@ -218,8 +218,8 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (12.0.0)
     rb-fsevent (0.9.8)
-    rb-inotify (0.9.8)
-      ffi (>= 0.5.0)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
     recaptcha (4.1.0)
       json
     responders (2.4.0)

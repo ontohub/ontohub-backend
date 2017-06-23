@@ -5,7 +5,11 @@ language: ruby
 
 rvm:
   - 2.4.1
-  - rbx-3.77
+  - rbx-3.81
+
+matrix:
+  allow_failures:
+  - rvm: rbx-3.81
 
 services:
   - postgresql
@@ -22,7 +26,8 @@ addons:
     - git-svn
 
 before_script:
-  - RAILS_ENV=test bin/rails db:recreate
+  - RAILS_ENV=test bundle exec rails db:recreate
+  - RAILS_ENV=development bundle exec rails db:recreate:seed
 
 script:
   - bundle exec rake

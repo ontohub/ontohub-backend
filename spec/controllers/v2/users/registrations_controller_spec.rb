@@ -16,16 +16,50 @@ RSpec.describe V2::Users::RegistrationsController do
   let!(:existing_user) { create(:user) }
   let!(:existing_organization) { create(:organization) }
 
+  before { existing_user.confirm }
+
   describe 'POST create' do
-    context 'successful' do
+    context 'successful', type: :mailer, no_transaction: true do
       before do
         post :create, params: {data: {attributes: attributes}}
       end
       it { expect(response).to have_http_status(:created) }
       it { |example| expect([example, response]).to comply_with_api }
+
+      context 'confirmation mail' do
+        it 'sends an email' do
+          expect(UsersMailer.deliveries.size).to eq(1)
+        end
+
+        it 'is has the correct recipient' do
+          expect(last_email.to).to match_array([user.email])
+        end
+
+        it 'is has the correct subject' do
+          expect(last_email.subject).to eq('Confirmation instructions')
+        end
+
+        it 'includes the name' do
+          expect(last_email.body.encoded).to include(user.display_name)
+        end
+
+        it 'includes the confirmation token' do
+          expect(last_email.body.encoded).
+            to include(User.find(email: user.email).confirmation_token)
+        end
+
+        it 'includes a confirmation link' do
+          persisted_user = User.find(email: user.email)
+          token = persisted_user.confirmation_token
+          # rubocop:disable Metrics/LineLength
+          link = %(<a href="http://example.test/users/confirmation?confirmation_token=#{token}">Confirm my account</a>)
+          # rubocop:enable Metrics/LineLength
+          expect(last_email.body.encoded).to include(link)
+        end
+      end
     end
 
-    context 'failing with invalid data' do
+    context 'failing with invalid data', type: :mailer, no_transaction: true do
       before do
         post :create,
           params: {data: {name: existing_organization.slug,
@@ -36,6 +70,9 @@ RSpec.describe V2::Users::RegistrationsController do
       it { expect(response).to have_http_status(:unprocessable_entity) }
       it do |example|
         expect([example, response]).to comply_with_api('validation_error')
+      end
+      it 'does not send an email' do
+        expect(UsersMailer.deliveries).to be_empty
       end
       # captcha validation is disabled in the tests
       %i(name email password).each do |attribute|
@@ -57,20 +94,105 @@ RSpec.describe V2::Users::RegistrationsController do
     context 'signed in' do
       before { set_token_header(existing_user) }
 
-      context 'successful' do
+      context 'successful', type: :mailer, no_transaction: true do
         before do
           patch :update, params: {data: {attributes: new_attributes}}
         end
         it { expect(response).to have_http_status(:ok) }
-        %i(email display_name encrypted_password).each do |attribute|
+        %i(display_name encrypted_password).each do |attribute|
           it "updates the #{attribute}" do
+            # rubocop:disable Lint/AmbiguousBlockAssociation
             expect { existing_user.reload }.
               to change { existing_user.send(attribute) }
+            # rubocop:enable Lint/AmbiguousBlockAssociation
+          end
+        end
+
+        it 'updates the unconfirmed_email' do
+          # rubocop:disable Lint/AmbiguousBlockAssociation
+          expect { existing_user.reload }.
+            to change { existing_user.unconfirmed_email }
+          # rubocop:enable Lint/AmbiguousBlockAssociation
+        end
+
+        it 'sends a confirmation email and two notification emails' do
+          expect(UsersMailer.deliveries.size).to eq(3)
+        end
+
+        context 'email changed notification email' do
+          let(:email) { emails[0] }
+
+          it 'has the correct recipient' do
+            expect(email.to).to match_array([existing_user.email])
+          end
+
+          it 'has the correct subject' do
+            expect(email.subject).to eq('Email Changed')
+          end
+
+          it 'includes the name' do
+            expect(email.body.encoded).to include(existing_user.display_name)
+          end
+
+          it 'includes the unconfirmed email' do
+            expect(email.body.encoded).
+              to include(existing_user.reload.unconfirmed_email)
+          end
+        end
+
+        context 'password changed notification email' do
+          let(:email) { emails[1] }
+
+          it 'has the correct recipient' do
+            expect(email.to).to match_array([existing_user.email])
+          end
+
+          it 'has the correct subject' do
+            expect(email.subject).to eq('Password Changed')
+          end
+
+          it 'includes the name' do
+            expect(email.body.encoded).to include(existing_user.display_name)
+          end
+
+          it 'includes a notice about the changed password' do
+            expect(email.body.encoded).to include('password has been changed')
+          end
+        end
+
+        context 'confirmation mail' do
+          let(:email) { emails[2] }
+
+          it 'has the correct recipient' do
+            expect(email.to).
+              to match_array([existing_user.reload.unconfirmed_email])
+          end
+
+          it 'has the correct subject' do
+            expect(email.subject).to eq('Confirmation instructions')
+          end
+
+          it 'includes the name' do
+            expect(email.body.encoded).to include(existing_user.display_name)
+          end
+
+          it 'includes the confirmation token' do
+            expect(email.body.encoded).
+              to include(existing_user.reload.confirmation_token)
+          end
+
+          it 'includes a confirmation link' do
+            persisted_user = User.find(email: existing_user.email)
+            token = persisted_user.confirmation_token
+            # rubocop:disable Metrics/LineLength
+            link = %(<a href="http://example.test/users/confirmation?confirmation_token=#{token}">Confirm my account</a>)
+            # rubocop:enable Metrics/LineLength
+            expect(email.body.encoded).to include(link)
           end
         end
       end
 
-      context 'failing' do
+      context 'failing', type: :mailer, no_transaction: true do
         context 'with a bad current_password' do
           before do
             patch :update, params: {data: {attributes:
@@ -81,18 +203,24 @@ RSpec.describe V2::Users::RegistrationsController do
           it do |example|
             expect([example, response]).to comply_with_api('validation_error')
           end
+          it 'does not send an email' do
+            expect(UsersMailer.deliveries).to be_empty
+          end
           %i(current_password).each do |attribute|
             it "has an error at #{attribute}" do
               expect(validation_error_at?(attribute)).to be(true)
             end
           end
           it 'current_password has the correct error message' do
-            expect(validation_errors_at(:current_password)).to include('invalid')
+            expect(validation_errors_at(:current_password)).
+              to include('invalid')
           end
           %i(email display_name encrypted_password).each do |attribute|
             it "does not update the #{attribute}" do
+              # rubocop:disable Lint/AmbiguousBlockAssociation
               expect { existing_user.reload }.
                 not_to change { existing_user.send(attribute) }
+              # rubocop:enable Lint/AmbiguousBlockAssociation
             end
           end
         end
@@ -101,7 +229,7 @@ RSpec.describe V2::Users::RegistrationsController do
           before do
             patch :update,
               params: {data: {attributes: new_attributes.
-                merge(display_name: 'a'*101,
+                merge(display_name: 'a' * 101,
                       email: 'not-an-email',
                       password: 'too short')}}
           end

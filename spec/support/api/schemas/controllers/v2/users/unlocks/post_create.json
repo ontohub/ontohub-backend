@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V2 Users Unlocks Controller: POST/create",
+  "description": "V2 Users Unlocks Controller: POST/create",
+
+  "type": "object",
+  "required": ["meta", "jsonapi"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["action"],
+      "properties": {
+        "action": {
+          "description": "The action that has been performed",
+          "example": "An email with instructions to unlock the account has been sent to ada@example.com if a locked user is registered by this email address.",
+          "type": "string",
+          "pattern": "^An email with instructions to unlock the account has been sent to [^@]+@[^@]+ if a locked user is registered by this email address\\.$"
+        }
+      }
+    },
+    "jsonapi": { "$ref": "../../../../controllers/v2/jsonapi_toplevel_object.json" }
+  }
+}

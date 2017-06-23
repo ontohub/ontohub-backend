@@ -240,7 +240,7 @@ class MultiBlob < ActiveModelSerializers::Model
 
   def user_info(time = nil)
     {email: user.email,
-     name: user.display_name || user.name,
+     name: user.display_name || user.to_param,
      time: time || Time.now}
   end
 end

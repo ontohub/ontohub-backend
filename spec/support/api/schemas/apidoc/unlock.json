@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Unlocking",
+  "description": "Endpoint to unlock a locked user account",
+
+  "links": [
+    {
+      "title": "Unlock an account",
+      "description": "Unlocks the account. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "href": "/users/unlock",
+      "method": "PATCH",
+
+      "requestHeaders": {
+        "required": ["Content-Type"],
+        "properties": {
+          "Content-Type": {
+            "enum": ["application/json"],
+            "example": "application/json"
+          }
+        }
+      },
+
+      "schema": {
+        "type": "object",
+        "required": ["unlock_token"],
+        "properties": {
+          "unlock_token": {
+            "description": "The unlock token from the email",
+            "example": "YLa7K3zeEzHCbntsPLBg",
+            "type": "string"
+          }
+        }
+      },
+      "targetSchema": {"$ref": "../controllers/v2/users/unlocks/patch_update.json"}
+    },
+    {
+      "title": "Re-send the unlock instructions email",
+      "description": "Request to re-send the unlock instructions email. Returns HTTP 201 (Created).",
+      "rel": "self",
+      "href": "/users/unlock",
+      "method": "POST",
+
+      "requestHeaders": {
+        "required": ["Content-Type"],
+        "properties": {
+          "Content-Type": {
+            "enum": ["application/json"],
+            "example": "application/json"
+          }
+        }
+      },
+
+      "schema": {
+        "type": "object",
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["attributes"],
+            "properties": {
+              "attributes": {
+                "description": "Attributes of the user to send the unlock instructions email to",
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "description": "The email address of the user to send the unlock instructions email to",
+                    "example": "ada@example.com",
+                    "type": "string",
+                    "pattern": "[^@]+@[^@]+"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "targetSchema": {"$ref": "../controllers/v2/users/unlocks/post_create.json"}
+    }
+  ]
+}

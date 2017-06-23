@@ -55,3 +55,6 @@ db/schema.rb
 
 # Don't put the API doc into the repository.
 /apidoc/
+
+# Ignore application data
+/data/

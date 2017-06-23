@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Trees",
-  "description": "Enpoints for trees (files and diectories)",
+  "description": "Endpoints for trees (files and diectories)",
 
   "type": {"$ref": "../models/blob_model.json#/type"},
   "required": {"$ref": "../models/blob_model.json#/required"},
