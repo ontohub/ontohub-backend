@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "V2 Users Confirmations Controller: PATCH/update",
-  "description": "V2 Users Confirmations Controller: PATCH/update",
+  "title": "V2 Users Confirmation Controller: PATCH/update",
+  "description": "V2 Users Confirmation Controller: PATCH/update",
 
   "type": "object",
   "required": ["data", "jsonapi"],

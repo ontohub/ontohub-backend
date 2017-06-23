@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe V2::Users::ConfirmationsController do
+RSpec.describe V2::Users::ConfirmationController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
   let(:user) { create(:user) }

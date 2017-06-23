@@ -2,8 +2,8 @@
 
 module V2
   module Users
-    # Confirmations controller confirms a user's email address
-    class ConfirmationsController < Devise::ConfirmationsController
+    # Confirmation controller confirms a user's email address
+    class ConfirmationController < Devise::ConfirmationsController
       # Re-send the confirmation email to the user's email address
       def create
         super

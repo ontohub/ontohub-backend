@@ -65,7 +65,7 @@ Rails.application.routes.draw do
                          db:recreate db:recreate:seed))
       devise_for :users,
         controllers: {registrations: 'v2/users/account',
-                      confirmations: 'v2/users/confirmations',
+                      confirmations: 'v2/users/confirmation',
                       sessions: 'v2/users/sessions',
                       unlocks: 'v2/users/unlocks',
                       passwords: 'v2/users/passwords'},
@@ -77,10 +77,10 @@ Rails.application.routes.draw do
           delete '', controller: 'v2/users/account', action: 'destroy'
 
           post '/confirmation',
-            controller: 'v2/users/confirmations', action: 'create',
+            controller: 'v2/users/confirmation', action: 'create',
             as: nil
           patch '/confirmation',
-            controller: 'v2/users/confirmations', action: 'update',
+            controller: 'v2/users/confirmation', action: 'update',
             as: :user_confirmation
 
           get '/password',
