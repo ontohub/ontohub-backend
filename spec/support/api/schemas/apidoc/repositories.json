@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Repositories",
-  "description": "Enpoints for repositories",
+  "description": "Endpoints for repositories",
 
   "type": {"$ref": "../models/repository_model.json#/type"},
   "required": {"$ref": "../models/repository_model.json#/required"},
