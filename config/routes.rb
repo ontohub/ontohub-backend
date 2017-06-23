@@ -88,8 +88,12 @@ Rails.application.routes.draw do
           get '/password',
             controller: 'v2/users/passwords', action: 'edit',
             as: :edit_user_password
-          post '/password', controller: 'v2/users/passwords', action: 'create'
-          patch '/password', controller: 'v2/users/passwords', action: 'update'
+          post '/password',
+            controller: 'v2/users/passwords',
+            action: 'resend_password_recovery_email'
+          patch '/password',
+            controller: 'v2/users/passwords',
+            action: 'recover_password'
 
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
