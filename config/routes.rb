@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     unless rake_task?(%w(db:create db:migrate db:drop
                          db:recreate db:recreate:seed))
       devise_for :users,
-        controllers: {registrations: 'v2/users/registrations',
+        controllers: {registrations: 'v2/users/account',
                       confirmations: 'v2/users/confirmations',
                       sessions: 'v2/users/sessions',
                       unlocks: 'v2/users/unlocks',
@@ -72,9 +72,9 @@ Rails.application.routes.draw do
         skip: [:registrations, :confirmations, :sessions, :unlocks, :passwords]
       scope 'users' do
         devise_scope :user do
-          post '', controller: 'v2/users/registrations', action: 'create'
-          patch '', controller: 'v2/users/registrations', action: 'update'
-          delete '', controller: 'v2/users/registrations', action: 'destroy'
+          post '', controller: 'v2/users/account', action: 'create'
+          patch '', controller: 'v2/users/account', action: 'update'
+          delete '', controller: 'v2/users/account', action: 'destroy'
 
           post '/confirmation',
             controller: 'v2/users/confirmations', action: 'create',
