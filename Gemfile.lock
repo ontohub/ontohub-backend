@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: ec0492cc9dd412f1ea193c46db87c61905d36830
-  branch: master
+  revision: 824bbe95cc988c942c17c46f7628a9462c12aeba
+  branch: 76-add_default_roles
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
