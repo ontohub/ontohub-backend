@@ -5,9 +5,7 @@ module Mutations
   class DeleteAccountMutation
     def call(_obj, args, _ctx)
       user = ctx[:current_user]
-      if user.valid_password?(args[:password])
-        user.destroy
-      end
+      user.destroy if user.valid_password?(args[:password])
       true
     end
   end
