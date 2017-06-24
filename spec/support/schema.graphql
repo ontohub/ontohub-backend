@@ -1,3 +1,15 @@
+type Mutation {
+  createOrganization(data: NewOrganization!): Organization
+}
+
+input NewOrganization {
+  description: String
+  displayName: String
+
+  # Name of the new organization
+  name: ID!
+}
+
 type Organization implements OrganizationalUnit {
   # Description of the organization
   description: String
