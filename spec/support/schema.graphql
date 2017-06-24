@@ -1,5 +1,6 @@
 type Mutation {
   createOrganization(data: NewOrganization!): Organization
+  deleteOrganization(id: ID!): Boolean!
   saveOrganization(id: ID!, data: OrganizationChangeset!): Organization
 }
 
