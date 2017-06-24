@@ -1,6 +1,7 @@
 type Mutation {
   createOrganization(data: NewOrganization!): Organization
   deleteOrganization(id: ID!): Boolean!
+  saveAccount(data: UserChangeset!): User
   saveOrganization(id: ID!, data: OrganizationChangeset!): Organization
 }
 
@@ -67,6 +68,12 @@ type User implements OrganizationalUnit {
     # Skip the first n organizations
     skip: Int = 0
   ): [Organization]!
+}
+
+input UserChangeset {
+  displayName: String
+  email: String
+  password: String
 }
 
 type Version {
