@@ -1,5 +1,6 @@
 type Mutation {
   createOrganization(data: NewOrganization!): Organization
+  saveOrganization(id: ID!, data: OrganizationChangeset!): Organization
 }
 
 input NewOrganization {
@@ -26,6 +27,11 @@ type Organization implements OrganizationalUnit {
     # Skip the first n members
     skip: Int = 0
   ): [User]!
+}
+
+input OrganizationChangeset {
+  description: String
+  displayName: String
 }
 
 interface OrganizationalUnit {

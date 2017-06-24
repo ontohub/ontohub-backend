@@ -5,6 +5,12 @@ Types::MutationType = GraphQL::ObjectType.define do
 
   field :createOrganization, Types::OrganizationType do
     argument :data, !Types::Input::NewOrganizationType
-    resolve Mutations::CreateOrganizationMutation
+    resolve Mutations::CreateOrganizationMutation.new
+  end
+
+  field :saveOrganization, Types::OrganizationType do
+    argument :id, !types.ID, nil, as: :slug
+    argument :data, !Types::Input::OrganizationChangesetType
+    resolve Mutations::SaveOrganizationMutation.new
   end
 end
