@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'saveAccount mutation' do
-  let!(:user) { create :user }
+  let!(:user) { create :user, password: 'changemenow' }
   let(:user_data) do
     {
       'displayName' => 'Foobar',
@@ -13,7 +13,6 @@ RSpec.describe 'saveAccount mutation' do
   end
 
   let(:context) { {current_user: user} }
-  let(:variables) { {'data' => user_data} }
 
   let(:result) do
     OntohubBackendSchema.execute(
@@ -25,8 +24,8 @@ RSpec.describe 'saveAccount mutation' do
 
   let(:query_string) do
     <<-QUERY
-    mutation SaveAccount($data: UserChangeset!) {
-      saveAccount(data: $data) {
+    mutation SaveAccount($data: UserChangeset!, $password: String!) {
+      saveAccount(data: $data, password: $password) {
         id
         displayName
         email
@@ -35,15 +34,28 @@ RSpec.describe 'saveAccount mutation' do
     QUERY
   end
 
-  context 'Successful update' do
+  context 'Correct password' do
+    let(:variables) { {'data' => user_data, 'password' => 'changemenow'} }
     subject { result }
 
-    it 'returns the organization fields' do
-      puts subject
+    it 'returns the new account fields' do
       expect(subject['data']['saveAccount']).to include(
         'id' => user.slug,
         'displayName' => user_data['displayName'],
         'email' => user_data['email']
+      )
+    end
+  end
+
+  context 'Correct password' do
+    let(:variables) { {'data' => user_data, 'password' => 'changemeow'} }
+    subject { result }
+
+    it 'returns the old account fields' do
+      expect(subject['data']['saveAccount']).to include(
+        'id' => user.slug,
+        'displayName' => user.display_name,
+        'email' => user.email
       )
     end
   end

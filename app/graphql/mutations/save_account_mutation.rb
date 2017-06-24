@@ -6,7 +6,9 @@ module Mutations
     def call(_obj, args, ctx)
       user_args = args[:data].to_h.compact
       user = ctx[:current_user]
-      user.update(user_args)
+      if user.valid_password?(args[:password])
+        user.update(user_args)
+      end
       user
     end
   end

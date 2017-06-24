@@ -21,6 +21,7 @@ Types::MutationType = GraphQL::ObjectType.define do
 
   field :saveAccount, Types::UserType do
     argument :data, !Types::Input::UserChangesetType
+    argument :password, !types.String
     resolve Mutations::SaveAccountMutation.new
   end
 end
