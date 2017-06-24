@@ -13,6 +13,11 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::DeleteOrganizationMutation.new
   end
 
+  field :deleteAccount, !types.Boolean do
+    argument :password, !types.String
+    resolve Mutations::DeleteAccountMutation.new
+  end
+
   field :saveOrganization, Types::OrganizationType do
     argument :id, !types.ID, nil, as: :slug
     argument :data, !Types::Input::OrganizationChangesetType
