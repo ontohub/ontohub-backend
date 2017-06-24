@@ -5,6 +5,4 @@ OntohubBackendSchema = GraphQL::Schema.define do
   instrument(:field, Instrumenters::ValidationErrorInstrumenter.new)
   query(Types::QueryType)
   mutation(Types::MutationType)
-
-  orphan_types [Types::UserType, Types::OrganizationType]
 end
