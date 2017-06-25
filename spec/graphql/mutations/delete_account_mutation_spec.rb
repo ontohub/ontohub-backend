@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe 'deleteAccount mutation' do
   let!(:user) { create :user, password: 'changemenow' }
 
-  let(:context) { {} }
+  let(:context) { {current_user: user} }
 
   let(:result) do
     OntohubBackendSchema.execute(
@@ -28,6 +28,7 @@ RSpec.describe 'deleteAccount mutation' do
     subject { result }
 
     it 'deletes the account' do
+      result
       expect(User.find(id: user.id)).to be(nil)
     end
   end
@@ -37,6 +38,7 @@ RSpec.describe 'deleteAccount mutation' do
     subject { result }
 
     it 'does not delete the account' do
+      result
       expect(User.find(id: user.id)).to_not be(nil)
     end
   end

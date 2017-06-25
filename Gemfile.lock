@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: cbcdbab844ed416a4cf9a9c23aba4b864d36f275
-  branch: master
+  revision: 434b8a3fcc0570de8abde6ad3232f20535d15567
+  branch: 80-organization_membership_is_not_destroyed
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)
@@ -252,7 +252,7 @@ GEM
     sequel-devise (0.0.11)
       devise
       orm_adapter-sequel
-    sequel-rails (0.9.15)
+    sequel-rails (0.9.16)
       actionpack (>= 3.2.0)
       activemodel
       railties (>= 3.2.0)
