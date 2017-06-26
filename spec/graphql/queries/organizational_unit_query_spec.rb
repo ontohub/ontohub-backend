@@ -57,9 +57,7 @@ RSpec.describe 'OrganizationalUnit query' do
         'displayName' => subject.display_name,
         'email' => subject.email,
         'emailHash' => subject.email_hash,
-        'organizations' => [
-          {'id' => organization.slug}
-        ]
+        'organizations' => [{'id' => organization.slug}]
       )
     end
   end
@@ -73,9 +71,7 @@ RSpec.describe 'OrganizationalUnit query' do
         'id' => subject.slug,
         'displayName' => subject.display_name,
         'description' => subject.description,
-        'members' => [
-          {'id' => user.slug}
-        ]
+        'members' => [{'id' => user.slug}]
       )
     end
   end

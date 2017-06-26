@@ -2,11 +2,12 @@
 
 # Controller for the GraphQL API endpoint
 class GraphqlController < ApplicationController
+  # rubocop:disable Metrics/MethodLength
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
     context = {
-      current_user: current_user
+      current_user: current_user,
     }
     result = OntohubBackendSchema.execute(
       query,
@@ -15,6 +16,7 @@ class GraphqlController < ApplicationController
     )
     render json: result
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 

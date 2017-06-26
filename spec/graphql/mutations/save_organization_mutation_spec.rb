@@ -7,7 +7,7 @@ RSpec.describe 'saveOrganization mutation' do
   let(:organization_data) do
     {
       'displayName' => 'Foobar',
-      'description' => 'This is the foobar'
+      'description' => 'This is the foobar',
     }
   end
 
@@ -47,14 +47,16 @@ RSpec.describe 'saveOrganization mutation' do
   end
 
   context 'Organization does not exist' do
-    let(:variables) { {'id' => organization.slug + 'foobar',
-                       'data' => organization_data} }
+    let(:variables) do
+      {'id' => organization.slug + 'foobar',
+       'data' => organization_data}
+    end
     subject { result }
 
     it 'returns an error' do
       expect(subject['data']['saveOrganization']).to be_nil
       expect(subject['errors']).
-        to include(include({'message' => 'resource not found'}))
+        to include(include('message' => 'resource not found'))
     end
   end
 end

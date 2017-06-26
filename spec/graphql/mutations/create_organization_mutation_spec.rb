@@ -8,7 +8,7 @@ RSpec.describe 'createOrganization mutation' do
     {
       'name' => 'foobar',
       'displayName' => 'Foobar',
-      'description' => 'This is the foobar'
+      'description' => 'This is the foobar',
     }
   end
 
@@ -46,9 +46,7 @@ RSpec.describe 'createOrganization mutation' do
         'id' => organization_data['name'],
         'description' => organization_data['description'],
         'displayName' => organization_data['displayName'],
-        'members' => [
-          {'id' => current_user.slug}
-        ]
+        'members' => [{'id' => current_user.slug}]
       )
     end
   end

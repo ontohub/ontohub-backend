@@ -39,7 +39,7 @@ RSpec.describe 'deleteOrganization mutation' do
     it 'returns an error' do
       expect(subject['data']['deleteOrganization']).to be_nil
       expect(subject['errors']).
-        to include(include({'message' => 'resource not found'}))
+        to include(include('message' => 'resource not found'))
     end
   end
 end
