@@ -8,7 +8,7 @@ RSpec.describe 'saveAccount mutation' do
     {
       'displayName' => 'Foobar',
       'email' => 'foo@bar.com',
-      'password' => 'foobarchangeme'
+      'password' => 'foobarchangeme',
     }
   end
 
@@ -29,6 +29,7 @@ RSpec.describe 'saveAccount mutation' do
         id
         displayName
         email
+        unconfirmedEmail
       }
     }
     QUERY
@@ -42,12 +43,13 @@ RSpec.describe 'saveAccount mutation' do
       expect(subject['data']['saveAccount']).to include(
         'id' => user.slug,
         'displayName' => user_data['displayName'],
-        'email' => user_data['email']
+        'email' => user.email,
+        'unconfirmedEmail' => user_data['email']
       )
     end
   end
 
-  context 'Correct password' do
+  context 'Incorrect password' do
     let(:variables) { {'data' => user_data, 'password' => 'changemeow'} }
     subject { result }
 

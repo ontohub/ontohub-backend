@@ -17,6 +17,11 @@ Types::UserType = GraphQL::ObjectType.define do
 
   field :email, types.String, 'Email address of the user'
 
+  field :unconfirmedEmail, types.String do
+    description 'Email address of the user'
+    property :unconfirmed_email
+  end
+
   field :emailHash, !types.String do
     description 'MD5 hash of the user\'s email address'
     property :email_hash

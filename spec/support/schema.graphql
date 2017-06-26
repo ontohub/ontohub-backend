@@ -69,6 +69,9 @@ type User implements OrganizationalUnit {
     # Skip the first n organizations
     skip: Int = 0
   ): [Organization]!
+
+  # Email address of the user
+  unconfirmedEmail: String
 }
 
 input UserChangeset {
