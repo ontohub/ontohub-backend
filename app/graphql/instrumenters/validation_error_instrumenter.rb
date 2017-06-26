@@ -11,7 +11,7 @@ module Instrumenters
           begin
             old_resolve.call(obj, args, ctx)
           rescue Sequel::ValidationFailed => error
-            raise GraphQL::ExecutionError, error.message
+            ctx.add_error(GraphQL::ExecutionError.new(error.message))
           end
         end)
       end

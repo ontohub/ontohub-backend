@@ -12,9 +12,9 @@ Types::QueryType = GraphQL::ObjectType.define do
 
   field :organizationalUnit, Types::OrganizationalUnitType do
     description 'The organizational unit for the given ID'
-    argument :id, !types.ID
+    argument :id, !types.ID, nil, as: :slug
     resolve(lambda do |_obj, args, _ctx|
-      OrganizationalUnit.find(slug: args[:id])
+      OrganizationalUnit.find(slug: args[:slug])
     end)
   end
 end

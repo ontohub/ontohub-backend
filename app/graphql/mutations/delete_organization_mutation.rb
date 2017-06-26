@@ -3,8 +3,7 @@
 module Mutations
   # GraphQL mutation to delete an organization
   class DeleteOrganizationMutation
-    def call(_obj, args, _ctx)
-      org = Organization.find(slug: args[:slug])
+    def call(org, _args, _ctx)
       org.destroy
       true
     end

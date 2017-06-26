@@ -42,4 +42,16 @@ RSpec.describe 'deleteAccount mutation' do
       expect(User.find(id: user.id)).to_not be(nil)
     end
   end
+
+  context 'User does not exist' do
+    let(:variables) { {'password' => ''} }
+    let(:context) { {current_user: nil} }
+    subject { result }
+
+    it 'returns an error' do
+      expect(subject['data']['deleteAccount']).to be_nil
+      expect(subject['errors']).
+        to include(include({'message' => 'resource not found'}))
+    end
+  end
 end

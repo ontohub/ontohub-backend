@@ -3,9 +3,8 @@
 module Mutations
   # GraphQL mutation to update the current user account
   class SaveAccountMutation
-    def call(_obj, args, ctx)
+    def call(user, args, _ctx)
       user_args = args[:data].to_h.compact
-      user = ctx[:current_user]
       user.update(user_args) if user.valid_password?(args[:password])
       user
     end

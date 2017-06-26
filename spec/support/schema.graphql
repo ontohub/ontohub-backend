@@ -1,7 +1,7 @@
 type Mutation {
   createOrganization(data: NewOrganization!): Organization
-  deleteAccount(password: String!): Boolean!
-  deleteOrganization(id: ID!): Boolean!
+  deleteAccount(password: String!): Boolean
+  deleteOrganization(id: ID!): Boolean
   saveAccount(data: UserChangeset!, password: String!): User
   saveOrganization(id: ID!, data: OrganizationChangeset!): Organization
 }
