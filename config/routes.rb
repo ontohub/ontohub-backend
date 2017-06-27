@@ -85,6 +85,8 @@ Rails.application.routes.draw do
             action: 'confirm_email_address',
             as: :user_confirmation
 
+          # The edit action is a no-op in the backend. It needs to be available,
+          # though, because Devise needs the url helpers.
           get '/password',
             controller: 'v2/users/passwords', action: 'edit',
             as: :edit_user_password
