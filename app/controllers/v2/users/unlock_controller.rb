@@ -2,20 +2,21 @@
 
 module V2
   module Users
-    # Confirmations controller confirms a user's email address
-    class ConfirmationsController < Devise::ConfirmationsController
-      # Re-send the confirmation email to the user's email address
-      def create
-        super
+    # Unlocks a locked user account after too many failed sign in attempts.
+    class UnlockController < Devise::UnlocksController
+      # Re-send an unlock token to the user's email address
+      def resend_unlocking_email
+        create
         message =
-          "A new confirmation email has been sent to #{resource.email} "\
-          'if a user is registered by this email address.'
+          'An email with instructions to unlock the account has been sent to '\
+          "#{resource.email} "\
+          'if a locked user is registered by this email address.'
         render status: :created, json: {meta: {action: message},
                                         jsonapi: {version: '1.0'}}
       end
 
-      # Confirm the user's email address
-      def update
+      # unlock the account
+      def unlock_account
         # This is actually implemented in the show action of devise, but it
         # technically belongs in the PATCH/update action.
         show
@@ -40,6 +41,12 @@ module V2
       # Disable responding (rendering) of the parent class.
       # This should be done manually in this class.
       def respond_with(*args); end
+
+      # Disable redirecting after unlocking
+      def after_unlock_path_for(*args); end
+
+      # Disable redirecting after sending the unlock instructions
+      def after_sending_unlock_instructions_path_for(*args); end
     end
   end
 end

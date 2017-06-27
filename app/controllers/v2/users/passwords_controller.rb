@@ -6,8 +6,8 @@ module V2
     # to the user's email address.
     class PasswordsController < Devise::PasswordsController
       # Send a password-reset token to the user's email address
-      def create
-        super
+      def resend_password_recovery_email
+        create
         message =
           'An email with instructions to reset the password has been sent to '\
           "#{resource.email} "\
@@ -21,8 +21,8 @@ module V2
       def edit; end
 
       # Update the password by using the token
-      def update
-        super
+      def recover_password
+        update
         if resource.errors.empty?
           render status: :ok, json: resource, serializer: UserSerializer
         else

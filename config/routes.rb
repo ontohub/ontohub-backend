@@ -64,39 +64,47 @@ Rails.application.routes.draw do
     unless rake_task?(%w(db:create db:migrate db:drop
                          db:recreate db:recreate:seed))
       devise_for :users,
-        controllers: {registrations: 'v2/users/registrations',
-                      confirmations: 'v2/users/confirmations',
+        controllers: {registrations: 'v2/users/account',
+                      confirmations: 'v2/users/confirmation',
                       sessions: 'v2/users/sessions',
                       unlocks: 'v2/users/unlocks',
                       passwords: 'v2/users/passwords'},
         skip: [:registrations, :confirmations, :sessions, :unlocks, :passwords]
       scope 'users' do
         devise_scope :user do
-          post '', controller: 'v2/users/registrations', action: 'create'
-          patch '', controller: 'v2/users/registrations', action: 'update'
-          delete '', controller: 'v2/users/registrations', action: 'destroy'
+          post '', controller: 'v2/users/account', action: 'create'
+          patch '', controller: 'v2/users/account', action: 'update'
+          delete '', controller: 'v2/users/account', action: 'destroy'
 
           post '/confirmation',
-            controller: 'v2/users/confirmations', action: 'create',
+            controller: 'v2/users/confirmation',
+            action: 'resend_confirmation_email',
             as: nil
           patch '/confirmation',
-            controller: 'v2/users/confirmations', action: 'update',
+            controller: 'v2/users/confirmation',
+            action: 'confirm_email_address',
             as: :user_confirmation
 
+          # The edit action is a no-op in the backend. It needs to be available,
+          # though, because Devise needs the url helpers.
           get '/password',
             controller: 'v2/users/passwords', action: 'edit',
             as: :edit_user_password
-          post '/password', controller: 'v2/users/passwords', action: 'create'
-          patch '/password', controller: 'v2/users/passwords', action: 'update'
+          post '/password',
+            controller: 'v2/users/passwords',
+            action: 'resend_password_recovery_email'
+          patch '/password',
+            controller: 'v2/users/passwords',
+            action: 'recover_password'
 
           post 'sign_in', controller: 'v2/users/sessions', action: 'create'
           delete 'sign_out', controller: 'v2/users/sessions', action: 'destroy'
 
           post '/unlock',
-            controller: 'v2/users/unlocks', action: 'create',
+            controller: 'v2/users/unlock', action: 'resend_unlocking_email',
             as: nil
           patch '/unlock',
-            controller: 'v2/users/unlocks', action: 'update',
+            controller: 'v2/users/unlock', action: 'unlock_account',
             as: :user_unlock
         end
         get '/me', controller: 'v2/users', action: 'show_current_user'

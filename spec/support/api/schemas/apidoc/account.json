@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Registration",
-  "description": "Endpoint to create, modify or delete a user",
+  "title": "Account",
+  "description": "Endpoint to create, modify or delete a user account",
 
   "type": {"$ref": "../models/session_model.json#/type"},
   "required": {"$ref": "../models/session_model.json#/required"},
@@ -55,7 +55,7 @@
           }
         }
       },
-      "targetSchema": {"$ref": "../controllers/v2/users/registrations/post_create.json"}
+      "targetSchema": {"$ref": "../controllers/v2/users/account/post_create.json"}
     },
     {
       "title": "Update",
@@ -95,7 +95,7 @@
           }
         }
       },
-      "targetSchema": {"$ref": "../controllers/v2/users/registrations/post_create.json"}
+      "targetSchema": {"$ref": "../controllers/v2/users/account/post_create.json"}
     },
     {
       "title": "Delete",

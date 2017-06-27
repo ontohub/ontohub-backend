@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe V2::Users::RegistrationsController do
+RSpec.describe V2::Users::AccountController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
   let(:user) { build(:user) }

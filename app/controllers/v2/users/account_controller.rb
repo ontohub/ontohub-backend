@@ -3,7 +3,7 @@
 module V2
   module Users
     # Handles registration, editing and deletion of Users
-    class RegistrationsController < Devise::RegistrationsController
+    class AccountController < Devise::RegistrationsController
       include ::Recaptcha::Verify
       DISABLE_CAPTCHA = ENV['DISABLE_CAPTCHA'] == 'true'
 
