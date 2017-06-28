@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.1'
+gem 'rails', '~> 5.1.2'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use Redis adapter to run Action Cable in production
@@ -16,7 +16,7 @@ gem 'rack-cors'
 # Please check out the note in `app/graphql/mutations/save_account_mutation.rb`
 # when the models bring in a new version of Device
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: 'master'
+                      branch: '83-update_rails'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'
