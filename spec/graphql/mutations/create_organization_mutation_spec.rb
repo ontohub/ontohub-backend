@@ -5,11 +5,10 @@ require 'spec_helper'
 RSpec.describe 'createOrganization mutation' do
   let!(:current_user) { create :user }
   let(:organization_data) do
-    {
-      'id' => 'foobar',
-      'displayName' => 'Foobar',
-      'description' => 'This is the foobar',
-    }
+    org = build :organization
+    org.send(:set_slug)
+    org.values.slice(:slug, :display_name, :description).
+      transform_keys { |k| k == :slug ? 'id' : k.to_s.camelize(:lower) }
   end
 
   let(:context) { {current_user: current_user} }

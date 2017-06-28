@@ -7,11 +7,10 @@ RSpec.describe 'saveAccount mutation' do
   let(:password) { user.password }
   let(:new_password) { "changed-#{password}" }
   let(:user_data) do
-    {
-      'displayName' => 'Foobar',
-      'email' => 'foo@bar.com',
-      'password' => new_password,
-    }
+    user = build :user
+    user.values.slice(:display_name, :email, :password).
+      transform_keys { |k| k.to_s.camelize(:lower) }.
+      merge('password' => new_password)
   end
 
   let(:context) { {current_user: user} }

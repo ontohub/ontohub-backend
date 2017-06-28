@@ -5,10 +5,9 @@ require 'spec_helper'
 RSpec.describe 'saveOrganization mutation' do
   let!(:organization) { create :organization }
   let(:organization_data) do
-    {
-      'displayName' => 'Foobar',
-      'description' => 'This is the foobar',
-    }
+    org = build :organization
+    org.values.slice(:display_name, :description).
+      transform_keys { |k| k.to_s.camelize(:lower) }
   end
 
   let(:context) { {} }
