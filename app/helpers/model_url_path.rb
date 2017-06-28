@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# resource_url_paht generators
+# resource_url_path generators
 module ModelURLPath
   extend module_function
   def organization
