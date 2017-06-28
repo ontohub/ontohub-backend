@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 782e10f89bdcfcd961d0a2e7ac73c211dbb51888
-  branch: 80-organization_membership_is_not_destroyed
+  revision: b50869f61477571efa6927ccbd2421501ddce278
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)
