@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: d864e9a77c53dbbd7520cae75558bb2468ac4154
-  branch: 83-update_rails
+  revision: f76522c75526d98f238106b20b12840c0b6faf5b
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.7.0)

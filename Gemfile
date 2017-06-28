@@ -16,7 +16,7 @@ gem 'rack-cors'
 # Please check out the note in `app/graphql/mutations/save_account_mutation.rb`
 # when the models bring in a new version of Device
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: '83-update_rails'
+                      branch: 'master'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'
