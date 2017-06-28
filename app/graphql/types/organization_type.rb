@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/BlockLength
-
 Types::OrganizationType = GraphQL::ObjectType.define do
   name 'Organization'
   interfaces [Types::OrganizationalUnitType]

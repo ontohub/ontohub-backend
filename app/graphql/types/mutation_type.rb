@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/BlockLength
-
 Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
   description 'Base mutation type'
