@@ -3,7 +3,8 @@
 require 'spec_helper'
 
 RSpec.describe 'deleteAccount mutation' do
-  let!(:user) { create :user, password: 'changemenow' }
+  let!(:user) { create :user }
+  let(:password) { user.password }
 
   let(:context) { {current_user: user} }
 
@@ -23,30 +24,29 @@ RSpec.describe 'deleteAccount mutation' do
     QUERY
   end
 
+  subject { result }
+
   context 'Correct password' do
-    let(:variables) { {'password' => 'changemenow'} }
-    subject { result }
+    let(:variables) { {'password' => password} }
 
     it 'deletes the account' do
-      result
+      subject
       expect(User.find(id: user.id)).to be(nil)
     end
   end
 
   context 'Incorrect password' do
-    let(:variables) { {'password' => 'changemeow'} }
-    subject { result }
+    let(:variables) { {'password' => "bad-#{password}"} }
 
     it 'does not delete the account' do
-      result
+      subject
       expect(User.find(id: user.id)).to_not be(nil)
     end
   end
 
-  context 'User does not exist' do
+  context 'Current user does not exist' do
     let(:variables) { {'password' => ''} }
     let(:context) { {current_user: nil} }
-    subject { result }
 
     it 'returns an error' do
       expect(subject['data']['deleteAccount']).to be_nil

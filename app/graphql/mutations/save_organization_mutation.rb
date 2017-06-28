@@ -3,10 +3,10 @@
 module Mutations
   # GraphQL mutation to update an organization
   class SaveOrganizationMutation
-    def call(org, args, _ctx)
-      org_args = args[:data].to_h.compact
-      org.update(org_args)
-      org
+    def call(organization, arguments, _context)
+      params = arguments[:data].to_h.compact
+      organization.update(params)
+      organization
     end
   end
 end

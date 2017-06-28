@@ -24,9 +24,9 @@ RSpec.describe 'deleteOrganization mutation' do
     QUERY
   end
 
-  context 'Successful delete' do
-    subject { result }
+  subject { result }
 
+  context 'Successful delete' do
     it 'returns true' do
       expect(subject['data']['deleteOrganization']).to be(true)
     end
@@ -34,7 +34,6 @@ RSpec.describe 'deleteOrganization mutation' do
 
   context 'Organization does not exist' do
     let(:variables) { {'id' => organization.slug + 'foo'} }
-    subject { result }
 
     it 'returns an error' do
       expect(subject['data']['deleteOrganization']).to be_nil

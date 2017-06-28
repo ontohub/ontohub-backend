@@ -4,23 +4,16 @@ module Mutations
   # GraphQL mutation to create a new organization and
   # add the current user as a member
   class CreateOrganizationMutation
-    def call(_obj, args, ctx)
-      org_args = args[:data].to_h.merge(url_path_method: url_path_method)
-      org = Organization.new(org_args)
+    def call(_root, arguments, context)
+      params = arguments[:data].to_h.
+        merge(url_path_method: ModelURLPath.organization)
+      organization = Organization.new(params)
 
-      org.db.transaction do
-        org.save
-        org.add_member(ctx[:current_user])
+      organization.db.transaction do
+        organization.save
+        organization.add_member(context[:current_user])
       end
-      org
-    end
-
-    private
-
-    def url_path_method
-      lambda do |resource|
-        V2::OrganizationsController.resource_url_path(resource)
-      end
+      organization
     end
   end
 end

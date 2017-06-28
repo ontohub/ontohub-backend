@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+
 Types::OrganizationType = GraphQL::ObjectType.define do
   name 'Organization'
   interfaces [Types::OrganizationalUnitType]
+  description 'Data of an organization'
 
   field :id, !types.ID do
     description 'ID of the organization'
@@ -14,19 +17,25 @@ Types::OrganizationType = GraphQL::ObjectType.define do
     property :display_name
   end
 
-  field :description, types.String, 'Description of the organization'
+  field :description, types.String do
+    description 'Description of the organization'
+  end
 
   field :members, !types[Types::UserType] do
-    argument :limit,
-             types.Int,
-             'Maximum number of members',
-             default_value: 20
-    argument :skip,
-             types.Int,
-             'Skip the first n members',
-             default_value: 0
-    resolve(lambda do |org, args, _ctx|
-      org.members_dataset.limit(args[:limit], args[:skip])
+    description 'List of members'
+
+    argument :limit, types.Int do
+      description 'Maximum number of members to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n members'
+      default_value 0
+    end
+
+    resolve(lambda do |organization, arguments, _context|
+      organization.members_dataset.limit(arguments[:limit], arguments[:skip])
     end)
   end
 end

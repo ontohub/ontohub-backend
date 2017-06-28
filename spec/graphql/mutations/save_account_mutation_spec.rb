@@ -3,12 +3,14 @@
 require 'spec_helper'
 
 RSpec.describe 'saveAccount mutation' do
-  let!(:user) { create :user, password: 'changemenow' }
+  let!(:user) { create :user }
+  let(:password) { user.password }
+  let(:new_password) { "changed-#{password}" }
   let(:user_data) do
     {
       'displayName' => 'Foobar',
       'email' => 'foo@bar.com',
-      'password' => 'foobarchangeme',
+      'password' => new_password,
     }
   end
 
@@ -35,9 +37,10 @@ RSpec.describe 'saveAccount mutation' do
     QUERY
   end
 
+  subject { result }
+
   context 'Correct password' do
-    let(:variables) { {'data' => user_data, 'password' => 'changemenow'} }
-    subject { result }
+    let(:variables) { {'data' => user_data, 'password' => password} }
 
     it 'returns the new account fields' do
       expect(subject['data']['saveAccount']).to include(
@@ -47,11 +50,15 @@ RSpec.describe 'saveAccount mutation' do
         'unconfirmedEmail' => user_data['email']
       )
     end
+
+    it "changed the user's password" do
+      subject
+      expect(user.valid_password?(new_password)).to be_truthy
+    end
   end
 
   context 'Incorrect password' do
-    let(:variables) { {'data' => user_data, 'password' => 'changemeow'} }
-    subject { result }
+    let(:variables) { {'data' => user_data, 'password' => "bad-#{password}"} }
 
     it 'returns the old account fields' do
       expect(subject['data']['saveAccount']).to include(
@@ -65,7 +72,6 @@ RSpec.describe 'saveAccount mutation' do
   context 'User does not exist' do
     let(:variables) { {'data' => user_data, 'password' => ''} }
     let(:context) { {current_user: nil} }
-    subject { result }
 
     it 'returns an error' do
       expect(subject['data']['saveAccount']).to be_nil

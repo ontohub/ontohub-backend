@@ -34,9 +34,9 @@ RSpec.describe 'saveOrganization mutation' do
     QUERY
   end
 
-  context 'Successful update' do
-    subject { result }
+  subject { result }
 
+  context 'Successful update' do
     it 'returns the organization fields' do
       expect(subject['data']['saveOrganization']).to include(
         'id' => organization.slug,
@@ -48,10 +48,9 @@ RSpec.describe 'saveOrganization mutation' do
 
   context 'Organization does not exist' do
     let(:variables) do
-      {'id' => organization.slug + 'foobar',
+      {'id' => "bad-#{organization.slug}",
        'data' => organization_data}
     end
-    subject { result }
 
     it 'returns an error' do
       expect(subject['data']['saveOrganization']).to be_nil

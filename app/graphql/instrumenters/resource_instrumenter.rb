@@ -19,13 +19,15 @@ module Instrumenters
       end
     end
 
+    protected
+
     def resolve_proc(old_resolve, resource_proc)
-      lambda do |old_obj, args, ctx|
-        obj = resource_proc.call(old_obj, args, ctx)
-        if obj
-          old_resolve.call(obj, args, ctx)
+      lambda do |root, arguments, context|
+        resource = resource_proc.call(root, arguments, context)
+        if resource
+          old_resolve.call(resource, arguments, context)
         else
-          ctx.add_error(GraphQL::ExecutionError.new('resource not found'))
+          context.add_error(GraphQL::ExecutionError.new('resource not found'))
         end
       end
     end

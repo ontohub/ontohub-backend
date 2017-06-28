@@ -7,11 +7,11 @@ module Instrumenters
     def instrument(_type, field)
       old_resolve = field.resolve_proc
       field.redefine do
-        resolve(lambda do |obj, args, ctx|
+        resolve(lambda do |root, arguments, context|
           begin
-            old_resolve.call(obj, args, ctx)
+            old_resolve.call(root, arguments, context)
           rescue Sequel::ValidationFailed => error
-            ctx.add_error(GraphQL::ExecutionError.new(error.message))
+            context.add_error(GraphQL::ExecutionError.new(error.message))
           end
         end)
       end

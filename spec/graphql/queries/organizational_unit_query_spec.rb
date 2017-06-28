@@ -14,13 +14,11 @@ RSpec.describe 'OrganizationalUnit query' do
   let(:variables) { {'id' => subject.slug} }
 
   let(:result) do
-    res = OntohubBackendSchema.execute(
+    OntohubBackendSchema.execute(
       query_string,
       context: context,
       variables: variables
     )
-    puts res if res['errors']
-    res
   end
 
   let(:query_string) do

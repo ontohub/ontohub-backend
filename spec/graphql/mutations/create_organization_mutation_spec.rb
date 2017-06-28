@@ -6,7 +6,7 @@ RSpec.describe 'createOrganization mutation' do
   let!(:current_user) { create :user }
   let(:organization_data) do
     {
-      'name' => 'foobar',
+      'id' => 'foobar',
       'displayName' => 'Foobar',
       'description' => 'This is the foobar',
     }
@@ -38,12 +38,12 @@ RSpec.describe 'createOrganization mutation' do
     QUERY
   end
 
-  context 'Successful creation' do
-    subject { result }
+  subject { result }
 
+  context 'Successful creation' do
     it 'returns the organization fields' do
       expect(subject['data']['createOrganization']).to include(
-        'id' => organization_data['name'],
+        'id' => organization_data['id'],
         'description' => organization_data['description'],
         'displayName' => organization_data['displayName'],
         'members' => [{'id' => current_user.slug}]
@@ -53,16 +53,13 @@ RSpec.describe 'createOrganization mutation' do
 
   context 'Name is not available' do
     before do
-      create :organization, name: organization_data['name']
+      create :organization, name: organization_data['id']
     end
-
-    subject { result }
 
     it 'returns an error' do
       expect(subject['data']['createOrganization']).to be(nil)
-      expect(subject['errors']).to include(
-        include('message' => 'name is already taken')
-      )
+      expect(subject['errors']).
+        to include(include('message' => 'name is already taken'))
     end
   end
 end

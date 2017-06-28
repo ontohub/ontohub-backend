@@ -11,13 +11,11 @@ RSpec.describe 'Version query' do
   let(:variables) { {} }
 
   let(:result) do
-    res = OntohubBackendSchema.execute(
+    OntohubBackendSchema.execute(
       query_string,
       context: context,
       variables: variables
     )
-    puts res if res['errors']
-    res
   end
 
   let(:query_string) do
