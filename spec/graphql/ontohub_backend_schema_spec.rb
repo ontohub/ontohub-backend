@@ -10,7 +10,7 @@ RSpec.describe OntohubBackendSchema do
   end
 
   let(:types) do
-    schema.types.to_h.reject { |k, _| k.starts_with?('__') }.values
+    schema.types.to_h.reject { |k, _| k.start_with?('__') }.values
   end
 
   let(:fields) do
@@ -35,16 +35,16 @@ RSpec.describe OntohubBackendSchema do
 
   it 'has documentation strings for all types' do
     doc_strings = types.map(&:description)
-    expect(doc_strings).to all(be_truthy)
+    expect(doc_strings).to all(be_present)
   end
 
   it 'has documentation strings for all fields' do
     doc_strings = fields.map(&:description)
-    expect(doc_strings).to all(be_truthy)
+    expect(doc_strings).to all(be_present)
   end
 
   it 'has documentation strings for all arguments' do
     doc_strings = arguments.map(&:description)
-    expect(doc_strings).to all(be_truthy)
+    expect(doc_strings).to all(be_present)
   end
 end
