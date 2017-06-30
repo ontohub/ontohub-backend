@@ -8,7 +8,7 @@ RSpec.describe VersionPolicy do
       let(:current_user) { create :user }
       subject { VersionPolicy.new(current_user) }
 
-      it 'should show the version' do
+      it 'should allow to show the version' do
         expect(subject.show?).to be(true)
       end
     end
@@ -17,7 +17,7 @@ RSpec.describe VersionPolicy do
       let(:current_user) { create :user, :admin }
       subject { VersionPolicy.new(current_user) }
 
-      it 'should show the version' do
+      it 'should allow to show the version' do
         expect(subject.show?).to be(true)
       end
     end
@@ -26,7 +26,7 @@ RSpec.describe VersionPolicy do
       let(:current_user) { nil }
       subject { VersionPolicy.new(current_user) }
 
-      it 'should show the version' do
+      it 'should allow to show the version' do
         expect(subject.show?).to be(true)
       end
     end

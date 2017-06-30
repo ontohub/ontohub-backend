@@ -10,7 +10,7 @@ RSpec.describe UserPolicy do
       let(:current_user) { create :user }
       subject { UserPolicy.new(current_user, user) }
 
-      it 'should show the user' do
+      it 'should allow to show the user' do
         expect(subject.show?).to be(true)
       end
     end
@@ -19,7 +19,7 @@ RSpec.describe UserPolicy do
       let(:current_user) { create :user, :admin }
       subject { UserPolicy.new(current_user, user) }
 
-      it 'should show the user' do
+      it 'should allow to show the user' do
         expect(subject.show?).to be(true)
       end
     end
@@ -28,7 +28,7 @@ RSpec.describe UserPolicy do
       let(:current_user) { nil }
       subject { UserPolicy.new(current_user, user) }
 
-      it 'should show the user' do
+      it 'should allow to show the user' do
         expect(subject.show?).to be(true)
       end
     end
@@ -41,7 +41,7 @@ context 'show_current_user?' do
       let(:current_user) { create :user }
       subject { UserPolicy.new(current_user, user) }
 
-      it 'should show the user' do
+      it 'should allow to show the user' do
         expect(subject.show_current_user?).to be(true)
       end
     end
@@ -50,7 +50,7 @@ context 'show_current_user?' do
       let(:current_user) { create :user, :admin }
       subject { UserPolicy.new(current_user, user) }
 
-      it 'should show the user' do
+      it 'should allow to show the user' do
         expect(subject.show_current_user?).to be(true)
       end
     end
@@ -59,7 +59,7 @@ context 'show_current_user?' do
       let(:current_user) { nil }
       subject { UserPolicy.new(current_user, user) }
 
-      it 'shouldnt show the user' do
+      it 'should not allow to show the user' do
         expect(subject.show_current_user?).to be(false)
       end
     end

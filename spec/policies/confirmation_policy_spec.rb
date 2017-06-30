@@ -8,7 +8,7 @@ RSpec.describe ConfirmationPolicy do
       let(:current_user) { create :user }
       subject { ConfirmationPolicy.new(current_user) }
 
-      it 'should resend email' do
+      it 'should allow to resend email' do
         expect(subject.create?).to be(true)
       end
     end
@@ -17,7 +17,7 @@ RSpec.describe ConfirmationPolicy do
       let(:current_user) { create :user, :admin }
       subject { ConfirmationPolicy.new(current_user) }
 
-      it 'should resend email' do
+      it 'should allow to resend email' do
         expect(subject.create?).to be(true)
       end
     end
@@ -26,7 +26,7 @@ RSpec.describe ConfirmationPolicy do
       let(:current_user) { nil }
       subject { ConfirmationPolicy.new(current_user) }
 
-      it 'should resend email' do
+      it 'should allow to resend email' do
         expect(subject.create?).to be(true)
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe ConfirmationPolicy do
       let(:current_user) { create :user }
       subject { ConfirmationPolicy.new(current_user) }
 
-      it 'should send confirmation' do
+      it 'should allow to send confirmation' do
         expect(subject.update?).to be(true)
       end
     end
@@ -46,7 +46,7 @@ RSpec.describe ConfirmationPolicy do
       let(:current_user) { create :user, :admin }
       subject { ConfirmationPolicy.new(current_user) }
 
-      it 'should send confirmation' do
+      it 'should allow to send confirmation' do
         expect(subject.update?).to be(true)
       end
     end
@@ -55,7 +55,7 @@ RSpec.describe ConfirmationPolicy do
       let(:current_user) { nil }
       subject { ConfirmationPolicy.new(current_user) }
 
-      it 'should send confirmation' do
+      it 'should allow to send confirmation' do
         expect(subject.update?).to be(true)
       end
     end
