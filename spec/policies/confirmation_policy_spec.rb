@@ -14,7 +14,7 @@ RSpec.describe ConfirmationPolicy do
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, role: 'admin' }
+      let(:current_user) { create :user, :admin }
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should resend email' do
@@ -43,7 +43,7 @@ RSpec.describe ConfirmationPolicy do
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, role: 'admin' }
+      let(:current_user) { create :user, :admin }
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should send confirmation' do

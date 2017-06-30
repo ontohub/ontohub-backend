@@ -14,7 +14,7 @@ RSpec.describe OrganizationalUnitPolicy do
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, role: 'admin' }
+      let(:current_user) { create :user, :admin }
       subject { OrganizationalUnitPolicy.new(current_user) }
 
       it 'should show the organizational unit' do

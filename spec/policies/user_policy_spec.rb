@@ -16,7 +16,7 @@ RSpec.describe UserPolicy do
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, role: 'admin' }
+      let(:current_user) { create :user, :admin }
       subject { UserPolicy.new(current_user, user) }
 
       it 'should show the user' do
@@ -47,7 +47,7 @@ context 'show_current_user?' do
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, role: 'admin' }
+      let(:current_user) { create :user, :admin }
       subject { UserPolicy.new(current_user, user) }
 
       it 'should show the user' do
