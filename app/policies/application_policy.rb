@@ -7,7 +7,7 @@ class ApplicationPolicy
 
     if @user&.admin?
       (self.class.instance_methods - Object.methods).each do |method|
-        define_singleton_method(method, ->() { true })
+        define_singleton_method(method, ->(*args) { true })
       end
     end
   end
