@@ -9,7 +9,7 @@ RSpec.describe OrganizationalUnitPolicy do
       subject { OrganizationalUnitPolicy.new(current_user) }
 
       it 'should show the organizational unit' do
-        expect(subject.show?).to eq(true)
+        expect(subject.show?).to be(true)
       end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe OrganizationalUnitPolicy do
       subject { OrganizationalUnitPolicy.new(current_user) }
 
       it 'should show the organizational unit' do
-        expect(subject.show?).to eq(true)
+        expect(subject.show?).to be(true)
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe OrganizationalUnitPolicy do
       subject { OrganizationalUnitPolicy.new(current_user) }
 
       it 'should show the organizational unit' do
-        expect(subject.show?).to eq(true)
+        expect(subject.show?).to be(true)
       end
     end
   end

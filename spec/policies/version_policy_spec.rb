@@ -9,7 +9,7 @@ RSpec.describe VersionPolicy do
       subject { VersionPolicy.new(current_user) }
 
       it 'should show the version' do
-        expect(subject.show?).to eq(true)
+        expect(subject.show?).to be(true)
       end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe VersionPolicy do
       subject { VersionPolicy.new(current_user) }
 
       it 'should show the version' do
-        expect(subject.show?).to eq(true)
+        expect(subject.show?).to be(true)
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe VersionPolicy do
       subject { VersionPolicy.new(current_user) }
 
       it 'should show the version' do
-        expect(subject.show?).to eq(true)
+        expect(subject.show?).to be(true)
       end
     end
   end

@@ -9,7 +9,7 @@ RSpec.describe ConfirmationPolicy do
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should resend email' do
-        expect(subject.create?).to eq(true)
+        expect(subject.create?).to be(true)
       end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe ConfirmationPolicy do
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should resend email' do
-        expect(subject.create?).to eq(true)
+        expect(subject.create?).to be(true)
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe ConfirmationPolicy do
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should resend email' do
-        expect(subject.create?).to eq(true)
+        expect(subject.create?).to be(true)
       end
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe ConfirmationPolicy do
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should send confirmation' do
-        expect(subject.update?).to eq(true)
+        expect(subject.update?).to be(true)
       end
     end
 
@@ -47,7 +47,7 @@ RSpec.describe ConfirmationPolicy do
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should send confirmation' do
-        expect(subject.update?).to eq(true)
+        expect(subject.update?).to be(true)
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe ConfirmationPolicy do
       subject { ConfirmationPolicy.new(current_user) }
 
       it 'should send confirmation' do
-        expect(subject.update?).to eq(true)
+        expect(subject.update?).to be(true)
       end
     end
   end
