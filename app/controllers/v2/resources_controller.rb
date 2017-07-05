@@ -102,6 +102,11 @@ module V2
     def build_resource
       permitted_params
       @resource = resource_class.new(resource_params)
+      if @resource.respond_to?(:url_path_method)
+        resource.url_path_method =
+          ModelURLPath.public_send(resource_class.to_s.underscore)
+      end
+      @resource
     end
 
     private

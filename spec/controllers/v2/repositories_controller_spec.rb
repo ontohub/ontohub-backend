@@ -73,7 +73,7 @@ RSpec.describe V2::RepositoriesController do
         it 'sets the correct url' do
           found_repository = Repository.find(name: name)
           expect(found_repository.url_path).
-            to eq("/repositories/#{found_repository.to_param}")
+            to eq("/#{found_repository.to_param}")
         end
       end
 
@@ -262,7 +262,7 @@ RSpec.describe V2::RepositoriesController do
         it 'sets the correct url' do
           found_repository = Repository.find(name: name)
           expect(found_repository.url_path).
-            to eq("/repositories/#{found_repository.to_param}")
+            to eq("/#{found_repository.to_param}")
         end
       end
 

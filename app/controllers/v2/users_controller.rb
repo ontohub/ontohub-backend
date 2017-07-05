@@ -2,7 +2,7 @@
 
 module V2
   # Handles user show requests
-  class UsersController < ResourcesWithURLController
+  class UsersController < ResourcesController
     find_param :slug
     actions :show
     permitted_includes 'repositories'
