@@ -65,6 +65,16 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::ResendConfirmationEmailMutation.new
   end
 
+  field :resendPasswordResetEmail, !types.Boolean do
+    description 'Resends the password reset email to a user'
+
+    argument :email, !types.String do
+      description 'The email address of the user'
+    end
+
+    resolve Mutations::ResendPasswordResetEmailMutation.new
+  end
+
   field :saveAccount, Types::UserType do
     description 'Updates the current user account'
 

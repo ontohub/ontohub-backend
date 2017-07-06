@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared_examples/resend_password_reset_email'
 
 RSpec.describe V2::Users::PasswordsController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
@@ -18,12 +19,15 @@ RSpec.describe V2::Users::PasswordsController do
   end
 
   describe 'POST resend_password_recovery_email' do
+  describe 'POST resend_password_recovery_email',
+    type: :mailer, no_transaction: true do
     before do
       post :resend_password_recovery_email,
         params: {data: {attributes: {email: user.email}}}
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }
+    it_behaves_like 'a password reset email sender'
   end
 
   describe 'PATCH recover_password', type: :mailer, no_transaction: true do
