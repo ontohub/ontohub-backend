@@ -24,3 +24,7 @@ module ControllerHelpers
     errors&.map { |error| error['detail'] }
   end
 end
+
+RSpec.configure do |config|
+  config.include ControllerHelpers, type: :controller
+end
