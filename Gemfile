@@ -13,8 +13,17 @@ gem 'puma', '~> 3.0'
 # cross-origin AJAX possible
 gem 'rack-cors'
 
-# Please check out the note in `app/graphql/mutations/save_account_mutation.rb`
-# when the models bring in a new version of Device
+# Please check out the notes in
+# * `app/graphql/mutations/confirm_email_mutation.rb`
+# * `app/graphql/mutations/resend_confirmation_email_mutation.rb`
+# * `app/graphql/mutations/resend_password_reset_email_mutation.rb`
+# * `app/graphql/mutations/resend_unlock_account_email_mutation.rb`
+# * `app/graphql/mutations/reset_password_mutation.rb`
+# * `app/graphql/mutations/save_account_mutation.rb`
+# * `app/graphql/mutations/sign_in_mutation.rb`
+# * `app/graphql/mutations/sign_up_mutation.rb`
+# * `app/graphql/mutations/unlock_account_mutation.rb`
+# when the models bring in a new version of Devise
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
