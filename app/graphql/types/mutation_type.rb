@@ -130,4 +130,14 @@ Types::MutationType = GraphQL::ObjectType.define do
     end)
     resolve Mutations::SaveOrganizationMutation.new
   end
+
+  field :unlockAccount, Types::SessionTokenType do
+    description 'Unlocks a locked user account'
+
+    argument :token, !types.String do
+      description 'The unlock account token from the unlock account email'
+    end
+
+    resolve Mutations::UnlockAccountMutation.new
+  end
 end
