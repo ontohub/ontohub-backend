@@ -75,6 +75,20 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::ResendPasswordResetEmailMutation.new
   end
 
+  field :resetPassword, Types::SessionTokenType do
+    description "Resets a user's password"
+
+    argument :password, !types.String do
+      description 'The new password'
+    end
+
+    argument :token, !types.String do
+      description 'The reset token from the password reset email'
+    end
+
+    resolve Mutations::ResetPasswordMutation.new
+  end
+
   field :saveAccount, Types::UserType do
     description 'Updates the current user account'
 
