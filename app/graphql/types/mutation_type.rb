@@ -145,6 +145,20 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SignInMutation.new
   end
 
+  field :signUp, Types::SessionTokenType do
+    description 'Signs up a user'
+
+    argument :user, !Types::Input::NewUserType do
+      description "The new user's data"
+    end
+
+    argument :captcha, !types.String do
+      description 'A reCAPTCHA token'
+    end
+
+    resolve Mutations::SignUpMutation.new
+  end
+
   field :unlockAccount, Types::SessionTokenType do
     description 'Unlocks a locked user account'
 
