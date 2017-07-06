@@ -131,6 +131,20 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SaveOrganizationMutation.new
   end
 
+  field :signIn, Types::SessionTokenType do
+    description 'Signs in a user'
+
+    argument :username, !types.String do
+      description "The user's name"
+    end
+
+    argument :password, !types.String do
+      description "The user's password"
+    end
+
+    resolve Mutations::SignInMutation.new
+  end
+
   field :unlockAccount, Types::SessionTokenType do
     description 'Unlocks a locked user account'
 
