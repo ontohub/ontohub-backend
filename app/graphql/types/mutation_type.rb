@@ -5,6 +5,16 @@ Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
   description 'Base mutation type'
 
+  field :confirmEmail, Types::SessionTokenType do
+    description 'Confirms the email address of a user'
+
+    argument :token, !types.String do
+      description 'The confirmation token from the confirmation email'
+    end
+
+    resolve Mutations::ConfirmEmailMutation.new
+  end
+
   field :createOrganization, Types::OrganizationType do
     description 'Creates a new organization'
 
