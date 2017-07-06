@@ -75,6 +75,16 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::ResendPasswordResetEmailMutation.new
   end
 
+  field :resendUnlockAccountEmail, !types.Boolean do
+    description 'Resends the unlock account email to a user'
+
+    argument :email, !types.String do
+      description 'The email address of the user'
+    end
+
+    resolve Mutations::ResendUnlockAccountEmailMutation.new
+  end
+
   field :resetPassword, Types::SessionTokenType do
     description "Resets a user's password"
 
