@@ -45,6 +45,16 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::DeleteOrganizationMutation.new
   end
 
+  field :resendConfirmationEmail, !types.Boolean do
+    description 'Resends the confirmation email to a user'
+
+    argument :email, !types.String do
+      description 'The email address of the user'
+    end
+
+    resolve Mutations::ResendConfirmationEmailMutation.new
+  end
+
   field :saveAccount, Types::UserType do
     description 'Updates the current user account'
 

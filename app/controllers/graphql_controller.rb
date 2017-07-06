@@ -8,6 +8,7 @@ class GraphqlController < ApplicationController
     query = params[:query]
     context = {
       current_user: current_user,
+      request: request
     }
     result = OntohubBackendSchema.execute(
       query,

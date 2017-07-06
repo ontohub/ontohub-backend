@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared_examples/confirmation_email'
 
 RSpec.describe V2::Users::AccountController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
@@ -25,38 +26,7 @@ RSpec.describe V2::Users::AccountController do
       end
       it { expect(response).to have_http_status(:created) }
       it { |example| expect([example, response]).to comply_with_api }
-
-      context 'confirmation mail' do
-        it 'sends an email' do
-          expect(UsersMailer.deliveries.size).to eq(1)
-        end
-
-        it 'is has the correct recipient' do
-          expect(last_email.to).to match_array([user.email])
-        end
-
-        it 'is has the correct subject' do
-          expect(last_email.subject).to eq('Confirmation instructions')
-        end
-
-        it 'includes the name' do
-          expect(last_email.body.encoded).to include(user.display_name)
-        end
-
-        it 'includes the confirmation token' do
-          expect(last_email.body.encoded).
-            to include(User.find(email: user.email).confirmation_token)
-        end
-
-        it 'includes a confirmation link' do
-          persisted_user = User.find(email: user.email)
-          token = persisted_user.confirmation_token
-          # rubocop:disable Metrics/LineLength
-          link = %(<a href="http://example.test/users/confirmation?confirmation_token=#{token}">Confirm my account</a>)
-          # rubocop:enable Metrics/LineLength
-          expect(last_email.body.encoded).to include(link)
-        end
-      end
+      it_behaves_like 'a confirmation email sender'
     end
 
     context 'failing with invalid data', type: :mailer, no_transaction: true do

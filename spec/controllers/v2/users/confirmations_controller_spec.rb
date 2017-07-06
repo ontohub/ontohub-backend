@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared_examples/confirmation_email'
 
 RSpec.describe V2::Users::ConfirmationController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
-  let(:user) { create(:user) }
+  let!(:user) { create(:user) }
 
   describe 'PATCH confirm_email_address' do
     context 'successful' do
@@ -37,12 +38,15 @@ RSpec.describe V2::Users::ConfirmationController do
     end
   end
 
-  describe 'POST resend_confirmation_email' do
+  describe 'POST resend_confirmation_email',
+    type: :mailer, no_transaction: true do
     before do
+      UsersMailer.deliveries.clear
       post :resend_confirmation_email,
         params: {data: {attributes: {email: user.email}}}
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }
+    it_behaves_like 'a confirmation email sender'
   end
 end
