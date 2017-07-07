@@ -52,7 +52,8 @@ Types::OrganizationType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |organization, arguments, _context|
-      organization.repositories_dataset.limit(arguments[:limit], arguments[:skip])
+      organization.repositories_dataset.
+        limit(arguments[:limit], arguments[:skip])
     end)
   end
 end
