@@ -3,7 +3,8 @@
 FactoryGirl.define do
   factory :repository_compound do
     transient do
-      repository { create(:repository) }
+      owner { create(:user) }
+      repository { create(:repository, owner: owner) }
       git do
         create(:git, :with_commits,
                path: RepositoryCompound.git_directory.

@@ -174,6 +174,12 @@ type Query {
     id: ID!
   ): OrganizationalUnit
 
+  # The repository for the given ID
+  repository(
+    # ID of the repository
+    id: ID!
+  ): Repository
+
   # The version of the running backend
   version: Version!
 }
