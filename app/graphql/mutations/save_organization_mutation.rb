@@ -5,6 +5,7 @@ module Mutations
   class SaveOrganizationMutation
     def call(organization, arguments, _context)
       params = arguments[:data].to_h.compact
+      params['description'] = nil if params['description'].empty?
       organization.update(params)
       organization
     end
