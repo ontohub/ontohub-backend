@@ -32,6 +32,12 @@ type Mutation {
     id: ID!
   ): Boolean
 
+  # Deletes a repository
+  deleteRepository(
+    # The ID of the repository to delete
+    id: ID!
+  ): Boolean
+
   # Resends the confirmation email to a user
   resendConfirmationEmail(
     # The email address of the user

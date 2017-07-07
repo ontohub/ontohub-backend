@@ -65,6 +65,19 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::DeleteOrganizationMutation.new
   end
 
+  field :deleteRepository, types.Boolean do
+    description 'Deletes a repository'
+
+    argument :id, !types.ID, as: :slug do
+      description 'The ID of the repository to delete'
+    end
+
+    resource(lambda do |_root, arguments, _context|
+      RepositoryCompound.find(slug: arguments[:slug])
+    end)
+    resolve Mutations::DeleteRepositoryMutation.new
+  end
+
   field :resendConfirmationEmail, !types.Boolean do
     description 'Resends the confirmation email to a user'
 
