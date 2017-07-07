@@ -143,6 +143,15 @@ type Organization implements OrganizationalUnit {
     # Skip the first n members
     skip: Int = 0
   ): [User]!
+
+  # List of repositories owned by this organization
+  repositories(
+    # Maximum number of repositories to list
+    limit: Int = 20
+
+    # Skip the first n repositories
+    skip: Int = 0
+  ): [Repository]!
 }
 
 # Contains all fields of an organization that can be changed
@@ -161,6 +170,15 @@ interface OrganizationalUnit {
 
   # ID of the organizational unit
   id: ID!
+
+  # List of repositories owned by this organizational unit
+  repositories(
+    # Maximum number of repositories to list
+    limit: Int = 20
+
+    # Skip the first n repositories
+    skip: Int = 0
+  ): [Repository]!
 }
 
 # Base query type
@@ -256,6 +274,15 @@ type User implements OrganizationalUnit {
     # Skip the first n organizations
     skip: Int = 0
   ): [Organization]!
+
+  # List of repositories owned by this user
+  repositories(
+    # Maximum number of repositories to list
+    limit: Int = 20
+
+    # Skip the first n repositories
+    skip: Int = 0
+  ): [Repository]!
 
   # Email address of the user that still needs to be confirmed
   unconfirmedEmail: String
