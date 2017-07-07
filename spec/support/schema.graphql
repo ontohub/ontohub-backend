@@ -178,6 +178,47 @@ type Query {
   version: Version!
 }
 
+# Data of a repository
+type Repository {
+  # Branches of the repository
+  branches: [String]!
+
+  # Type of the repository
+  contentType: RepositoryContentType!
+
+  # Default branch of the repository
+  defaultBranch: String
+
+  # Description of the repository
+  description: String
+
+  # ID of the repository
+  id: ID!
+
+  # Name of the repository
+  name: String!
+
+  # Owner of the repository
+  owner: OrganizationalUnit!
+
+  # Visibility of the repository
+  visibility: RepositoryVisibility!
+}
+
+# Possible types of repositories
+enum RepositoryContentType {
+  mathematical
+  model
+  ontology
+  specification
+}
+
+# Possible values for repository visibilities
+enum RepositoryVisibility {
+  private
+  public
+}
+
 # Data of a signed in user
 type SessionToken {
   # The session token

@@ -18,4 +18,14 @@ FactoryGirl.define do
       RepositoryCompound.wrap(repository)
     end
   end
+
+  trait :empty_git do
+    transient do
+      git do
+        create(:git,
+               path: RepositoryCompound.git_directory.
+                 join("#{repository.to_param}.git"))
+      end
+    end
+  end
 end
