@@ -45,7 +45,7 @@ RSpec.describe 'saveRepository mutation' do
         'id' => repository.to_param,
         'description' => repository_data['description'],
         'contentType' => repository_data['contentType'],
-        'visibility' => repository_data['visibility'],
+        'visibility' => repository_data['visibility']
       )
     end
   end

@@ -3,7 +3,7 @@
 module Mutations
   # GraphQL mutation to create a new repository
   class CreateRepositoryMutation
-    def call(_root, arguments, context)
+    def call(_root, arguments, _context)
       params = arguments[:data].to_h.
         merge(url_path_method: ModelURLPath.repository)
       params['owner'] = OrganizationalUnit.find(slug: params['owner'])
