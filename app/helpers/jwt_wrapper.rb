@@ -41,4 +41,9 @@ module JWTWrapper
   rescue JWT::DecodeError
     nil
   end
+
+  def generate_token(user)
+    payload = {user_id: user.to_param}
+    AuthenticationToken.new(token: JWTWrapper.encode(payload))
+  end
 end

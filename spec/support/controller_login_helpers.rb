@@ -28,3 +28,8 @@ module ControllerLoginHelpers
     end
   end
 end
+
+RSpec.configure do |config|
+  config.include ControllerLoginHelpers::InstanceHelpers, type: :controller
+  config.extend ControllerLoginHelpers::ClassHelpers, type: :controller
+end

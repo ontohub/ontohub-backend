@@ -8,16 +8,11 @@ module V2
       def create
         super
         render status: :created,
-               json: generate_token,
+               json: JWTWrapper.generate_token(current_user),
                serializer: AuthenticationTokenSerializer
       end
 
       protected
-
-      def generate_token
-        payload = {user_id: current_user.to_param}
-        AuthenticationToken.new(token: JWTWrapper.encode(payload))
-      end
 
       # Disable the flash
       # rubocop:disable Style/AccessorMethodName

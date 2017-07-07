@@ -1,5 +1,11 @@
 # Base mutation type
 type Mutation {
+  # Confirms the email address of a user
+  confirmEmail(
+    # The confirmation token from the confirmation email
+    token: String!
+  ): SessionToken
+
   # Creates a new organization
   createOrganization(
     # The parameters of the new organization
@@ -20,6 +26,33 @@ type Mutation {
     id: ID!
   ): Boolean
 
+  # Resends the confirmation email to a user
+  resendConfirmationEmail(
+    # The email address of the user
+    email: String!
+  ): Boolean!
+
+  # Resends the password reset email to a user
+  resendPasswordResetEmail(
+    # The email address of the user
+    email: String!
+  ): Boolean!
+
+  # Resends the unlock account email to a user
+  resendUnlockAccountEmail(
+    # The email address of the user
+    email: String!
+  ): Boolean!
+
+  # Resets a user's password
+  resetPassword(
+    # The new password
+    password: String!
+
+    # The reset token from the password reset email
+    token: String!
+  ): SessionToken
+
   # Updates the current user account
   saveAccount(
     # Updated fields of the user
@@ -37,6 +70,30 @@ type Mutation {
     # ID of the organization to update
     id: ID!
   ): Organization
+
+  # Signs in a user
+  signIn(
+    # The user's password
+    password: String!
+
+    # The user's name
+    username: String!
+  ): SessionToken
+
+  # Signs up a user
+  signUp(
+    # A reCAPTCHA token
+    captcha: String!
+
+    # The new user's data
+    user: NewUser!
+  ): SessionToken
+
+  # Unlocks a locked user account
+  unlockAccount(
+    # The unlock account token from the unlock account email
+    token: String!
+  ): SessionToken
 }
 
 # Contains all fields that are possible to set when creating a new
@@ -50,6 +107,21 @@ input NewOrganization {
 
   # ID of the new organization
   id: ID!
+}
+
+# Data of a a new user that is about to sign up
+input NewUser {
+  # The name of the user
+  displayName: String
+
+  # The email address of the user
+  email: String!
+
+  # The password of the user
+  password: String!
+
+  # Name/id of the user
+  username: ID!
 }
 
 # Data of an organization
@@ -93,6 +165,9 @@ interface OrganizationalUnit {
 
 # Base query type
 type Query {
+  # The currently signed in user
+  me: User
+
   # The organizational unit for the given ID
   organizationalUnit(
     # ID of the organizational unit
@@ -101,6 +176,15 @@ type Query {
 
   # The version of the running backend
   version: Version!
+}
+
+# Data of a signed in user
+type SessionToken {
+  # The session token
+  jwt: String!
+
+  # The current user
+  me: User!
 }
 
 # Data of a user

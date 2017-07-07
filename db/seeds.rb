@@ -1,35 +1,26 @@
 # frozen_string_literal: true
 
 # Create users.
-url_path_method = lambda do |resource|
-  V2::UsersController.resource_url_path(resource)
-end
 [{name: 'ada', display_name: 'Ada Lovelace'}, {name: 'bob'}].each do |userinfo|
   user = User.new(userinfo.
                   merge(email: "#{userinfo[:name]}@example.com",
-                        url_path_method: url_path_method))
+                        url_path_method: ModelURLPath.user))
   user.password = 'changemenow'
   user.confirmed_at = Time.now
   user.save
 end
 
 # Create organizations.
-url_path_method = lambda do |resource|
-  V2::OrganizationsController.resource_url_path(resource)
-end
 Organization.new(name: 'seed-user-organization',
                  display_name: 'Seed User Organization',
                  description: 'All users that are created in the seeds',
-                 url_path_method: url_path_method).save
+                 url_path_method: ModelURLPath.organization).save
 organization = Organization.first
 User.all do |user|
   organization.add_member(user)
 end
 
 # Create repositories.
-url_path_method = lambda do |repository|
-  V2::RepositoriesController.resource_url_path(repository)
-end
 owner_count = OrganizationalUnit.count
 content_types = %w(ontology model specification mathematical)
 (0..(2 * owner_count - 1)).each do |repo_index|
@@ -41,7 +32,7 @@ content_types = %w(ontology model specification mathematical)
           content_type: content_types[repo_index % content_types.size],
           public_access: true,
           description: 'This is a dummy repository.',
-          url_path_method: url_path_method)
+          url_path_method: ModelURLPath.repository)
   repository.save
 
   user = owner.is_a?(Organization) ? owner.members.first : owner

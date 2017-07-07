@@ -4,8 +4,7 @@ module V2
   module Users
     # Handles registration, editing and deletion of Users
     class AccountController < Devise::RegistrationsController
-      include ::Recaptcha::Verify
-      DISABLE_CAPTCHA = ENV['DISABLE_CAPTCHA'] == 'true'
+      include AccountMethods
 
       def create
         super
@@ -35,28 +34,6 @@ module V2
 
       protected
 
-      # Build a devise resource passing in the session. Useful to move
-      # temporary session data to the newly created user.
-      # This is overwriting the original method.
-      def build_resource(hash = nil)
-        self.resource = resource_class.new_with_session(hash || {}, session)
-        resource.url_path_method = ->(user) { "/users/#{user.to_param}" }
-        return if !DISABLE_CAPTCHA && captcha_ok?
-        # +captcha_ok?+ is always +true+ in the test environment
-        # :nocov:
-        raise Sequel::ValidationFailed
-        # :nocov:
-      end
-
-      def captcha_ok?
-        attributes = params['data']['attributes']
-        captcha = attributes['captcha'] if attributes
-        # +verify_recaptcha+ is always +true+ in the test environment
-        verify_recaptcha(model: resource,
-                         attribute: :captcha,
-                         response: captcha)
-      end
-
       # This is overwriting the original method.
       def sign_up_params
         parse_params(only: %i(display_name name email password))
@@ -69,6 +46,10 @@ module V2
       def parse_params(**options)
         ActiveModelSerializers::Deserialization.
           jsonapi_parse!(params, **options)
+      end
+
+      def captcha
+        params.fetch(:data, {}).fetch(:attributes, {}).fetch(:captcha, nil)
       end
 
       # Disable responding (rendering) of the parent class.

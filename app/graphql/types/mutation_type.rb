@@ -5,6 +5,16 @@ Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
   description 'Base mutation type'
 
+  field :confirmEmail, Types::SessionTokenType do
+    description 'Confirms the email address of a user'
+
+    argument :token, !types.String do
+      description 'The confirmation token from the confirmation email'
+    end
+
+    resolve Mutations::ConfirmEmailMutation.new
+  end
+
   field :createOrganization, Types::OrganizationType do
     description 'Creates a new organization'
 
@@ -45,6 +55,50 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::DeleteOrganizationMutation.new
   end
 
+  field :resendConfirmationEmail, !types.Boolean do
+    description 'Resends the confirmation email to a user'
+
+    argument :email, !types.String do
+      description 'The email address of the user'
+    end
+
+    resolve Mutations::ResendConfirmationEmailMutation.new
+  end
+
+  field :resendPasswordResetEmail, !types.Boolean do
+    description 'Resends the password reset email to a user'
+
+    argument :email, !types.String do
+      description 'The email address of the user'
+    end
+
+    resolve Mutations::ResendPasswordResetEmailMutation.new
+  end
+
+  field :resendUnlockAccountEmail, !types.Boolean do
+    description 'Resends the unlock account email to a user'
+
+    argument :email, !types.String do
+      description 'The email address of the user'
+    end
+
+    resolve Mutations::ResendUnlockAccountEmailMutation.new
+  end
+
+  field :resetPassword, Types::SessionTokenType do
+    description "Resets a user's password"
+
+    argument :password, !types.String do
+      description 'The new password'
+    end
+
+    argument :token, !types.String do
+      description 'The reset token from the password reset email'
+    end
+
+    resolve Mutations::ResetPasswordMutation.new
+  end
+
   field :saveAccount, Types::UserType do
     description 'Updates the current user account'
 
@@ -75,5 +129,43 @@ Types::MutationType = GraphQL::ObjectType.define do
       Organization.find(slug: arguments[:slug])
     end)
     resolve Mutations::SaveOrganizationMutation.new
+  end
+
+  field :signIn, Types::SessionTokenType do
+    description 'Signs in a user'
+
+    argument :username, !types.String do
+      description "The user's name"
+    end
+
+    argument :password, !types.String do
+      description "The user's password"
+    end
+
+    resolve Mutations::SignInMutation.new
+  end
+
+  field :signUp, Types::SessionTokenType do
+    description 'Signs up a user'
+
+    argument :user, !Types::Input::NewUserType do
+      description "The new user's data"
+    end
+
+    argument :captcha, !types.String do
+      description 'A reCAPTCHA token'
+    end
+
+    resolve Mutations::SignUpMutation.new
+  end
+
+  field :unlockAccount, Types::SessionTokenType do
+    description 'Unlocks a locked user account'
+
+    argument :token, !types.String do
+      description 'The unlock account token from the unlock account email'
+    end
+
+    resolve Mutations::UnlockAccountMutation.new
   end
 end
