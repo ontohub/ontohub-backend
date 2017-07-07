@@ -25,6 +25,16 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::CreateOrganizationMutation.new
   end
 
+  field :createRepository, Types::RepositoryType do
+    description 'Creates as new repository'
+
+    argument :data, !Types::Input::NewRepositoryType do
+      description 'The parameters of the new repository'
+    end
+
+    resolve Mutations::CreateRepositoryMutation.new
+  end
+
   field :deleteAccount, types.Boolean do
     description <<~DESCRIPTION
       Deletes the account of the currently signed in user.

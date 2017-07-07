@@ -12,6 +12,12 @@ type Mutation {
     data: NewOrganization!
   ): Organization
 
+  # Creates as new repository
+  createRepository(
+    # The parameters of the new repository
+    data: NewRepository!
+  ): Repository
+
   # Deletes the account of the currently signed in user.
   # Returns `true` if it was successful and `null` if there was an error.
   deleteAccount(
@@ -107,6 +113,24 @@ input NewOrganization {
 
   # ID of the new organization
   id: ID!
+}
+
+# Data of a new repository
+input NewRepository {
+  # The content type of the repository
+  contentType: RepositoryContentType!
+
+  # The description of the repository
+  description: String
+
+  # Name of the repository
+  name: ID!
+
+  # The ID of the owner
+  owner: String!
+
+  # The visibility of the repository
+  visibility: RepositoryVisibility!
 }
 
 # Data of a a new user that is about to sign up
