@@ -154,6 +154,23 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SaveOrganizationMutation.new
   end
 
+  field :saveRepository, Types::RepositoryType do
+    description 'Updates a repository'
+
+    argument :id, !types.ID, as: :slug do
+      description 'ID of the repository to update'
+    end
+
+    argument :data, !Types::Input::RepositoryChangesetType do
+      description 'Updated fields of the repository'
+    end
+
+    resource(lambda do |_root, arguments, _context|
+      RepositoryCompound.find(slug: arguments[:slug])
+    end)
+    resolve Mutations::SaveRepositoryMutation.new
+  end
+
   field :signIn, Types::SessionTokenType do
     description 'Signs in a user'
 

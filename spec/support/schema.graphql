@@ -83,6 +83,15 @@ type Mutation {
     id: ID!
   ): Organization
 
+  # Updates a repository
+  saveRepository(
+    # Updated fields of the repository
+    data: RepositoryChangeset!
+
+    # ID of the repository to update
+    id: ID!
+  ): Repository
+
   # Signs in a user
   signIn(
     # The user's password
@@ -257,6 +266,18 @@ type Repository {
 
   # Visibility of the repository
   visibility: RepositoryVisibility!
+}
+
+# Contains all fields of a repository that can be changed
+input RepositoryChangeset {
+  # The content type of the repository
+  contentType: RepositoryContentType
+
+  # A short description of the repository
+  description: String
+
+  # The visibility of the repository
+  visibility: RepositoryVisibility
 }
 
 # Possible types of repositories
