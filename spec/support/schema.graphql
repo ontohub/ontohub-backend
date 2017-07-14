@@ -12,6 +12,12 @@ type Mutation {
     data: NewOrganization!
   ): Organization
 
+  # Creates as new repository
+  createRepository(
+    # The parameters of the new repository
+    data: NewRepository!
+  ): Repository
+
   # Deletes the account of the currently signed in user.
   # Returns `true` if it was successful and `null` if there was an error.
   deleteAccount(
@@ -23,6 +29,12 @@ type Mutation {
   # Returns `true` if it was successful and `null` if there was an error.
   deleteOrganization(
     # The ID of the organization to delete
+    id: ID!
+  ): Boolean
+
+  # Deletes a repository
+  deleteRepository(
+    # The ID of the repository to delete
     id: ID!
   ): Boolean
 
@@ -71,6 +83,15 @@ type Mutation {
     id: ID!
   ): Organization
 
+  # Updates a repository
+  saveRepository(
+    # Updated fields of the repository
+    data: RepositoryChangeset!
+
+    # ID of the repository to update
+    id: ID!
+  ): Repository
+
   # Signs in a user
   signIn(
     # The user's password
@@ -109,6 +130,24 @@ input NewOrganization {
   id: ID!
 }
 
+# Data of a new repository
+input NewRepository {
+  # The content type of the repository
+  contentType: RepositoryContentType!
+
+  # The description of the repository
+  description: String
+
+  # Name of the repository
+  name: ID!
+
+  # The ID of the owner
+  owner: String!
+
+  # The visibility of the repository
+  visibility: RepositoryVisibility!
+}
+
 # Data of a a new user that is about to sign up
 input NewUser {
   # The name of the user
@@ -129,10 +168,10 @@ type Organization implements OrganizationalUnit {
   # Description of the organization
   description: String
 
-  # Display name of the organization
+  # Display name of the organizational unit
   displayName: String
 
-  # ID of the organization
+  # ID of the organizational unit
   id: ID!
 
   # List of members
@@ -143,6 +182,15 @@ type Organization implements OrganizationalUnit {
     # Skip the first n members
     skip: Int = 0
   ): [User]!
+
+  # List of repositories owned by this organizational unit
+  repositories(
+    # Maximum number of repositories to list
+    limit: Int = 20
+
+    # Skip the first n repositories
+    skip: Int = 0
+  ): [Repository]!
 }
 
 # Contains all fields of an organization that can be changed
@@ -161,6 +209,15 @@ interface OrganizationalUnit {
 
   # ID of the organizational unit
   id: ID!
+
+  # List of repositories owned by this organizational unit
+  repositories(
+    # Maximum number of repositories to list
+    limit: Int = 20
+
+    # Skip the first n repositories
+    skip: Int = 0
+  ): [Repository]!
 }
 
 # Base query type
@@ -174,8 +231,67 @@ type Query {
     id: ID!
   ): OrganizationalUnit
 
+  # The repository for the given ID
+  repository(
+    # ID of the repository
+    id: ID!
+  ): Repository
+
   # The version of the running backend
   version: Version!
+}
+
+# Data of a repository
+type Repository {
+  # Branches of the repository
+  branches: [String]!
+
+  # Type of the repository
+  contentType: RepositoryContentType!
+
+  # Default branch of the repository
+  defaultBranch: String
+
+  # Description of the repository
+  description: String
+
+  # ID of the repository
+  id: ID!
+
+  # Name of the repository
+  name: String!
+
+  # Owner of the repository
+  owner: OrganizationalUnit!
+
+  # Visibility of the repository
+  visibility: RepositoryVisibility!
+}
+
+# Contains all fields of a repository that can be changed
+input RepositoryChangeset {
+  # The content type of the repository
+  contentType: RepositoryContentType
+
+  # A short description of the repository
+  description: String
+
+  # The visibility of the repository
+  visibility: RepositoryVisibility
+}
+
+# Possible types of repositories
+enum RepositoryContentType {
+  mathematical
+  model
+  ontology
+  specification
+}
+
+# Possible values for repository visibilities
+enum RepositoryVisibility {
+  private
+  public
 }
 
 # Data of a signed in user
@@ -189,7 +305,7 @@ type SessionToken {
 
 # Data of a user
 type User implements OrganizationalUnit {
-  # Display name of the user
+  # Display name of the organizational unit
   displayName: String
 
   # Email address of the user
@@ -198,7 +314,7 @@ type User implements OrganizationalUnit {
   # MD5 hash of the user's email address
   emailHash: String!
 
-  # ID of the user
+  # ID of the organizational unit
   id: ID!
 
   # List of organizations the user is a member of
@@ -209,6 +325,15 @@ type User implements OrganizationalUnit {
     # Skip the first n organizations
     skip: Int = 0
   ): [Organization]!
+
+  # List of repositories owned by this organizational unit
+  repositories(
+    # Maximum number of repositories to list
+    limit: Int = 20
+
+    # Skip the first n repositories
+    skip: Int = 0
+  ): [Repository]!
 
   # Email address of the user that still needs to be confirmed
   unconfirmedEmail: String

@@ -24,6 +24,18 @@ Types::QueryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :repository, Types::RepositoryType do
+    description 'The repository for the given ID'
+
+    argument :id, !types.ID, as: :slug do
+      description 'ID of the repository'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      RepositoryCompound.find(slug: arguments[:slug])
+    end)
+  end
+
   field :version, !Types::VersionType do
     description 'The version of the running backend'
 

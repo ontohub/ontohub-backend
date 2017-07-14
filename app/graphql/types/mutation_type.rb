@@ -25,6 +25,16 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::CreateOrganizationMutation.new
   end
 
+  field :createRepository, Types::RepositoryType do
+    description 'Creates as new repository'
+
+    argument :data, !Types::Input::NewRepositoryType do
+      description 'The parameters of the new repository'
+    end
+
+    resolve Mutations::CreateRepositoryMutation.new
+  end
+
   field :deleteAccount, types.Boolean do
     description <<~DESCRIPTION
       Deletes the account of the currently signed in user.
@@ -53,6 +63,19 @@ Types::MutationType = GraphQL::ObjectType.define do
       Organization.find(slug: arguments[:slug])
     end)
     resolve Mutations::DeleteOrganizationMutation.new
+  end
+
+  field :deleteRepository, types.Boolean do
+    description 'Deletes a repository'
+
+    argument :id, !types.ID, as: :slug do
+      description 'The ID of the repository to delete'
+    end
+
+    resource(lambda do |_root, arguments, _context|
+      RepositoryCompound.find(slug: arguments[:slug])
+    end)
+    resolve Mutations::DeleteRepositoryMutation.new
   end
 
   field :resendConfirmationEmail, !types.Boolean do
@@ -129,6 +152,23 @@ Types::MutationType = GraphQL::ObjectType.define do
       Organization.find(slug: arguments[:slug])
     end)
     resolve Mutations::SaveOrganizationMutation.new
+  end
+
+  field :saveRepository, Types::RepositoryType do
+    description 'Updates a repository'
+
+    argument :id, !types.ID, as: :slug do
+      description 'ID of the repository to update'
+    end
+
+    argument :data, !Types::Input::RepositoryChangesetType do
+      description 'Updated fields of the repository'
+    end
+
+    resource(lambda do |_root, arguments, _context|
+      RepositoryCompound.find(slug: arguments[:slug])
+    end)
+    resolve Mutations::SaveRepositoryMutation.new
   end
 
   field :signIn, Types::SessionTokenType do

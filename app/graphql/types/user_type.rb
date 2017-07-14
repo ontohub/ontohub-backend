@@ -1,21 +1,9 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-
 Types::UserType = GraphQL::ObjectType.define do
   name 'User'
   interfaces [Types::OrganizationalUnitType]
   description 'Data of a user'
-
-  field :id, !types.ID do
-    description 'ID of the user'
-    property :slug
-  end
-
-  field :displayName, types.String do
-    description 'Display name of the user'
-    property :display_name
-  end
 
   field :email, types.String do
     description 'Email address of the user'
@@ -45,7 +33,9 @@ Types::UserType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |user, arguments, _context|
-      user.organizations_dataset.limit(arguments[:limit], arguments[:skip])
+      limit = arguments[:limit] || target.arguments['limit'].default_value
+      skip = arguments[:skip] || target.arguments['skip'].default_value
+      user.organizations_dataset.limit(limit, skip)
     end)
   end
 end
