@@ -168,10 +168,10 @@ type Organization implements OrganizationalUnit {
   # Description of the organization
   description: String
 
-  # Display name of the organization
+  # Display name of the organizational unit
   displayName: String
 
-  # ID of the organization
+  # ID of the organizational unit
   id: ID!
 
   # List of members
@@ -183,7 +183,7 @@ type Organization implements OrganizationalUnit {
     skip: Int = 0
   ): [User]!
 
-  # List of repositories owned by this organization
+  # List of repositories owned by this organizational unit
   repositories(
     # Maximum number of repositories to list
     limit: Int = 20
@@ -305,7 +305,7 @@ type SessionToken {
 
 # Data of a user
 type User implements OrganizationalUnit {
-  # Display name of the user
+  # Display name of the organizational unit
   displayName: String
 
   # Email address of the user
@@ -314,7 +314,7 @@ type User implements OrganizationalUnit {
   # MD5 hash of the user's email address
   emailHash: String!
 
-  # ID of the user
+  # ID of the organizational unit
   id: ID!
 
   # List of organizations the user is a member of
@@ -326,7 +326,7 @@ type User implements OrganizationalUnit {
     skip: Int = 0
   ): [Organization]!
 
-  # List of repositories owned by this user
+  # List of repositories owned by this organizational unit
   repositories(
     # Maximum number of repositories to list
     limit: Int = 20

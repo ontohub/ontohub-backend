@@ -12,7 +12,7 @@ RSpec.describe Types::RepositoryType do
       let(:repository) { create :repository, public_access: true }
       it 'returns public' do
         visibility = visibility_field.resolve(repository, {}, {})
-        expect(visibility).to eql('public')
+        expect(visibility).to eq('public')
       end
     end
 
@@ -20,7 +20,7 @@ RSpec.describe Types::RepositoryType do
       let(:repository) { create :repository, public_access: false }
       it 'returns private' do
         visibility = visibility_field.resolve(repository, {}, {})
-        expect(visibility).to eql('private')
+        expect(visibility).to eq('private')
       end
     end
   end
@@ -50,13 +50,13 @@ RSpec.describe Types::RepositoryType do
     context 'defaultBranch field' do
       it 'returns master' do
         default_branch = default_branch_field.resolve(repository, {}, {})
-        expect(default_branch).to eql('master')
+        expect(default_branch).to eq('master')
       end
     end
     context 'branches field' do
-      it 'returns a non-empty list' do
+      it 'returns a list of branches' do
         branches = branches_field.resolve(repository, {}, {})
-        expect(branches).not_to be_empty
+        expect(branches).to eq(['master'])
       end
     end
   end

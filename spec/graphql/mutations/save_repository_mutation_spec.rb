@@ -5,10 +5,12 @@ require 'spec_helper'
 RSpec.describe 'saveRepository mutation' do
   let!(:repository) { create :repository_compound }
   let(:repository_data) do
-    repo = build :repository
+    repo = build :repository,
+                 content_type: %w(ontology model specification mathematical).
+                   reject { |c| c == repository.content_type }.sample
     data = repo.values.slice(:description, :content_type, :public_access).
       transform_keys { |k| k.to_s.camelize(:lower) }
-    data['visibility'] = data['publicAccess'] ? 'public' : 'private'
+    data['visibility'] = repository.public_access ? 'private' : 'public'
     data.delete('publicAccess')
     data
   end

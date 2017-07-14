@@ -1,0 +1,47 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.shared_examples 'an owner of repositories' do
+  before do
+    21.times { create(:repository_compound, owner: organizational_unit) }
+  end
+
+  it 'returns only the repositories owned by the organizational unit' do
+    repositories = repositories_field.
+      resolve(organizational_unit, {}, {})
+    expect(repositories.count).to be(20)
+  end
+
+  it 'limits the repository list' do
+    repositories = repositories_field.
+      resolve(organizational_unit, {limit: 1}, {})
+    expect(repositories.count).to be(1)
+  end
+
+  it 'skips a number of repositories' do
+    repositories = repositories_field.
+      resolve(organizational_unit, {skip: 5}, {})
+    expect(repositories.count).to be(16)
+  end
+end
+
+RSpec.describe Types::OrganizationalUnitType do
+  let(:repositories_field) do
+    organizational_unit_type.get_field('repositories')
+  end
+
+  context User do
+    let(:organizational_unit_type) { OntohubBackendSchema.types['User'] }
+    let(:organizational_unit) { create :user }
+    it_behaves_like 'an owner of repositories'
+  end
+
+  context Organization do
+    let(:organizational_unit_type) do
+      OntohubBackendSchema.types['Organization']
+    end
+    let(:organizational_unit) { create :organization }
+    it_behaves_like 'an owner of repositories'
+  end
+end
