@@ -12,9 +12,20 @@ module V2
     protected
 
     def authorize_resource
-      authorize(resource || controller_name.classify.constantize)
+      if %w(create update destroy).include?(action_name)
+        return
+      end
+      if %w(index create).include?(action_name)
+        authorize(controller_name.classify.constantize)
+      else
+        authorize(resource) if resource
+      end
     rescue Pundit::NotAuthorizedError
-      render status: :unauthorized
+      if [RepositoryCompound].include?(resource.class)
+        render status: :not_found
+      else
+        render status: :unauthorized
+      end
     end
   end
 end
