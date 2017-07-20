@@ -2,27 +2,42 @@
 
 # Controller for the GraphQL API endpoint
 class GraphqlController < ApplicationController
-  # rubocop:disable Metrics/MethodLength
   def execute
-    variables = ensure_hash(params[:variables])
-    query = params[:query]
-    context = {
-      current_user: current_user,
-      request: request
-    }
-    result = OntohubBackendSchema.execute(
-      query,
-      variables: variables,
-      context: context
-    )
+    if params[:query]
+      variables = ensure_hash(params[:variables])
+      result = OntohubBackendSchema.execute(
+        query: params[:query],
+        variables: variables,
+        context: context
+      )
+    else
+      result = OntohubBackendSchema.multiplex(
+        queries
+      )
+    end
     render json: result
   end
-  # rubocop:enable Metrics/MethodLength
 
   private
 
+  def context
+    {
+      current_user: current_user,
+      request: request
+    }
+  end
+
+  def queries
+    params.permit(_json: [:query, :operationName, {variables: {}}]).
+      to_hash['_json'].map do |query|
+        query.transform_keys do |k|
+          k.underscore.to_sym
+        end.merge(context: context)
+      end
+  end
+
   # Handle form data, JSON body, or a blank value
-  # rubocop:disable Metrics/MethodLength
+  # :nocov:
   def ensure_hash(ambiguous_param)
     case ambiguous_param
     when String
@@ -39,5 +54,5 @@ class GraphqlController < ApplicationController
       raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
     end
   end
-  # rubocop:enable Metrics/MethodLength
+  # :nocov:
 end
