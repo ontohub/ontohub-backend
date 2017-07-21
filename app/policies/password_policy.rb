@@ -1,5 +1,7 @@
-class PasswordPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+# Policies for PasswordsController
+class PasswordPolicy < ApplicationPolicy
   def initialize(_current_user = nil, _resource = nil)
     super
   end

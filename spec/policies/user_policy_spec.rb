@@ -34,7 +34,7 @@ RSpec.describe UserPolicy do
     end
   end
 
-context 'show_current_user?' do
+  context 'show_current_user?' do
     let(:user) { create :user }
 
     context 'signed in' do
@@ -64,5 +64,4 @@ context 'show_current_user?' do
       end
     end
   end
-
 end

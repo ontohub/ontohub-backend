@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Default Policies
 class ApplicationPolicy
   attr_reader :user, :record
 

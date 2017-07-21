@@ -1,5 +1,7 @@
-class UnlockPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+# Policies for UnlockController
+class UnlockPolicy < ApplicationPolicy
   def initialize(_current_user = nil, _resource = nil)
     super
   end

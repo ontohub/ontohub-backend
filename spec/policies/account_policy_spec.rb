@@ -26,7 +26,8 @@ RSpec.describe AccountPolicy do
       let(:current_user) { create :user, :admin }
       subject { AccountPolicy.new(current_user) }
 
-      it 'should allow to create an account (makes no sense, but admin is god)' do
+      it 'should allow to create an account '\
+        '(makes no sense, but admin is god)' do
         expect(subject.create?).to be(true)
       end
     end

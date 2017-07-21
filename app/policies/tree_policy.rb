@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Policies for TreesController
 class TreePolicy < ApplicationPolicy
   attr_reader :current_user, :repository
 

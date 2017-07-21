@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Policies for SearchController
 class SearchPolicy < ApplicationPolicy
   attr_reader :current_user
 

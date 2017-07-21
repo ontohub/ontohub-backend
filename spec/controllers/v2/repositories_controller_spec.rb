@@ -4,18 +4,20 @@ require 'rails_helper'
 
 RSpec.describe V2::RepositoriesController do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
-
   context 'owner: user' do
-
     let!(:owner) { create :user }
     let!(:repository) { create :repository, public_access: true, owner: owner }
 
     let(:bad_slug) { "notThere-#{repository.slug}" }
 
     describe 'GET index' do
-      let!(:another_repository) { create :repository, public_access: false, owner: owner }
+      let!(:another_repository) do
+        create :repository, public_access: false, owner: owner
+      end
       let!(:other_owner) { create :user }
-      let!(:other_repository) { create :repository, public_access: true, owner: other_owner }
+      let!(:other_repository) do
+        create :repository, public_access: true, owner: other_owner
+      end
 
       context "owner's repositories" do
         before { get :index, params: {user_slug: owner.to_param} }
@@ -24,7 +26,8 @@ RSpec.describe V2::RepositoriesController do
         it { |example| expect([example, response]).to comply_with_api }
 
         it 'returns only the public repositories from the user' do
-          expect(response_data.size).to eq(owner.repositories_dataset.where(public_access: true).count)
+          expect(response_data.size).to eq(owner.repositories_dataset.
+            where(public_access: true).count)
         end
       end
 
@@ -39,7 +42,8 @@ RSpec.describe V2::RepositoriesController do
           before { get :index, params: {user_slug: owner.to_param} }
 
           it 'returns all repositories from owner' do
-            expect(response_data.map{ |repo| repo['id']}).to match_array(owner.repositories.map(&:to_param))
+            expect(response_data.map{ |repo| repo['id'] }).
+              to match_array(owner.repositories.map(&:to_param))
           end
         end
 
@@ -47,7 +51,9 @@ RSpec.describe V2::RepositoriesController do
           before { get :index, params: {user_slug: other_owner.to_param} }
 
           it 'returns all repositories from other owner' do
-            expect(response_data.map{ |repo| repo['id']}).to match_array(other_owner.repositories_dataset.where(public_access: true).map(&:to_param))
+            expect(response_data.map{ |repo| repo['id'] }).
+              to match_array(other_owner.repositories_dataset.
+                where(public_access: true).map(&:to_param))
           end
         end
       end
@@ -235,7 +241,9 @@ RSpec.describe V2::RepositoriesController do
     let(:bad_slug) { "notThere-#{repository.slug}" }
 
     describe 'GET index' do
-      let!(:another_repository) { create :repository, public_access: false, owner: owner }
+      let!(:another_repository) do
+        create :repository, public_access: false, owner: owner
+      end
       let!(:other_owner) { create :organizational_unit }
       let!(:other_repository) { create :repository, owner: other_owner }
 
@@ -245,7 +253,8 @@ RSpec.describe V2::RepositoriesController do
       it { |example| expect([example, response]).to comply_with_api }
 
       it 'returns only repositories from the requested organization' do
-        expect(response_data.size).to eq(owner.repositories_dataset.where(public_access: true).count)
+        expect(response_data.size).to eq(owner.repositories_dataset.
+          where(public_access: true).count)
       end
     end
 

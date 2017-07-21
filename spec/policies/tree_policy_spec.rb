@@ -45,7 +45,9 @@ RSpec.describe TreePolicy do
       context 'by organization membership' do
         let(:current_user) { create :user }
         let(:organization) { create :organization }
-        let(:repository_by_organization) { create :repository, owner: organization }
+        let(:repository_by_organization) do
+          create :repository, owner: organization
+        end
         subject { TreePolicy.new(current_user, repository_by_organization) }
 
         %w(write admin).each do |role|
@@ -137,8 +139,9 @@ RSpec.describe TreePolicy do
       context 'signed in as user with access' do
         context 'by ownership' do
           let(:current_user) { create :user }
-          let(:repository_by_user) { create :repository,
-            owner: current_user }
+          let(:repository_by_user) do
+            create :repository, owner: current_user
+          end
           subject { TreePolicy.new(current_user, repository_by_user) }
 
           it 'should allow to show the tree' do
@@ -161,10 +164,10 @@ RSpec.describe TreePolicy do
         context 'by organization membership' do
           let(:current_user) { create :user }
           let(:organization) { create :organization }
-          let(:repository_by_organization) { create :repository,
-            owner: organization }
-          subject { TreePolicy.new(current_user,
-            repository_by_organization) }
+          let(:repository_by_organization) do
+            create :repository, owner: organization
+          end
+          subject { TreePolicy.new(current_user, repository_by_organization) }
 
           %w(admin write read).each do |role|
             it "with role #{role} should allow to show the tree" do
@@ -219,7 +222,9 @@ RSpec.describe TreePolicy do
       context 'by organization membership' do
         let(:current_user) { create :user }
         let(:organization) { create :organization }
-        let(:repository_by_organization) { create :repository, owner: organization }
+        let(:repository_by_organization) do
+          create :repository, owner: organization
+        end
         subject { TreePolicy.new(current_user, repository_by_organization) }
 
         %w(write admin).each do |role|
@@ -288,7 +293,9 @@ RSpec.describe TreePolicy do
       context 'by organization membership' do
         let(:current_user) { create :user }
         let(:organization) { create :organization }
-        let(:repository_by_organization) { create :repository, owner: organization }
+        let(:repository_by_organization) do
+          create :repository, owner: organization
+        end
         subject { TreePolicy.new(current_user, repository_by_organization) }
 
         %w(write admin).each do |role|
@@ -357,7 +364,9 @@ RSpec.describe TreePolicy do
       context 'by organization membership' do
         let(:current_user) { create :user }
         let(:organization) { create :organization }
-        let(:repository_by_organization) { create :repository, owner: organization }
+        let(:repository_by_organization) do
+          create :repository, owner: organization
+        end
         subject { TreePolicy.new(current_user, repository_by_organization) }
 
         %w(write admin).each do |role|

@@ -1,15 +1,17 @@
-class ConfirmationPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+# Policies for ConfirmationController
+class ConfirmationPolicy < ApplicationPolicy
   def initialize(_current_user = nil, _resource = nil)
     super
   end
 
-  #resend
+  # resend
   def create?
     true
   end
 
-  #confirm
+  # confirm
   def update?
     true
   end

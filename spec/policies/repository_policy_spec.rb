@@ -68,8 +68,9 @@ RSpec.describe RepositoryPolicy do
       context 'signed in as user with access' do
         context 'by ownership' do
           let(:current_user) { create :user }
-          let(:repository_by_user) { create :repository,
-            owner: current_user }
+          let(:repository_by_user) do
+            create :repository, owner: current_user
+          end
           subject { RepositoryPolicy.new(current_user, repository_by_user) }
 
           it 'should allow to show the repository' do
@@ -92,10 +93,12 @@ RSpec.describe RepositoryPolicy do
         context 'by organization membership' do
           let(:current_user) { create :user }
           let(:organization) { create :organization }
-          let(:repository_by_organization) { create :repository,
-            owner: organization }
-          subject { RepositoryPolicy.new(current_user,
-            repository_by_organization) }
+          let(:repository_by_organization) do
+            create :repository, owner: organization
+          end
+          subject do
+            RepositoryPolicy.new(current_user, repository_by_organization)
+          end
 
           %w(admin write read).each do |role|
             it "with role #{role} should allow to show the repository" do
@@ -205,8 +208,9 @@ RSpec.describe RepositoryPolicy do
           context 'as a user role with access' do
             context 'by ownership' do
               let(:current_user) { create :user }
-              let(:repository_by_user) { create :repository,
-                owner: current_user }
+              let(:repository_by_user) do
+                create :repository, owner: current_user
+              end
               subject { RepositoryPolicy.new(current_user, repository_by_user) }
 
               it 'should allow to update the repository' do
@@ -219,13 +223,14 @@ RSpec.describe RepositoryPolicy do
               subject { RepositoryPolicy.new(current_user, repository) }
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to update the repository" do
+                it "with role #{role} should not allow to update the "\
+                  "repository" do
                   repository.add_member(current_user, role)
                   expect(subject.update?).to be(false)
                 end
               end
 
-              it "with role admin should allow to update the repository" do
+              it 'with role admin should allow to update the repository' do
                 repository.add_member(current_user, 'admin')
                 expect(subject.update?).to be(true)
               end
@@ -234,13 +239,16 @@ RSpec.describe RepositoryPolicy do
             context 'by organization membership' do
               let(:current_user) { create :user }
               let(:organization) { create :organization }
-              let(:repository_by_organization) { create :repository,
-                owner: organization }
-              subject { RepositoryPolicy.new(current_user,
-                repository_by_organization) }
+              let(:repository_by_organization) do
+                create :repository, owner: organization
+              end
+              subject do
+                RepositoryPolicy.new(current_user, repository_by_organization)
+              end
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to update the repository" do
+                it "with role #{role} should not allow to update the "\
+                  "repository" do
                   organization.add_member(current_user, role)
                   expect(subject.update?).to be(false)
                 end
@@ -330,8 +338,9 @@ RSpec.describe RepositoryPolicy do
           context 'as a user role with access' do
             context 'by ownership' do
               let(:current_user) { create :user }
-              let(:repository_by_user) { create :repository,
-                owner: current_user }
+              let(:repository_by_user) do
+                create :repository, owner: current_user
+              end
               subject { RepositoryPolicy.new(current_user, repository_by_user) }
 
               it 'should allow to destroy the repository' do
@@ -344,13 +353,13 @@ RSpec.describe RepositoryPolicy do
               subject { RepositoryPolicy.new(current_user, repository) }
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to destroy the repository" do
+                it "with role #{role} should not allow to destroy the "\          "repository" do
                   repository.add_member(current_user, role)
                   expect(subject.destroy?).to be(false)
                 end
               end
 
-              it "with role admin should allow to destroy the repository" do
+              it 'with role admin should allow to destroy the repository' do
                 repository.add_member(current_user, 'admin')
                 expect(subject.destroy?).to be(true)
               end
@@ -359,13 +368,16 @@ RSpec.describe RepositoryPolicy do
             context 'by organization membership' do
               let(:current_user) { create :user }
               let(:organization) { create :organization }
-              let(:repository_by_organization) { create :repository,
-                owner: organization }
-              subject { RepositoryPolicy.new(current_user,
-                repository_by_organization) }
+              let(:repository_by_organization) do
+                create :repository, owner: organization
+              end
+              subject do
+                RepositoryPolicy.new(current_user, repository_by_organization)
+              end
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to destroy the repository" do
+                it "with role #{role} should not allow to destroy the "\
+                  "repository" do
                   organization.add_member(current_user, role)
                   expect(subject.destroy?).to be(false)
                 end

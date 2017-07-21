@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Policies for RepositoriesController
 class RepositoryPolicy < ApplicationPolicy
   attr_reader :current_user, :repository
 

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Policies for UsersController
 class UserPolicy < ApplicationPolicy
   attr_reader :current_user, :user
 

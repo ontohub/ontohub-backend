@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Policies for SessionsController
 class SessionPolicy < ApplicationPolicy
   attr_reader :current_user
 
