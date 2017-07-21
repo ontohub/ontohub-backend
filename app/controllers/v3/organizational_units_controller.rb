@@ -2,10 +2,10 @@
 
 module V3
   # Handles requests for organizational unit show operations
-  class OrganizationalUnitController < ApplicationController
+  class OrganizationalUnitsController < ApplicationController
     graphql :show do
       arguments do
-        {'id' => params[:organizational_unit]}
+        {'id' => params[:slug]}
       end
 
       query <<-QUERY

@@ -57,8 +57,8 @@ Rails.application.routes.draw do
 
   scope '/v3', format: false, defaults: {format: :json} do
     get 'version', controller: 'v3/version', action: 'show'
-    get '/:organizational_unit',
-      controller: 'v3/organizational_unit',
+    get '/:slug',
+      controller: 'v3/organizational_units',
       action: 'show'
   end
 

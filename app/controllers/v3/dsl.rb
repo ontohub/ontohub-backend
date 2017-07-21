@@ -30,14 +30,16 @@ module V3
     end
 
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def graphql(method_name, &block)
+      # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
       obj = Graphql.new
       obj.instance_eval(&block)
       send(:define_method, method_name) do
         variables = instance_eval(&obj.arguments_proc) || {}
-        global_context = instance_eval(&context_proc) || {}
-        local_context = instance_eval(&obj.context_proc)
+        global_context = instance_eval(&context_proc || proc { {} })
+        local_context = instance_eval(&obj.context_proc || proc { {} })
         context = global_context.merge(local_context)
 
         result = OntohubBackendSchema.execute(
