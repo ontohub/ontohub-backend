@@ -25,7 +25,8 @@ module V3
     end
 
     def context(&block)
-      @@context_proc = block
+      define_method(:context_proc) { block }
+      protected :context_proc
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -35,7 +36,8 @@ module V3
       obj.instance_eval(&block)
       send(:define_method, method_name) do
         variables = instance_eval(&obj.arguments_proc)
-        context = instance_eval(&obj.context_proc || @@context_proc)
+        context_proc = obj.context_proc || context_proc || proc {}
+        context = instance_eval(&context_proc)
 
         result = OntohubBackendSchema.execute(
           obj.query_string,
