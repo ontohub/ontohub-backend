@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "V3 Organizational Units",
+  "description": "V3 Organizational Unit Controller",
+  "definitions": {
+    "id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit"
+    },
+    "self": {
+      "properties": {
+        "data": {
+          "type": "object",
+          "required": ["organizationalUnit"],
+          "properties": {
+            "organizationalUnit": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "__typename",
+                    "displayName",
+                    "emailHash",
+                    "id",
+                    "organizations"
+                  ],
+                  "properties": {
+                    "__typename": {
+                      "type": "string",
+                      "enum": ["User"],
+                      "example": "User"
+                    },
+                    "displayName": {
+                      "oneOf": [ { "type": "string" }, { "type": "null" } ],
+                      "description": "The name of the user as it should be displayed",
+                      "example": "Ada Lovelace"
+                    },
+                    "emailHash": {
+                      "type": "string",
+                      "description": "MD5 hash of the user's email address",
+                      "example": "680b0001b4952664631511a81a4edc59"
+                    },
+                    "id": {
+                      "$ref": "#/definitions/id"
+                    },
+                    "organizations": {
+                      "type": "array",
+                      "description": "A list of organizations, the user is a member of",
+                      "items": {
+                        "type": "object",
+                        "required": ["id"],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "The id of the organization",
+                            "example": "ontohub"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "__typename",
+                    "description",
+                    "displayName",
+                    "id",
+                    "members"
+                  ],
+                  "properties": {
+                    "__typename": {
+                      "type": "string",
+                      "enum": ["Organization"],
+                      "example": "Organization"
+                    },
+                    "description": {
+                      "description": "A description of the organization",
+                      "example": "The Ontohub organization",
+                      "oneOf": [ { "type": "null" }, { "type": "string" } ]
+                    },
+                    "displayName": {
+                      "oneOf": [ { "type": "string" }, { "type": "null" } ],
+                      "description": "The name of the user as it should be displayed",
+                      "example": "Ontohub"
+                    },
+                    "id": {
+                      "$ref": "#/definitions/id"
+                    },
+                    "members": {
+                      "description": "A list of members of this organization",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["id"],
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/id"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": { "$ref": "#/definitions/self/properties" },
+  "links": [
+    {
+      "title": "Show",
+      "description": "Show the details of a specific organizational unit. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/v3/{#/definitions/id}",
+      "targetSchema": { "rel": "self" }
+    }
+  ]
+}
