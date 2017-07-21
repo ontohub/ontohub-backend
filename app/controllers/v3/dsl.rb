@@ -35,14 +35,15 @@ module V3
       obj = Graphql.new
       obj.instance_eval(&block)
       send(:define_method, method_name) do
-        variables = instance_eval(&obj.arguments_proc)
-        context_proc = obj.context_proc || context_proc || proc {}
-        context = instance_eval(&context_proc)
+        variables = instance_eval(&obj.arguments_proc) || {}
+        global_context = instance_eval(&context_proc) || {}
+        local_context = instance_eval(&obj.context_proc)
+        context = global_context.merge(local_context)
 
         result = OntohubBackendSchema.execute(
           obj.query_string,
           variables: variables || {},
-          context: context || {}
+          context: context
         )
         render json: result
       end
