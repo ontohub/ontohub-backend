@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 module V3
+  # Provides the DSL to use the Graphql API from the REST controllers
   module DSL
-    class GraphqlDSLObject
+    # Contains Graphql options for one REST actions
+    class Graphql
       attr_reader :query_string, :arguments_proc, :context_proc
 
-      def initialize()
-        @arguments_proc = Proc.new {}
-        @context_proc = Proc.new {}
+      def initialize
+        @arguments_proc = proc {}
       end
 
       def query(query_string)
@@ -23,12 +24,18 @@ module V3
       end
     end
 
+    def context(&block)
+      @@context_proc = block
+    end
+
+    # rubocop:disable Metrics/MethodLength
     def graphql(method_name, &block)
-      obj = GraphqlDSLObject.new
+      # rubocop:enable Metrics/MethodLength
+      obj = Graphql.new
       obj.instance_eval(&block)
-      self.send(:define_method, method_name) do
-        variables = self.instance_eval(&obj.arguments_proc)
-        context = self.instance_eval(&obj.context_proc)
+      send(:define_method, method_name) do
+        variables = instance_eval(&obj.arguments_proc)
+        context = instance_eval(&obj.context_proc || @@context_proc)
 
         result = OntohubBackendSchema.execute(
           obj.query_string,
