@@ -12,7 +12,11 @@ class TreePolicy < ApplicationPolicy
 
   def create?
     return false unless current_user
-    %w(write admin).include?(RepositoryMembership.find(member_id: current_user.id, repository_id: repository.id)&.role) || %w(write admin).include?(OrganizationMembership.find(member_id: current_user.id, organization_id: repository.owner.id)&.role)
+    %w(write admin).include?(RepositoryMembership.
+      find(member_id: current_user.id, repository_id: repository.id)&.role) ||
+        %w(write admin).include?(OrganizationMembership.
+          find(member_id: current_user.id,
+               organization_id: repository.owner.id)&.role)
   end
 
   def show?

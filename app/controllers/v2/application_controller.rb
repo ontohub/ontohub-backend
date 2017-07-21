@@ -12,6 +12,7 @@ module V2
     protected
 
     def authorize_resource
+      # FIXME: Remove this and the other if when switching to the GraphQL API.
       if %w(create update destroy).include?(action_name)
         return
       end

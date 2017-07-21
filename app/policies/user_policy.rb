@@ -4,9 +4,8 @@
 class UserPolicy < ApplicationPolicy
   attr_reader :current_user, :user
 
-  def initialize(current_user, user)
+  def initialize(current_user, _user = nil)
     @current_user = current_user
-    @user = user
     super
   end
 

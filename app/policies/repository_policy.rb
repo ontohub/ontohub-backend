@@ -11,15 +11,18 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def show?
-    repository.public_access == true ||
-      !!current_user&.accessible_repositories&.map(&:to_param)&.include?(repository.to_param)
+    repository.public_access ||
+      !!current_user&.accessible_repositories&.map(&:to_param)&.
+        include?(repository.to_param)
   end
 
   def create?(owner)
+    return false unless current_user
     if owner.is_a?(User)
-      owner&.id == current_user&.id if current_user
+      owner&.id == current_user&.id
     elsif owner.is_a?(Organization)
-      !OrganizationMembership.find(member: current_user, organization: owner,                                role: 'admin').nil?
+      !!OrganizationMembership.
+        find(member: current_user, organization: owner, role: 'admin')
     else
       false
     end
@@ -27,9 +30,9 @@ class RepositoryPolicy < ApplicationPolicy
 
   def update?
     return false unless current_user
-    create?(repository.owner) || !RepositoryMembership.
+    create?(repository.owner) || !!RepositoryMembership.
       find(member: current_user, repository: repository,
-           role: 'admin').nil?
+           role: 'admin')
   end
 
   def index?
