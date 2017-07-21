@@ -5,7 +5,8 @@
   "definitions": {
     "id": {
       "type": "string",
-      "example": "ada"
+      "example": "ada",
+      "description": "The id of the user"
     }
   },
   "type": "object",
@@ -33,8 +34,16 @@
                   "example": "User"
                 },
                 "displayName": {
-                  "type": "string",
-                  "example": "Ada Lovelace"
+                  "oneOf": [
+                    {
+                      "type": "null",
+                      "example": null
+                    },
+                    {
+                      "type": "string",
+                      "example": "Ada Lovelace"
+                    }
+                  ]
                 },
                 "emailHash": {
                   "type": "string"
@@ -71,10 +80,28 @@
                   "enum": ["Organization"]
                 },
                 "description": {
-                  "type": "string"
+                  "oneOf": [
+                    {
+                      "type": "null",
+                      "example": null
+                    },
+                    {
+                      "type": "string",
+                      "example": "The Ontohub organization"
+                    }
+                  ]
                 },
                 "displayName": {
-                  "type": "string"
+                  "oneOf": [
+                    {
+                      "type": "null",
+                      "example": null
+                    },
+                    {
+                      "type": "string",
+                      "example": "Ontohub"
+                    }
+                  ]
                 },
                 "id": {
                   "type": "string"
