@@ -14,5 +14,8 @@ Layout/MultilineMethodCallIndentation:
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+Style/DoubleNegation:
+  Enabled: false
+
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
