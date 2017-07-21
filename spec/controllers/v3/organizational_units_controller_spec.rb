@@ -14,24 +14,20 @@ RSpec.describe V3::OrganizationalUnitsController do
   context 'subject: user' do
     subject { user }
 
-    describe 'GET show' do
+    describe 'action: show' do
       before { get :show, params: {slug: subject.slug} }
       it { expect(response).to have_http_status(:ok) }
-      it do |example|
-        expect([example, response]).to comply_with_api(nil, false)
-      end
+      it { |example| expect([example, response]).to comply_with_rest_api }
     end
   end
 
   context 'subject: organization' do
     subject { organization }
 
-    describe 'GET show' do
+    describe 'action: show' do
       before { get :show, params: {slug: subject.slug} }
       it { expect(response).to have_http_status(:ok) }
-      it do |example|
-        expect([example, response]).to comply_with_api(nil, false)
-      end
+      it { |example| expect([example, response]).to comply_with_rest_api }
     end
   end
 end

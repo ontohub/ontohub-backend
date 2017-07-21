@@ -1,0 +1,6 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "V3 Organizational Units",
+  "description": "Endpoints for organizational units (organizations and users)",
+  "$ref": "../controllers/v3/organizational_units_controller.json#"
+}
