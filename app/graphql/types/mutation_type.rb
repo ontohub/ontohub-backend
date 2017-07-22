@@ -5,7 +5,7 @@ Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
   description 'Base mutation type'
 
-  field :confirmEmail, Types::SessionTokenType do
+  field :confirmEmail, Types::User::SessionTokenType do
     description 'Confirms the email address of a user'
 
     argument :token, !types.String do
@@ -18,7 +18,7 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :createOrganization, Types::OrganizationType do
     description 'Creates a new organization'
 
-    argument :data, !Types::Input::NewOrganizationType do
+    argument :data, !Types::Organization::NewType do
       description 'The parameters of the new organization'
     end
 
@@ -108,7 +108,7 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::ResendUnlockAccountEmailMutation.new
   end
 
-  field :resetPassword, Types::SessionTokenType do
+  field :resetPassword, Types::User::SessionTokenType do
     description "Resets a user's password"
 
     argument :password, !types.String do
@@ -125,7 +125,7 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :saveAccount, Types::UserType do
     description 'Updates the current user account'
 
-    argument :data, !Types::Input::UserChangesetType do
+    argument :data, !Types::User::ChangesetType do
       description 'Updated fields of the user'
     end
 
@@ -144,7 +144,7 @@ Types::MutationType = GraphQL::ObjectType.define do
       description 'ID of the organization to update'
     end
 
-    argument :data, !Types::Input::OrganizationChangesetType do
+    argument :data, !Types::Organization::ChangesetType do
       description 'Updated fields of the organization'
     end
 
@@ -171,7 +171,7 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SaveRepositoryMutation.new
   end
 
-  field :signIn, Types::SessionTokenType do
+  field :signIn, Types::User::SessionTokenType do
     description 'Signs in a user'
 
     argument :username, !types.String do
@@ -185,10 +185,10 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SignInMutation.new
   end
 
-  field :signUp, Types::SessionTokenType do
+  field :signUp, Types::User::SessionTokenType do
     description 'Signs up a user'
 
-    argument :user, !Types::Input::NewUserType do
+    argument :user, !Types::User::NewType do
       description "The new user's data"
     end
 
@@ -199,7 +199,7 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SignUpMutation.new
   end
 
-  field :unlockAccount, Types::SessionTokenType do
+  field :unlockAccount, Types::User::SessionTokenType do
     description 'Unlocks a locked user account'
 
     argument :token, !types.String do

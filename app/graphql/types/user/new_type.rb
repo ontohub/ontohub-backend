@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Types::Input::NewUserType = GraphQL::InputObjectType.define do
+Types::User::NewType = GraphQL::InputObjectType.define do
   name 'NewUser'
   description 'Data of a a new user that is about to sign up'
 

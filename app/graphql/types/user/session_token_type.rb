@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Types::SessionTokenType = GraphQL::ObjectType.define do
+Types::User::SessionTokenType = GraphQL::ObjectType.define do
   name 'SessionToken'
   description 'Data of a signed in user'
 

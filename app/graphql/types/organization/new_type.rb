@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
-Types::Input::OrganizationChangesetType = GraphQL::InputObjectType.define do
-  name 'OrganizationChangeset'
+Types::Organization::NewType = GraphQL::InputObjectType.define do
+  name 'NewOrganization'
   description <<~DESCRIPTION
-    Contains all fields of an organization that can be changed
+    Contains all fields that are possible to set when creating a new
+    organization
   DESCRIPTION
+
+  argument :id, !types.ID, as: :name do
+    description 'ID of the new organization'
+  end
 
   argument :displayName, types.String, as: :display_name do
     description 'The name of the organization'

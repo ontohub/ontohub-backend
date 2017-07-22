@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Types::Input::UserChangesetType = GraphQL::InputObjectType.define do
+Types::User::ChangesetType = GraphQL::InputObjectType.define do
   name 'UserChangeset'
   description <<~DESCRIPTION
     Contains all fields of a user account that can be changed
