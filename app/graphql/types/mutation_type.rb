@@ -7,15 +7,7 @@ Types::MutationType = GraphQL::ObjectType.define do
 
   field :confirmEmail, Mutations::Account::ConfirmEmailMutation
 
-  field :createOrganization, Types::OrganizationType do
-    description 'Creates a new organization'
-
-    argument :data, !Types::Organization::NewType do
-      description 'The parameters of the new organization'
-    end
-
-    resolve Mutations::CreateOrganizationMutation.new
-  end
+  field :createOrganization, Mutations::Organization::CreateOrganizationMutation
 
   field :createRepository, Types::RepositoryType do
     description 'Creates as new repository'
@@ -29,21 +21,7 @@ Types::MutationType = GraphQL::ObjectType.define do
 
   field :deleteAccount, Mutations::Account::DeleteAccountMutation
 
-  field :deleteOrganization, types.Boolean do
-    description <<~DESCRIPTION
-      Deletes an organization.
-      Returns `true` if it was successful and `null` if there was an error.
-    DESCRIPTION
-
-    argument :id, !types.ID, as: :slug do
-      description 'The ID of the organization to delete'
-    end
-
-    resource(lambda do |_root, arguments, _context|
-      Organization.find(slug: arguments[:slug])
-    end)
-    resolve Mutations::DeleteOrganizationMutation.new
-  end
+  field :deleteOrganization, Mutations::Organization::DeleteOrganizationMutation
 
   field :deleteRepository, types.Boolean do
     description 'Deletes a repository'
@@ -64,22 +42,7 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :resetPassword, Mutations::Account::ResetPasswordMutation
   field :saveAccount, Mutations::Account::SaveAccountMutation
 
-  field :saveOrganization, Types::OrganizationType do
-    description 'Updates an organization'
-
-    argument :id, !types.ID, as: :slug do
-      description 'ID of the organization to update'
-    end
-
-    argument :data, !Types::Organization::ChangesetType do
-      description 'Updated fields of the organization'
-    end
-
-    resource(lambda do |_root, arguments, _context|
-      Organization.find(slug: arguments[:slug])
-    end)
-    resolve Mutations::SaveOrganizationMutation.new
-  end
+  field :saveOrganization, Mutations::Organization::SaveOrganizationMutation
 
   field :saveRepository, Types::RepositoryType do
     description 'Updates a repository'
