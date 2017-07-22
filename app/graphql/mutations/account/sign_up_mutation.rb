@@ -28,16 +28,14 @@ module Mutations
       attr_accessor :resource
 
       # Note, that this does not directly use Devise controller actions to
-      # perform the mutation.  Devise's corresponding controller action,
-      # which would normally be called, performs various things we don't need for
-      # an API only application (including setting flash messages, rendering the
+      # perform the mutation. Devise's corresponding controller action, which
+      # would normally be called, performs various things we don't need for an
+      # API only application (including setting flash messages, rendering the
       # response, bypassing the signin). This code mirrors what is left of the
-      # that action after stripping the rest away.
-      # Make sure that this code is updated if Devise adds relevant code to the
-      # controller action.
+      # that action after stripping the rest away. Make sure that this code is
+      # updated if Devise adds relevant code to the controller action.
       #
-      # For reference, see the
-      # V2::Users::AccountController#create and
+      # For reference, see the V2::Users::AccountController#create and
       # https://github.com/plataformatec/devise/blob/7a44233fb9439e7cc4d1503b14f02a1d9f6da7b9/app/controllers/devise/registrations_controller.rb#L14-L34
       def call(_root, arguments, context)
         setup_devise(context)
@@ -66,8 +64,8 @@ module Mutations
         @captcha = arguments['captcha']
       end
 
-      # This is needed for Devise's RegistrationsController#create's internals to
-      # work.
+      # This is needed for Devise's RegistrationsController#create's internals
+      # to work.
       # :nocov:
       def resource_class
         User

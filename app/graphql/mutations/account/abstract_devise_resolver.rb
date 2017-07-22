@@ -4,8 +4,8 @@ require 'ostruct'
 
 module Mutations
   module Account
-    # Abstract mutation for Devise handling. It is supposed to be inherited from
-    # for all Devise actions.
+    # Abstract mutation for Devise handling. It is supposed to be inherited
+    # from for all Devise actions.
     class AbstractDeviseResolver
       include Devise::Controllers::SignInOut
 
@@ -24,7 +24,8 @@ module Mutations
         @session = warden.request.session
         @params = request.params
 
-        env['devise.allow_params_authentication'] = Devise.params_authenticatable
+        env['devise.allow_params_authentication'] =
+          Devise.params_authenticatable
       end
       # :nocov:
 

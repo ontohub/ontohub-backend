@@ -9,7 +9,8 @@ Types::Repository::ChangesetType = GraphQL::InputObjectType.define do
   argument :description, types.String do
     description 'A short description of the repository'
   end
-  argument :contentType, Types::Repository::ContentTypeEnum, as: :content_type do
+  argument :contentType, Types::Repository::ContentTypeEnum do
+    as :content_type
     description 'The content type of the repository'
   end
   argument :visibility, Types::Repository::VisibilityEnum do

@@ -13,7 +13,8 @@ Types::Repository::NewType = GraphQL::InputObjectType.define do
   argument :owner, !types.String do
     description 'The ID of the owner'
   end
-  argument :contentType, !Types::Repository::ContentTypeEnum, as: :content_type do
+  argument :contentType, !Types::Repository::ContentTypeEnum do
+    as :content_type
     description 'The content type of the repository'
   end
   argument :visibility, !Types::Repository::VisibilityEnum do
