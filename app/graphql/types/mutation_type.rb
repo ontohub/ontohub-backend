@@ -5,15 +5,7 @@ Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
   description 'Base mutation type'
 
-  field :confirmEmail, Types::User::SessionTokenType do
-    description 'Confirms the email address of a user'
-
-    argument :token, !types.String do
-      description 'The confirmation token from the confirmation email'
-    end
-
-    resolve Mutations::ConfirmEmailMutation.new
-  end
+  field :confirmEmail, Mutations::Account::ConfirmEmailMutation
 
   field :createOrganization, Types::OrganizationType do
     description 'Creates a new organization'
@@ -35,19 +27,7 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::CreateRepositoryMutation.new
   end
 
-  field :deleteAccount, types.Boolean do
-    description <<~DESCRIPTION
-      Deletes the account of the currently signed in user.
-      Returns `true` if it was successful and `null` if there was an error.
-    DESCRIPTION
-
-    argument :password, !types.String do
-      description 'Password of the current user to confirm the deletion'
-    end
-
-    resource ->(_root, _arguments, context) { context[:current_user] }
-    resolve Mutations::DeleteAccountMutation.new
-  end
+  field :deleteAccount, Mutations::Account::DeleteAccountMutation
 
   field :deleteOrganization, types.Boolean do
     description <<~DESCRIPTION
@@ -78,64 +58,11 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::DeleteRepositoryMutation.new
   end
 
-  field :resendConfirmationEmail, !types.Boolean do
-    description 'Resends the confirmation email to a user'
-
-    argument :email, !types.String do
-      description 'The email address of the user'
-    end
-
-    resolve Mutations::ResendConfirmationEmailMutation.new
-  end
-
-  field :resendPasswordResetEmail, !types.Boolean do
-    description 'Resends the password reset email to a user'
-
-    argument :email, !types.String do
-      description 'The email address of the user'
-    end
-
-    resolve Mutations::ResendPasswordResetEmailMutation.new
-  end
-
-  field :resendUnlockAccountEmail, !types.Boolean do
-    description 'Resends the unlock account email to a user'
-
-    argument :email, !types.String do
-      description 'The email address of the user'
-    end
-
-    resolve Mutations::ResendUnlockAccountEmailMutation.new
-  end
-
-  field :resetPassword, Types::User::SessionTokenType do
-    description "Resets a user's password"
-
-    argument :password, !types.String do
-      description 'The new password'
-    end
-
-    argument :token, !types.String do
-      description 'The reset token from the password reset email'
-    end
-
-    resolve Mutations::ResetPasswordMutation.new
-  end
-
-  field :saveAccount, Types::UserType do
-    description 'Updates the current user account'
-
-    argument :data, !Types::User::ChangesetType do
-      description 'Updated fields of the user'
-    end
-
-    argument :password, !types.String do
-      description 'Password of the current user to confirm the update'
-    end
-
-    resource ->(_root, _arguments, context) { context[:current_user] }
-    resolve Mutations::SaveAccountMutation.new
-  end
+  field :resendConfirmationEmail, Mutations::Account::ResendConfirmationEmailMutation
+  field :resendPasswordResetEmail, Mutations::Account::ResendPasswordResetEmailMutation
+  field :resendUnlockAccountEmail, Mutations::Account::ResendUnlockAccountEmailMutation
+  field :resetPassword, Mutations::Account::ResetPasswordMutation
+  field :saveAccount, Mutations::Account::SaveAccountMutation
 
   field :saveOrganization, Types::OrganizationType do
     description 'Updates an organization'
@@ -171,41 +98,7 @@ Types::MutationType = GraphQL::ObjectType.define do
     resolve Mutations::SaveRepositoryMutation.new
   end
 
-  field :signIn, Types::User::SessionTokenType do
-    description 'Signs in a user'
-
-    argument :username, !types.String do
-      description "The user's name"
-    end
-
-    argument :password, !types.String do
-      description "The user's password"
-    end
-
-    resolve Mutations::SignInMutation.new
-  end
-
-  field :signUp, Types::User::SessionTokenType do
-    description 'Signs up a user'
-
-    argument :user, !Types::User::NewType do
-      description "The new user's data"
-    end
-
-    argument :captcha, !types.String do
-      description 'A reCAPTCHA token'
-    end
-
-    resolve Mutations::SignUpMutation.new
-  end
-
-  field :unlockAccount, Types::User::SessionTokenType do
-    description 'Unlocks a locked user account'
-
-    argument :token, !types.String do
-      description 'The unlock account token from the unlock account email'
-    end
-
-    resolve Mutations::UnlockAccountMutation.new
-  end
+  field :signIn, Mutations::Account::SignInMutation
+  field :signUp, Mutations::Account::SignUpMutation
+  field :unlockAccount, Mutations::Account::UnlockAccountMutation
 end

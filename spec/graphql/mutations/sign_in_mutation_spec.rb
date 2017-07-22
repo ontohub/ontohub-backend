@@ -36,7 +36,7 @@ RSpec.describe 'signIn mutation', stub_abstract_devise_mutation: true do
 
   context 'valid credentials' do
     before do
-      allow_any_instance_of(Mutations::SignInMutation).
+      allow_any_instance_of(Mutations::Account::SignInResolver).
         to receive(:authenticate).and_return(user)
     end
 
@@ -51,7 +51,7 @@ RSpec.describe 'signIn mutation', stub_abstract_devise_mutation: true do
 
   context 'invalid credentials' do
     before do
-      allow_any_instance_of(Mutations::SignInMutation).
+      allow_any_instance_of(Mutations::Account::SignInResolver).
         to receive(:authenticate).and_return(nil)
     end
 
