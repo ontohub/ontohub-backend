@@ -181,7 +181,7 @@ type Organization implements OrganizationalUnit {
 
     # Skip the first n members
     skip: Int = 0
-  ): [User]!
+  ): [User!]!
 
   # List of repositories owned by this organizational unit
   repositories(
@@ -190,7 +190,7 @@ type Organization implements OrganizationalUnit {
 
     # Skip the first n repositories
     skip: Int = 0
-  ): [Repository]!
+  ): [Repository!]!
 }
 
 # Contains all fields of an organization that can be changed
@@ -217,7 +217,7 @@ interface OrganizationalUnit {
 
     # Skip the first n repositories
     skip: Int = 0
-  ): [Repository]!
+  ): [Repository!]!
 }
 
 # Base query type
@@ -244,7 +244,7 @@ type Query {
 # Data of a repository
 type Repository {
   # Branches of the repository
-  branches: [String]!
+  branches: [String!]!
 
   # Type of the repository
   contentType: RepositoryContentType!
@@ -324,7 +324,7 @@ type User implements OrganizationalUnit {
 
     # Skip the first n organizations
     skip: Int = 0
-  ): [Organization]!
+  ): [Organization!]!
 
   # List of repositories owned by this organizational unit
   repositories(
@@ -333,7 +333,7 @@ type User implements OrganizationalUnit {
 
     # Skip the first n repositories
     skip: Int = 0
-  ): [Repository]!
+  ): [Repository!]!
 
   # Email address of the user that still needs to be confirmed
   unconfirmedEmail: String
