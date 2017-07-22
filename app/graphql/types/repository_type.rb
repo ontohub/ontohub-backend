@@ -22,12 +22,12 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     description 'Owner of the repository'
   end
 
-  field :contentType, !Types::RepositoryContentTypeEnum do
+  field :contentType, !Types::Repository::ContentTypeEnum do
     description 'Type of the repository'
     property :content_type
   end
 
-  field :visibility, !Types::RepositoryVisibilityEnum do
+  field :visibility, !Types::Repository::VisibilityEnum do
     description 'Visibility of the repository'
     resolve(lambda do |repository, _arguments, _context|
       repository.public_access ? 'public' : 'private'

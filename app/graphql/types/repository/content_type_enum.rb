@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Types::RepositoryContentTypeEnum = GraphQL::EnumType.define do
+Types::Repository::ContentTypeEnum = GraphQL::EnumType.define do
   name 'RepositoryContentType'
   description 'Possible types of repositories'
 

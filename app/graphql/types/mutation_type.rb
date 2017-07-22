@@ -28,7 +28,7 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :createRepository, Types::RepositoryType do
     description 'Creates as new repository'
 
-    argument :data, !Types::Input::NewRepositoryType do
+    argument :data, !Types::Repository::NewType do
       description 'The parameters of the new repository'
     end
 
@@ -161,7 +161,7 @@ Types::MutationType = GraphQL::ObjectType.define do
       description 'ID of the repository to update'
     end
 
-    argument :data, !Types::Input::RepositoryChangesetType do
+    argument :data, !Types::Repository::ChangesetType do
       description 'Updated fields of the repository'
     end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Types::RepositoryVisibilityEnum = GraphQL::EnumType.define do
+Types::Repository::VisibilityEnum = GraphQL::EnumType.define do
   name 'RepositoryVisibility'
   description 'Possible values for repository visibilities'
 
