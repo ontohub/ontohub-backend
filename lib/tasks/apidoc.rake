@@ -2,7 +2,9 @@
 
 require 'fileutils'
 
+# rubocop:disable Metrics/BlockLength
 namespace :apidoc do
+  # rubocop:enable Metrics/BlockLength
   APIDOC_DIR = Rails.root.join('apidoc').to_s
 
   desc 'Prepare your system to build the API docs (this installs doca via npm).'

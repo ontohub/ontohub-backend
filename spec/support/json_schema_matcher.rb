@@ -73,13 +73,15 @@ def normalized_rest_controller_action(example)
   example_group&.description&.sub(/action:\s+/, '')&.parameterize&.underscore
 end
 
-def validate_rest_controller_action(response, schema_root, controller, action)
+def validate_rest_controller_action(response, schema_root, controller, _action)
   schema_path = "#{schema_root}/controllers/#{controller}.json"
-  JSON::Validator.fully_validate(schema_path, response.body,
-                                 strict: false,
-                                 validateschema: true)
-  # TODO: uncomment this as soon as fragments work
-                                 # fragment: "#/definitions/actions/#{action}")
+  JSON::Validator.fully_validate(
+    schema_path, response.body,
+    strict: false,
+    validateschema: true,
+    # TODO: uncomment this as soon as fragments work
+    # fragment: "#/definitions/actions/#{action}",
+  )
 end
 
 RSpec::Matchers.define :comply_with_rest_api do

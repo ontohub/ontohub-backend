@@ -76,7 +76,7 @@ Rails.application.routes.draw do
                       sessions: 'v2/users/sessions',
                       unlocks: 'v2/users/unlocks',
                       passwords: 'v2/users/passwords'},
-        skip: [:registrations, :confirmations, :sessions, :unlocks, :passwords]
+        skip: %i(registrations confirmations sessions unlocks passwords)
       scope 'users' do
         devise_scope :user do
           post '', controller: 'v2/users/account', action: 'create'

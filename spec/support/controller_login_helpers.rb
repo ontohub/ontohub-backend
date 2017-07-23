@@ -7,8 +7,8 @@ module ControllerLoginHelpers
       before(:each) do
         @request.env['devise.mapping'] = Devise.mappings[:user]
         user = FactoryGirl.create(:user)
-        # Confirm the user. Alternatively, set a confirmed_at inside the factory.
-        # Only necessary if you are using the "confirmable" module:
+        # Confirm the user. Alternatively, set a confirmed_at inside the
+        # factory. Only necessary if you are using the "confirmable" module:
         # user.confirm!
         sign_in(user)
       end
@@ -21,7 +21,9 @@ module ControllerLoginHelpers
       set_token_header(user)
     end
 
+    # rubocop:disable Style/AccessorMethodName
     def set_token_header(user)
+      # rubocop:enable Style/AccessorMethodName
       payload = {user_id: user.to_param}
       token = JWTWrapper.encode(payload)
       request.env['HTTP_AUTHORIZATION'] = "Bearer #{token}"

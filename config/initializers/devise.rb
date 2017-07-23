@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/LineLength
 
 # Use this hook to configure devise mailer, warden hooks and so forth.

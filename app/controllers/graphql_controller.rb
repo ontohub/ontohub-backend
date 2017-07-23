@@ -2,7 +2,9 @@
 
 # Controller for the GraphQL API endpoint
 class GraphqlController < ApplicationController
+  # rubocop:disable Metrics/MethodLength
   def execute
+    # rubocop:enable Metrics/MethodLength
     if params[:query]
       variables = ensure_hash(params[:variables])
       result = OntohubBackendSchema.execute(
@@ -23,7 +25,7 @@ class GraphqlController < ApplicationController
   def context
     {
       current_user: current_user,
-      request: request
+      request: request,
     }
   end
 
@@ -38,7 +40,9 @@ class GraphqlController < ApplicationController
 
   # Handle form data, JSON body, or a blank value
   # :nocov:
+  # rubocop:disable Metrics/MethodLength
   def ensure_hash(ambiguous_param)
+    # rubocop:enable Metrics/MethodLength
     case ambiguous_param
     when String
       if ambiguous_param.present?

@@ -78,7 +78,9 @@ RSpec.describe(SettingsValidator) do
     context 'data_directory' do
       before do
         allow(File).
-          to receive(:directory?).with(settings.data_directory).and_return(false)
+          to receive(:directory?).
+          with(settings.data_directory).
+          and_return(false)
       end
 
       it 'does not exist' do

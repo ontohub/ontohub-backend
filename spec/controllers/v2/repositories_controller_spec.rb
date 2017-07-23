@@ -116,7 +116,9 @@ RSpec.describe V2::RepositoriesController do
         end
         it { expect(response).to have_http_status(:ok) }
         it { |example| expect([example, response]).to comply_with_api }
-        it { expect { repository.reload }.to change { repository.description } }
+        it do
+          expect { repository.reload }.to(change { repository.description })
+        end
       end
 
       context 'failing' do
@@ -128,7 +130,7 @@ RSpec.describe V2::RepositoriesController do
           it { expect(response).to have_http_status(:not_found) }
           it { expect(response.body.strip).to be_empty }
           it 'does not change the repository' do
-            expect { repository.reload }.not_to change { repository.name }
+            expect { repository.reload }.not_to(change { repository.name })
           end
         end
 
@@ -142,7 +144,7 @@ RSpec.describe V2::RepositoriesController do
           it { expect(response).to have_http_status(:ok) }
           it { |example| expect([example, response]).to comply_with_api }
           it 'does not change the repository' do
-            expect { repository.reload }.not_to change { repository.slug }
+            expect { repository.reload }.not_to(change { repository.slug })
           end
         end
       end
@@ -306,7 +308,9 @@ RSpec.describe V2::RepositoriesController do
         end
         it { expect(response).to have_http_status(:ok) }
         it { |example| expect([example, response]).to comply_with_api }
-        it { expect { repository.reload }.to change { repository.description } }
+        it do
+          expect { repository.reload }.to(change { repository.description })
+        end
       end
 
       context 'failing' do
@@ -318,7 +322,7 @@ RSpec.describe V2::RepositoriesController do
           it { expect(response).to have_http_status(:not_found) }
           it { expect(response.body.strip).to be_empty }
           it 'does not change the repository' do
-            expect { repository.reload }.not_to change { repository.name }
+            expect { repository.reload }.not_to(change { repository.name })
           end
         end
 
@@ -332,7 +336,7 @@ RSpec.describe V2::RepositoriesController do
           it { expect(response).to have_http_status(:ok) }
           it { |example| expect([example, response]).to comply_with_api }
           it 'does not change the repository' do
-            expect { repository.reload }.not_to change { repository.slug }
+            expect { repository.reload }.not_to(change { repository.slug })
           end
         end
       end

@@ -16,7 +16,7 @@ class SettingsInitializer
 
   def create_directories
     [@settings.data_directory].each do |dir|
-      FileUtils.mkdir_p(dir) unless File.exists?(dir)
+      FileUtils.mkdir_p(dir) unless File.exist?(dir)
     end
   end
 end
