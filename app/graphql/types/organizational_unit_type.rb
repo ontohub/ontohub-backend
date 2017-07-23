@@ -14,7 +14,7 @@ Types::OrganizationalUnitType = GraphQL::InterfaceType.define do
     property :display_name
   end
 
-  field :repositories, !types[Types::RepositoryType] do
+  field :repositories, !types[!Types::RepositoryType] do
     description 'List of repositories owned by this organizational unit'
 
     argument :limit, types.Int do

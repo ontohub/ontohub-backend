@@ -42,7 +42,7 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
-  field :branches, !types[types.String] do
+  field :branches, !types[!types.String] do
     description 'Branches of the repository'
     resolve(lambda do |repository, _arguments, _context|
       repository.git.branch_names

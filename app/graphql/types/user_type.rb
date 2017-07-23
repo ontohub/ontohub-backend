@@ -19,7 +19,7 @@ Types::UserType = GraphQL::ObjectType.define do
     property :email_hash
   end
 
-  field :organizations, !types[Types::OrganizationType] do
+  field :organizations, !types[!Types::OrganizationType] do
     description 'List of organizations the user is a member of'
 
     argument :limit, types.Int do

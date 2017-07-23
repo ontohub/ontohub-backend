@@ -9,7 +9,7 @@ Types::OrganizationType = GraphQL::ObjectType.define do
     description 'Description of the organization'
   end
 
-  field :members, !types[Types::UserType] do
+  field :members, !types[!Types::UserType] do
     description 'List of members'
 
     argument :limit, types.Int do
