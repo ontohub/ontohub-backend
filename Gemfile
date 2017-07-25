@@ -34,7 +34,7 @@ gem 'active_model_serializers', '~> 0.10.4'
 gem 'config', '~> 1.4.0'
 
 # Use these gems for debugging
-gem 'awesome_print', '~> 1.7.0'
+gem 'awesome_print', '~> 1.8.0'
 gem 'pry', '~> 0.10.4'
 gem 'pry-byebug', '~> 3.4.1', platform: :mri
 gem 'pry-rails', '~> 0.3.4'
@@ -67,7 +67,7 @@ group :test do
   gem 'codecov', '~> 0.1.10', require: false
   gem 'database_cleaner', '~> 1.6.1'
   gem 'factory_girl_rails', '~> 4.8.0'
-  gem 'faker', '~> 1.7.2'
+  gem 'faker', '~> 1.8.4'
   gem 'json-schema', '~> 2.8.0'
   gem 'rspec', '~> 3.6.0'
   gem 'rspec-rails', '~> 3.6.0'
