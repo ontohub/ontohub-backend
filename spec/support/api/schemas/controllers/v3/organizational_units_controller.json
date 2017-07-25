@@ -3,6 +3,9 @@
   "title": "V3 Organizational Units",
   "description": "V3 Organizational Unit Controller",
   "definitions": {
+    "actions": {
+      "show": {"$ref": "#/definitions/self"}
+    },
     "id": {
       "type": "string",
       "example": "ada",
