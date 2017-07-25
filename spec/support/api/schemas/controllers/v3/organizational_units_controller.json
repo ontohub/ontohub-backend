@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "V3 Organizational Units",
   "description": "V3 Organizational Unit Controller",
   "definitions": {
