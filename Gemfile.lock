@@ -1,30 +1,30 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: fd53844f3351d4448211399099b54a9a8fd55e1a
+  revision: eafb379224689419d49c47b2fb58c0edb9be69dd
   branch: master
   specs:
     gitlab_git (11.0.0)
       activesupport (>= 4.0)
       charlock_holmes (~> 0.7.3)
-      github-linguist (~> 5.0.10)
+      github-linguist (~> 5.1.0)
       rugged (~> 0.25.1)
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 95d9df93bc7f7ba60171ef45ef321c505c7605f1
+  revision: ec0492cc9dd412f1ea193c46db87c61905d36830
   branch: master
   specs:
     ontohub-models (0.1.0)
-      awesome_print (~> 1.7.0)
+      awesome_print (~> 1.8.0)
       chewy (~> 0.9.0)
       devise (~> 4.3.0)
       orm_adapter-sequel (~> 0.1.0)
       pry (~> 0.10.4)
       rails (~> 5.1.2)
-      sequel (~> 4.46.0)
+      sequel (~> 4.48.0)
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 0.9.14)
-      sequel_pg (~> 1.6.17)
+      sequel_pg (~> 1.7.0)
 
 GEM
   remote: https://rubygems.org/
@@ -75,7 +75,7 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     arel (8.0.0)
     ast (2.3.0)
-    awesome_print (1.7.0)
+    awesome_print (1.8.0)
     bcrypt (3.1.11)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -122,12 +122,12 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    faker (1.7.3)
+    faker (1.8.4)
       i18n (~> 0.5)
-    faraday (0.12.1)
+    faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
-    github-linguist (5.0.11)
+    github-linguist (5.1.0)
       charlock_holmes (~> 0.7.3)
       escape_utils (~> 1.1.0)
       mime-types (>= 1.19)
@@ -160,10 +160,10 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.2.0)
-    minitest (5.10.2)
+    minitest (5.10.3)
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    nio4r (2.0.0)
+    nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
     orm_adapter (0.5.0)
@@ -171,7 +171,7 @@ GEM
       activemodel (>= 3.0.0)
       orm_adapter (>= 0.4.0)
       sequel (>= 3.18.0)
-    parallel (1.11.2)
+    parallel (1.12.0)
     parser (2.4.0.0)
       ast (~> 2.2)
     pg (0.21.0)
@@ -263,7 +263,7 @@ GEM
     ruby-progressbar (1.8.1)
     ruby_dep (1.5.0)
     rugged (0.25.1.1)
-    sequel (4.46.0)
+    sequel (4.48.0)
     sequel-devise (0.0.11)
       devise
       orm_adapter-sequel
@@ -272,7 +272,7 @@ GEM
       activemodel
       railties (>= 3.2.0)
       sequel (>= 3.28, < 5.0)
-    sequel_pg (1.6.19)
+    sequel_pg (1.7.0)
       pg (>= 0.8.0)
       sequel (>= 4.0.0)
     simplecov (0.14.1)
@@ -310,12 +310,12 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.4)
-  awesome_print (~> 1.7.0)
+  awesome_print (~> 1.8.0)
   codecov (~> 0.1.10)
   config (~> 1.4.0)
   database_cleaner (~> 1.6.1)
   factory_girl_rails (~> 4.8.0)
-  faker (~> 1.7.2)
+  faker (~> 1.8.4)
   gitlab_git!
   graphiql-rails
   graphql (~> 1.6.3)
