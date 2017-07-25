@@ -41,10 +41,10 @@ gem 'pry-rails', '~> 0.3.4'
 gem 'pry-rescue', '~> 1.4.4', platform: :mri
 gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
-gem 'jwt', '~> 1.5.6'
-gem 'recaptcha', '~> 4.3.1'
 gem 'graphql', '~> 1.6.3'
 gem 'graphql-batch', '~> 0.3.3'
+gem 'jwt', '~> 1.5.6'
+gem 'recaptcha', '~> 4.3.1'
 
 group :development, :test do
 end
@@ -53,13 +53,14 @@ group :production do
 end
 
 group :development do
+  gem 'graphiql-rails'
   gem 'listen', '~> 3.1.5'
+  gem 'rubocop', '~> 0.49.1'
   # Spring speeds up development by keeping your application running in the
   # background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'sprockets-rails', require: 'sprockets/railtie'
-  gem 'graphiql-rails'
 end
 
 group :test do

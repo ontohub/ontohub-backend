@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 Types::RepositoryType = GraphQL::ObjectType.define do
+  # rubocop:enable Metrics/BlockLength
   name 'Repository'
   description 'Data of a repository'
 

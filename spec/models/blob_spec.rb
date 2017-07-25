@@ -345,14 +345,14 @@ RSpec.describe Blob do
 
   context 'FileVersion' do
     it 'creates a FileVersion on creation' do
-      # rubocop:disable Style/MultilineBlockLayout
-      # rubocop:disable Style/BlockEndNewline
+      # rubocop:disable Layout/MultilineBlockLayout
+      # rubocop:disable Layout/BlockEndNewline
       expect { subject.create }.
         to change { FileVersion.find(commit_sha: subject.commit_id,
                                      path: subject.path).nil? }.
         from(true).to(false)
-      # rubocop:enable Style/MultilineBlockLayout
-      # rubocop:enable Style/BlockEndNewline
+      # rubocop:enable Layout/MultilineBlockLayout
+      # rubocop:enable Layout/BlockEndNewline
     end
 
     it 'does not delete the previous FileVersion on deletion' do
@@ -361,14 +361,14 @@ RSpec.describe Blob do
       git = subject.repository.git
       commit_sha_after_creation = git.branch_sha(git.default_branch)
 
-      # rubocop:disable Style/MultilineBlockLayout
-      # rubocop:disable Style/BlockEndNewline
+      # rubocop:disable Layout/MultilineBlockLayout
+      # rubocop:disable Layout/BlockEndNewline
       # rubocop:disable Lint/AmbiguousBlockAssociation
       expect { subject.destroy }.
         not_to change { FileVersion.find(commit_sha: commit_sha_after_creation,
                                          path: subject.path).nil? }
-      # rubocop:enable Style/MultilineBlockLayout
-      # rubocop:enable Style/BlockEndNewline
+      # rubocop:enable Layout/MultilineBlockLayout
+      # rubocop:enable Layout/BlockEndNewline
       # rubocop:enable Lint/AmbiguousBlockAssociation
     end
   end

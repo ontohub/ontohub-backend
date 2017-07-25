@@ -6,7 +6,10 @@ class Tree < ActiveModelSerializers::Model
   attr_accessor :commit_id, :entries, :id, :path, :repository
 
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def self.find(args)
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
     repo = args[:repository] || Repository.find(slug: args[:repository_id])
     repository = RepositoryCompound.wrap(repo)
 
@@ -14,13 +17,12 @@ class Tree < ActiveModelSerializers::Model
     if repository&.git&.path_exists?(args[:branch], args[:path])
       new(**opts, entries: repository&.git&.tree(args[:branch], args[:path]))
     elsif args[:path].sub(%r{\A/+}, '').empty? &&
-      repository&.git&.branch_exists?(args[:branch])
+          repository&.git&.branch_exists?(args[:branch])
       new(**opts, entries: [])
     end
   rescue Rugged::ReferenceError
     nil
   end
-  # rubocop:enable Metrics/AbcSize
 
   def initialize(params)
     super(params)

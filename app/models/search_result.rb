@@ -7,7 +7,6 @@ class SearchResult < ActiveModelSerializers::Model
                 :repositories_count, :organizational_units_count,
                 :results_count
 
-  # rubocop: disable Metrics/MethodLength
   def initialize(_params)
     repositories = Repository.all
     organizational_units = OrganizationalUnit.all
