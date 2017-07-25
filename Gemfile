@@ -68,7 +68,9 @@ group :test do
   gem 'database_cleaner', '~> 1.6.1'
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'faker', '~> 1.8.4'
-  gem 'json-schema', '~> 2.8.0'
+  # As soon as a version > 2.8.0 of json-schema is released, use it instead of
+  # master.
+  gem 'json-schema', github: 'ruby-json-schema/json-schema', branch: 'master'
   gem 'rspec', '~> 3.6.0'
   gem 'rspec-rails', '~> 3.6.0'
 end
