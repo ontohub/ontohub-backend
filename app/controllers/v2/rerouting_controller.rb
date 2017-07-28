@@ -3,7 +3,7 @@
 module V2
   # This controller is the base class for controllers that need to re-route a
   # request to the action of another controller.
-  class ReroutingController < ApplicationController
+  class ReroutingController < V2::ApplicationController
     protected
 
     def send_controller_action(action, resource)
@@ -45,7 +45,7 @@ module V2
     def rename_model_based_params_key
       current_key = model_based_params_key(self)
       target_key = model_based_params_key(@other_controller)
-      params[target_key] = params.delete(current_key).to_unsafe_h
+      params[target_key] = params.delete(current_key).to_h
     end
   end
 end

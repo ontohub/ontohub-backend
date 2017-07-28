@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'ostruct'
 require 'rails_helper'
 
 RSpec.describe TreePolicy do
@@ -8,10 +9,12 @@ RSpec.describe TreePolicy do
   let(:public_repo) { create :repository, public_access: true }
   let(:private_repo) { create :repository, public_access: false }
   let(:organization) { create :organization }
+  let(:public_tree) { OpenStruct.new(repository: public_repo) }
+  let(:private_tree) { OpenStruct.new(repository: private_repo) }
 
   context 'create?' do
     context 'not signed in' do
-      subject { TreePolicy.new(nil, public_repo) }
+      subject { TreePolicy.new(nil, public_tree) }
 
       it 'does not allow to create the tree' do
         expect(subject.create?).to be(false)
@@ -20,7 +23,7 @@ RSpec.describe TreePolicy do
 
     context 'signed in with access' do
       context 'by admin role' do
-        subject { TreePolicy.new(admin, public_repo) }
+        subject { TreePolicy.new(admin, public_tree) }
 
         it 'allows to create the tree' do
           expect(subject.create?).to be(true)
@@ -28,7 +31,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'by repository membership' do
-        subject { TreePolicy.new(user, public_repo) }
+        subject { TreePolicy.new(user, public_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to create the tree" do
@@ -47,7 +50,10 @@ RSpec.describe TreePolicy do
         let(:repository_by_organization) do
           create :repository, owner: organization
         end
-        subject { TreePolicy.new(user, repository_by_organization) }
+        let(:repo_tree) do
+          OpenStruct.new(repository: repository_by_organization)
+        end
+        subject { TreePolicy.new(user, repo_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to create the tree" do
@@ -64,7 +70,7 @@ RSpec.describe TreePolicy do
     end
 
     context 'signed in without access' do
-      subject { TreePolicy.new(user, public_repo) }
+      subject { TreePolicy.new(user, public_tree) }
 
       it 'does not allow to create the tree' do
         expect(subject.create?).to be(false)
@@ -75,7 +81,7 @@ RSpec.describe TreePolicy do
   context 'show?' do
     context 'public repository' do
       context 'signed in' do
-        subject { TreePolicy.new(user, public_repo) }
+        subject { TreePolicy.new(user, public_tree) }
 
         it 'allows to show the tree' do
           expect(subject.show?).to be(true)
@@ -83,7 +89,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'signed in as admin' do
-        subject { TreePolicy.new(admin, public_repo) }
+        subject { TreePolicy.new(admin, public_tree) }
 
         it 'allows to show the tree' do
           expect(subject.show?).to be(true)
@@ -91,7 +97,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'not signed in' do
-        subject { TreePolicy.new(nil, public_repo) }
+        subject { TreePolicy.new(nil, public_tree) }
 
         it 'allows to show the tree' do
           expect(subject.show?).to be(true)
@@ -101,7 +107,7 @@ RSpec.describe TreePolicy do
 
     context 'private repository' do
       context 'not signed in' do
-        subject { TreePolicy.new(nil, private_repo) }
+        subject { TreePolicy.new(nil, private_tree) }
 
         it 'does not allow to show the tree' do
           expect(subject.show?).to be(false)
@@ -109,7 +115,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'signed in as admin' do
-        subject { TreePolicy.new(admin, private_repo) }
+        subject { TreePolicy.new(admin, private_tree) }
 
         it 'allows to show the tree' do
           expect(subject.show?).to be(true)
@@ -117,7 +123,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'signed in as user without access' do
-        subject { TreePolicy.new(user, private_repo) }
+        subject { TreePolicy.new(user, private_tree) }
 
         it 'does not allow to show the tree' do
           expect(subject.show?).to be(false)
@@ -129,7 +135,10 @@ RSpec.describe TreePolicy do
           let(:repository_by_user) do
             create :repository, owner: user
           end
-          subject { TreePolicy.new(user, repository_by_user) }
+          let(:repo_tree) do
+            OpenStruct.new(repository: repository_by_user)
+          end
+          subject { TreePolicy.new(user, repo_tree) }
 
           it 'allows to show the tree' do
             expect(subject.show?).to be(true)
@@ -137,7 +146,7 @@ RSpec.describe TreePolicy do
         end
 
         context 'by repository membership' do
-          subject { TreePolicy.new(user, private_repo) }
+          subject { TreePolicy.new(user, private_tree) }
 
           %w(admin write read).each do |role|
             it "with role #{role} allows to show the tree" do
@@ -151,7 +160,10 @@ RSpec.describe TreePolicy do
           let(:repository_by_organization) do
             create :repository, owner: organization
           end
-          subject { TreePolicy.new(user, repository_by_organization) }
+          let(:repo_tree) do
+            OpenStruct.new(repository: repository_by_organization)
+          end
+          subject { TreePolicy.new(user, repo_tree) }
 
           %w(admin write read).each do |role|
             it "with role #{role} allows to show the tree" do
@@ -166,7 +178,7 @@ RSpec.describe TreePolicy do
 
   context 'update?' do
     context 'not signed in' do
-      subject { TreePolicy.new(nil, public_repo) }
+      subject { TreePolicy.new(nil, public_tree) }
 
       it 'does not allow to update the tree' do
         expect(subject.update?).to be(false)
@@ -175,7 +187,7 @@ RSpec.describe TreePolicy do
 
     context 'signed in with access' do
       context 'by admin role' do
-        subject { TreePolicy.new(admin, public_repo) }
+        subject { TreePolicy.new(admin, public_tree) }
 
         it 'allows to update the tree' do
           expect(subject.update?).to be(true)
@@ -183,7 +195,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'by repository membership' do
-        subject { TreePolicy.new(user, public_repo) }
+        subject { TreePolicy.new(user, public_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to update the tree" do
@@ -202,7 +214,10 @@ RSpec.describe TreePolicy do
         let(:repository_by_organization) do
           create :repository, owner: organization
         end
-        subject { TreePolicy.new(user, repository_by_organization) }
+        let(:repo_tree) do
+          OpenStruct.new(repository: repository_by_organization)
+        end
+        subject { TreePolicy.new(user, repo_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to update the tree" do
@@ -219,7 +234,7 @@ RSpec.describe TreePolicy do
     end
 
     context 'signed in without access' do
-      subject { TreePolicy.new(user, public_repo) }
+      subject { TreePolicy.new(user, public_tree) }
 
       it 'does not allow to update the tree' do
         expect(subject.update?).to be(false)
@@ -229,7 +244,7 @@ RSpec.describe TreePolicy do
 
   context 'destroy?' do
     context 'not signed in' do
-      subject { TreePolicy.new(nil, public_repo) }
+      subject { TreePolicy.new(nil, public_tree) }
 
       it 'does not allow to destroy the tree' do
         expect(subject.destroy?).to be(false)
@@ -238,7 +253,7 @@ RSpec.describe TreePolicy do
 
     context 'signed in with access' do
       context 'by admin role' do
-        subject { TreePolicy.new(admin, public_repo) }
+        subject { TreePolicy.new(admin, public_tree) }
 
         it 'allows to update the tree' do
           expect(subject.destroy?).to be(true)
@@ -246,7 +261,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'by repository membership' do
-        subject { TreePolicy.new(user, public_repo) }
+        subject { TreePolicy.new(user, public_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to destroy the tree" do
@@ -265,7 +280,10 @@ RSpec.describe TreePolicy do
         let(:repository_by_organization) do
           create :repository, owner: organization
         end
-        subject { TreePolicy.new(user, repository_by_organization) }
+        let(:repo_tree) do
+          OpenStruct.new(repository: repository_by_organization)
+        end
+        subject { TreePolicy.new(user, repo_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to destroy the tree" do
@@ -282,7 +300,7 @@ RSpec.describe TreePolicy do
     end
 
     context 'signed in without access' do
-      subject { TreePolicy.new(user, public_repo) }
+      subject { TreePolicy.new(user, public_tree) }
 
       it 'does not allow to destroy the tree' do
         expect(subject.destroy?).to be(false)
@@ -292,7 +310,7 @@ RSpec.describe TreePolicy do
 
   context 'multi_action?' do
     context 'not signed in' do
-      subject { TreePolicy.new(nil, public_repo) }
+      subject { TreePolicy.new(nil, public_tree) }
 
       it 'does not allow to commit the tree' do
         expect(subject.multi_action?).to be(false)
@@ -301,7 +319,7 @@ RSpec.describe TreePolicy do
 
     context 'signed in with access' do
       context 'by admin role' do
-        subject { TreePolicy.new(admin, public_repo) }
+        subject { TreePolicy.new(admin, public_tree) }
 
         it 'allows to commit the tree' do
           expect(subject.multi_action?).to be(true)
@@ -309,7 +327,7 @@ RSpec.describe TreePolicy do
       end
 
       context 'by repository membership' do
-        subject { TreePolicy.new(user, public_repo) }
+        subject { TreePolicy.new(user, public_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to commit the tree" do
@@ -328,7 +346,10 @@ RSpec.describe TreePolicy do
         let(:repository_by_organization) do
           create :repository, owner: organization
         end
-        subject { TreePolicy.new(user, repository_by_organization) }
+        let(:repo_tree) do
+          OpenStruct.new(repository: repository_by_organization)
+        end
+        subject { TreePolicy.new(user, repo_tree) }
 
         %w(write admin).each do |role|
           it "with role #{role} allows to commit the tree" do
@@ -345,7 +366,7 @@ RSpec.describe TreePolicy do
     end
 
     context 'signed in without access' do
-      subject { TreePolicy.new(user, public_repo) }
+      subject { TreePolicy.new(user, public_tree) }
 
       it 'does not allow to commit the tree' do
         expect(subject.multi_action?).to be(false)

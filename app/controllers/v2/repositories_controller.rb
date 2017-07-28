@@ -18,19 +18,6 @@ module V2
 
     protected
 
-    def authorize_resource
-      if %w(create).include?(action_name)
-        owner = OrganizationalUnit.find(slug: parse_params[:owner_id])
-        unless RepositoryPolicy.new(current_user, Repository).create?(owner)
-          raise Pundit::NotAuthorizedError, policy: RepositoryPolicy
-        end
-      else
-        super
-      end
-    rescue Pundit::NotAuthorizedError
-      render status: :unauthorized
-    end
-
     def build_resource
       # On objects that are identified by the slug, we must translate the given
       # parameter to the id.

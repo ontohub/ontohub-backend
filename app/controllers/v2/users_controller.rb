@@ -9,7 +9,11 @@ module V2
 
     def show_current_user
       @resource = current_user
-      render_resource
+      if resource
+        render_resource
+      else
+        render status: :unauthorized
+      end
     end
   end
 end

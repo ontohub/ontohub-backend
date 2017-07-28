@@ -2,7 +2,7 @@
 
 module V2
   # The SearchController presents the search result
-  class SearchController < ApplicationController
+  class SearchController < V2::ApplicationController
     def search
       render status: :ok,
              json: resource,

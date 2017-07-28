@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe SearchPolicy do
+RSpec.describe SearchResultPolicy do
   let(:user) { create :user }
   let(:admin) { create :user, :admin }
 
   context 'search?' do
     context 'signed in' do
-      subject { SearchPolicy.new(user) }
+      subject { SearchResultPolicy.new(user) }
 
       it 'allows to search' do
         expect(subject.search?).to be(true)
@@ -16,7 +16,7 @@ RSpec.describe SearchPolicy do
     end
 
     context 'signed in as admin' do
-      subject { SearchPolicy.new(admin) }
+      subject { SearchResultPolicy.new(admin) }
 
       it 'allows to search' do
         expect(subject.search?).to be(true)
@@ -24,7 +24,7 @@ RSpec.describe SearchPolicy do
     end
 
     context 'not signed in' do
-      subject { SearchPolicy.new(nil) }
+      subject { SearchResultPolicy.new(nil) }
 
       it 'allows to search' do
         expect(subject.search?).to be(true)

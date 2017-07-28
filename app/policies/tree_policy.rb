@@ -8,7 +8,7 @@ class TreePolicy < ApplicationPolicy
   end
 
   def show?
-    RepositoryPolicy.new(current_user, resource).show?
+    RepositoryPolicy.new(current_user, resource.repository).show?
   end
 
   def update?
@@ -27,12 +27,13 @@ class TreePolicy < ApplicationPolicy
 
   def repository_write?
     %w(write admin).include?(RepositoryMembership.
-      find(member_id: current_user.id, repository_id: resource.id)&.role)
+      find(member_id: current_user.id,
+           repository_id: resource.repository.id)&.role)
   end
 
   def organization_write?
     %w(write admin).include?(OrganizationMembership.
       find(member_id: current_user.id,
-           organization_id: resource.owner.id)&.role)
+           organization_id: resource.repository.owner.id)&.role)
   end
 end

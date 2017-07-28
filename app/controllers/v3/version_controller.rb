@@ -2,7 +2,7 @@
 
 module V3
   # Handles requests for version show operations
-  class VersionController < ApplicationController
+  class VersionController < V3::ApplicationController
     graphql :show do
       query <<-QUERY
         query Version {
