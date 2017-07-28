@@ -19,18 +19,30 @@ RSpec.describe Types::UserType do
   context 'members field' do
     let(:organizations_field) { user_type.fields['organizations'] }
     it 'returns only the organizations to user is a member in' do
-      organizations = organizations_field.resolve(user, {}, {})
-      expect(organizations.count).to be(20)
+      organizations = organizations_field.resolve(
+        user,
+        organizations_field.default_arguments,
+        {}
+      )
+      expect(organizations.count).to eq(20)
     end
 
     it 'limits the organization list' do
-      organizations = organizations_field.resolve(user, {limit: 1}, {})
-      expect(organizations.count).to be(1)
+      organizations = organizations_field.resolve(
+        user,
+        organizations_field.default_arguments('limit' => 1),
+        {}
+      )
+      expect(organizations.count).to eq(1)
     end
 
     it 'skips a number of organizations' do
-      organizations = organizations_field.resolve(user, {skip: 5}, {})
-      expect(organizations.count).to be(16)
+      organizations = organizations_field.resolve(
+        user,
+        organizations_field.default_arguments('skip' => 5),
+        {}
+      )
+      expect(organizations.count).to eq(16)
     end
   end
 end

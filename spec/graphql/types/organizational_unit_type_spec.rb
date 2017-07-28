@@ -8,21 +8,30 @@ RSpec.shared_examples 'an owner of repositories' do
   end
 
   it 'returns only the repositories owned by the organizational unit' do
-    repositories = repositories_field.
-      resolve(organizational_unit, {}, {})
-    expect(repositories.count).to be(20)
+    repositories = repositories_field.resolve(
+      organizational_unit,
+      repositories_field.default_arguments,
+      {}
+    )
+    expect(repositories.count).to eq(20)
   end
 
   it 'limits the repository list' do
-    repositories = repositories_field.
-      resolve(organizational_unit, {limit: 1}, {})
-    expect(repositories.count).to be(1)
+    repositories = repositories_field.resolve(
+      organizational_unit,
+      repositories_field.default_arguments('limit' => 1),
+      {}
+    )
+    expect(repositories.count).to eq(1)
   end
 
   it 'skips a number of repositories' do
-    repositories = repositories_field.
-      resolve(organizational_unit, {skip: 5}, {})
-    expect(repositories.count).to be(16)
+    repositories = repositories_field.resolve(
+      organizational_unit,
+      repositories_field.default_arguments('skip' => 5),
+      {}
+    )
+    expect(repositories.count).to eq(16)
   end
 end
 
