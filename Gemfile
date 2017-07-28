@@ -44,8 +44,8 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 gem 'graphql', '~> 1.6.3'
 gem 'graphql-batch', '~> 0.3.3'
 gem 'jwt', '~> 1.5.6'
-gem 'recaptcha', '~> 4.3.1'
 gem 'pundit', '~> 1.1.0'
+gem 'recaptcha', '~> 4.3.1'
 
 group :development, :test do
 end
