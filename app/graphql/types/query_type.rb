@@ -38,6 +38,16 @@ Types::QueryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :search, !Types::SearchResultType do
+    description 'Search Ontohub'
+
+    argument :query, !types.String do
+      description 'The query string'
+    end
+
+    resolve(->(_root, _arguments, _context) { :ok })
+  end
+
   field :version, !Types::VersionType do
     description 'The version of the running backend'
 

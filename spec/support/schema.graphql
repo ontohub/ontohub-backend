@@ -226,6 +226,49 @@ type GitUser {
   name: String!
 }
 
+# Category to search in
+enum GlobalSearchCategory {
+  # Search only for organizational units
+  organizationalUnits
+
+  # Search only for repositories
+  repositories
+}
+
+# The total numbers of results
+type GlobalSearchCount {
+  # The total number of search results
+  all: Int!
+
+  # The total number of found organizational units
+  organizationalUnits: Int!
+
+  # The total number of found repositories
+  repositories: Int!
+}
+
+# A search result entry
+type GlobalSearchEntry {
+  # The actual result entry
+  entry: GlobalSearchTarget!
+
+  # The ranking of the result entry. The higher the value, the better it
+  # matches the search query
+  ranking: Float!
+}
+
+# Search results within the global scope
+type GlobalSearchScope {
+  # The total numbers of found entries
+  count: GlobalSearchCount!
+
+  # A list of result entries
+  entries: [GlobalSearchEntry!]!
+}
+
+# Possible search result types
+union GlobalSearchTarget = Organization | Repository | User
+
 # Base mutation type
 type Mutation {
   # Creates a new commit
@@ -551,6 +594,12 @@ type Query {
     id: ID!
   ): Repository
 
+  # Search Ontohub
+  search(
+    # The query string
+    query: String!
+  ): SearchResult!
+
   # The version of the running backend
   version: Version!
 }
@@ -672,6 +721,15 @@ enum RepositoryContentType {
 enum RepositoryVisibility {
   private
   public
+}
+
+# Result returned from a search query
+type SearchResult {
+  # Search within the global scope
+  global(
+    # Limit search to certain categories
+    categories: [GlobalSearchCategory]
+  ): GlobalSearchScope!
 }
 
 # Data of a signed in user
