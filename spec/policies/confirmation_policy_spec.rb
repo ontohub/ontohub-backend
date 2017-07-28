@@ -3,30 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe ConfirmationPolicy do
+  let(:user) { create :user }
+  let(:admin) { create :user, :admin }
+
   context 'create?' do
     context 'signed in' do
-      let(:current_user) { create :user }
-      subject { ConfirmationPolicy.new(current_user) }
+      subject { ConfirmationPolicy.new(user) }
 
-      it 'should allow to resend email' do
+      it 'allows to resend email' do
         expect(subject.create?).to be(true)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { ConfirmationPolicy.new(current_user) }
+      subject { ConfirmationPolicy.new(admin) }
 
-      it 'should allow to resend email' do
+      it 'allows to resend email' do
         expect(subject.create?).to be(true)
       end
     end
 
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { ConfirmationPolicy.new(current_user) }
+      subject { ConfirmationPolicy.new(nil) }
 
-      it 'should allow to resend email' do
+      it 'allows to resend email' do
         expect(subject.create?).to be(true)
       end
     end
@@ -34,28 +34,25 @@ RSpec.describe ConfirmationPolicy do
 
   context 'update?' do
     context 'signed in' do
-      let(:current_user) { create :user }
-      subject { ConfirmationPolicy.new(current_user) }
+      subject { ConfirmationPolicy.new(user) }
 
-      it 'should allow to send confirmation' do
+      it 'allows to perform the confirmation' do
         expect(subject.update?).to be(true)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { ConfirmationPolicy.new(current_user) }
+      subject { ConfirmationPolicy.new(admin) }
 
-      it 'should allow to send confirmation' do
+      it 'allows to perform the confirmation' do
         expect(subject.update?).to be(true)
       end
     end
 
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { ConfirmationPolicy.new(current_user) }
+      subject { ConfirmationPolicy.new(nil) }
 
-      it 'should allow to send confirmation' do
+      it 'allows to perform the confirmation' do
         expect(subject.update?).to be(true)
       end
     end

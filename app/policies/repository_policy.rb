@@ -4,8 +4,8 @@
 class RepositoryPolicy < ApplicationPolicy
   def show?
     resource.public_access ||
-      !!current_user&.accessible_repositories&.map(&:to_param)&.
-        include?(resource.to_param)
+      !!current_user&.accessible_repositories_dataset&.
+        where(slug: resource.to_param)&.any?
   end
 
   def create?(owner)

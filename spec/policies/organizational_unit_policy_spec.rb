@@ -3,30 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe OrganizationalUnitPolicy do
+  let(:user) { create :user }
+  let(:admin) { create :user, :admin }
+
   context 'show?' do
     context 'signed in' do
-      let(:current_user) { create :user }
-      subject { OrganizationalUnitPolicy.new(current_user) }
+      subject { OrganizationalUnitPolicy.new(user) }
 
-      it 'should allow to show the organizational unit' do
+      it 'allows to show the organizational unit' do
         expect(subject.show?).to be(true)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { OrganizationalUnitPolicy.new(current_user) }
+      subject { OrganizationalUnitPolicy.new(admin) }
 
-      it 'should allow to show the organizational unit' do
+      it 'allows to show the organizational unit' do
         expect(subject.show?).to be(true)
       end
     end
 
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { OrganizationalUnitPolicy.new(current_user) }
+      subject { OrganizationalUnitPolicy.new(nil) }
 
-      it 'should allow to show the organizational unit' do
+      it 'allows to show the organizational unit' do
         expect(subject.show?).to be(true)
       end
     end

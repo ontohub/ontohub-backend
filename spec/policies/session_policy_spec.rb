@@ -3,30 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe SessionPolicy do
+  let(:user) { create :user }
+  let(:admin) { create :user, :admin }
+
   context 'create?' do
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { SessionPolicy.new(current_user) }
+      subject { SessionPolicy.new(nil) }
 
-      it 'should allow to sign in' do
+      it 'allows to sign in' do
         expect(subject.create?).to be(true)
       end
     end
 
     context 'signed in as user' do
-      let(:current_user) { create :user }
-      subject { SessionPolicy.new(current_user) }
+      subject { SessionPolicy.new(user) }
 
-      it 'should not allow to sign in' do
+      it 'does not allow to sign in' do
         expect(subject.create?).to be(false)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { SessionPolicy.new(current_user) }
+      subject { SessionPolicy.new(admin) }
 
-      it 'should allow to sign in (makes no sense, but admin is god)' do
+      it 'allows to sign in (makes no sense, but admin is god)' do
         expect(subject.create?).to be(true)
       end
     end

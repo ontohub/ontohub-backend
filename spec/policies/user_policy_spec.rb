@@ -3,63 +3,57 @@
 require 'rails_helper'
 
 RSpec.describe UserPolicy do
+  let(:user) { create :user }
+  let(:admin) { create :user, :admin }
+  let(:other_user) { create :user }
+
   context 'show?' do
-    let(:user) { create :user }
-
     context 'signed in' do
-      let(:current_user) { create :user }
-      subject { UserPolicy.new(current_user, user) }
+      subject { UserPolicy.new(user, other_user) }
 
-      it 'should allow to show the user' do
+      it 'allows to show the user' do
         expect(subject.show?).to be(true)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { UserPolicy.new(current_user, user) }
+      subject { UserPolicy.new(admin, other_user) }
 
-      it 'should allow to show the user' do
+      it 'allows to show the user' do
         expect(subject.show?).to be(true)
       end
     end
 
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { UserPolicy.new(current_user, user) }
+      subject { UserPolicy.new(nil, other_user) }
 
-      it 'should allow to show the user' do
+      it 'allows to show the user' do
         expect(subject.show?).to be(true)
       end
     end
   end
 
   context 'show_current_user?' do
-    let(:user) { create :user }
-
     context 'signed in' do
-      let(:current_user) { create :user }
-      subject { UserPolicy.new(current_user, user) }
+      subject { UserPolicy.new(user, other_user) }
 
-      it 'should allow to show the user' do
+      it 'allows to show the user' do
         expect(subject.show_current_user?).to be(true)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { UserPolicy.new(current_user, user) }
+      subject { UserPolicy.new(admin, other_user) }
 
-      it 'should allow to show the user' do
+      it 'allows to show the user' do
         expect(subject.show_current_user?).to be(true)
       end
     end
 
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { UserPolicy.new(current_user, user) }
+      subject { UserPolicy.new(nil, other_user) }
 
-      it 'should not allow to show the user' do
+      it 'does not allow to show the user' do
         expect(subject.show_current_user?).to be(false)
       end
     end

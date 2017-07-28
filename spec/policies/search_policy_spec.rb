@@ -3,30 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe SearchPolicy do
+  let(:user) { create :user }
+  let(:admin) { create :user, :admin }
+
   context 'search?' do
     context 'signed in' do
-      let(:current_user) { create :user }
-      subject { SearchPolicy.new(current_user) }
+      subject { SearchPolicy.new(user) }
 
-      it 'should allow to search' do
+      it 'allows to search' do
         expect(subject.search?).to be(true)
       end
     end
 
     context 'signed in as admin' do
-      let(:current_user) { create :user, :admin }
-      subject { SearchPolicy.new(current_user) }
+      subject { SearchPolicy.new(admin) }
 
-      it 'should allow to search' do
+      it 'allows to search' do
         expect(subject.search?).to be(true)
       end
     end
 
     context 'not signed in' do
-      let(:current_user) { nil }
-      subject { SearchPolicy.new(current_user) }
+      subject { SearchPolicy.new(nil) }
 
-      it 'should allow to search' do
+      it 'allows to search' do
         expect(subject.search?).to be(true)
       end
     end
