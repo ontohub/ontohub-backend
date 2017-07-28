@@ -2,21 +2,13 @@
 
 # Policies for TreesController
 class TreePolicy < ApplicationPolicy
-  attr_reader :current_user, :repository
-
-  def initialize(current_user, repository)
-    @current_user = current_user
-    @repository = repository
-    super
-  end
-
   def create?
     return false unless current_user
     repository_write? || organization_write?
   end
 
   def show?
-    RepositoryPolicy.new(current_user, repository).show?
+    RepositoryPolicy.new(current_user, resource).show?
   end
 
   def update?
@@ -35,12 +27,12 @@ class TreePolicy < ApplicationPolicy
 
   def repository_write?
     %w(write admin).include?(RepositoryMembership.
-      find(member_id: current_user.id, repository_id: repository.id)&.role)
+      find(member_id: current_user.id, repository_id: resource.id)&.role)
   end
 
   def organization_write?
     %w(write admin).include?(OrganizationMembership.
       find(member_id: current_user.id,
-           organization_id: repository.owner.id)&.role)
+           organization_id: resource.owner.id)&.role)
   end
 end

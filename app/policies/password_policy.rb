@@ -2,10 +2,6 @@
 
 # Policies for PasswordsController
 class PasswordPolicy < ApplicationPolicy
-  def initialize(_current_user = nil, _resource = nil)
-    super
-  end
-
   def recover_password?
     true
   end
