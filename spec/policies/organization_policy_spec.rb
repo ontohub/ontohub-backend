@@ -44,7 +44,7 @@ RSpec.describe OrganizationPolicy do
         end
       end
 
-      it 'with role admin does not allow to update the organization' do
+      it 'with role admin allows to update the organization' do
         organization.add_member(user, 'admin')
         expect(subject.update?).to be(true)
       end
@@ -78,7 +78,7 @@ RSpec.describe OrganizationPolicy do
         end
       end
 
-      it 'with role admin does not allow to destroy the organization' do
+      it 'with role admin allows to destroy the organization' do
         organization.add_member(user, 'admin')
         expect(subject.destroy?).to be(true)
       end
@@ -95,7 +95,7 @@ RSpec.describe OrganizationPolicy do
     context 'with role user' do
       subject { OrganizationPolicy.new(user, organization) }
 
-      it 'allows to destroy the organization' do
+      it 'does not allow to destroy the organization' do
         expect(subject.destroy?).to be(false)
       end
     end

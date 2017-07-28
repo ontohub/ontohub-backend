@@ -58,4 +58,40 @@ RSpec.describe UserPolicy do
       end
     end
   end
+
+  context 'email?' do
+    context 'signed in as admin' do
+      subject { UserPolicy.new(admin, other_user) }
+
+      it 'allows to see the users email' do
+        expect(subject.email?).to be(true)
+      end
+    end
+
+    context 'signed in' do
+      context 'own email' do
+        subject { UserPolicy.new(user, user) }
+
+        it 'allows to see my email' do
+          expect(subject.email?).to be(true)
+        end
+      end
+
+      context 'other users email' do
+        subject { UserPolicy.new(user, other_user) }
+
+        it 'does not allow to see the users email' do
+          expect(subject.email?).to be(false)
+        end
+      end
+    end
+
+    context 'not signed in' do
+      subject { UserPolicy.new(nil, other_user) }
+
+      it 'does not allow to see the users email' do
+        expect(subject.email?).to be(false)
+      end
+    end
+  end
 end

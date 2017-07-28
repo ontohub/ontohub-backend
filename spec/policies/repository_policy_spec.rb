@@ -251,7 +251,7 @@ RSpec.describe RepositoryPolicy do
         context 'not signed in' do
           subject { RepositoryPolicy.new(nil, repository) }
 
-          it 'allows to index the repository' do
+          it 'allows to list the repository' do
             expect(subject.index?).to be(true)
           end
         end
@@ -260,7 +260,7 @@ RSpec.describe RepositoryPolicy do
           context 'as user role' do
             subject { RepositoryPolicy.new(user, repository) }
 
-            it 'allows to index the repository' do
+            it 'allows to list the repository' do
               expect(subject.index?).to be(true)
             end
           end
@@ -268,7 +268,7 @@ RSpec.describe RepositoryPolicy do
           context 'as admin role' do
             subject { RepositoryPolicy.new(admin, repository) }
 
-            it 'allows to index the repository' do
+            it 'allows to list the repository' do
               expect(subject.index?).to be(true)
             end
           end

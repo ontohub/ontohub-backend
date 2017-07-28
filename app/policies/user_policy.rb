@@ -9,4 +9,8 @@ class UserPolicy < ApplicationPolicy
   def show_current_user?
     !!current_user
   end
+
+  def email?
+    current_user == resource
+  end
 end
