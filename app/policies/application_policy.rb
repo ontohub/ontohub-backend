@@ -8,10 +8,9 @@ class ApplicationPolicy
     @user = user
     @record = record
 
-    if @user&.admin?
-      (self.class.instance_methods - Object.methods).each do |method|
-        define_singleton_method(method, ->(*args) { true })
-      end
+    return unless @user&.admin?
+    (self.class.instance_methods - Object.methods).each do |method|
+      define_singleton_method(method, ->(*_args) { true })
     end
   end
 end

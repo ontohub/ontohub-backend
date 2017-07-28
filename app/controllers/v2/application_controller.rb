@@ -11,15 +11,19 @@ module V2
 
     protected
 
+    # rubocop: disable Metrics/PerceivedComplexity
+    # rubocop: disable Metrics/MethodLength
+    # rubocop: disable Metrics/AbcSize
     def authorize_resource
+      # rubocop: enable Metrics/PerceivedComplexity
+      # rubocop: enable Metrics/MethodLength
+      # rubocop: enable Metrics/AbcSize
       # FIXME: Remove this and the other if when switching to the GraphQL API.
-      if %w(create update destroy).include?(action_name)
-        return
-      end
+      return if %w(create update destroy).include?(action_name)
       if %w(index create).include?(action_name)
         authorize(controller_name.classify.constantize)
-      else
-        authorize(resource) if resource
+      elsif resource
+        authorize(resource)
       end
     rescue Pundit::NotAuthorizedError
       if [RepositoryCompound].include?(resource.class)

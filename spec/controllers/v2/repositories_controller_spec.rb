@@ -42,7 +42,7 @@ RSpec.describe V2::RepositoriesController do
           before { get :index, params: {user_slug: owner.to_param} }
 
           it 'returns all repositories from owner' do
-            expect(response_data.map{ |repo| repo['id'] }).
+            expect(response_data.map { |repo| repo['id'] }).
               to match_array(owner.repositories.map(&:to_param))
           end
         end
@@ -51,7 +51,7 @@ RSpec.describe V2::RepositoriesController do
           before { get :index, params: {user_slug: other_owner.to_param} }
 
           it 'returns all repositories from other owner' do
-            expect(response_data.map{ |repo| repo['id'] }).
+            expect(response_data.map { |repo| repo['id'] }).
               to match_array(other_owner.repositories_dataset.
                 where(public_access: true).map(&:to_param))
           end

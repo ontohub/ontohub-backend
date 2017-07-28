@@ -223,8 +223,8 @@ RSpec.describe RepositoryPolicy do
               subject { RepositoryPolicy.new(current_user, repository) }
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to update the " +
-                  "repository" do
+                it "with role #{role} should not allow to update the "\
+                  'repository' do
                   repository.add_member(current_user, role)
                   expect(subject.update?).to be(false)
                 end
@@ -247,8 +247,8 @@ RSpec.describe RepositoryPolicy do
               end
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to update the " +
-                  "repository" do
+                it "with role #{role} should not allow to update the "\
+                  'repository' do
                   organization.add_member(current_user, role)
                   expect(subject.update?).to be(false)
                 end
@@ -353,7 +353,8 @@ RSpec.describe RepositoryPolicy do
               subject { RepositoryPolicy.new(current_user, repository) }
 
               %w(write read).each do |role|
-                it "with role #{role} should not allow to destroy the " +          "repository" do
+                it "with role #{role} should not allow to destroy the "\
+                  'repository' do
                   repository.add_member(current_user, role)
                   expect(subject.destroy?).to be(false)
                 end
@@ -377,7 +378,7 @@ RSpec.describe RepositoryPolicy do
 
               %w(write read).each do |role|
                 it "with role #{role} should not allow to destroy the "\
-                  "repository" do
+                  'repository' do
                   organization.add_member(current_user, role)
                   expect(subject.destroy?).to be(false)
                 end
