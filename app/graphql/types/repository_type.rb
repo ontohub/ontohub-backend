@@ -49,4 +49,82 @@ Types::RepositoryType = GraphQL::ObjectType.define do
       repository.git.branch_names
     end)
   end
+
+  field :branch, Types::Git::BranchType do
+    description 'Details of a branch'
+
+    argument :name, !types.String do
+      description 'The name of the branch'
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      repository.git.find_branch(arguments['name'])
+    end)
+  end
+
+  field :tags, !types[!types.String] do
+    description 'Tags of the repository'
+    resolve(lambda do |repository, _arguments, _context|
+      repository.git.tag_names
+    end)
+  end
+
+  field :tag, Types::Git::TagType do
+    description 'Details of a tag'
+
+    argument :name, !types.String do
+      description 'The name of the tag'
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      repository.git.find_tag(arguments['name'])
+    end)
+  end
+
+  field :commit, Types::Git::CommitType do
+    description 'Find a commit by revision'
+
+    argument :revision, !types.ID do
+      description 'The revision to query for'
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      repository.git.commit(arguments['revision'])
+    end)
+  end
+
+  # rubocop:disable Metrics/BlockLength
+  field :diff, !types[!Types::Git::DiffType] do
+    # rubocop:enable Metrics/BlockLength
+    description 'The changes between two commits'
+
+    argument :from, !types.String do
+      description 'The base commit for the diff'
+    end
+
+    argument :to, !types.String do
+      description 'The target commit for the diff'
+    end
+
+    argument :paths, types[!types.String] do
+      description 'An optional list of paths to restrict the diff to'
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      begin
+        paths = Array(arguments['paths'])
+        diffs = []
+        repository.git.
+          diff(arguments['from'], arguments['to'], {}, *paths).each do |diff|
+            diffs << diff
+          end
+        diffs
+      rescue Rugged::ReferenceError => e
+        argument = nil
+        revspec = e.message.match(/Revspec '(\S+)' not found/)[1]
+        %w(from to).each { |arg| argument = arg if arguments[arg] == revspec }
+        GraphQL::ExecutionError.new(%("#{argument}" #{e.message}))
+      end
+    end)
+  end
 end
