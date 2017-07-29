@@ -4,7 +4,7 @@ module Mutations
   module Repository
     CreateRepositoryMutation = GraphQL::Field.define do
       type Types::RepositoryType
-      description 'Creates as new repository'
+      description 'Creates a new repository'
 
       argument :data, !Types::Repository::NewType do
         description 'The parameters of the new repository'
