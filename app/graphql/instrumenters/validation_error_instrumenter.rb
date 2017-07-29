@@ -5,8 +5,10 @@ module Instrumenters
   # GraphQL::ExecutionError instead
   class ValidationErrorInstrumenter
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def instrument(_type, field)
       # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize
       old_resolve = field.resolve_proc
       field.redefine do
         resolve(lambda do |root, arguments, context|
@@ -18,6 +20,14 @@ module Instrumenters
                 context.add_error(
                   GraphQL::ExecutionError.new("#{field_name} #{message}")
                 )
+              end
+            end
+            nil
+          rescue MultiBlob::ValidationFailed => error
+            error.errors.details.each do |location, messages|
+              messages.each do |message|
+                public_message = "#{location} - #{message[:error]}"
+                context.add_error(GraphQL::ExecutionError.new(public_message))
               end
             end
             nil
