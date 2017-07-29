@@ -127,4 +127,54 @@ Types::RepositoryType = GraphQL::ObjectType.define do
       end
     end)
   end
+
+  # rubocop:disable Metrics/BlockLength
+  field :log, !types[!Types::Git::CommitType] do
+    # rubocop:enable Metrics/BlockLength
+    description 'Commit History of the repository'
+
+    argument :revision, !types.String do
+      description 'The newest revision to show in the history'
+    end
+
+    argument :path, types.String do
+      description 'A path to a file or directory to see the history of'
+      default_value '/'
+    end
+
+    argument :limit, types.Int do
+      description 'Maximum number of commits to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n commits'
+      default_value 0
+    end
+
+    argument :skipMerges, types.Boolean do
+      description 'Whether or not to skip merge commits in the history'
+      default_value false
+    end
+
+    argument :before, Types::TimeType do
+      description 'Only show commits from before this date/time'
+      default_value nil
+    end
+
+    argument :after, Types::TimeType do
+      description 'Only show commits from after this date/time'
+      default_value nil
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      repository.git.log(ref: arguments['revision'],
+                         path: arguments['path'],
+                         limit: arguments['limit'],
+                         offset: arguments['skip'],
+                         skip_merges: arguments['skipMerges'],
+                         before: arguments['before'],
+                         after: arguments['after'])
+    end)
+  end
 end

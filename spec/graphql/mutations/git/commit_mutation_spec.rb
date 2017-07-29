@@ -163,7 +163,7 @@ RSpec.describe 'commit mutation' do
       end
 
       it 'only adds one log entry' do
-        expect(git.log(ref: "#{branch}~").first.oid).to eq(setup_commit)
+        expect(git.log(ref: "#{branch}~").first.id).to eq(setup_commit)
       end
     end
   end

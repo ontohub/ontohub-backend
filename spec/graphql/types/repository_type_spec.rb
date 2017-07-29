@@ -33,6 +33,7 @@ RSpec.describe Types::RepositoryType do
   let(:tag_field) { repository_type.fields['tag'] }
   let(:commit_field) { repository_type.fields['commit'] }
   let(:diff_field) { repository_type.fields['diff'] }
+  let(:log_field) { repository_type.fields['log'] }
 
   context 'empty repository' do
     let(:repository) { create :repository_compound, :empty_git }
@@ -97,6 +98,15 @@ RSpec.describe Types::RepositoryType do
 
       it 'has the correct error message' do
         expect(diff.message).to match(/"to".*Revspec 'master' not found./)
+      end
+    end
+
+    context 'log field' do
+      let(:arguments) { {'revision' => 'master'} }
+      let(:log) { log_field.resolve(repository, arguments, {}) }
+
+      it 'is empty because there is no such revision' do
+        expect(log).to be_empty
       end
     end
   end
@@ -267,6 +277,78 @@ RSpec.describe Types::RepositoryType do
         it 'has the correct error message' do
           expect(diff.message).
             to match(/"from".*Revspec '#{revision}' not found./)
+        end
+      end
+    end
+
+    context 'log field' do
+      let(:revision) { repository.git.default_branch }
+      let(:log) { log_field.resolve(repository, arguments, {}) }
+      let(:files_a) { (0..1).map { |i| "dir_a/file_#{i}.txt" } }
+      let(:files_b) { (0..1).map { |i| "dir_b/file_#{i}.txt" } }
+
+      let!(:commits_a) do
+        files_a.map do |path|
+          create(:additional_file, repository: repository, path: path)
+        end
+      end
+
+      let!(:commits_b) do
+        files_b.map do |path|
+          create(:additional_file, repository: repository, path: path)
+        end
+      end
+
+      context 'given only the revision' do
+        let(:arguments) { {'revision' => revision} }
+        it 'lists all the commits' do
+          expect(log.map(&:id)).
+            to eq([*commits_b.reverse,
+                   *commits_a.reverse,
+                   repository.git.commit("#{commits_a.first}~").id])
+        end
+      end
+
+      context 'given a path to a file' do
+        let(:arguments) do
+          {'revision' => revision,
+           'path' => files_a.first}
+        end
+        it 'lists only the commits of the file' do
+          expect(log.map(&:id)).to eq([commits_a.first])
+        end
+      end
+
+      context 'given a path to a directory' do
+        let(:arguments) do
+          {'revision' => revision,
+           'path' => File.dirname(files_a.first)}
+        end
+        it 'lists only the commits of the directory' do
+          expect(log.map(&:id)).to eq(commits_a.reverse)
+        end
+      end
+
+      context 'given a limit' do
+        let(:arguments) do
+          {'revision' => revision,
+           'limit' => 2}
+        end
+        it 'lists all the commits up to the limit' do
+          expect(log.map(&:id)).
+            to eq([*commits_b.reverse])
+        end
+      end
+
+      context 'given an offset' do
+        let(:arguments) do
+          {'revision' => revision,
+           'skip' => 2}
+        end
+        it 'lists all the commits from the offset on' do
+          expect(log.map(&:id)).
+            to eq([*commits_a.reverse,
+                   repository.git.commit("#{commits_a.first}~").id])
         end
       end
     end
