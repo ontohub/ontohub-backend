@@ -1,0 +1,182 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.shared_examples "a commit's author/committer in GraphQL" do
+  it 'returns the correct target' do
+    expected_object = OpenStruct.new(name: subject.send("#{person}_name"),
+                                     email: subject.send("#{person}_email"),
+                                     account: account)
+    expect(resolved_field).to eq(expected_object)
+  end
+end
+
+RSpec.shared_examples "a commit's file in GraphQL" do
+  context 'that is small' do
+    it 'shows the file' do
+      expect(resolved_field.to_h).
+        to eq(name: blob.name,
+              path: path,
+              size: blob.size,
+              loaded_size: blob.size,
+              content: blob.data,
+              encoding: expected_encoding)
+    end
+  end
+
+  context 'that is large' do
+    before { stub_const('Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
+
+    context 'without loadAllData' do
+      it 'shows the truncated file' do
+        content = blob.data[0..Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE - 1]
+        expect(resolved_field.to_h).
+          to eq(name: blob.name,
+                path: path,
+                size: blob.size,
+                loaded_size: Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE,
+                content: content,
+                encoding: expected_encoding)
+      end
+    end
+
+    context 'with loadAllData' do
+      let(:arguments) do
+        {'path' => path,
+         'loadAllData' => true}
+      end
+      it 'shows the file' do
+        expect(resolved_field.to_h).
+          to eq(name: blob.name,
+                path: path,
+                size: blob.size,
+                loaded_size: blob.size,
+                content: blob.data,
+                encoding: expected_encoding)
+      end
+    end
+  end
+end
+
+RSpec.describe Types::OrganizationalUnitType do
+  let(:repository) { create(:repository_compound) }
+  let(:revision) { repository.git.default_branch }
+  subject { repository.git.commit(revision) }
+  let(:type) { OntohubBackendSchema.types['Commit'] }
+  let(:arguments) { {} }
+  let(:resolved_field) { field.resolve(subject, arguments, {}) }
+
+  context 'author field' do
+    let(:person) { 'author' }
+    let(:field) { type.get_field('author') }
+
+    context 'with a corresponding user' do
+      let!(:account) { create(:user, email: subject.send("#{person}_email")) }
+      it_behaves_like "a commit's author/committer in GraphQL"
+    end
+
+    context 'without a corresponding user' do
+      let!(:account) { nil }
+      it_behaves_like "a commit's author/committer in GraphQL"
+    end
+  end
+
+  context 'committer field' do
+    let(:person) { 'committer' }
+    let(:field) { type.get_field('committer') }
+
+    context 'with a corresponding user' do
+      let!(:account) { create(:user, email: subject.send("#{person}_email")) }
+      it_behaves_like "a commit's author/committer in GraphQL"
+    end
+
+    context 'without a corresponding user' do
+      let!(:account) { nil }
+      it_behaves_like "a commit's author/committer in GraphQL"
+    end
+  end
+
+  context 'directory field' do
+    let(:field) { type.get_field('directory') }
+    let(:arguments) { {'path' => path} }
+    before do
+      # Create a file in the root directory. A subdirectory already exists.
+      filepath = File.basename(Faker::File.file_name(nil, nil, 'txt'))
+      create(:additional_file, repository: repository,
+                               branch: revision,
+                               path: filepath)
+    end
+
+    context 'existing directory' do
+      let(:path) { '/' }
+
+      it 'lists all directories and files' do
+        index = repository.git.tree(revision, path).map do |tree|
+          {name: tree.name,
+           path: tree.path,
+           type: tree.type == :tree ? 'directory' : 'file'}
+        end
+        expect(resolved_field.map(&:to_h)).
+          to match_array(index)
+      end
+    end
+
+    context 'inexistant directory' do
+      let(:path) { '/inexistant' }
+
+      it 'is empty' do
+        expect(resolved_field).to be_empty
+      end
+    end
+  end
+
+  context 'file field' do
+    let(:field) { type.get_field('file') }
+    let(:arguments) { {'path' => path} }
+    let(:blob) do
+      blob = repository.git.blob(revision, path)
+      blob.load_all_data!
+      blob
+    end
+
+    context 'on a text file' do
+      let(:path) { repository.git.ls_files(revision).first }
+      let(:expected_encoding) { 'plain' }
+      it_behaves_like "a commit's file in GraphQL"
+    end
+
+    context 'on a binary file' do
+      let!(:bitmap) do
+        <<~BITMAP
+          Qk18AAAAAAAAAHYAAAAoAAAAAQAAAAEAAAABAAQAAAAAAAYAAAAsLgAALC4A
+          AAAAAAAAAAAAAAAAABEREQAiIiIAMzMzAERERABVVVUAZmZmAHd3dwCIiIgA
+          mZmZAKqqqgC7u7sAzMzMAN3d3QDu7u4A////APAAAAAAAA==
+        BITMAP
+      end
+      let(:path) { Faker::File.file_name(nil, nil, 'bmp') }
+      let(:expected_encoding) { 'base64' }
+      before do
+        create(:additional_file, repository: repository,
+                                 branch: revision,
+                                 path: path,
+                                 content: bitmap,
+                                 encoding: 'base64')
+      end
+      it_behaves_like "a commit's file in GraphQL"
+    end
+  end
+
+  context 'diff field' do
+    let(:field) { type.get_field('diff') }
+
+    %i(a_mode b_mode deleted_file diff line_count new_file new_path old_path
+       renamed_file).each do |attribute|
+      it "matches each diff of the commit in #{attribute}" do
+        subject.diffs.each_with_index do |diff, index|
+          expect(resolved_field[index].public_send(attribute)).
+            to eq(diff.public_send(attribute))
+        end
+      end
+    end
+  end
+end

@@ -29,4 +29,45 @@ FactoryGirl.define do
       end
     end
   end
+
+  # Returns the commit id
+  factory :additional_commit, class: String do
+    transient do
+      repository { nil }
+      user { create(:user) }
+      branch { repository.git.default_branch }
+      files { [] }
+    end
+    skip_create
+    initialize_with do
+      MultiBlob.new(user: user,
+                    repository: repository,
+                    branch: branch,
+                    commit_message: generate(:commit_message),
+                    files: files).save
+    end
+  end
+
+  # Returns the commit id
+  factory :additional_file, class: String do
+    transient do
+      repository { nil }
+      path { generate(:filepath) }
+      content { generate(:content) }
+      encoding { 'plain' }
+      branch { nil } # will be delegated to factory :additional_commit
+      user { nil } # will be delegated to factory :additional_commit
+    end
+    skip_create
+    initialize_with do
+      files = [{path: path,
+                content: content,
+                encoding: encoding,
+                action: 'create'}]
+      options = {repository: repository, files: files}
+      options[:branch] = branch if branch
+      options[:user] = user if user
+      create(:additional_commit, **options)
+    end
+  end
 end
