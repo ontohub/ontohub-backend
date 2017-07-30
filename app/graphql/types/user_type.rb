@@ -35,9 +35,8 @@ Types::UserType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |user, arguments, _context|
-      limit = arguments[:limit] || target.arguments['limit'].default_value
-      skip = arguments[:skip] || target.arguments['skip'].default_value
-      user.organizations_dataset.limit(limit, skip)
+      user.organizations_dataset.order(:slug).
+        limit(arguments['limit'], arguments['skip'])
     end)
   end
 end

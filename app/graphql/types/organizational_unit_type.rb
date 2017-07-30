@@ -30,9 +30,8 @@ Types::OrganizationalUnitType = GraphQL::InterfaceType.define do
     end
 
     resolve(lambda do |organizational_unit, arguments, _context|
-      limit = arguments[:limit] || target.arguments['limit'].default_value
-      skip = arguments[:skip] || target.arguments['skip'].default_value
-      organizational_unit.repositories_dataset.limit(limit, skip)
+      organizational_unit.repositories_dataset.order(:slug).
+        limit(arguments['limit'], arguments['skip'])
     end)
   end
 end

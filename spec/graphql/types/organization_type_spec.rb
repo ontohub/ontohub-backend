@@ -19,18 +19,30 @@ RSpec.describe Types::OrganizationType do
   context 'members field' do
     let(:members_field) { organization_type.fields['members'] }
     it 'returns only the members' do
-      members = members_field.resolve(organization, {}, {})
-      expect(members.count).to be(20)
+      members = members_field.resolve(
+        organization,
+        members_field.default_arguments,
+        {}
+      )
+      expect(members.count).to eq(20)
     end
 
     it 'limits the member list' do
-      members = members_field.resolve(organization, {limit: 1}, {})
-      expect(members.count).to be(1)
+      members = members_field.resolve(
+        organization,
+        members_field.default_arguments('limit' => 1),
+        {}
+      )
+      expect(members.count).to eq(1)
     end
 
     it 'skips a number of members' do
-      members = members_field.resolve(organization, {skip: 5}, {})
-      expect(members.count).to be(16)
+      members = members_field.resolve(
+        organization,
+        members_field.default_arguments('skip' => 5),
+        {}
+      )
+      expect(members.count).to eq(16)
     end
   end
 end
