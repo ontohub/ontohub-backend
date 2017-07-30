@@ -74,7 +74,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
   end
 end
 
-RSpec.describe Types::OrganizationalUnitType do
+RSpec.describe Types::Git::CommitType do
   let(:repository) { create(:repository_compound) }
   let(:revision) { repository.git.default_branch }
   subject { repository.git.commit(revision) }
