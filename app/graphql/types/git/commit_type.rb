@@ -70,10 +70,12 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
             GitFile.new(commit, gitlab_tree.path, name: gitlab_tree.name)
           end
         end
-      index.sort do |a, b|
+      index.sort! do |a, b|
         comparison = a.kind <=> b.kind
         comparison.zero? ? (a.name <=> b.name) : comparison
       end
+
+      index unless index.empty?
     end)
   end
 

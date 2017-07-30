@@ -143,8 +143,8 @@ RSpec.describe Types::Git::CommitType do
     context 'inexistant directory' do
       let(:path) { '/inexistant' }
 
-      it 'is empty' do
-        expect(resolved_field).to be_empty
+      it 'is nil' do
+        expect(resolved_field).to be(nil)
       end
     end
   end
