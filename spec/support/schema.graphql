@@ -94,8 +94,53 @@ type Diff {
   renamedFile: Boolean!
 }
 
+# A directory of a repository
+type Directory implements DirectoryEntry {
+  # The history (git log) of this entry
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
+
+  # The name of the entry
+  name: String!
+
+  # The path of the entry
+  path: String!
+}
+
 # A directory entry (directory or file) of a repository
 interface DirectoryEntry {
+  # The history (git log) of this entry
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
+
   # The name of the entry
   name: String!
 
@@ -111,8 +156,26 @@ type File implements DirectoryEntry {
   # The encoding of the content
   encoding: FileEncoding!
 
-  # The bumber of bytes that has been loaded of the content
-  loaded_size: Int!
+  # The number of bytes that has been loaded of the content
+  loadedSize: Int!
+
+  # The history (git log) of this entry
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
 
   # The name of the entry
   name: String!
@@ -523,7 +586,7 @@ type Repository {
   # ID of the repository
   id: ID!
 
-  # Commit History of the repository
+  # Commit history (git log) of the repository
   log(
     # Only show commits from after this date/time
     after: Time
