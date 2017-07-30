@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: 1719f5bf0d94d948b323b36f2774b7020144c4ff
+  revision: 876939af4c419d6c16d0cb450a219b463e09d872
   branch: master
   specs:
     gitlab_git (11.0.0)
