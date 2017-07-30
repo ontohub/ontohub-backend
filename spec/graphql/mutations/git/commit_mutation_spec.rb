@@ -85,7 +85,14 @@ RSpec.describe 'commit mutation' do
         id
         parentIds
         message
-        refNames
+        referenceNames
+        references {
+          __typename
+          name
+          target {
+            id
+          }
+        }
         author {
           name
         }
@@ -103,11 +110,17 @@ RSpec.describe 'commit mutation' do
 
   RSpec.shared_examples 'committing was successful via GraphQL' do
     it 'returns the commit fields AND creates the commit as the new HEAD' do
+      subject
+      branch_id = repository.git.commit(branch).id
       expect(subject['data']['commit']).to include(
-        'id' => repository.git.commit(branch).id,
+        'id' => branch_id,
         'parentIds' => [setup_commit],
         'message' => message,
-        'refNames' => [branch],
+        'referenceNames' => [branch],
+        'references' => include(include('__typename' => 'Branch',
+                                        'name' => branch,
+                                        'target' =>
+                                          include('id' => branch_id))),
         'author' => {'name' => user.to_param},
         'authoredAt' => be_a(Float),
         'committer' => {'name' => user.to_param},

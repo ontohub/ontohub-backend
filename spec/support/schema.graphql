@@ -49,7 +49,10 @@ type Commit {
   parentIds: [ID!]!
 
   # The names of the references that point to this commit
-  refNames: [String!]!
+  referenceNames: [String!]!
+
+  # The references that point to this commit
+  references: [Reference!]!
 }
 
 # Possible actions for a commit
