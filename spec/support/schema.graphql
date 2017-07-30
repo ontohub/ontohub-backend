@@ -63,12 +63,6 @@ enum CommitAction {
 
 # Change of a file
 type Diff {
-  # The file mode in the old state
-  aMode: String!
-
-  # The file mode in the new state
-  bMode: String!
-
   # True if the file was deleted
   deletedFile: Boolean!
 
@@ -81,8 +75,14 @@ type Diff {
   # True if the file was added
   newFile: Boolean!
 
+  # The file mode in the new state
+  newMode: String!
+
   # The new path of the file
   newPath: String!
+
+  # The file mode in the old state
+  oldMode: String!
 
   # The old path of the file
   oldPath: String!

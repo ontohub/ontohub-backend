@@ -6,11 +6,12 @@ Types::Git::DiffType = GraphQL::ObjectType.define do
   name 'Diff'
   description 'Change of a file'
 
-  field :aMode, !types.String do
+  field :oldMode, !types.String do
     description 'The file mode in the old state'
     property :a_mode
   end
-  field :bMode, !types.String do
+
+  field :newMode, !types.String do
     description 'The file mode in the new state'
     property :b_mode
   end
@@ -24,14 +25,14 @@ Types::Git::DiffType = GraphQL::ObjectType.define do
     property :line_count
   end
 
-  field :newPath, !types.String do
-    description 'The new path of the file'
-    property :new_path
-  end
-
   field :oldPath, !types.String do
     description 'The old path of the file'
     property :old_path
+  end
+
+  field :newPath, !types.String do
+    description 'The new path of the file'
+    property :new_path
   end
 
   field :newFile, !types.Boolean do
