@@ -526,10 +526,10 @@ type Repository {
   # Commit History of the repository
   log(
     # Only show commits from after this date/time
-    after: Time = null
+    after: Time
 
     # Only show commits from before this date/time
-    before: Time = null
+    before: Time
 
     # Maximum number of commits to list
     limit: Int = 20

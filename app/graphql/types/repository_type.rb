@@ -159,12 +159,10 @@ Types::RepositoryType = GraphQL::ObjectType.define do
 
     argument :before, Types::TimeType do
       description 'Only show commits from before this date/time'
-      default_value nil
     end
 
     argument :after, Types::TimeType do
       description 'Only show commits from after this date/time'
-      default_value nil
     end
 
     resolve(lambda do |repository, arguments, _context|
