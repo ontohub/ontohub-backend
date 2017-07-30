@@ -23,9 +23,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     description 'The author of the commit'
 
     resolve(lambda do |commit, _arguments, _context|
-      OpenStruct.new(name: commit.author_name,
-                     email: commit.author_email,
-                     account: User.find(email: commit.author_email))
+      GitUser.new(commit.author_name, commit.author_email)
     end)
   end
 
@@ -38,9 +36,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     description 'The committer of the commit'
 
     resolve(lambda do |commit, _arguments, _context|
-      OpenStruct.new(name: commit.committer_name,
-                     email: commit.committer_email,
-                     account: User.find(email: commit.committer_email))
+      GitUser.new(commit.committer_name, commit.committer_email)
     end)
   end
 

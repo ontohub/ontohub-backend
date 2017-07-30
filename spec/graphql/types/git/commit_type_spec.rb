@@ -3,11 +3,19 @@
 require 'spec_helper'
 
 RSpec.shared_examples "a commit's author/committer in GraphQL" do
-  it 'returns the correct target' do
-    expected_object = OpenStruct.new(name: subject.send("#{person}_name"),
-                                     email: subject.send("#{person}_email"),
-                                     account: account)
-    expect(resolved_field).to eq(expected_object)
+  let(:expected_object) do
+    GitUser.new(subject.send("#{person}_name"),
+                subject.send("#{person}_email"))
+  end
+
+  before do
+    allow(expected_object).to receive(:account).and_return(account)
+  end
+
+  %i(name email account).each do |field|
+    it "returns the correct #{field}" do
+      expect(resolved_field.send(field)).to eq(expected_object.send(field))
+    end
   end
 end
 
