@@ -3,21 +3,15 @@
 Types::Git::FileType = GraphQL::ObjectType.define do
   name 'File'
   description 'A file of a repository'
-
-  field :name, !types.String do
-    description 'The name of the file'
-  end
-
-  field :path, !types.String do
-    description 'The path of the file'
-  end
+  interfaces [Types::Git::DirectoryEntryType]
 
   field :size, !types.Int do
     description 'The size in bytes'
   end
 
-  field :loaded_size, !types.Int do
-    description 'The bumber of bytes that has been loaded of the content'
+  field :loadedSize, !types.Int do
+    description 'The number of bytes that has been loaded of the content'
+    property :loaded_size
   end
 
   field :content, !types.String do

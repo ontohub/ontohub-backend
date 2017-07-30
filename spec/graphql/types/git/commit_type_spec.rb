@@ -20,9 +20,17 @@ RSpec.shared_examples "a commit's author/committer in GraphQL" do
 end
 
 RSpec.shared_examples "a commit's file in GraphQL" do
+  let(:received) do
+    received = {}
+    %i(name path size loaded_size content encoding).each do |attribute|
+      received[attribute] = resolved_field.public_send(attribute)
+    end
+    received
+  end
+
   context 'that is small' do
     it 'shows the file' do
-      expect(resolved_field.to_h).
+      expect(received).
         to eq(name: blob.name,
               path: path,
               size: blob.size,
@@ -38,7 +46,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
     context 'without loadAllData' do
       it 'shows the truncated file' do
         content = blob.data[0..Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE - 1]
-        expect(resolved_field.to_h).
+        expect(received).
           to eq(name: blob.name,
                 path: path,
                 size: blob.size,
@@ -54,7 +62,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
          'loadAllData' => true}
       end
       it 'shows the file' do
-        expect(resolved_field.to_h).
+        expect(received).
           to eq(name: blob.name,
                 path: path,
                 size: blob.size,
@@ -120,12 +128,15 @@ RSpec.describe Types::OrganizationalUnitType do
 
       it 'lists all directories and files' do
         index = repository.git.tree(revision, path).map do |tree|
-          {name: tree.name,
-           path: tree.path,
-           type: tree.type == :tree ? 'directory' : 'file'}
+          if tree.type == :tree
+            GitDirectory.new(subject, tree.path, tree.name)
+          else
+            GitFile.new(subject, tree.path)
+          end
         end
-        expect(resolved_field.map(&:to_h)).
-          to match_array(index)
+        received = resolved_field.map { |e| {path: e.path, kind: e.kind} }
+        expected = index.map { |e| {path: e.path, kind: e.kind} }
+        expect(received).to match_array(expected)
       end
     end
 

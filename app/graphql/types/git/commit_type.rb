@@ -64,13 +64,14 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
       gitlab_wrapper = Gitlab::Git::Wrapper.new(commit.repository.path)
       index =
         gitlab_wrapper.tree(commit.id, arguments['path']).map do |gitlab_tree|
-          type = gitlab_tree.type == :tree ? 'directory' : 'file'
-          OpenStruct.new(name: gitlab_tree.name,
-                         path: gitlab_tree.path,
-                         type: type)
+          if gitlab_tree.type == :tree
+            GitDirectory.new(commit, gitlab_tree.name, gitlab_tree.path)
+          else
+            GitFile.new(commit, gitlab_tree.path, name: gitlab_tree.name)
+          end
         end
       index.sort do |a, b|
-        comparison = a.type <=> b.type
+        comparison = a.kind <=> b.kind
         comparison.zero? ? (a.name <=> b.name) : comparison
       end
     end)
@@ -91,20 +92,9 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |commit, arguments, _context|
-      load_all_data = arguments['loadAllData'] ||
-        target.arguments['loadAllData'].default_value
-
-      gitlab_wrapper = Gitlab::Git::Wrapper.new(commit.repository.path)
-      gitlab_blob = gitlab_wrapper.blob(commit.id, arguments['path'])
-      return unless gitlab_blob
-      gitlab_blob.load_all_data! if load_all_data
-
-      OpenStruct.new(name: gitlab_blob.name,
-                     path: gitlab_blob.path,
-                     size: gitlab_blob.size,
-                     loaded_size: gitlab_blob.loaded_size,
-                     content: gitlab_blob.data,
-                     encoding: gitlab_blob.binary ? 'base64' : 'plain')
+      GitFile.new(commit,
+                  arguments['path'],
+                  load_all_data: arguments['loadAllData'])
     end)
   end
 

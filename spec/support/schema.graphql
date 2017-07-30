@@ -95,19 +95,16 @@ type Diff {
 }
 
 # A directory entry (directory or file) of a repository
-type DirectoryEntry {
+interface DirectoryEntry {
   # The name of the entry
   name: String!
 
   # The path of the entry
   path: String!
-
-  # The type of directory entry (directory or file)
-  type: ID!
 }
 
 # A file of a repository
-type File {
+type File implements DirectoryEntry {
   # The content of the file
   content: String!
 
@@ -117,10 +114,10 @@ type File {
   # The bumber of bytes that has been loaded of the content
   loaded_size: Int!
 
-  # The name of the file
+  # The name of the entry
   name: String!
 
-  # The path of the file
+  # The path of the entry
   path: String!
 
   # The size in bytes

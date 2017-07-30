@@ -10,4 +10,5 @@ OntohubBackendSchema = GraphQL::Schema.define do
   instrument(:field, Instrumenters::ResourceInstrumenter.new)
   query(Types::QueryType)
   mutation(Types::MutationType)
+  orphan_types [Types::Git::DirectoryType]
 end
