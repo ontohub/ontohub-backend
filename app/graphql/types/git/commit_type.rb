@@ -65,7 +65,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
       index =
         gitlab_wrapper.tree(commit.id, arguments['path']).map do |gitlab_tree|
           if gitlab_tree.type == :tree
-            GitDirectory.new(commit, gitlab_tree.name, gitlab_tree.path)
+            GitDirectory.new(commit, gitlab_tree.path, gitlab_tree.name)
           else
             GitFile.new(commit, gitlab_tree.path, name: gitlab_tree.name)
           end

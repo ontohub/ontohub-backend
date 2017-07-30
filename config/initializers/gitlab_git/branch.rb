@@ -5,7 +5,9 @@ module Gitlab
     # Extension to make the GraphQL type Types::Git::ReferenceType work
     class Branch
       def kind
+        # :nocov:
         'Git::Branch'
+        # :nocov:
       end
     end
   end

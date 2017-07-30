@@ -13,7 +13,7 @@ RSpec.shared_examples 'a directory entry in GraphQL' do
 
     let(:directory) { 'dir' }
     let(:file) { "#{directory}/file.txt" }
-    let(:files_a) { (0..1).map { |i| "#{directory}/file_#{i}.txt" } }
+    let(:files_a) { (0..1).map { |i| "#{directory}/subdir/file_#{i}.txt" } }
     let(:files_b) { (0..1).map { |i| "other-#{directory}/file_#{i}.txt" } }
 
     let!(:commits_file) do
@@ -42,8 +42,6 @@ RSpec.shared_examples 'a directory entry in GraphQL' do
     context 'without restrictions' do
       let(:arguments) { {} }
       it 'lists all the commits up to the limit' do
-        expected_commits
-        resolved_field
         expect(resolved_field.map(&:id)).to eq(expected_commits.reverse)
       end
     end
@@ -79,7 +77,7 @@ RSpec.describe Types::Git::DirectoryType do
     index =
       repository.git.tree(commit.id, path).map do |gitlab_tree|
         if gitlab_tree.type == :tree
-          GitDirectory.new(commit, gitlab_tree.name, gitlab_tree.path)
+          GitDirectory.new(commit, gitlab_tree.path, gitlab_tree.name)
         else
           GitFile.new(commit, gitlab_tree.path, name: gitlab_tree.name)
         end
