@@ -11,7 +11,7 @@ RSpec.describe V2::RepositoriesController do
 
     describe 'GET index' do
       let!(:another_repository) { create :repository, owner: owner }
-      let!(:other_owner) { create :organizational_unit }
+      let!(:other_owner) { create :user }
       let!(:other_repository) { create :repository, owner: other_owner }
 
       before { get :index, params: {user_slug: owner.to_param} }
@@ -207,7 +207,7 @@ RSpec.describe V2::RepositoriesController do
 
     describe 'GET index' do
       let!(:another_repository) { create :repository, owner: owner }
-      let!(:other_owner) { create :organizational_unit }
+      let!(:other_owner) { create :user }
       let!(:other_repository) { create :repository, owner: other_owner }
 
       before { get :index, params: {organization_slug: owner.to_param} }
