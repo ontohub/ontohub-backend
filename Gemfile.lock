@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: ec0492cc9dd412f1ea193c46db87c61905d36830
+  revision: 1ef1b1a394b4e6785c46fce12abce84661ede54b
   branch: master
   specs:
     ontohub-models (0.1.0)
