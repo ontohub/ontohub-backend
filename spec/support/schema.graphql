@@ -1,10 +1,256 @@
+# A git branch
+type Branch implements Reference {
+  # The name of the reference
+  name: String!
+
+  # The referenced commit
+  target: Commit!
+}
+
+# A commit of a repository
+type Commit {
+  # The author of the commit
+  author: GitUser!
+
+  # The time the commit was authored at
+  authoredAt: Time!
+
+  # The time the commit was created
+  committedAt: Time!
+
+  # The committer of the commit
+  committer: GitUser!
+
+  # The changes that this commit introduced
+  diff: [Diff]!
+
+  # The entries of a directory
+  directory(
+    # The path to the directory to list
+    path: ID!
+  ): [DirectoryEntry!]!
+
+  # A file
+  file(
+    # Load more than the 10 Megabytes for the web view
+    loadAllData: Boolean = false
+
+    # The path to the file
+    path: ID!
+  ): File
+
+  # The sha hash of the commit
+  id: ID!
+
+  # The commit message
+  message: String!
+
+  # The parents of the commit
+  parentIds: [ID!]!
+
+  # The names of the references that point to this commit
+  referenceNames: [String!]!
+
+  # The references that point to this commit
+  references: [Reference!]!
+}
+
+# Possible actions for a commit
+enum CommitAction {
+  create
+  mkdir
+  remove
+  rename
+  update
+}
+
+# Change of a file
+type Diff {
+  # True if the file was deleted
+  deletedFile: Boolean!
+
+  # The actual diff
+  diff: String!
+
+  # The number of changed lines
+  lineCount: Int!
+
+  # True if the file was added
+  newFile: Boolean!
+
+  # The file mode in the new state
+  newMode: String!
+
+  # The new path of the file
+  newPath: String!
+
+  # The file mode in the old state
+  oldMode: String!
+
+  # The old path of the file
+  oldPath: String!
+
+  # True if the file was renamed
+  renamedFile: Boolean!
+}
+
+# A directory of a repository
+type Directory implements DirectoryEntry {
+  # The history (git log) of this entry starting with the most recent changes
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
+
+  # The name of the entry
+  name: String!
+
+  # The path of the entry
+  path: String!
+}
+
+# A directory entry (directory or file) of a repository
+interface DirectoryEntry {
+  # The history (git log) of this entry starting with the most recent changes
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
+
+  # The name of the entry
+  name: String!
+
+  # The path of the entry
+  path: String!
+}
+
+# A file of a repository
+type File implements DirectoryEntry {
+  # The content of the file
+  content: String!
+
+  # The encoding of the content
+  encoding: FileEncoding!
+
+  # The number of bytes that has been loaded of the content
+  loadedSize: Int!
+
+  # The history (git log) of this entry starting with the most recent changes
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
+
+  # The name of the entry
+  name: String!
+
+  # The path of the entry
+  path: String!
+
+  # The size in bytes
+  size: Int!
+}
+
+# A file from a repository
+input FileChangeset {
+  # The action to be performed on the file
+  action: CommitAction!
+
+  # The new content of the file
+  content: String
+
+  # The encoding of the content
+  encoding: FileEncoding
+
+  # The new path of the file for renaming/moving
+  new_path: String
+
+  # The path of the file inside the repository
+  path: String!
+}
+
+# Possible values for file encodings
+enum FileEncoding {
+  base64
+  plain
+}
+
+# Data of a git user
+type GitUser {
+  # Corresponding Ontohub account of the user
+  account: User
+
+  # Email address of the user
+  email: String!
+
+  # Name of the user
+  name: String!
+}
+
 # Base mutation type
 type Mutation {
+  # Creates a new commit
+  commit(
+    # The information of the commit
+    newCommit: NewCommit!
+
+    # The repository to create the branch in
+    repositoryId: ID!
+  ): Commit
+
   # Confirms the email address of a user
   confirmEmail(
     # The confirmation token from the confirmation email
     token: String!
   ): SessionToken
+
+  # Creates a new branch
+  createBranch(
+    # The name of the branch
+    name: String!
+
+    # The repository to create the branch in
+    repositoryId: ID!
+
+    # The revision the branch shall point to
+    revision: ID!
+  ): Branch
 
   # Creates a new organization
   createOrganization(
@@ -12,17 +258,41 @@ type Mutation {
     data: NewOrganization!
   ): Organization
 
-  # Creates as new repository
+  # Creates a new repository
   createRepository(
     # The parameters of the new repository
     data: NewRepository!
   ): Repository
+
+  # Creates a new tag
+  createTag(
+    # An optional annotation for the tag
+    annotation: String
+
+    # The name of the tag
+    name: String!
+
+    # The repository to create the tag in
+    repositoryId: ID!
+
+    # The revision the tag shall point to
+    revision: ID!
+  ): Tag
 
   # Deletes the account of the currently signed in user.
   # Returns `true` if it was successful and `null` if there was an error.
   deleteAccount(
     # Password of the current user to confirm the deletion
     password: String!
+  ): Boolean
+
+  # Creates a new branch
+  deleteBranch(
+    # The name of the branch
+    name: String!
+
+    # The repository to delete the branch from
+    repositoryId: ID!
   ): Boolean
 
   # Deletes an organization.
@@ -36,6 +306,15 @@ type Mutation {
   deleteRepository(
     # The ID of the repository to delete
     id: ID!
+  ): Boolean
+
+  # Creates a new tag
+  deleteTag(
+    # The name of the tag
+    name: String!
+
+    # The repository to delete the tag from
+    repositoryId: ID!
   ): Boolean
 
   # Resends the confirmation email to a user
@@ -115,6 +394,22 @@ type Mutation {
     # The unlock account token from the unlock account email
     token: String!
   ): SessionToken
+}
+
+# Data for committing
+input NewCommit {
+  # The name of a branch to commit to
+  branch: ID!
+
+  # The changes to commit to the repository
+  files: [FileChangeset!]!
+
+  # The last known id (sha hash) of the HEAD of the branch. This is used to check
+  # whether or not the branch has changed in the meantime.
+  lastKnownHeadId: ID
+
+  # A brief description of the changes in this commit
+  message: String!
 }
 
 # Contains all fields that are possible to set when creating a new
@@ -241,10 +536,31 @@ type Query {
   version: Version!
 }
 
+# A git reference
+interface Reference {
+  # The name of the reference
+  name: String!
+
+  # The referenced commit
+  target: Commit!
+}
+
 # Data of a repository
 type Repository {
+  # Details of a branch
+  branch(
+    # The name of the branch
+    name: String!
+  ): Branch
+
   # Branches of the repository
   branches: [String!]!
+
+  # Find a commit by revision
+  commit(
+    # The revision to query for
+    revision: ID!
+  ): Commit
 
   # Type of the repository
   contentType: RepositoryContentType!
@@ -255,14 +571,59 @@ type Repository {
   # Description of the repository
   description: String
 
+  # The changes between two commits
+  diff(
+    # The base commit for the diff
+    from: String!
+
+    # An optional list of paths to restrict the diff to
+    paths: [String!]
+
+    # The target commit for the diff
+    to: String!
+  ): [Diff!]!
+
   # ID of the repository
   id: ID!
+
+  # The history (git log) of the repository starting with the most recent changes
+  log(
+    # Only show commits from after this date/time
+    after: Time
+
+    # Only show commits from before this date/time
+    before: Time
+
+    # Maximum number of commits to list
+    limit: Int = 20
+
+    # A path to a file or directory to see the history of
+    path: String = "/"
+
+    # The newest revision to show in the history
+    revision: String!
+
+    # Skip the first n commits
+    skip: Int = 0
+
+    # Whether or not to skip merge commits in the history
+    skipMerges: Boolean = false
+  ): [Commit!]!
 
   # Name of the repository
   name: String!
 
   # Owner of the repository
   owner: OrganizationalUnit!
+
+  # Details of a tag
+  tag(
+    # The name of the tag
+    name: String!
+  ): Tag
+
+  # Tags of the repository
+  tags: [String!]!
 
   # Visibility of the repository
   visibility: RepositoryVisibility!
@@ -302,6 +663,21 @@ type SessionToken {
   # The current user
   me: User!
 }
+
+# A git tag
+type Tag implements Reference {
+  # An annotation of the tag
+  annotation: String
+
+  # The name of the reference
+  name: String!
+
+  # The referenced commit
+  target: Commit!
+}
+
+# Represents the time
+scalar Time
 
 # Data of a user
 type User implements OrganizationalUnit {

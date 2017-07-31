@@ -5,7 +5,15 @@
 # Allows to apply multiple actions to a repository
 class MultiBlob < ActiveModelSerializers::Model
   class Error < ::StandardError; end
-  class ValidationFailed < Error; end
+
+  # Error class to hold the errors
+  class ValidationFailed < Error
+    attr_reader :errors
+    def initialize(errors)
+      @errors = errors
+      super(@errors.messages.to_json)
+    end
+  end
 
   ENCODINGS = %w(base64 plain).freeze
 
@@ -20,7 +28,7 @@ class MultiBlob < ActiveModelSerializers::Model
   # rubocop:disable Metrics/AbcSize
   def save
     normalize_params
-    raise ValidationFailed, @errors.messages.to_json unless valid?
+    raise ValidationFailed, @errors unless valid?
     self.commit_sha =
       begin
         git.commit_multichange(commit_info, previous_head_sha)
@@ -29,7 +37,7 @@ class MultiBlob < ActiveModelSerializers::Model
                     'Could not save the file in the git repository '\
                     'because it has changed in the meantime. '\
                     'Please try again after checking out the current revision.')
-        raise ValidationFailed, @errors.messages.to_json
+        raise ValidationFailed, @errors
       end
     self.decorated_file_versions = create_decorated_file_versions(commit_sha)
     commit_sha
@@ -231,16 +239,10 @@ class MultiBlob < ActiveModelSerializers::Model
   end
 
   def commit_info
-    user_info_hash = user_info(Time.now)
+    user_info_hash = GitHelper.git_user(user, Time.now)
     @commit_info ||= {files: files,
                       author: user_info_hash,
                       committer: user_info_hash,
                       commit: {message: commit_message, branch: branch}}
-  end
-
-  def user_info(time = nil)
-    {email: user.email,
-     name: user.display_name || user.to_param,
-     time: time || Time.now}
   end
 end

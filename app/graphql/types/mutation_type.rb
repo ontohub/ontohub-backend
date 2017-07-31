@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 Types::MutationType = GraphQL::ObjectType.define do
+  # rubocop:enable Metrics/BlockLength
   name 'Mutation'
   description 'Base mutation type'
 
@@ -27,4 +29,12 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :createRepository, Mutations::Repository::CreateRepositoryMutation
   field :deleteRepository, Mutations::Repository::DeleteRepositoryMutation
   field :saveRepository, Mutations::Repository::SaveRepositoryMutation
+
+  field :createBranch, Mutations::Repository::Git::CreateBranchMutation
+  field :deleteBranch, Mutations::Repository::Git::DeleteBranchMutation
+
+  field :createTag, Mutations::Repository::Git::CreateTagMutation
+  field :deleteTag, Mutations::Repository::Git::DeleteTagMutation
+
+  field :commit, Mutations::Repository::Git::CommitMutation
 end
