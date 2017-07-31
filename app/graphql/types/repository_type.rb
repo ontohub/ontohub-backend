@@ -131,7 +131,9 @@ Types::RepositoryType = GraphQL::ObjectType.define do
   # rubocop:disable Metrics/BlockLength
   field :log, !types[!Types::Git::CommitType] do
     # rubocop:enable Metrics/BlockLength
-    description 'Commit history (git log) of the repository'
+    description <<~DESCRIPTION
+      The history (git log) of the repository starting with the most recent changes
+    DESCRIPTION
 
     argument :revision, !types.String do
       description 'The newest revision to show in the history'

@@ -17,7 +17,9 @@ Types::Git::DirectoryEntryType = GraphQL::InterfaceType.define do
   # rubocop:disable Metrics/BlockLength
   field :log, !types[!Types::Git::CommitType] do
     # rubocop:enable Metrics/BlockLength
-    description 'The history (git log) of this entry'
+    description <<~DESCRIPTION
+      The history (git log) of this entry starting with the most recent changes
+    DESCRIPTION
 
     argument :limit, types.Int do
       description 'Maximum number of commits to list'

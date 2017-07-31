@@ -96,7 +96,7 @@ type Diff {
 
 # A directory of a repository
 type Directory implements DirectoryEntry {
-  # The history (git log) of this entry
+  # The history (git log) of this entry starting with the most recent changes
   log(
     # Only show commits from after this date/time
     after: Time
@@ -123,7 +123,7 @@ type Directory implements DirectoryEntry {
 
 # A directory entry (directory or file) of a repository
 interface DirectoryEntry {
-  # The history (git log) of this entry
+  # The history (git log) of this entry starting with the most recent changes
   log(
     # Only show commits from after this date/time
     after: Time
@@ -159,7 +159,7 @@ type File implements DirectoryEntry {
   # The number of bytes that has been loaded of the content
   loadedSize: Int!
 
-  # The history (git log) of this entry
+  # The history (git log) of this entry starting with the most recent changes
   log(
     # Only show commits from after this date/time
     after: Time
@@ -586,7 +586,7 @@ type Repository {
   # ID of the repository
   id: ID!
 
-  # Commit history (git log) of the repository
+  # The history (git log) of the repository starting with the most recent changes
   log(
     # Only show commits from after this date/time
     after: Time
