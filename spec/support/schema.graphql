@@ -497,6 +497,13 @@ input OrganizationChangeset {
   displayName: String
 }
 
+# A user's role in an organization
+enum OrganizationRole {
+  admin
+  read
+  write
+}
+
 # Common fields of organizational units
 interface OrganizationalUnit {
   # Display name of the organizational unit
@@ -697,6 +704,9 @@ type User implements OrganizationalUnit {
   organizations(
     # Maximum number of organizations to list
     limit: Int = 20
+
+    # Filter the organizations by the user's role
+    role: OrganizationRole
 
     # Skip the first n organizations
     skip: Int = 0

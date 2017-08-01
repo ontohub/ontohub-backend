@@ -34,8 +34,17 @@ Types::UserType = GraphQL::ObjectType.define do
       default_value 0
     end
 
+    argument :role, Types::Organization::RoleEnum do
+      description "Filter the organizations by the user's role"
+    end
+
     resolve(lambda do |user, arguments, _context|
-      user.organizations_dataset.order(:slug).
+      dataset = if arguments['role']
+                  user.organizations_by_role(arguments['role'])
+                else
+                  user.organizations_dataset
+                end
+      dataset.order(:slug).
         limit(arguments['limit'], arguments['skip'])
     end)
   end

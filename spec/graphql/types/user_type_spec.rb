@@ -4,9 +4,13 @@ require 'spec_helper'
 
 RSpec.describe Types::UserType do
   let!(:user) { create :user }
+  let!(:organization) { create :organization }
 
   before do
-    21.times do
+    create :organization_membership, member: user,
+                                     organization: organization,
+                                     role: 'admin'
+    20.times do
       organization = create :organization
       organization.add_member(user)
     end
@@ -16,7 +20,7 @@ RSpec.describe Types::UserType do
   subject { user }
   let(:user_type) { OntohubBackendSchema.types['User'] }
 
-  context 'members field' do
+  context 'organizations field' do
     let(:organizations_field) { user_type.fields['organizations'] }
     it 'returns only the organizations to user is a member in' do
       organizations = organizations_field.resolve(
@@ -43,6 +47,30 @@ RSpec.describe Types::UserType do
         {}
       )
       expect(organizations.count).to eq(16)
+    end
+
+    context 'filters by role' do
+      let(:organizations) do
+        organizations_field.resolve(
+          user,
+          organizations_field.default_arguments('role' => role),
+          {}
+        )
+      end
+
+      context 'read' do
+        let(:role) { 'read' }
+        it 'returns the organizations with the role: read' do
+          expect(organizations.count).to eq(20)
+        end
+      end
+
+      context 'admin' do
+        let(:role) { 'admin' }
+        it 'returns the organizations with the role: admin' do
+          expect(organizations.count).to eq(1)
+        end
+      end
     end
   end
 end
