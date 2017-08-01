@@ -35,7 +35,7 @@ Types::UserType = GraphQL::ObjectType.define do
     end
 
     argument :role, Types::Organization::RoleEnum do
-      description 'Filter the organizations by the user\'s role'
+      description "Filter the organizations by the user's role"
     end
 
     resolve(lambda do |user, arguments, _context|

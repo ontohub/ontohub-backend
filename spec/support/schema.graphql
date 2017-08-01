@@ -497,7 +497,7 @@ input OrganizationChangeset {
   displayName: String
 }
 
-# A users role in an organization
+# A user's role in an organization
 enum OrganizationRole {
   admin
   read

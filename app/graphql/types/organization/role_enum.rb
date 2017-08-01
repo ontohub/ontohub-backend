@@ -2,7 +2,7 @@
 
 Types::Organization::RoleEnum = GraphQL::EnumType.define do
   name 'OrganizationRole'
-  description 'A users role in an organization'
+  description "A user's role in an organization"
 
   value 'read'
   value 'write'

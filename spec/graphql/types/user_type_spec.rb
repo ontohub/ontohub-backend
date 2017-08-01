@@ -50,24 +50,26 @@ RSpec.describe Types::UserType do
     end
 
     context 'filters by role' do
-      it 'returns the organizations with the role: read' do
-        role = 'read'
-        organizations = organizations_field.resolve(
+      let(:organizations) do
+        organizations_field.resolve(
           user,
           organizations_field.default_arguments('role' => role),
           {}
         )
-        expect(organizations.count).to eq(20)
       end
 
-      it 'returns the organizations with the role: admin' do
-        role = 'admin'
-        organizations = organizations_field.resolve(
-          user,
-          organizations_field.default_arguments('role' => role),
-          {}
-        )
-        expect(organizations.count).to eq(1)
+      context 'read' do
+        let(:role) { 'read' }
+        it 'returns the organizations with the role: read' do
+          expect(organizations.count).to eq(20)
+        end
+      end
+
+      context 'admin' do
+        let(:role) { 'admin' }
+        it 'returns the organizations with the role: admin' do
+          expect(organizations.count).to eq(1)
+        end
       end
     end
   end
