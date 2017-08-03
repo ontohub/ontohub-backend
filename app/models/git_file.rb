@@ -11,14 +11,12 @@ class GitFile
   def initialize(commit, path, name: nil, load_all_data: false)
     @path = path
     @commit = commit
-    if name.nil?
-      # We need to load the name from the blob, so we can load the path as well.
-      @name = blob.name
-      @path = blob.path
-    else
+    if name.nil? # The name is only nil in a file query
+      load_name_and_path_from_blob
+    else # The name is supplied in a directory query
       @name = name
     end
-    blob.load_all_data! if load_all_data
+    blob&.load_all_data! if load_all_data
   end
 
   def kind
@@ -26,20 +24,42 @@ class GitFile
   end
 
   def content
-    blob.data
+    blob&.data
   end
 
   def encoding
-    blob.binary ? 'base64' : 'plain'
+    blob&.binary ? 'base64' : 'plain'
   end
 
   def gitlab
     @gitlab ||= Gitlab::Git::Wrapper.new(@commit.repository.path)
   end
 
+  def exist?
+    unless @existance_checked
+      check_existance
+      @existance_checked = true
+    end
+    @exist
+  end
+
   protected
 
   def blob
     @blob ||= gitlab.blob(commit.id, path)
+  end
+
+  # We need to load the name from the blob. Since we need to load the blob for
+  # it, we can load the path as well.
+  def load_name_and_path_from_blob
+    check_existance
+    return unless blob
+    @name = blob.name
+    @path = blob.path
+  end
+
+  # Checks the existance by loading the blob
+  def check_existance
+    @exist = !blob.nil?
   end
 end

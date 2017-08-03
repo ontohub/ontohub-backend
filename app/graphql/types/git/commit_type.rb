@@ -55,7 +55,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     property :references
   end
 
-  field :directory, !types[!Types::Git::DirectoryEntryType] do
+  field :directory, types[!Types::Git::DirectoryEntryType] do
     description 'The entries of a directory'
     argument :path, !types.ID do
       description 'The path to the directory to list'
@@ -94,9 +94,10 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |commit, arguments, _context|
-      GitFile.new(commit,
-                  arguments['path'],
-                  load_all_data: arguments['loadAllData'])
+      git_file = GitFile.new(commit,
+                             arguments['path'],
+                             load_all_data: arguments['loadAllData'])
+      git_file if git_file.exist?
     end)
   end
 

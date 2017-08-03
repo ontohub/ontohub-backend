@@ -28,7 +28,7 @@ type Commit {
   directory(
     # The path to the directory to list
     path: ID!
-  ): [DirectoryEntry!]!
+  ): [DirectoryEntry!]
 
   # A file
   file(
