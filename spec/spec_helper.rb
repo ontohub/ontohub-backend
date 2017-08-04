@@ -7,8 +7,6 @@ require 'database_cleaner'
 require 'factory_girl_rails'
 require 'ontohub-models/factories'
 
-Faker::Config.random = Random.new
-
 module GraphQL
   class Field
     def default_arguments(args = {})
