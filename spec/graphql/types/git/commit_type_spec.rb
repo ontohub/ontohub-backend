@@ -185,6 +185,17 @@ RSpec.describe Types::Git::CommitType do
     end
   end
 
+  context 'ls_files field' do
+    let(:field) { type.get_field('lsFiles') }
+    before do
+      5.times { create :additional_file, repository: repository }
+    end
+
+    it 'lists all files in the repository' do
+      expect(resolved_field).to match_array(repository.git.ls_files(revision))
+    end
+  end
+
   context 'diff field' do
     let(:field) { type.get_field('diff') }
 
