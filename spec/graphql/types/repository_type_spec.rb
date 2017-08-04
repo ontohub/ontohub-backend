@@ -218,6 +218,15 @@ RSpec.describe Types::RepositoryType do
       let(:arguments) { {'revision' => revision} }
       let(:commit) { commit_field.resolve(repository, arguments, {}) }
 
+      context 'no revision' do
+        let(:revision) { nil }
+
+        it "finds the default branch's HEAD" do
+          expect(commit).
+            to eq(repository.git.commit(repository.git.default_branch))
+        end
+      end
+
       context 'existing revision' do
         it 'finds the commit' do
           expect(commit).to eq(repository.git.commit(revision))

@@ -84,12 +84,15 @@ Types::RepositoryType = GraphQL::ObjectType.define do
   field :commit, Types::Git::CommitType do
     description 'Find a commit by revision'
 
-    argument :revision, !types.ID do
-      description 'The revision to query for'
+    argument :revision, types.ID do
+      description <<~DESCRIPTION
+        The revision to query for (default: What is retruned in the defaultBranch field)
+      DESCRIPTION
     end
 
     resolve(lambda do |repository, arguments, _context|
-      repository.git.commit(arguments['revision'])
+      revision = arguments['revision'] || repository.git.default_branch
+      repository.git.commit(revision)
     end)
   end
 

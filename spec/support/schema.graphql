@@ -565,8 +565,8 @@ type Repository {
 
   # Find a commit by revision
   commit(
-    # The revision to query for
-    revision: ID!
+    # The revision to query for (default: What is retruned in the defaultBranch field)
+    revision: ID
   ): Commit
 
   # Type of the repository
