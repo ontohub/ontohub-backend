@@ -36,10 +36,7 @@ class GitFile
   end
 
   def exist?
-    unless @existance_checked
-      check_existance
-      @existance_checked = true
-    end
+    check_existance unless @existance_checked
     @exist
   end
 
@@ -60,6 +57,7 @@ class GitFile
 
   # Checks the existance by loading the blob
   def check_existance
+    @existance_checked = true
     @exist = !blob.nil?
   end
 end
