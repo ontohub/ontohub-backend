@@ -50,7 +50,7 @@ RSpec.describe OrganizationPolicy do
       end
     end
 
-    context 'with role admin' do
+    context 'signed in as admin' do
       subject { OrganizationPolicy.new(admin, organization) }
 
       it 'allows to update the organization' do
@@ -58,10 +58,18 @@ RSpec.describe OrganizationPolicy do
       end
     end
 
-    context 'with role user' do
+    context 'signed in as user without membership' do
       subject { OrganizationPolicy.new(user, organization) }
 
       it 'allows to update the organization' do
+        expect(subject.update?).to be(false)
+      end
+    end
+
+    context 'not signed in' do
+      subject { OrganizationPolicy.new(nil, organization) }
+
+      it 'does not allow to update the organization' do
         expect(subject.update?).to be(false)
       end
     end
@@ -84,7 +92,7 @@ RSpec.describe OrganizationPolicy do
       end
     end
 
-    context 'with role admin' do
+    context 'signed in as admin' do
       subject { OrganizationPolicy.new(admin, organization) }
 
       it 'allows to destroy the organization' do
@@ -92,8 +100,16 @@ RSpec.describe OrganizationPolicy do
       end
     end
 
-    context 'with role user' do
+    context 'signed in as user' do
       subject { OrganizationPolicy.new(user, organization) }
+
+      it 'does not allow to destroy the organization' do
+        expect(subject.destroy?).to be(false)
+      end
+    end
+
+    context 'not signed in' do
+      subject { OrganizationPolicy.new(nil, organization) }
 
       it 'does not allow to destroy the organization' do
         expect(subject.destroy?).to be(false)

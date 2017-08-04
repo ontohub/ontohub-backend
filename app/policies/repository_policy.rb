@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Policies for RepositoriesController
+# No need for policies for Tree, Diff, Commit; just use this policy
 class RepositoryPolicy < ApplicationPolicy
   def show?
     resource.public_access ||

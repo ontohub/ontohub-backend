@@ -10,7 +10,7 @@ class UserPolicy < ApplicationPolicy
     !!current_user
   end
 
-  def email?
+  def access_private_data?
     current_user == resource
   end
 end

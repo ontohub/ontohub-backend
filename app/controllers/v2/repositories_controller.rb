@@ -10,12 +10,6 @@ module V2
     permitted_params PERMITTED_PARAMS,
       create: [:name, :owner, *PERMITTED_PARAMS]
 
-    def collection
-      super.select do |repository|
-        RepositoryPolicy.new(current_user, repository).show?
-      end
-    end
-
     protected
 
     def build_resource

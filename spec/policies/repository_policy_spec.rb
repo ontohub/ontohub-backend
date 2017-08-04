@@ -278,9 +278,9 @@ RSpec.describe RepositoryPolicy do
   end
 
   context 'destroy?' do
-    [true, false].each do |public|
-      context "with public access #{public}" do
-        let(:repository) { create :repository, public_access: public }
+    [true, false].each do |public_access|
+      context "with public access #{public_access}" do
+        let(:repository) { create :repository, public_access: public_access }
 
         context 'not signed in' do
           subject { RepositoryPolicy.new(nil, repository) }

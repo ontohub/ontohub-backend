@@ -59,12 +59,12 @@ RSpec.describe UserPolicy do
     end
   end
 
-  context 'email?' do
+  context 'access_private_data?' do
     context 'signed in as admin' do
       subject { UserPolicy.new(admin, other_user) }
 
-      it 'allows to see the users email' do
-        expect(subject.email?).to be(true)
+      it 'allows to see the users private data' do
+        expect(subject.access_private_data?).to be(true)
       end
     end
 
@@ -72,16 +72,16 @@ RSpec.describe UserPolicy do
       context 'own email' do
         subject { UserPolicy.new(user, user) }
 
-        it 'allows to see my email' do
-          expect(subject.email?).to be(true)
+        it 'allows to see my private data' do
+          expect(subject.access_private_data?).to be(true)
         end
       end
 
       context 'other users email' do
         subject { UserPolicy.new(user, other_user) }
 
-        it 'does not allow to see the users email' do
-          expect(subject.email?).to be(false)
+        it 'does not allow to see the users private data' do
+          expect(subject.access_private_data?).to be(false)
         end
       end
     end
@@ -89,8 +89,8 @@ RSpec.describe UserPolicy do
     context 'not signed in' do
       subject { UserPolicy.new(nil, other_user) }
 
-      it 'does not allow to see the users email' do
-        expect(subject.email?).to be(false)
+      it 'does not allow to see the users private data' do
+        expect(subject.access_private_data?).to be(false)
       end
     end
   end
