@@ -2,7 +2,7 @@
 
 module V2
   # Handles requests for version show operations
-  class VersionController < ApplicationController
+  class VersionController < V2::ApplicationController
     def show
       render status: :ok,
              json: resource,

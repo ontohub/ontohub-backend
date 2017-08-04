@@ -17,7 +17,7 @@ module V2
   #
   # It also defines the chaching getters +resource+ and +collection+ for easy
   # access to the requested data.
-  class ResourcesController < ApplicationController
+  class ResourcesController < V2::ApplicationController
     # Simplify calling of resource and collection
     include DSL::InstanceMethods
     extend DSL::ClassMethods

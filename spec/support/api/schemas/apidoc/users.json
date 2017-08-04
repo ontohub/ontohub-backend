@@ -12,7 +12,7 @@
       "title": "Show the current user",
       "description": "Show the details of the signed in user. Returns HTTP 200 (OK).",
       "rel": "self",
-      "href": "/me",
+      "href": "/users/me",
       "method": "GET",
       "targetSchema": {"$ref": "../controllers/v2/users/get_show_current_user.json"},
       "mediaType": "application/vnd.api+json"
@@ -21,7 +21,7 @@
       "title": "Show (explicit)",
       "description": "Show the details of a specific user. Returns HTTP 200 (OK).",
       "rel": "self",
-      "href": "/user/:user_id",
+      "href": "/users/:user_id",
       "method": "GET",
       "targetSchema": {"$ref": "../controllers/v2/users/get_show.json"},
       "mediaType": "application/vnd.api+json"

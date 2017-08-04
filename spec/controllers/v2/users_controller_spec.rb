@@ -41,7 +41,7 @@ RSpec.describe V2::UsersController do
       before do
         get :show_current_user
       end
-      it { expect(response).to have_http_status(:not_found) }
+      it { expect(response).to have_http_status(:unauthorized) }
       it { expect(response.body.strip).to be_empty }
     end
   end

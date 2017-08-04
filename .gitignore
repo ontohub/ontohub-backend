@@ -58,3 +58,6 @@ db/schema.rb
 
 # Ignore application data
 /data/
+
+# Ignore Vscode
+.vscode/
