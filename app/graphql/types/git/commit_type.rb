@@ -101,6 +101,15 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :lsFiles, !types[!types.String] do
+    description 'A list of all file paths in the repository'
+
+    resolve(lambda do |commit, _arguments, _context|
+      gitlab_wrapper = Gitlab::Git::Wrapper.new(commit.repository.path)
+      gitlab_wrapper.ls_files(commit.id)
+    end)
+  end
+
   field :diff, !types[Types::Git::DiffType] do
     description 'The changes that this commit introduced'
 

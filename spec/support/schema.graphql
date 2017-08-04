@@ -42,6 +42,9 @@ type Commit {
   # The sha hash of the commit
   id: ID!
 
+  # A list of all file paths in the repository
+  lsFiles: [String!]!
+
   # The commit message
   message: String!
 
@@ -370,6 +373,15 @@ type Mutation {
     # ID of the repository to update
     id: ID!
   ): Repository
+
+  # Sets the default branch
+  setDefaultBranch(
+    # The name of the branch to make it the default
+    name: String!
+
+    # The repository to create the tag in
+    repositoryId: ID!
+  ): Branch
 
   # Signs in a user
   signIn(
