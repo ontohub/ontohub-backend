@@ -124,7 +124,7 @@ Types::RepositoryType = GraphQL::ObjectType.define do
         diffs
       rescue Rugged::ReferenceError => e
         argument = nil
-        revspec = e.message.match(/Revspec '(\S+)' not found/)[1]
+        revspec = e.message.match(/revspec '(\S+)' not found/i)[1]
         %w(from to).each { |arg| argument = arg if arguments[arg] == revspec }
         GraphQL::ExecutionError.new(%("#{argument}" #{e.message}))
       end
