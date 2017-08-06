@@ -155,6 +155,14 @@ RSpec.describe RepositoryPolicy do
         end
       end
     end
+
+    context 'owner does not exist' do
+      subject { RepositoryPolicy.new(user, Repository) }
+
+      it 'does not allow to create the repository' do
+        expect(subject.create?(nil)).to be(false)
+      end
+    end
   end
 
   context 'update?' do
