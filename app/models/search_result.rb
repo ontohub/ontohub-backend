@@ -28,9 +28,7 @@ class SearchResult < ActiveModelSerializers::Model
   # returns the search result in a format that graphql can work with without
   # influencing the JSON API controller
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  # rubocop:disable Metrics/CyclomaticComplexity
   def to_struct(params)
-    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
     result = OpenStruct.new
     repos = repositories.map do |repo|
@@ -41,13 +39,11 @@ class SearchResult < ActiveModelSerializers::Model
     end
 
     result.entries = []
-    if !params[:categories] ||
-       params[:categories].empty? ||
+    if params[:categories].blank? ||
        params[:categories].include?('repositories')
       result.entries.concat(repos)
     end
-    if !params[:categories] ||
-       params[:categories].empty? ||
+    if params[:categories].blank? ||
        params[:categories].include?('organizationalUnits')
       result.entries.concat(org_units)
     end
