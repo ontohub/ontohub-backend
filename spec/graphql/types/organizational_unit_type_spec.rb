@@ -33,6 +33,15 @@ RSpec.shared_examples 'an owner of repositories' do
     )
     expect(repositories.count).to eq(16)
   end
+
+  it 'returns wrapped repositories' do
+    repositories = repositories_field.resolve(
+      organizational_unit,
+      repositories_field.default_arguments,
+      {}
+    )
+    expect(repositories.all? { |r| r.is_a?(RepositoryCompound) }).to be_truthy
+  end
 end
 
 RSpec.describe Types::OrganizationalUnitType do
