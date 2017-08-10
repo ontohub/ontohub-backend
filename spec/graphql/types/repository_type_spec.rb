@@ -97,7 +97,7 @@ RSpec.describe Types::RepositoryType do
       end
 
       it 'has the correct error message' do
-        expect(diff.message).to match(/"to".*Revspec 'master' not found./)
+        expect(diff.message).to match(/"to".*revspec 'master' not found/i)
       end
     end
 
@@ -285,7 +285,7 @@ RSpec.describe Types::RepositoryType do
 
         it 'has the correct error message' do
           expect(diff.message).
-            to match(/"from".*Revspec '#{revision}' not found./)
+            to match(/"from".*revspec '#{revision}' not found/i)
         end
       end
     end
