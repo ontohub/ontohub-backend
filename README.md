@@ -24,7 +24,7 @@ of this repository will then install all dependencies of the backend.
 
 In order to set up a complete environment, please refer to the [wiki](https://github.com/ontohub/ontohub-backend/wiki) page [Setting up the development environment](https://github.com/ontohub/ontohub-backend/wiki/Setting-up-the-development-environment).
 
-## Build the API documentation
+## Build the REST API documentation
 
 We maintain API documentation with a JSON schema description.
 The schemas are located at [spec/support/api/schemas](https://github.com/ontohub/ontohub-backend/tree/master/spec/support/api/schemas).
@@ -42,8 +42,11 @@ Next, you need to create the documentation server files:
 
 This initialization must be run whenever new schema files are created.
 
-And finally, you can run the API documentation server (the default port is 8000):
+And finally, you can run the API documentation server (the default port is 3002):
 
+    rails apidoc:run
+    # or to change the port:
     PORT=8001 rails apidoc:run
 
+Then, visit http://localhost:3002 to see the REST API documentation.
 This server listens to changes on the JSON schema files and updates the documentation.

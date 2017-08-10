@@ -27,9 +27,10 @@ namespace :apidoc do
 
   desc "Run the API documentation server on port ENV['PORT'] (requires yarn)."
   task :run do
+    port = ENV['PORT'] || '3002'
     pid = Kernel.fork do
       Dir.chdir(APIDOC_DIR) do
-        Kernel.exec('yarn', 'start')
+        Kernel.exec({'PORT' => port}, 'yarn', 'start')
       end
     end
     %w(INT TERM).each do |signal|
