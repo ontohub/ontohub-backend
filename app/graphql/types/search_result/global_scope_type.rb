@@ -4,7 +4,7 @@ Types::SearchResult::GlobalScopeType = GraphQL::ObjectType.define do
   name 'GlobalSearchScope'
   description 'Search results within the global scope'
 
-  field :entries, !types[!Types::SearchResult::GlobalScope::EntryType] do
+  field :entries, !types[!Types::SearchResult::GlobalScope::RankedEntryType] do
     description 'A list of result entries'
   end
 

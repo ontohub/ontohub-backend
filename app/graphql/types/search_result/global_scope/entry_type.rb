@@ -1,17 +1,10 @@
 # frozen_string_literal: true
 
-Types::SearchResult::GlobalScope::EntryType = GraphQL::ObjectType.define do
+Types::SearchResult::GlobalScope::EntryType = GraphQL::UnionType.define do
   name 'GlobalSearchEntry'
-  description 'A search result entry'
+  description 'Possible search result types'
 
-  field :ranking, !types.Float do
-    description <<~DESCRIPTION
-      The ranking of the result entry. The higher the value, the better it
-      matches the search query
-    DESCRIPTION
-  end
-
-  field :entry, !Types::SearchResult::GlobalScope::TargetType do
-    description 'The actual result entry'
-  end
+  possible_types [Types::RepositoryType,
+                  Types::OrganizationType,
+                  Types::UserType]
 end

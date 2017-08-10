@@ -247,15 +247,8 @@ type GlobalSearchCount {
   repositories: Int!
 }
 
-# A search result entry
-type GlobalSearchEntry {
-  # The actual result entry
-  entry: GlobalSearchTarget!
-
-  # The ranking of the result entry. The higher the value, the better it
-  # matches the search query
-  ranking: Float!
-}
+# Possible search result types
+union GlobalSearchEntry = Organization | Repository | User
 
 # Search results within the global scope
 type GlobalSearchScope {
@@ -263,11 +256,8 @@ type GlobalSearchScope {
   count: GlobalSearchCount!
 
   # A list of result entries
-  entries: [GlobalSearchEntry!]!
+  entries: [RankedGlobalSearchEntry!]!
 }
-
-# Possible search result types
-union GlobalSearchTarget = Organization | Repository | User
 
 # Base mutation type
 type Mutation {
@@ -602,6 +592,16 @@ type Query {
 
   # The version of the running backend
   version: Version!
+}
+
+# A search result entry
+type RankedGlobalSearchEntry {
+  # The actual result entry
+  entry: GlobalSearchEntry!
+
+  # The ranking of the result entry. The higher the value, the better it
+  # matches the search query
+  ranking: Float!
 }
 
 # A git reference
