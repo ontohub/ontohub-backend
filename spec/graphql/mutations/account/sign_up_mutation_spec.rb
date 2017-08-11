@@ -18,11 +18,13 @@ RSpec.describe 'signUp mutation',
   let(:variables) { {'user' => user_data, 'captcha' => captcha} }
 
   let(:result) do
-    OntohubBackendSchema.execute(
-      query_string,
-      context: context,
-      variables: variables
-    )
+    perform_enqueued_jobs do
+      OntohubBackendSchema.execute(
+        query_string,
+        context: context,
+        variables: variables
+      )
+    end
   end
 
   let(:query_string) do
