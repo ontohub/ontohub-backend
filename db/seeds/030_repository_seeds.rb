@@ -24,3 +24,13 @@ content_types = %w(ontology model specification mathematical)
              commit_message: "Add #{path}.").create
   end
 end
+
+private_repository =
+  RepositoryCompound.
+    new(owner: OrganizationalUnit.find(kind: 'Organization'),
+        name: 'private_repository',
+        content_type: 'ontology',
+        public_access: false,
+        description: 'This is a dummy private repository.',
+        url_path_method: ModelURLPath.repository)
+private_repository.save
