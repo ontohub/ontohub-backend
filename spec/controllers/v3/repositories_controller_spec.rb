@@ -17,9 +17,9 @@ RSpec.describe V3::RepositoriesController do
     end
 
     describe 'action: show' do
-      before do 
-        get :show, 
-          params: {organizational_unit_id: user.to_param, 
+      before do
+        get :show,
+          params: {organizational_unit_id: user.to_param,
                    repository_id: subject.to_param.sub(%r{\A[^/]*/}, '')}
       end
 
@@ -41,7 +41,7 @@ RSpec.describe V3::RepositoriesController do
 
     describe 'action: show' do
       before do
-        get :index, params: {organizational_unit_id: '', repository_id:''}
+        get :index, params: {organizational_unit_id: '', repository_id: ''}
       end
       it 'Does not find the repository.' do
         expect(response_data['repository']).to be(nil)
