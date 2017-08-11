@@ -5,7 +5,7 @@ namespace :sneakers do
   task run_all: :environment do
     require Rails.root.join('lib/sneakers/worker')
 
-    queues = [:mail].map { |q| Sneakers::Worker.create(q).to_s }.join(',')
+    queues = [:mailers].map { |q| Sneakers::Worker.create(q).to_s }.join(',')
 
     ENV['WORKERS'] = queues
 

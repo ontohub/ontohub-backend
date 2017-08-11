@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-Sneakers.configure Bunny.new
+Sneakers.configure connection: Bunny.new
