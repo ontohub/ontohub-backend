@@ -3,7 +3,7 @@
 namespace :sneakers do
   desc 'Run all sneakers workers'
   task run_all: :environment do
-    require Rails.root.join('lib/sneakers/worker')
+    require Rails.root.join('lib/sneakers/workers')
 
     queues = [:mailers].map { |q| Sneakers::Workers.create(q).to_s }.join(',')
 
