@@ -29,7 +29,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
   subject { result }
 
   before do
-    UsersMailer.deliveries.clear
+    queue_adapter.performed_jobs = []
     subject
   end
 
@@ -38,7 +38,9 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
 
     context 'and is locked' do
       before do
-        user.lock_access!
+        perform_enqueued_jobs do
+          user.lock_access!
+        end
       end
 
       it 'returns true' do
@@ -53,7 +55,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
       end
 
       it 'does not send an email' do
-        expect(UsersMailer.deliveries).to be_empty
+        assert_performed_jobs 0
       end
     end
   end
@@ -66,7 +68,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
     end
 
     it 'does not send an email' do
-      expect(UsersMailer.deliveries).to be_empty
+      assert_performed_jobs 0
     end
   end
 end
