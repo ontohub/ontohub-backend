@@ -52,7 +52,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
       end
 
       it 'does not send an email' do
-        assert_performed_jobs 0
+        expect(performed_jobs).to be_empty
       end
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
     end
 
     it 'does not send an email' do
-      assert_performed_jobs 0
+      expect(performed_jobs).to be_empty
     end
   end
 end

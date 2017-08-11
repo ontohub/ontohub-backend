@@ -92,7 +92,7 @@ RSpec.describe V2::Users::AccountController do
         end
 
         it 'sends a confirmation email and two notification emails' do
-          assert_performed_jobs 3
+          expect(performed_jobs.size).to eq(3)
         end
 
         context 'email changed notification email' do

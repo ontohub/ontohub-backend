@@ -2,7 +2,7 @@
 
 RSpec.shared_examples 'an unlock account email sender' do
   it 'sends an instructions email' do
-    assert_performed_jobs 1
+    expect(performed_jobs.size).to eq(1)
   end
 
   it 'is has the correct recipient' do

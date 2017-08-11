@@ -82,7 +82,7 @@ RSpec.describe V2::Users::SessionsController do
           end
 
           it 'does not send an email' do
-            assert_performed_jobs 0
+            expect(performed_jobs).to be_empty
           end
         end
 
@@ -106,7 +106,7 @@ RSpec.describe V2::Users::SessionsController do
 
           context 'unlock instructions email' do
             it 'sends an instructions email' do
-              assert_performed_jobs 1
+              expect(performed_jobs.size).to eq(1)
             end
 
             it 'is has the correct recipient' do
