@@ -11,11 +11,13 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
   let(:variables) { {} }
 
   let(:result) do
-    OntohubBackendSchema.execute(
-      query_string,
-      context: context,
-      variables: variables
-    )
+    perform_enqueued_jobs do
+      OntohubBackendSchema.execute(
+        query_string,
+        context: context,
+        variables: variables
+      )
+    end
   end
 
   let(:query_string) do
@@ -28,19 +30,14 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
 
   subject { result }
 
-  before do
-    queue_adapter.performed_jobs = []
-    subject
-  end
-
   context 'User exists' do
     let(:variables) { {'email' => user.email} }
 
     context 'and is locked' do
       before do
-        perform_enqueued_jobs do
-          user.lock_access!
-        end
+        user.lock_access!
+        queue_adapter.performed_jobs = []
+        subject
       end
 
       it 'returns true' do
