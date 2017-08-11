@@ -44,7 +44,7 @@ RSpec.describe V2::Users::PasswordsController do
         perform_enqueued_jobs do
           patch :recover_password,
             params: {data: {attributes: {reset_password_token: token,
-                                        password: new_password}}}
+                                         password: new_password}}}
         end
       end
       it { expect(response).to have_http_status(:ok) }
