@@ -2,7 +2,7 @@
 
 module Sneakers
   # Module to contain the created Worker classes
-  module Worker
+  module Workers
     def self.create(queue_name)
       klass = Class.new do
         include Sneakers::Worker
@@ -14,7 +14,7 @@ module Sneakers
           ack!
         end
       end
-      Sneakers::Worker.const_set((queue_name.to_s + 'Worker').camelize, klass)
+      Sneakers::Workers.const_set((queue_name.to_s + 'Worker').camelize, klass)
     end
   end
 end

@@ -22,7 +22,10 @@ RSpec.describe V2::Users::AccountController do
   describe 'POST create' do
     context 'successful', type: :mailer, no_transaction: true do
       before do
-        post :create, params: {data: {attributes: attributes}}
+        queue_adapter.performed_jobs = []
+        perform_enqueued_jobs do
+          post :create, params: {data: {attributes: attributes}}
+        end
       end
       it { expect(response).to have_http_status(:created) }
       it { |example| expect([example, response]).to comply_with_api }
@@ -66,7 +69,10 @@ RSpec.describe V2::Users::AccountController do
 
       context 'successful', type: :mailer, no_transaction: true do
         before do
-          patch :update, params: {data: {attributes: new_attributes}}
+          queue_adapter.performed_jobs = []
+          perform_enqueued_jobs do
+            patch :update, params: {data: {attributes: new_attributes}}
+          end
         end
         it { expect(response).to have_http_status(:ok) }
         %i(display_name encrypted_password).each do |attribute|
@@ -86,7 +92,7 @@ RSpec.describe V2::Users::AccountController do
         end
 
         it 'sends a confirmation email and two notification emails' do
-          expect(UsersMailer.deliveries.size).to eq(3)
+          assert_performed_jobs 3
         end
 
         context 'email changed notification email' do

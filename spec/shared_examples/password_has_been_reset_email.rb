@@ -2,7 +2,7 @@
 
 RSpec.shared_examples 'a password has been reset email sender' do
   it 'sends a notification email' do
-    expect(UsersMailer.deliveries.size).to eq(1)
+    assert_performed_jobs 1
   end
 
   let(:email) { emails[0] }
