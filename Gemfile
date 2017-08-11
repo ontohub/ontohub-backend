@@ -41,11 +41,14 @@ gem 'pry-rails', '~> 0.3.4'
 gem 'pry-rescue', '~> 1.4.4', platform: :mri
 gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
+# Sneakers depends on bunny and has the version requirement
+gem 'bunny'
 gem 'graphql', '~> 1.6.3'
 gem 'graphql-batch', '~> 0.3.3'
 gem 'jwt', '~> 1.5.6'
 gem 'pundit', '~> 1.1.0'
 gem 'recaptcha', '~> 4.3.1'
+gem 'sneakers', '2.5.0'
 
 group :development, :test do
 end
