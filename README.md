@@ -5,12 +5,14 @@
 [![GitHub issues](https://img.shields.io/github/issues/ontohub/ontohub-backend.svg?maxAge=2592000)](https://waffle.io/ontohub/ontohub-backend?source=ontohub%2Fontohub-backend)
 
 # ontohub-backend
-The main Ontohub service that serves the data for the frontend and other clients via the [JSON API](http://jsonapi.org/).
+The main Ontohub service that serves the data for the frontend and other clients via the [GraphQL API](http://graphql.org/).
 
 ## Run the backend
 
-The backend can be started in development mode with `rails server`.
-The backend is then reachable from the browser at [http://localhost:3000](http://localhost:3000).
+You need to have the `postgres` and `rabbitmq` services started. To run the sneakers workers, run in one terminal `rails sneakers:run_all`.
+The backend can then be started (in another terminal) in development mode with `rails server`.
+
+The backend is then reachable from the browser at [http://localhost:3000](http://localhost:3000). The interactive GraphiQL console can be accessed at [http://localhost:3000/graphiql](http://localhost:3000/graphiql).
 
 ## Dependencies
 
