@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 0211c6e50cc618687eb88ebb1a2233d62333820d
+  revision: 3ccfb9c055cc2fd98cf2cbad3a3ed61af96ebba8
   branch: send_user_mails_async
   specs:
     ontohub-models (0.1.0)
@@ -145,7 +145,7 @@ GEM
       rugged (>= 0.25.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    graphiql-rails (1.4.3)
+    graphiql-rails (1.4.4)
       rails
     graphql (1.6.6)
     graphql-batch (0.3.4)
@@ -255,7 +255,7 @@ GEM
     rspec-mocks (3.6.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.6.0)
-    rspec-rails (3.6.0)
+    rspec-rails (3.6.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
