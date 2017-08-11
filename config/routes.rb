@@ -60,6 +60,8 @@ Rails.application.routes.draw do
     get '/:slug',
       controller: 'v3/organizational_units',
       action: 'show'
+    get '/:organizational_unit_id/repositories', controller: 'v3/repositories', action: 'index'
+    get '/:organizational_unit_id/:repository_id', controller: 'v3/repositories', action: 'show'
   end
 
   scope format: false, defaults: {format: :json} do
