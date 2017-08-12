@@ -14,7 +14,7 @@ module Sneakers
           ack!
         end
       end
-      Sneakers::Workers.const_set((queue_name.to_s + 'Worker').camelize, klass)
+      Sneakers::Workers.const_set("#{queue_name}Worker".camelize, klass)
     end
   end
 end
