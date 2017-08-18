@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-# Create RepositoryMemberships with all roles
-roles = %w(admin write read)
-User.all.zip(roles) do |p|
-  Repository.first.add_member(p[0], p[1])
-end
+# Fill ada fixtures repository
+Repository.find(slug: 'ada/fixtures').
+  add_member(User.find(slug: 'bob'), 'admin')
+Repository.find(slug: 'ada/fixtures').
+  add_member(User.find(slug: 'cam'), 'write')
+Repository.find(slug: 'ada/fixtures').
+  add_member(User.find(slug: 'dan'), 'read')
+
+# Fill top secret repository
+
+Repository.find(slug: 'the-league-of-extraordinary-users/top-secret').
+  add_member(User.find(slug: 'eva'), 'read')

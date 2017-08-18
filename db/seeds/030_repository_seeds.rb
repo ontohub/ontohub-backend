@@ -1,27 +1,42 @@
 # frozen_string_literal: true
 
 # Create repositories.
-owner_count = OrganizationalUnit.count
-content_types = %w(ontology model specification mathematical)
-(0..(2 * owner_count - 1)).each do |repo_index|
-  owner = OrganizationalUnit.find(id: repo_index % owner_count + 1)
-  repository =
-    RepositoryCompound.
-      new(owner: owner,
-          name: "repo#{repo_index}",
-          content_type: content_types[repo_index % content_types.size],
-          public_access: true,
-          description: 'This is a dummy repository.',
-          url_path_method: ModelURLPath.repository)
-  repository.save
-end
-
-private_repository =
+organization_fixtures_repo =
   RepositoryCompound.
-    new(owner: OrganizationalUnit.find(kind: 'Organization'),
-        name: 'private_repository',
+    new(owner: Organization.find(slug: 'seed-user-organization'),
+        name: 'Fixtures',
+        content_type: 'model',
+        public_access: true,
+        description: 'This is a fixture repository from the organization.',
+        url_path_method: ModelURLPath.repository)
+organization_fixtures_repo.save
+
+ada_fixtures_repo =
+  RepositoryCompound.
+    new(owner: User.find(slug: 'ada'),
+        name: 'Fixtures',
+        content_type: 'specification',
+        public_access: true,
+        description: 'This is a fixture repository from the user ada.',
+        url_path_method: ModelURLPath.repository)
+ada_fixtures_repo.save
+
+organization_math_repo =
+  RepositoryCompound.
+    new(owner: Organization.find(slug: 'seed-user-organization'),
+        name: 'Math',
+        content_type: 'mathematical',
+        public_access: true,
+        description: 'This is a mathematical repository.',
+        url_path_method: ModelURLPath.repository)
+organization_math_repo.save
+
+top_secret_repo =
+  RepositoryCompound.
+    new(owner: Organization.find(slug: 'the-league-of-extraordinary-users'),
+        name: 'Top Secret',
         content_type: 'ontology',
         public_access: false,
-        description: 'This is a dummy private repository.',
+        description: 'This is a top secret private repository.',
         url_path_method: ModelURLPath.repository)
-private_repository.save
+top_secret_repo.save
