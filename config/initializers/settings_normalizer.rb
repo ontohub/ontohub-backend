@@ -10,6 +10,7 @@ class SettingsNormalizer
 
   def call
     normalize_paths
+    normalize_worker_groups
   end
 
   protected
@@ -35,5 +36,15 @@ class SettingsNormalizer
     path.relative_path_from(Pathname.new('')) if path.relative?
 
     Rails.root.join(path)
+  end
+
+  def normalize_worker_groups
+    groups = @settings.sneakers
+    groups.map do |group|
+      classes = group.classes
+      classes = [classes] unless classes.is_a?(Array)
+      group.classes = classes
+      group
+    end
   end
 end

@@ -8,3 +8,7 @@ jwt:
 # interpreted relative to the application root directory.
 # This directory will be created if it does not exist.
 data_directory: 'data'
+
+sneakers:
+  - classes: MailersWorker
+    workers: 1

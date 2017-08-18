@@ -9,7 +9,7 @@ The main Ontohub service that serves the data for the frontend and other clients
 
 ## Run the backend
 
-You need to have the `postgres` and `rabbitmq` services started. To run the sneakers workers, run in one terminal `rails sneakers:run_all`.
+You need to have the `postgres` and `rabbitmq` services started. To run the sneakers workers, run in one terminal `rails sneakers:run`.
 The backend can then be started (in another terminal) in development mode with `rails server`.
 
 The backend is then reachable from the browser at [http://localhost:3000](http://localhost:3000). The interactive GraphiQL console can be accessed at [http://localhost:3000/graphiql](http://localhost:3000/graphiql).
