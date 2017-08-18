@@ -35,7 +35,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
               path: path,
               size: blob.size,
               loaded_size: blob.size,
-              content: blob.data,
+              content: binary ? Base64.encode64(blob.data) : blob.data,
               encoding: expected_encoding)
     end
   end
@@ -51,7 +51,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
                 path: path,
                 size: blob.size,
                 loaded_size: Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE,
-                content: content,
+                content: binary ? Base64.encode64(content) : content,
                 encoding: expected_encoding)
       end
     end
@@ -67,7 +67,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
                 path: path,
                 size: blob.size,
                 loaded_size: blob.size,
-                content: blob.data,
+                content: binary ? Base64.encode64(blob.data) : blob.data,
                 encoding: expected_encoding)
       end
     end
@@ -81,6 +81,7 @@ RSpec.describe Types::Git::CommitType do
   let(:type) { OntohubBackendSchema.types['Commit'] }
   let(:arguments) { {} }
   let(:resolved_field) { field.resolve(subject, arguments, {}) }
+  let(:binary) { false }
 
   context 'author field' do
     let(:person) { 'author' }
@@ -165,6 +166,7 @@ RSpec.describe Types::Git::CommitType do
     end
 
     context 'on a binary file' do
+      let(:binary) { true }
       let!(:bitmap) do
         <<~BITMAP
           Qk18AAAAAAAAAHYAAAAoAAAAAQAAAAEAAAABAAQAAAAAAAYAAAAsLgAALC4A

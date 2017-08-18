@@ -24,7 +24,7 @@ class GitFile
   end
 
   def content
-    blob&.data
+    blob&.binary ? Base64.encode64(blob&.data) : blob&.data
   end
 
   def encoding

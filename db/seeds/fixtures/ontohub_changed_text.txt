@@ -1,0 +1,2 @@
+The main Ontohub service that serves the data for the frontend and other
+clients via the GraphQL API!

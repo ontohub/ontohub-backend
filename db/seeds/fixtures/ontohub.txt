@@ -1,0 +1,7 @@
+Ontohub
+
+An open source repository engine for ontologies, models and specifications.
+
+Open — based on open source software
+Flexible — supporting OWL, UML, FOL/TPTP, HOL/THF, and more
+Distributed — OMS alignments, mappings, networks, combinations using DOL
