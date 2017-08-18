@@ -41,6 +41,7 @@ RSpec.describe V2::Users::PasswordsController do
       before do
         token = user.send_reset_password_instructions
         queue_adapter.performed_jobs = []
+        UsersMailer.deliveries.clear
         perform_enqueued_jobs do
           patch :recover_password,
             params: {data: {attributes: {reset_password_token: token,

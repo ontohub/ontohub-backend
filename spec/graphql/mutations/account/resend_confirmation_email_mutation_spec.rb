@@ -32,6 +32,7 @@ RSpec.describe 'resendConfirmationEmail mutation',
 
   before do
     queue_adapter.performed_jobs = []
+    UsersMailer.deliveries.clear
     subject
   end
 
@@ -52,6 +53,7 @@ RSpec.describe 'resendConfirmationEmail mutation',
     end
 
     it 'does not send an email' do
+      expect(performed_jobs).to be_empty
       expect(UsersMailer.deliveries).to be_empty
     end
   end

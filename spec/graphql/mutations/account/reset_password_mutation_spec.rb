@@ -39,6 +39,7 @@ RSpec.describe 'resetPassword mutation',
   subject { result }
 
   before do
+    UsersMailer.deliveries.clear
     queue_adapter.performed_jobs = []
     subject
   end

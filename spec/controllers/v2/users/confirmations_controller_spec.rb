@@ -42,6 +42,7 @@ RSpec.describe V2::Users::ConfirmationController do
     type: :mailer, no_transaction: true do
     before do
       queue_adapter.performed_jobs = []
+      UsersMailer.deliveries.clear
       perform_enqueued_jobs do
         post :resend_confirmation_email,
           params: {data: {attributes: {email: user.email}}}

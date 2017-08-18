@@ -3,6 +3,7 @@
 RSpec.shared_examples 'a password reset email sender' do
   it 'sends an instructions email' do
     expect(performed_jobs.size).to eq(1)
+    expect(UsersMailer.deliveries.size).to eq(1)
   end
 
   let(:email) { emails[0] }
