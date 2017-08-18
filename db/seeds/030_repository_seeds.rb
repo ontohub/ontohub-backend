@@ -14,15 +14,6 @@ content_types = %w(ontology model specification mathematical)
           description: 'This is a dummy repository.',
           url_path_method: ModelURLPath.repository)
   repository.save
-
-  user = owner.is_a?(Organization) ? owner.members.first : owner
-  (1..5).each do |file_index|
-    path = "#{file_index}_test.txt"
-    path = "subdir_#{file_index}/#{path}" if file_index <= 2
-    Blob.new(repository: repository, user: user, branch: 'master', path: path,
-             content: "test file ##{file_index}", encoding: 'plain',
-             commit_message: "Add #{path}.").create
-  end
 end
 
 private_repository =
