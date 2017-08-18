@@ -1,23 +1,17 @@
 # frozen_string_literal: true
 
 # Fill seed user organization
-Organization.find(slug: 'seed-user-organization').
-  add_member(User.find(slug: 'ada'), 'admin')
-Organization.find(slug: 'seed-user-organization').
-  add_member(User.find(slug: 'bob'), 'admin')
-Organization.find(slug: 'seed-user-organization').
-  add_member(User.find(slug: 'cam'), 'write')
-Organization.find(slug: 'seed-user-organization').
-  add_member(User.find(slug: 'dan'), 'read')
-Organization.find(slug: 'seed-user-organization').
-  add_member(User.find(slug: 'eva'), 'read')
+organization = Organization.find(slug: 'seed-user-organization')
+organization.add_member(User.find(slug: 'ada'), 'admin')
+organization.add_member(User.find(slug: 'bob'), 'admin')
+organization.add_member(User.find(slug: 'cam'), 'write')
+organization.add_member(User.find(slug: 'dan'), 'read')
+organization.add_member(User.find(slug: 'eva'), 'read')
 
 # Fill extraordinary organization
-Organization.find(slug: 'the-league-of-extraordinary-users').
-  add_member(User.find(slug: 'ada'), 'admin')
-Organization.find(slug: 'the-league-of-extraordinary-users').
-  add_member(User.find(slug: 'bob'), 'admin')
-Organization.find(slug: 'the-league-of-extraordinary-users').
-  add_member(User.find(slug: 'cam'), 'write')
-Organization.find(slug: 'the-league-of-extraordinary-users').
-  add_member(User.find(slug: 'dan'), 'read')
+extra_organization = Organization.
+  find(slug: 'the-league-of-extraordinary-users')
+extra_organization.add_member(User.find(slug: 'ada'), 'admin')
+extra_organization.add_member(User.find(slug: 'bob'), 'admin')
+extra_organization.add_member(User.find(slug: 'cam'), 'write')
+extra_organization.add_member(User.find(slug: 'dan'), 'read')
