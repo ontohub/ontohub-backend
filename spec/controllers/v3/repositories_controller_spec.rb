@@ -14,6 +14,14 @@ RSpec.describe V3::RepositoriesController do
 
       it { expect(response).to have_http_status(:ok) }
       it { |example| expect([example, response]).to comply_with_rest_api }
+
+      it 'finds the organizational unit' do
+        expect(response_data['organizationalUnit']).not_to be(nil)
+      end
+      it 'finds the repository' do
+        expect(response_data['organizationalUnit']['repositories']).
+          not_to be(nil)
+      end
     end
 
     describe 'action: show' do
@@ -25,6 +33,10 @@ RSpec.describe V3::RepositoriesController do
 
       it { expect(response).to have_http_status(:ok) }
       it { |example| expect([example, response]).to comply_with_rest_api }
+
+      it 'finds the repository' do
+        expect(response_data['repository']).not_to be(nil)
+      end
     end
   end
 
@@ -33,20 +45,22 @@ RSpec.describe V3::RepositoriesController do
       before do
         get :index, params: {organizational_unit_id: ''}
       end
-      it 'Does not find the organizational unit.' do
+      it 'does not find the organizational unit' do
         expect(response_data['organizationalUnit']).to be(nil)
       end
       it { expect(response).to have_http_status(:ok) }
+      it { |example| expect([example, response]).to comply_with_rest_api }
     end
 
     describe 'action: show' do
       before do
-        get :index, params: {organizational_unit_id: '', repository_id: ''}
+        get :show, params: {organizational_unit_id: '', repository_id: ''}
       end
-      it 'Does not find the repository.' do
+      it 'does not find the repository' do
         expect(response_data['repository']).to be(nil)
       end
       it { expect(response).to have_http_status(:ok) }
+      it { |example| expect([example, response]).to comply_with_rest_api }
     end
   end
 end

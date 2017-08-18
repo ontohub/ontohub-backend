@@ -7,11 +7,18 @@
       "show": {
         "properties": {
           "data": {
-            "type": "object",
-            "required": ["repository"],
-            "properties": {
-              "repository": {"$ref": "#/definitions/repository"}
-            }
+            "oneOf": [ 
+              {
+                "type": "object",
+                "required": ["repository"],
+                "properties": {
+                  "repository": {"$ref": "#/definitions/repository"}
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         }
       },
