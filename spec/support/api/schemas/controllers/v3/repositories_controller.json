@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "V3 Repositories",
+  "description": "V3 Repositories Controller",
+  "definitions": {
+    "actions": {
+      "show": {
+        "properties": {
+          "data": {
+            "oneOf": [ 
+              {
+                "type": "object",
+                "required": ["repository"],
+                "properties": {
+                  "repository": {"$ref": "#/definitions/repository"}
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "index": {
+        "properites": {
+          "data": {
+            "type": "object",
+            "required": ["organisationalUnit"],
+            "properties": {
+              "type": "object",
+              "required": ["id","repositories"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "ada",
+                  "description": "ID of the organizational unit"
+                },
+                "repositories": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/repository"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "id": {
+      "type": "string",
+      "example": "ado/repo0",
+      "description": "The id of the repository"
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit"
+    },
+    "repository": {
+      "properties": {
+        "repository": {
+          "type": "object",
+          "required": ["branches", "contentType", "defaultBranch", "description", "id", "name", "owner", "visibility"],
+          "properties": {
+            "branches": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "master",
+                "description": "Branches of the repository"
+              }
+            },
+            "contentType": {
+              "type": "string",
+              "enum": ["ontology", "model", "specification", "mathematical"],
+              "example": "model",
+              "description": "Type of the repository"
+            },
+            "defaultBranch": {
+              "type": "string",
+              "example": "master",
+              "description": "Default branch of the repository"
+            },
+            "description": {
+              "type": "string",
+              "example": "This is a dummy repository.",
+              "description": "Description of the repository"
+            },
+            "id": {
+              "$ref": "#/definitions/id"
+            },
+            "name": {
+              "type": "string",
+              "example": "repo0",
+              "description": "ID of the repository"
+            },
+            "owner": {
+              "type": "object",
+              "required": ["id"],
+              "properties": {
+                "id": {
+                  "$ref": "#/definitions/organizational_unit_id"
+                }
+              }
+            },
+            "visibility": {
+              "type": "string",
+              "enum": ["public","private"],
+              "example": "public",
+              "description": "Visibility of the repository"
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": { "$ref": "#/definitions/repository/properties" },
+  "links": [
+    {
+      "title": "Show",
+      "description": "Show the details of a specific repository. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/v3/{#/definitions/id}",
+      "targetSchema": { "$ref": "#/definitions/actions/show" }
+    },
+    {
+      "title": "Index",
+      "description": "List all repositories of an organizational unit. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/v3/{#/definitions/organizational_unit_id}",
+      "targetSchema": { "$ref": "#/definitions/actions/index" }
+    }
+  ]
+}
