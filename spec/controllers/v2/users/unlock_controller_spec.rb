@@ -11,8 +11,11 @@ RSpec.describe V2::Users::UnlockController do
 
   describe 'POST resend_unlocking_email', type: :mailer, no_transaction: true do
     before do
-      post :resend_unlocking_email,
-        params: {data: {attributes: {email: user.email}}}
+      queue_adapter.performed_jobs = []
+      perform_enqueued_jobs do
+        post :resend_unlocking_email,
+          params: {data: {attributes: {email: user.email}}}
+      end
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }

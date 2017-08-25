@@ -7,6 +7,7 @@ default: &default
   template: template0
   encoding: utf8 # Optional
   locale: en_US.UTF-8 # Optional
+  pool: 10
 
 development:
   <<: *default

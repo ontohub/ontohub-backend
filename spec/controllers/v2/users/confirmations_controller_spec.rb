@@ -41,9 +41,12 @@ RSpec.describe V2::Users::ConfirmationController do
   describe 'POST resend_confirmation_email',
     type: :mailer, no_transaction: true do
     before do
+      queue_adapter.performed_jobs = []
       UsersMailer.deliveries.clear
-      post :resend_confirmation_email,
-        params: {data: {attributes: {email: user.email}}}
+      perform_enqueued_jobs do
+        post :resend_confirmation_email,
+          params: {data: {attributes: {email: user.email}}}
+      end
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }

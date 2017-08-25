@@ -11,11 +11,13 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
   let(:variables) { {} }
 
   let(:result) do
-    OntohubBackendSchema.execute(
-      query_string,
-      context: context,
-      variables: variables
-    )
+    perform_enqueued_jobs do
+      OntohubBackendSchema.execute(
+        query_string,
+        context: context,
+        variables: variables
+      )
+    end
   end
 
   let(:query_string) do
@@ -30,7 +32,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
 
   before do
     UsersMailer.deliveries.clear
-    subject
+    queue_adapter.performed_jobs = []
   end
 
   context 'User exists' do
@@ -39,6 +41,9 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
     context 'and is locked' do
       before do
         user.lock_access!
+        queue_adapter.performed_jobs = []
+        UsersMailer.deliveries.clear
+        subject
       end
 
       it 'returns true' do
@@ -53,6 +58,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
       end
 
       it 'does not send an email' do
+        expect(performed_jobs).to be_empty
         expect(UsersMailer.deliveries).to be_empty
       end
     end
@@ -66,6 +72,7 @@ RSpec.describe 'resendUnlockAccountEmail mutation',
     end
 
     it 'does not send an email' do
+      expect(performed_jobs).to be_empty
       expect(UsersMailer.deliveries).to be_empty
     end
   end

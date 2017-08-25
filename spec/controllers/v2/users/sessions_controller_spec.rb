@@ -66,12 +66,15 @@ RSpec.describe V2::Users::SessionsController do
         context 'first failed attempt' do
           before do
             User.maximum_attempts = 2
-            post :create,
-              params: {user: {
-                name: user.to_param,
-                password: "bad-#{user.password}",
-              }},
-              format: :json
+            queue_adapter.performed_jobs = []
+            perform_enqueued_jobs do
+              post :create,
+                params: {user: {
+                  name: user.to_param,
+                  password: "bad-#{user.password}",
+                }},
+                format: :json
+            end
           end
 
           it 'does not lock the user' do
@@ -79,6 +82,7 @@ RSpec.describe V2::Users::SessionsController do
           end
 
           it 'does not send an email' do
+            expect(performed_jobs).to be_empty
             expect(UsersMailer.deliveries).to be_empty
           end
         end
@@ -86,12 +90,15 @@ RSpec.describe V2::Users::SessionsController do
         context 'last failed attempt' do
           before do
             User.maximum_attempts = 1
-            post :create,
-              params: {user: {
-                name: user.to_param,
-                password: "bad-#{user.password}",
-              }},
-              format: :json
+            queue_adapter.performed_jobs = []
+            perform_enqueued_jobs do
+              post :create,
+                params: {user: {
+                  name: user.to_param,
+                  password: "bad-#{user.password}",
+                }},
+                format: :json
+            end
           end
 
           it 'locks the user' do
@@ -100,6 +107,7 @@ RSpec.describe V2::Users::SessionsController do
 
           context 'unlock instructions email' do
             it 'sends an instructions email' do
+              expect(performed_jobs.size).to eq(1)
               expect(UsersMailer.deliveries.size).to eq(1)
             end
 

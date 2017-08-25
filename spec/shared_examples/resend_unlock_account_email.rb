@@ -2,6 +2,7 @@
 
 RSpec.shared_examples 'an unlock account email sender' do
   it 'sends an instructions email' do
+    expect(performed_jobs.size).to eq(1)
     expect(UsersMailer.deliveries.size).to eq(1)
   end
 

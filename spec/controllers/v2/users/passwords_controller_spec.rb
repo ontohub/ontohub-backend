@@ -22,8 +22,11 @@ RSpec.describe V2::Users::PasswordsController do
   describe 'POST resend_password_recovery_email',
     type: :mailer, no_transaction: true do
     before do
-      post :resend_password_recovery_email,
-        params: {data: {attributes: {email: user.email}}}
+      queue_adapter.performed_jobs = []
+      perform_enqueued_jobs do
+        post :resend_password_recovery_email,
+          params: {data: {attributes: {email: user.email}}}
+      end
     end
     it { expect(response).to have_http_status(:created) }
     it { |example| expect([example, response]).to comply_with_api }
@@ -37,10 +40,13 @@ RSpec.describe V2::Users::PasswordsController do
     context 'successful' do
       before do
         token = user.send_reset_password_instructions
+        queue_adapter.performed_jobs = []
         UsersMailer.deliveries.clear
-        patch :recover_password,
-          params: {data: {attributes: {reset_password_token: token,
-                                       password: new_password}}}
+        perform_enqueued_jobs do
+          patch :recover_password,
+            params: {data: {attributes: {reset_password_token: token,
+                                         password: new_password}}}
+        end
       end
       it { expect(response).to have_http_status(:ok) }
       it { |example| expect([example, response]).to comply_with_api }

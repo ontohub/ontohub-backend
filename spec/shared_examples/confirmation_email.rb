@@ -2,6 +2,7 @@
 
 RSpec.shared_examples 'a confirmation email sender' do
   it 'sends an email' do
+    expect(performed_jobs.size).to eq(1)
     expect(UsersMailer.deliveries.size).to eq(1)
   end
 

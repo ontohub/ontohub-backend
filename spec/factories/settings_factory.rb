@@ -11,6 +11,9 @@ FactoryGirl.define do
       settings.jwt.expiration_hours = 24
 
       settings.data_directory = 'tmp/data'
+
+      worker_group = OpenStruct.new(workers: 2, classes: 'ApplicationWorker')
+      settings.sneakers = [worker_group]
     end
   end
 end

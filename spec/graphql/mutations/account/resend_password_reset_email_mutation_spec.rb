@@ -11,11 +11,13 @@ RSpec.describe 'resendPasswordResetEmail mutation',
   let(:variables) { {} }
 
   let(:result) do
-    OntohubBackendSchema.execute(
-      query_string,
-      context: context,
-      variables: variables
-    )
+    perform_enqueued_jobs do
+      OntohubBackendSchema.execute(
+        query_string,
+        context: context,
+        variables: variables
+      )
+    end
   end
 
   let(:query_string) do
@@ -29,6 +31,7 @@ RSpec.describe 'resendPasswordResetEmail mutation',
   subject { result }
 
   before do
+    queue_adapter.performed_jobs = []
     UsersMailer.deliveries.clear
     subject
   end
@@ -50,6 +53,7 @@ RSpec.describe 'resendPasswordResetEmail mutation',
     end
 
     it 'does not send an email' do
+      expect(performed_jobs).to be_empty
       expect(UsersMailer.deliveries).to be_empty
     end
   end

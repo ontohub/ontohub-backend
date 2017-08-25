@@ -88,5 +88,35 @@ RSpec.describe(SettingsValidator) do
         expect(subject.errors).to include('data_directory')
       end
     end
+
+    context 'sneakers' do
+      it 'is not an Array type' do
+        settings.sneakers = 'bad'
+        subject.call
+        expect(subject.errors).to include('sneakers')
+      end
+
+      context 'workers' do
+        it 'is not a Numeric type' do
+          settings.sneakers = [OpenStruct.new(workers: 'bad')]
+          subject.call
+          expect(subject.errors).to include('sneakers[0].workers')
+        end
+      end
+
+      context 'classes' do
+        it 'is not an Array or String type' do
+          settings.sneakers = [OpenStruct.new(classes: 123)]
+          subject.call
+          expect(subject.errors).to include('sneakers[0].classes')
+        end
+
+        it 'is not a valid worker class' do
+          settings.sneakers = [OpenStruct.new(classes: 'BadClass')]
+          subject.call
+          expect(subject.errors).to include('sneakers[0].classes[0]')
+        end
+      end
+    end
   end
 end
