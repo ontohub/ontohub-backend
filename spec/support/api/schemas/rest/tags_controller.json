@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Rest Tags",
+  "description": "Rest Tags Controller",
+  "definitions": {
+    "actions": {
+      "show": {
+        "properties": {
+          "data": {
+            "oneOf": [ 
+              {
+                "type": "object",
+                "required": ["repository"],
+                "properties": {
+                  "repository": {"$ref": "#/definitions/repository"}
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "index": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["repository"],
+            "properties": {
+              "repository": {
+                "required": ["tags"],
+                "properties": {
+                  "branches": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/name"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "id": {
+      "type": "string",
+      "example": "ada/fixtures",        
+      "description": "The id of the repository"
+    },
+    "repository": {
+      "properties": {
+        "repository": {
+          "type": "object",
+          "required": ["tag"],
+          "properties": {
+            "tag": {
+              "type": "object",
+              "requiered": ["name", "target", "annotation"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "1.0",
+                  "description": "The name of the tag"
+                },
+                "target": {
+                  "type": "object",
+                  "required": ["id"],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "498875f01d2f57f01a83338d80f0fd0b05b39eb4",
+                      "description": "The ID of the commit that the tag points to"
+                    }
+                  }
+                },
+                "annotation": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "example": "my first annotated tag",
+                      "description": "Annotation of the tag"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": { "$ref": "#/definitions/repository/properties" },
+  "links": [
+    {
+      "title": "Show",
+      "description": "Show the details of a specific tag. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/{#/definitions/id}",
+      "targetSchema": { "$ref": "#/definitions/actions/show" }
+    },
+    {
+      "title": "Index",
+      "description": "List all tags of a repository Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/{#/definitions/organizational_unit_id}",
+      "targetSchema": { "$ref": "#/definitions/actions/index" }
+    }
+  ]
+}
