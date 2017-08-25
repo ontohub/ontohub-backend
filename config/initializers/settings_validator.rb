@@ -4,7 +4,9 @@
 # contain two classes: SettingsValidator and SettingsPresenceValidator.
 
 # Validates the settings and exits if they are invalid.
+# rubocop:disable ClassLength
 class SettingsValidator
+  # rubocop:enable ClassLength
   ERROR_MESSAGE_HEADER = <<~MSG
     The settings are invalid! Can not start the application.
     Please set valid values in config/settings[.local].yml or
@@ -42,6 +44,7 @@ class SettingsValidator
     check_server_url
     check_jwt_expiration_hours
     check_data_path
+    check_sneakers_config
   end
 
   def prepare_error_messages
@@ -93,23 +96,54 @@ class SettingsValidator
     validate_directory('data_directory', @settings.data_directory)
   end
 
+  def check_sneakers_config
+    return unless validate_type_array('sneakers', @settings.sneakers)
+    @settings.sneakers.map.with_index do |group, idx|
+      validate_type_numeric("sneakers[#{idx}].workers", group.workers)
+      validate_type_array_or_string("sneakers[#{idx}].classes", group.classes)
+
+      Array(group.classes).map.with_index do |klass, klass_idx|
+        validate_worker_class("sneakers[#{idx}].classes[#{klass_idx}]", klass)
+      end
+    end
+  end
+
   # Validator methods
   def validate_directory(key, value)
-    add_error(key, ['is not a directory', value]) unless File.directory?(value)
+    return true if File.directory?(value)
+    add_error(key, ['is not a directory', value])
   end
 
   def validate_presence(key, value)
-    add_error(key, ['is not set', value.inspect]) if value.nil?
+    return true unless value.nil?
+    add_error(key, ['is not set', value.inspect])
   end
 
   def validate_type_numeric(key, value)
-    return if value.is_a?(Numeric)
+    return true if value.is_a?(Numeric)
     add_error(key, ['is not a number', value.inspect])
   end
 
   def validate_type_string(key, value)
-    return if value.is_a?(String)
+    return true if value.is_a?(String)
     add_error(key, ['is not a string', value.inspect])
+  end
+
+  def validate_type_array(key, value)
+    return true if value.is_a?(Array)
+    add_error(key, ['is not an array', value.inspect])
+  end
+
+  def validate_type_array_or_string(key, value)
+    return true if value.is_a?(Array) || value.is_a?(String)
+    add_error(key, ['is not an array or a string', value.inspect])
+  end
+
+  def validate_worker_class(key, value)
+    worker_class = value.constantize
+    return true if worker_class.instance_methods.include?(:work)
+  rescue
+    add_error(key, ['is not a valid worker class', value.inspect])
   end
 
   # Helper methods
@@ -117,6 +151,7 @@ class SettingsValidator
     errors = @errors[key] || []
     errors << error
     @errors[key] = errors
+    false
   end
 end
 
@@ -130,6 +165,7 @@ class SettingsPresenceValidator < SettingsValidator
       'jwt' => @settings.jwt,
       'jwt.expiration_hours' => @settings.jwt.expiration_hours,
       'data_directory' => @settings.data_directory,
+      'sneakers' => @settings.sneakers,
     }.each do |key, value|
       validate_presence(key, value)
     end

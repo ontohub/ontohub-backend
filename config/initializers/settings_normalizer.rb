@@ -41,10 +41,7 @@ class SettingsNormalizer
   def normalize_worker_groups
     groups = @settings.sneakers
     groups.map do |group|
-      classes = group.classes
-      classes = [classes] unless classes.is_a?(Array)
-      group.classes = classes
-      group
+      group.tap { |g| g.classes = Array(g.classes) }
     end
   end
 end

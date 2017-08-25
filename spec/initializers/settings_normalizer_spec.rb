@@ -33,4 +33,11 @@ RSpec.describe(SettingsNormalizer) do
       end
     end
   end
+
+  context 'normalize_worker_groups' do
+    it 'makes a classes string to an array' do
+      subject.call
+      expect(settings.sneakers[0].classes).to be_a(Array)
+    end
+  end
 end

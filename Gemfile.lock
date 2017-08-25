@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 5f257ec1ed475dfddfc5ad9aba58318723bab2e4
+  revision: a4ef0c09abaaa6280a492e0376cbb99b838b1bc7
   branch: send_user_mails_async
   specs:
     ontohub-models (0.1.0)
@@ -25,6 +25,7 @@ GIT
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 0.9.14)
       sequel_pg (~> 1.7.0)
+      sequel_postgresql_triggers (~> 1.3.0)
 
 GIT
   remote: git://github.com/ruby-json-schema/json-schema.git
@@ -79,8 +80,8 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.1)
-      public_suffix (~> 2.0, >= 2.0.2)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     amq-protocol (2.2.0)
     arel (8.0.0)
     ast (2.3.0)
@@ -137,7 +138,7 @@ GEM
       railties (>= 3.0.0)
     faker (1.8.4)
       i18n (~> 0.5)
-    faraday (0.13.0)
+    faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     github-linguist (5.1.0)
@@ -192,8 +193,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.4.2)
-      byebug (~> 9.0)
+    pry-byebug (3.4.3)
+      byebug (>= 9.0, < 9.1)
       pry (~> 0.10)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
@@ -203,7 +204,7 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    public_suffix (2.0.5)
+    public_suffix (3.0.0)
     puma (3.10.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -288,6 +289,8 @@ GEM
     sequel_pg (1.7.0)
       pg (>= 0.8.0)
       sequel (>= 4.0.0)
+    sequel_postgresql_triggers (1.3.0)
+      sequel
     serverengine (1.5.11)
       sigdump (~> 0.2.2)
     sigdump (0.2.4)
