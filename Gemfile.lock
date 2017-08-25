@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: a4ef0c09abaaa6280a492e0376cbb99b838b1bc7
-  branch: send_user_mails_async
+  revision: 15372ccfb9c503dcc431b8599d8acb0f91a16fb9
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
