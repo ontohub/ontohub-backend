@@ -21,6 +21,11 @@ Types::UserType = GraphQL::ObjectType.define do
     property :email_hash
   end
 
+  field :publicKeys, !types[!Types::PublicKeyType] do
+    description "List of a user's SSH public keys"
+    property :public_keys
+  end
+
   field :organizations, !types[!Types::OrganizationType] do
     description 'List of organizations the user is a member of'
 

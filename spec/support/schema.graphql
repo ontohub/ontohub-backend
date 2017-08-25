@@ -261,6 +261,12 @@ type GlobalSearchScope {
 
 # Base mutation type
 type Mutation {
+  # Adds a new SSH public key
+  addPublicKey(
+    # The public key to add
+    key: String!
+  ): PublicKey
+
   # Creates a new commit
   commit(
     # The information of the commit
@@ -351,6 +357,12 @@ type Mutation {
 
     # The repository to delete the tag from
     repositoryId: ID!
+  ): Boolean
+
+  # Removes an SSH public key
+  removePublicKey(
+    # The name of the public key to remove
+    name: String!
   ): Boolean
 
   # Resends the confirmation email to a user
@@ -567,6 +579,15 @@ interface OrganizationalUnit {
   ): [Repository!]!
 }
 
+# A SSH public key
+type PublicKey {
+  # The actual SSH public key
+  key: String!
+
+  # Name of the key
+  name: String!
+}
+
 # Base query type
 type Query {
   # The currently signed in user
@@ -781,6 +802,9 @@ type User implements OrganizationalUnit {
     # Skip the first n organizations
     skip: Int = 0
   ): [Organization!]!
+
+  # List of a user's SSH public keys
+  publicKeys: [PublicKey!]!
 
   # List of repositories owned by this organizational unit
   repositories(

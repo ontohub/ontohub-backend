@@ -25,7 +25,7 @@ gem 'rack-cors'
 # * `app/graphql/mutations/unlock_account_mutation.rb`
 # when the models bring in a new version of Devise
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: 'master'
+                      branch: 'add_public_key_validations_and_tests'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'
@@ -42,6 +42,7 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
 # Sneakers depends on bunny and has the version requirement
 gem 'bunny'
+gem 'filelock', '~> 1.1.1'
 gem 'graphql', '~> 1.6.3'
 gem 'graphql-batch', '~> 0.3.3'
 gem 'jwt', '~> 1.5.6'
