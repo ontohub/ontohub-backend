@@ -7,8 +7,7 @@ organization_fixtures_repo =
         name: 'Fixtures',
         content_type: 'model',
         public_access: true,
-        description: 'This is a fixture repository from the organization.',
-        url_path_method: ModelURLPath.repository)
+        description: 'This is a fixture repository from the organization.')
 organization_fixtures_repo.save
 
 ada_fixtures_repo =
@@ -17,8 +16,7 @@ ada_fixtures_repo =
         name: 'Fixtures',
         content_type: 'specification',
         public_access: true,
-        description: 'This is a fixture repository from the user ada.',
-        url_path_method: ModelURLPath.repository)
+        description: 'This is a fixture repository from the user ada.')
 ada_fixtures_repo.save
 
 organization_math_repo =
@@ -27,8 +25,7 @@ organization_math_repo =
         name: 'Math',
         content_type: 'mathematical',
         public_access: true,
-        description: 'This is a mathematical repository.',
-        url_path_method: ModelURLPath.repository)
+        description: 'This is a mathematical repository.')
 organization_math_repo.save
 
 top_secret_repo =
@@ -37,6 +34,5 @@ top_secret_repo =
         name: 'Top Secret',
         content_type: 'ontology',
         public_access: false,
-        description: 'This is a top secret private repository.',
-        url_path_method: ModelURLPath.repository)
+        description: 'This is a top secret private repository.')
 top_secret_repo.save

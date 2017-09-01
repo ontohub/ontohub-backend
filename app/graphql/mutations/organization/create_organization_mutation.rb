@@ -16,8 +16,7 @@ module Mutations
     # add the current user as a member
     class CreateOrganizationResolver
       def call(_root, arguments, context)
-        params = arguments[:data].to_h.
-          merge(url_path_method: ModelURLPath.organization)
+        params = arguments[:data].to_h
         organization = ::Organization.new(params)
 
         organization.db.transaction do

@@ -236,15 +236,7 @@ class MultiBlob
 
   def file_options(file)
     path = file[:action] == :mkdir ? "#{file[:path]}/.gitkeep" : file[:path]
-    {path: path,
-     url_path_method: ->(file_version) { url_path(file_version) }}
-  end
-
-  def url_path(file_version)
-    ['', # this empty string adds the leading slash
-     repository.to_param,
-     'ref', file_version.commit_sha,
-     'tree', file_version.path].join('/')
+    {path: path}
   end
 
   def commit_info

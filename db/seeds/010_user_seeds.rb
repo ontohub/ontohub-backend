@@ -10,8 +10,7 @@
  {name: 'flo', role: 'user'}].each do |userinfo|
   user = User.new(userinfo.
                   merge(email: "#{userinfo[:name]}@example.com",
-                        role: userinfo[:role],
-                        url_path_method: ModelURLPath.user))
+                        role: userinfo[:role]))
   user.password = 'changemenow'
   user.confirmed_at = Time.now
   user.save
