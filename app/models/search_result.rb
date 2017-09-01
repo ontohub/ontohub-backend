@@ -5,6 +5,7 @@
 class SearchResult
   include ActiveModel::Model
 
+  attr_reader :count, :entries
   attr_accessor :repositories, :organizational_units,
                 :repositories_count, :organizational_units_count,
                 :results_count
