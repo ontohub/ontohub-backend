@@ -42,9 +42,21 @@ Rails.application.routes.draw do
   # REST controller actions
   allow_double_slashes_in_routes do
     scope format: false, defaults: {format: :json} do
+      # Add mappings for Devise, but skip all Devise-routes
       devise_for :users,
         skip: %i(registrations confirmations sessions unlocks passwords)
-      # Devise.add_mapping(:users, {})
+
+      # Add routes to a no-op action to create URL-helpers that are used in
+      # confirmation, password-reset and unlock emails
+      scope 'account' do
+        get 'confirm-email',
+          controller: 'rest/application', action: 'no_op', as: :confirmation
+        get 'edit-password',
+          controller: 'rest/application', action: 'no_op', as: :edit_password
+        get 'unlock',
+          controller: 'rest/application', action: 'no_op', as: :unlock
+      end
+
       root to: 'rest/version#show'
 
       get 'version',

@@ -8,5 +8,9 @@ module Rest
     context do
       {current_user: current_user}
     end
+
+    def no_op
+      render status: :no_content
+    end
   end
 end
