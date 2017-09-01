@@ -2,7 +2,7 @@
 
 # This class combines the Repository model and the Git library.
 # It forwards model methods directly to the Repository object.
-class RepositoryCompound < ActiveModelSerializers::Model
+class RepositoryCompound
   class << self
     def find(*args)
       repository = Repository.find(*args)

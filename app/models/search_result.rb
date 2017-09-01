@@ -2,7 +2,9 @@
 
 # The SearchResult is a non-persistant object that groups models that can be
 # searched.
-class SearchResult < ActiveModelSerializers::Model
+class SearchResult
+  include ActiveModel::Model
+
   attr_accessor :repositories, :organizational_units,
                 :repositories_count, :organizational_units_count,
                 :results_count
