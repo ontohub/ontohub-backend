@@ -9,10 +9,6 @@ class RepositoryCompound < ActiveModelSerializers::Model
       wrap(repository) if repository
     end
 
-    def where(*args)
-      Repository.where(*args).map { |repository| wrap(repository) }
-    end
-
     def wrap(repository)
       return repository if repository.is_a?(RepositoryCompound)
       # :nocov:
@@ -58,14 +54,6 @@ class RepositoryCompound < ActiveModelSerializers::Model
 
   def git
     @git ||= Gitlab::Git::Wrapper.new(git_path) unless repository.nil?
-  end
-
-  def url(prefix)
-    "#{prefix.sub(%r{/$}, '')}#{url_path}"
-  end
-
-  def url_path
-    "/#{repository.to_param}"
   end
 
   protected

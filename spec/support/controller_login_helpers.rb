@@ -19,6 +19,7 @@ module ControllerLoginHelpers
     def create_user_and_set_token_header
       user = FactoryGirl.create(:user)
       set_token_header(user)
+      user
     end
 
     # rubocop:disable Style/AccessorMethodName
