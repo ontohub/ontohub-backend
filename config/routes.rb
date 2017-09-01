@@ -59,14 +59,17 @@ Rails.application.routes.draw do
 
       root to: 'rest/version#show'
 
-      get 'version',
-        controller: 'rest/version', action: 'show'
-      get ':slug',
-        controller: 'rest/organizational_units', action: 'show'
-      get ':organizational_unit_id/repositories',
-        controller: 'rest/repositories', action: 'index'
-      get ':organizational_unit_id/:repository_id',
-        controller: 'rest/repositories', action: 'show'
+      get 'version', controller: 'rest/version', action: 'show'
+
+      get ':slug', controller: 'rest/organizational_units', action: 'show'
+
+      scope ':organizational_unit_id' do
+        get 'repositories', controller: 'rest/repositories', action: 'index'
+
+        scope ':repository_id' do
+          get '/', controller: 'rest/repositories', action: 'show'
+        end
+      end
     end
   end
 end
