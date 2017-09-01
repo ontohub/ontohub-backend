@@ -43,8 +43,14 @@ Rails.application.routes.draw do
   allow_double_slashes_in_routes do
     scope format: false, defaults: {format: :json} do
       # Add mappings for Devise, but skip all Devise-routes
-      devise_for :users,
-        skip: %i(registrations confirmations sessions unlocks passwords)
+      # We exclude these Devise mappings from these rake tasks because they
+      # load the models. When loading the models, the database needs to exist,
+      # or else it throws an error.
+      unless rake_task?(%w(db:create db:migrate db:drop
+                           db:recreate db:recreate:seed))
+        devise_for :users,
+          skip: %i(registrations confirmations sessions unlocks passwords)
+      end
 
       # Add routes to a no-op action to create URL-helpers that are used in
       # confirmation, password-reset and unlock emails
