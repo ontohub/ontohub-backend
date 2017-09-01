@@ -16,8 +16,7 @@ module Mutations
     # GraphQL mutation to create a new repository
     class CreateRepositoryResolver
       def call(_root, arguments, _context)
-        params = arguments[:data].to_h.
-          merge(url_path_method: ModelURLPath.repository)
+        params = arguments[:data].to_h
         params['owner'] = OrganizationalUnit.find(slug: params['owner'])
         params['public_access'] = params.delete('visibility') == 'public'
         repository = RepositoryCompound.new(params)

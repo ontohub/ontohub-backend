@@ -11,7 +11,6 @@ module AccountMethods
   # This is overwriting the original method.
   def build_resource(hash = nil)
     self.resource = User.new_with_session(hash || {}, session)
-    resource.url_path_method = ModelURLPath.user
     resource.role ||= 'user'
     resource.valid?
     return if DISABLE_CAPTCHA || captcha_ok?
