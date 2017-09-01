@@ -6,8 +6,10 @@ Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
   description 'Base mutation type'
 
+  field :addPublicKey, Mutations::Account::AddPublicKeyMutation
   field :confirmEmail, Mutations::Account::ConfirmEmailMutation
   field :deleteAccount, Mutations::Account::DeleteAccountMutation
+  field :removePublicKey, Mutations::Account::RemovePublicKeyMutation
   field :resendConfirmationEmail,
         Mutations::Account::ResendConfirmationEmailMutation
   field :resendPasswordResetEmail,

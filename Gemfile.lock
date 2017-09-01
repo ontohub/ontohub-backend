@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: b5221d1e9194247a2faa9fcd82224c5336fb0633
+  revision: 5c43e364fd84c2022361f72e44cceb4a126e0eb7
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -133,6 +133,7 @@ GEM
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
+    filelock (1.1.1)
     github-linguist (5.1.0)
       charlock_holmes (~> 0.7.3)
       escape_utils (~> 1.1.0)
@@ -332,6 +333,7 @@ DEPENDENCIES
   database_cleaner (~> 1.6.1)
   factory_girl_rails (~> 4.8.0)
   faker (~> 1.8.4)
+  filelock (~> 1.1.1)
   gitlab_git!
   graphiql-rails
   graphql (~> 1.6.3)
