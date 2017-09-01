@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe V3::VersionController do
+RSpec.describe Rest::VersionController do
   describe 'action: show' do
     before do
       Version # rubocop:disable Lint/Void

@@ -42,7 +42,13 @@ Rails.application.routes.draw do
   # REST controller actions
   allow_double_slashes_in_routes do
     scope format: false, defaults: {format: :json} do
-      get 'version', controller: 'rest/version', action: 'show'
+      devise_for :users,
+        skip: %i(registrations confirmations sessions unlocks passwords)
+      # Devise.add_mapping(:users, {})
+      root to: 'rest/version#show'
+
+      get 'version',
+        controller: 'rest/version', action: 'show'
       get ':slug',
         controller: 'rest/organizational_units', action: 'show'
       get ':organizational_unit_id/repositories',

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "V3 Version",
-  "description": "V3 Version Controller",
+  "title": "Rest Version",
+  "description": "Rest Version Controller",
   "type": "object",
   "required": ["data"],
   "definitions": {

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module V3
+module Rest
   # Handles requests for version show operations
-  class VersionController < V3::ApplicationController
+  class VersionController < Rest::ApplicationController
     graphql :show do
       query <<-QUERY
         query Version {

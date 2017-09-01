@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe V3::OrganizationalUnitsController do
+RSpec.describe Rest::OrganizationalUnitsController do
   let!(:user) { create :user }
   let!(:organization) { create :organization }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module V3
+module Rest
   # Provides the DSL to use the Graphql API from the REST controllers
   module DSL
     # Contains Graphql options for one REST actions

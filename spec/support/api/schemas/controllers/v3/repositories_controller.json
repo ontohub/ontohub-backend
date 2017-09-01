@@ -1,13 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "V3 Repositories",
-  "description": "V3 Repositories Controller",
+  "title": "Rest Repositories",
+  "description": "Rest Repositories Controller",
   "definitions": {
     "actions": {
       "show": {
         "properties": {
           "data": {
-            "oneOf": [ 
+            "oneOf": [
               {
                 "type": "object",
                 "required": ["repository"],
