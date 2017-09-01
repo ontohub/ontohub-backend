@@ -25,7 +25,7 @@ gem 'rack-cors'
 # * `app/graphql/mutations/unlock_account_mutation.rb`
 # when the models bring in a new version of Devise
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: 'add_public_key_validations_and_tests'
+                      branch: 'master'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'
