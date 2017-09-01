@@ -581,6 +581,9 @@ interface OrganizationalUnit {
 
 # A SSH public key
 type PublicKey {
+  # MD5 fingerprint of the key
+  fingerprint: String!
+
   # The actual SSH public key
   key: String!
 

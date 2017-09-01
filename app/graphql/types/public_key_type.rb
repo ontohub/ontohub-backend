@@ -8,6 +8,10 @@ Types::PublicKeyType = GraphQL::ObjectType.define do
     description 'Name of the key'
   end
 
+  field :fingerprint, !types.String do
+    description 'MD5 fingerprint of the key'
+  end
+
   field :key, !types.String do
     description 'The actual SSH public key'
   end
