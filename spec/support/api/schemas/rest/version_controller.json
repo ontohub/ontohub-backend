@@ -54,7 +54,7 @@
       "rel": "self",
       "method": "GET",
       "mediaType": "application/json",
-      "href": "/v3/version",
+      "href": "/version",
       "targetSchema": { "rel": "self" }
     }
   ]

@@ -124,7 +124,7 @@
       "rel": "self",
       "method": "GET",
       "mediaType": "application/json",
-      "href": "/v3/{#/definitions/id}",
+      "href": "/{#/definitions/id}",
       "targetSchema": { "$ref": "#/definitions/actions/show" }
     },
     {
@@ -133,7 +133,7 @@
       "rel": "self",
       "method": "GET",
       "mediaType": "application/json",
-      "href": "/v3/{#/definitions/organizational_unit_id}",
+      "href": "/{#/definitions/organizational_unit_id}",
       "targetSchema": { "$ref": "#/definitions/actions/index" }
     }
   ]
