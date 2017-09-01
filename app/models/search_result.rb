@@ -5,11 +5,12 @@
 class SearchResult
   include ActiveModel::Model
 
+  attr_reader :count, :entries
   attr_accessor :repositories, :organizational_units,
                 :repositories_count, :organizational_units_count,
                 :results_count
 
-  def initialize(_params)
+  def initialize(params)
     repositories = Repository.all
     organizational_units = OrganizationalUnit.all
 
@@ -22,17 +23,16 @@ class SearchResult
           repositories_count: repositories_count,
           organizational_units_count: organizational_units_count,
 
-          results_count: [repositories_count,
-                          organizational_units_count].sum)
+          results_count: [repositories_count, organizational_units_count].sum)
+
+    fill_entries_and_count(params)
   end
 
-  # We can refactor the whole class when we drop the JSON API, for now, this
-  # returns the search result in a format that graphql can work with without
-  # influencing the JSON API controller
+  protected
+
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def to_struct(params)
+  def fill_entries_and_count(params)
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
-    result = OpenStruct.new
     repos = repositories.map do |repo|
       OpenStruct.new(entry: RepositoryCompound.wrap(repo), ranking: 1.0)
     end
@@ -40,21 +40,20 @@ class SearchResult
       OpenStruct.new(entry: org_unit, ranking: 1.0)
     end
 
-    result.entries = []
+    @entries = []
     if params[:categories].blank? ||
        params[:categories].include?('repositories')
-      result.entries.concat(repos)
+      entries.concat(repos)
     end
     if params[:categories].blank? ||
        params[:categories].include?('organizationalUnits')
-      result.entries.concat(org_units)
+      entries.concat(org_units)
     end
 
-    result.count = OpenStruct.new(
+    @count = OpenStruct.new(
       all: [repositories_count, organizational_units_count].sum,
       repositories: repositories_count,
       organizational_units: organizational_units_count
     )
-    result
   end
 end

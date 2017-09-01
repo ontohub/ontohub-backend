@@ -15,7 +15,7 @@ Types::SearchResultType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |_root, arguments, _context|
-      SearchResult.new(nil).to_struct(categories: arguments['categories'])
+      SearchResult.new(categories: arguments['categories'])
     end)
   end
 end
