@@ -27,7 +27,7 @@ RSpec.shared_examples 'a password reset email sender' do
 
   it 'includes a reset password link' do
     # rubocop:disable Metrics/LineLength
-    link = %r{<a href="http://example.test/users/password\?reset_password_token=[^"]+">Change my password</a>}
+    link = %r{<a href="http://example.test/account/edit-password\?reset_password_token=[^"]+">Change my password</a>}
     # rubocop:enable Metrics/LineLength
     expect(email.body.encoded).to match(link)
   end

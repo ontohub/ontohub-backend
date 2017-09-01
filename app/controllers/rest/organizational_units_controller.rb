@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module V3
+module Rest
   # Handles requests for organizational unit show operations
-  class OrganizationalUnitsController < V3::ApplicationController
+  class OrganizationalUnitsController < Rest::ApplicationController
     graphql :show do
       arguments do
         {'id' => params[:slug]}

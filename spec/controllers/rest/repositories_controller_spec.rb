@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe V3::RepositoriesController do
+RSpec.describe Rest::RepositoriesController do
   subject { create :repository_compound }
   let!(:user) { subject.owner }
 

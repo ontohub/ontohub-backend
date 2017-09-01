@@ -25,7 +25,7 @@ RSpec.shared_examples 'an unlock account email sender' do
 
   it 'includes a unlock link' do
     # rubocop:disable Metrics/LineLength
-    link = %r{<a href="http://example.test/users/unlock\?unlock_token=[^"]+">Unlock my account</a>}
+    link = %r{<a href="http://example.test/account/unlock\?unlock_token=[^"]+">Unlock my account</a>}
     # rubocop:enable Metrics/LineLength
     expect(last_email.body.encoded).to match(link)
   end

@@ -27,7 +27,7 @@ RSpec.shared_examples 'a confirmation email sender' do
     persisted_user = User.find(email: user.email)
     token = persisted_user.confirmation_token
     # rubocop:disable Metrics/LineLength
-    link = %(<a href="http://example.test/users/confirmation?confirmation_token=#{token}">Confirm my account</a>)
+    link = %(<a href="http://example.test/account/confirm-email?confirmation_token=#{token}">Confirm my account</a>)
     # rubocop:enable Metrics/LineLength
     expect(last_email.body.encoded).to include(link)
   end

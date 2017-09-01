@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module V3
+module Rest
   # Handles requests for version show operations
-  class RepositoriesController < V3::ApplicationController
+  class RepositoriesController < Rest::ApplicationController
     graphql :index do
       arguments do
         {'limit' => params[:limit]&.to_i,
