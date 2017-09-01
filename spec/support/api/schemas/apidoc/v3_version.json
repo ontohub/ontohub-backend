@@ -1,6 +1,0 @@
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "V3 Version",
-  "description": "Endpoints for the backend version",
-  "$ref": "../controllers/v3/version_controller.json#"
-}
