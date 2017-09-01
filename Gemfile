@@ -35,7 +35,7 @@ gem 'config', '~> 1.4.0'
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.8.0'
 gem 'pry', '~> 0.10.4'
-gem 'pry-byebug', '~> 3.4.1', platform: :mri
+gem 'pry-byebug', '~> 3.5.0', platform: :mri
 gem 'pry-rails', '~> 0.3.4'
 gem 'pry-rescue', '~> 1.4.4', platform: :mri
 gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
@@ -48,7 +48,7 @@ gem 'graphql-batch', '~> 0.3.3'
 gem 'jwt', '~> 1.5.6'
 gem 'pundit', '~> 1.1.0'
 gem 'recaptcha', '~> 4.3.1'
-gem 'sneakers', '2.5.0'
+gem 'sneakers', '2.6.0'
 
 group :development, :test do
 end
