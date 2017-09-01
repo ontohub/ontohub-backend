@@ -2,15 +2,11 @@
 
 # This class combines the Repository model and the Git library.
 # It forwards model methods directly to the Repository object.
-class RepositoryCompound < ActiveModelSerializers::Model
+class RepositoryCompound
   class << self
     def find(*args)
       repository = Repository.find(*args)
       wrap(repository) if repository
-    end
-
-    def where(*args)
-      Repository.where(*args).map { |repository| wrap(repository) }
     end
 
     def wrap(repository)
@@ -58,14 +54,6 @@ class RepositoryCompound < ActiveModelSerializers::Model
 
   def git
     @git ||= Gitlab::Git::Wrapper.new(git_path) unless repository.nil?
-  end
-
-  def url(prefix)
-    "#{prefix.sub(%r{/$}, '')}#{url_path}"
-  end
-
-  def url_path
-    "/#{repository.to_param}"
   end
 
   protected

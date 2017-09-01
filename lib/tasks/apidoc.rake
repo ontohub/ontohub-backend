@@ -14,7 +14,7 @@ namespace :apidoc do
 
   desc 'Build the API documentation app (requires npm and yarn).'
   task :init do
-    source_dir = Rails.root.join('spec/support/api/schemas/apidoc').to_s
+    source_dir = Rails.root.join('spec/support/api/schemas/controllers/v3').to_s
     doca_config =
       Rails.root.join('spec/support/api/schemas/doca_config.js').to_s
     FileUtils.rm_rf(APIDOC_DIR)

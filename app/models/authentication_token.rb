@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 # model for AuthenticationToken
-class AuthenticationToken < ActiveModelSerializers::Model
+class AuthenticationToken
   attr_accessor :token
+
+  def initialize(token:)
+    @token = token
+  end
 end

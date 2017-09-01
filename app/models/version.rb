@@ -2,7 +2,9 @@
 
 # The Version is a non-persistent object that represents thet version of the
 # backend
-class Version < ActiveModelSerializers::Model
+class Version
+  include ActiveModel::Model
+
   # The exception thrown, when the version of the backend could not be
   # determined; be it by using the VERSION file or by git command
   class CouldNotDetermineVersion < StandardError

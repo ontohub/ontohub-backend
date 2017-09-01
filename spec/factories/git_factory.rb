@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 FactoryGirl.define do
-  # Sha to mock a commit id
-  sequence(:commit_sha) do
-    Faker::Crypto.sha1
-  end
-
   sequence(:git_user) do |n|
     {email: "git-user-#{n}@example.com",
      name: "git-user#-#{n}",

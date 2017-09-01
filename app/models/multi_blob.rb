@@ -3,7 +3,9 @@
 # rubocop:disable Metrics/ClassLength
 
 # Allows to apply multiple actions to a repository
-class MultiBlob < ActiveModelSerializers::Model
+class MultiBlob
+  include ActiveModel::Model
+
   class Error < ::StandardError; end
 
   # Error class to hold the errors
@@ -17,12 +19,19 @@ class MultiBlob < ActiveModelSerializers::Model
 
   ENCODINGS = %w(base64 plain).freeze
 
+  attr_reader :errors
+
   # Only used for +save+
   attr_accessor :branch, :commit_message, :files, :previous_head_sha,
                 :repository, :user
 
   # Created during +save+
   attr_accessor :decorated_file_versions, :commit_sha
+
+  def initialize(*args)
+    super(*args)
+    @errors = ActiveModel::Errors.new(self)
+  end
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
