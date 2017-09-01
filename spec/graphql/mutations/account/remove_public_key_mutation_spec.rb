@@ -4,7 +4,6 @@ require 'spec_helper'
 
 RSpec.describe 'removePublicKey mutation' do
   let!(:user) { create :user }
-  let(:key) { Base64.strict_encode64('some-rsa-key') }
   let(:key_name) { 'stub@localhost' }
   let!(:existing_key) { create :public_key, user: user, name: key_name }
 
@@ -41,7 +40,7 @@ RSpec.describe 'removePublicKey mutation' do
       end
 
       it 'returns true' do
-        expect(subject['data']['removePublicKey']).to be_truthy
+        expect(subject['data']['removePublicKey']).to be(true)
       end
     end
 
@@ -58,7 +57,7 @@ RSpec.describe 'removePublicKey mutation' do
     let(:current_user) { nil }
 
     it 'returns an error' do
-      # TODO: Needs authorization
+      skip 'Needs authorization'
     end
   end
 end

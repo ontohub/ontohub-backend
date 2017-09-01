@@ -32,18 +32,19 @@ RSpec.describe 'addPublicKey mutation' do
   context 'User is signed in' do
     let(:current_user) { user }
     context 'valid key' do
-      let(:key) { Base64.strict_encode64('some-rsa-key') }
-      let(:key_name) { 'stub@localhost' }
-      let(:variables) { {'key' => "ssh-rsa #{key} #{key_name}"} }
+      let(:public_key_blueprint) { build(:public_key) }
+      let(:key) { public_key_blueprint.key }
+      let(:key_name) { public_key_blueprint.name }
+      let(:variables) { {'key' => "#{key} #{key_name}"} }
 
       context 'new name' do
         it 'returns the key' do
-          expect(subject['data']['addPublicKey']['key']).to eq("ssh-rsa #{key}")
+          expect(subject['data']['addPublicKey']['key']).to eq(key)
         end
 
         it 'returns the name' do
           expect(subject['data']['addPublicKey']['name']).
-            to eq('stub@localhost')
+            to eq(key_name)
         end
       end
 
