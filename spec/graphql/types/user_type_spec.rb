@@ -21,7 +21,9 @@ RSpec.describe Types::UserType do
   let(:user_type) { OntohubBackendSchema.types['User'] }
 
   context 'organizations field' do
-    let(:organizations_field) { user_type.fields['organizations'] }
+    let(:organizations_field) do
+      OntohubBackendSchema.get_fields(user_type)['organizations']
+    end
     it 'returns only the organizations to user is a member in' do
       organizations = organizations_field.resolve(
         user,

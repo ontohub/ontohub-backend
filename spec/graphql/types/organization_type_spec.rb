@@ -17,7 +17,9 @@ RSpec.describe Types::OrganizationType do
   let(:organization_type) { OntohubBackendSchema.types['Organization'] }
 
   context 'members field' do
-    let(:members_field) { organization_type.fields['members'] }
+    let(:members_field) do
+      OntohubBackendSchema.get_fields(organization_type)['members']
+    end
     it 'returns only the members' do
       members = members_field.resolve(
         organization,
