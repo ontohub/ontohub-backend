@@ -37,7 +37,7 @@ RSpec.describe Rest::BranchesController do
   end
 
   context 'failing because repository is private' do
-    let!(:private_repo) { create :repository_compound, :private}
+    let!(:private_repo) { create :repository_compound, :private }
 
     describe 'action: index' do
       before do

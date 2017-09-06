@@ -3,6 +3,7 @@
 # Policies for RepositoriesController
 # No need for policies for Tree, Diff, Commit; just use this policy
 class RepositoryPolicy < ApplicationPolicy
+  # Scopes a repository dataset to accessible repositories of the current user
   class Scope
     attr_reader :user, :scope
 
