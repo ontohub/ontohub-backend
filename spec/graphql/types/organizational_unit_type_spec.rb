@@ -46,7 +46,7 @@ end
 
 RSpec.describe Types::OrganizationalUnitType do
   let(:repositories_field) do
-    organizational_unit_type.get_field('repositories')
+    OntohubBackendSchema.get_fields(organizational_unit_type)['repositories']
   end
 
   context User do
