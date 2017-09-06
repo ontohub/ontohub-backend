@@ -16,7 +16,8 @@ class RepositoryPolicy < ApplicationPolicy
       return scope if user&.admin?
       return scope.where(public_access: true) unless user
 
-      scope.intersect(user.accessible_repositories_dataset.or(public_access: true))
+      scope.intersect(user.accessible_repositories_dataset.
+                        or(public_access: true))
     end
   end
 
