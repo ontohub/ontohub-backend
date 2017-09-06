@@ -9,6 +9,48 @@ RSpec.describe RepositoryPolicy do
   let(:private_repo) { create :repository, public_access: false }
   let(:organization) { create :organization }
 
+  describe RepositoryPolicy::Scope do
+    subject { RepositoryPolicy::Scope.new(current_user, scope) }
+    let(:scope) { Repository.dataset }
+
+    before do
+      2.times do
+        create :repository
+      end
+      3.times do
+        create :repository, public_access: true
+      end
+      2.times do
+        repo = create :repository
+        repo.add_member(user, :read)
+      end
+    end
+
+    context 'signed in as admin' do
+      let(:current_user) { admin }
+
+      it 'returns all repositories' do
+        expect(subject.resolve.to_a.size).to eq(7)
+      end
+    end
+
+    context 'signed in as normal user' do
+      let(:current_user) { user }
+
+      it 'returns public repositories and ones with explicit access' do
+        expect(subject.resolve.to_a.size).to eq(5)
+      end
+    end
+
+    context 'not signed in' do
+      let(:current_user) { nil }
+
+      it 'returns only public repositories' do
+        expect(subject.resolve.to_a.size).to eq(3)
+      end
+    end
+  end
+
   context 'show?' do
     context 'public repository' do
       context 'signed in' do
