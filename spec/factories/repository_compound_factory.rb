@@ -70,4 +70,35 @@ FactoryGirl.define do
       create(:additional_commit, **options)
     end
   end
+
+  factory :branch, class: String do
+    transient do
+      repository { nil }
+      name { generate(:branchname) }
+      revision { repository.git.default_branch }
+    end
+    skip_create
+    initialize_with do
+      repository.git.create_branch(name, revision)
+    end
+  end
+
+  factory :tag, class: String do
+    transient do
+      repository { nil }
+      name { generate(:tagname) }
+      revision { repository.git.default_branch }
+      message { nil }
+      user { repository.owner }
+    end
+    skip_create
+    initialize_with do
+      if message.nil?
+        repository.git.create_tag(name, revision)
+      else
+        repository.git.create_tag(name, revision,
+          message: message, tagger: GitHelper.git_user(user))
+      end
+    end
+  end
 end

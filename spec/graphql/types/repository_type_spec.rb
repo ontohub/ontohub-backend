@@ -153,12 +153,14 @@ RSpec.describe Types::RepositoryType do
       let(:tag_without_annotation) { 'tag_without_annotation' }
       let(:tag_with_annotation) { 'tag_with_annotation' }
       let!(:create_tags) do
-        repository.git.create_tag(tag_without_annotation,
-                                  repository.git.default_branch)
-        repository.git.create_tag(tag_with_annotation,
-                                  repository.git.default_branch,
-                                  message: message,
-                                  tagger: generate(:git_user))
+        create(:tag, name: tag_without_annotation,
+                     repository: repository,
+                     revision: repository.git.default_branch)
+        create(:tag, name: tag_with_annotation,
+                     repository: repository,
+                     revision: repository.git.default_branch,
+                     message: message,
+                     user: repository.owner)
       end
 
       context 'tags field' do

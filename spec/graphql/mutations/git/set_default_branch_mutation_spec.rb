@@ -5,8 +5,12 @@ require 'spec_helper'
 RSpec.describe 'createBranch mutation' do
   let!(:repository) { create :repository_compound }
   let(:git) { repository.git }
-  let(:name) { "feature_#{Faker::Internet.user_name}" }
-  before { repository.git.create_branch(name, 'master') }
+  let(:name) { generate(:branchname) }
+  before do
+    create(:branch, repository: repository,
+                    name: name,
+                    revision: 'master')
+  end
 
   let(:context) { {} }
   let(:variables) do

@@ -54,7 +54,7 @@ RSpec.describe 'createBranch mutation' do
 
   context 'Unsuccessful' do
     before do
-      repository.git.create_branch(name, revision)
+      create(:branch, name: name, revision: revision, repository: repository)
     end
 
     it 'returns no data' do

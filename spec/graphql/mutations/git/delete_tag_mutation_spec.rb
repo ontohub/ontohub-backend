@@ -34,7 +34,7 @@ RSpec.describe 'deleteTag mutation' do
   subject { result }
 
   before do
-    repository.git.create_tag(name, revision)
+    create(:tag, name: name, revision: revision, repository: repository)
   end
 
   context 'Successful deletion' do
