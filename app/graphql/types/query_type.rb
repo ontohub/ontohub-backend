@@ -33,9 +33,13 @@ Types::QueryType = GraphQL::ObjectType.define do
       description 'ID of the repository'
     end
 
-    resolve(lambda do |_root, arguments, _context|
+    authorize :show
+
+    resource(lambda do |_root, arguments, _context|
       RepositoryCompound.find(slug: arguments[:slug])
     end)
+
+    resolve ->(repo, _arguments, _context) { repo }
   end
 
   field :search, !Types::SearchResultType do

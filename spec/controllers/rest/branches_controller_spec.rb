@@ -36,6 +36,37 @@ RSpec.describe Rest::BranchesController do
     end
   end
 
+  context 'failing because repository is private' do
+    let!(:private_repo) { create :repository_compound, :private}
+
+    describe 'action: index' do
+      before do
+        get :index, params: {organizational_unit_id: user.to_param,
+                             repository_id:
+                             private_repo.to_param.sub(%r{\A[^/]*/}, '')}
+      end
+      it { expect(response).to have_http_status(:ok) }
+      it { |example| expect([example, response]).to comply_with_rest_api }
+      it 'does not find the respository' do
+        expect(response_data['respository']).to be(nil)
+      end
+    end
+
+    describe 'action: show' do
+      before do
+        get :show, params: {organizational_unit_id: user.to_param,
+                            repository_id:
+                            private_repo.to_param.sub(%r{\A[^/]*/}, ''),
+                            name: private_repo.git.default_branch}
+      end
+      it { expect(response).to have_http_status(:ok) }
+      it { |example| expect([example, response]).to comply_with_rest_api }
+      it 'does not return the repository' do
+        expect(response_data['repository']).to be(nil)
+      end
+    end
+  end
+
   context 'failing because of bad params' do
     describe 'action: index' do
       before do
