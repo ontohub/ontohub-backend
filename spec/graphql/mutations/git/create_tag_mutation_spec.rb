@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe 'createTag mutation' do
   let!(:user) { create :user }
   let!(:repository) { create :repository_compound }
-  let(:name) { "feature_#{Faker::Internet.user_name}" }
+  let(:name) { generate(:tagname) }
   let(:annotation) { Faker::Lorem.sentence }
   let(:revision) { 'master' }
 
@@ -79,7 +79,7 @@ RSpec.describe 'createTag mutation' do
 
   context 'Unsuccessful' do
     before do
-      repository.git.create_tag(name, revision)
+      create(:tag, name: name, revision: revision, repository: repository)
     end
 
     it 'returns no data' do

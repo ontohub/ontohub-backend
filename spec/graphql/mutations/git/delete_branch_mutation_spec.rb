@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe 'deleteBranch mutation' do
   let!(:repository) { create :repository_compound }
-  let(:name) { "feature_#{Faker::Internet.user_name}" }
+  let(:name) { generate(:branchname) }
   let(:name_argument) { name }
   let(:revision) { 'master' }
 
@@ -34,7 +34,7 @@ RSpec.describe 'deleteBranch mutation' do
   subject { result }
 
   before do
-    repository.git.create_branch(name, revision)
+    create(:branch, name: name, revision: revision, repository: repository)
   end
 
   context 'Successful deletion' do

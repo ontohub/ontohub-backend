@@ -20,6 +20,14 @@ FactoryGirl.define do
     "#{n}: #{Faker::Lorem.sentence}\n"
   end
 
+  sequence(:branchname) do |n|
+    "feature_#{Faker::Internet.user_name}_#{n}"
+  end
+
+  sequence(:tagname) do |n|
+    "1.#{n}.0"
+  end
+
   factory :git_commit_hash, class: Hash do
     transient do
       branch 'master'
