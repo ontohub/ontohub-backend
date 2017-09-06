@@ -50,7 +50,7 @@
     },
     "id": {
       "type": "string",
-      "example": "ado/repo0",
+      "example": "ada/fixtures",
       "description": "The id of the repository"
     },
     "organizational_unit_id": {

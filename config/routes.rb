@@ -74,6 +74,10 @@ Rails.application.routes.draw do
 
         scope ':repository_id' do
           get '/', controller: 'rest/repositories', action: 'show'
+          get '/branches', controller: 'rest/branches', action: 'index'
+          get '/branches/:name', controller: 'rest/branches', action: 'show'
+          get '/tags', controller: 'rest/tags', action: 'index'
+          get '/tags/:name', controller: 'rest/tags', action: 'show'
         end
       end
     end
