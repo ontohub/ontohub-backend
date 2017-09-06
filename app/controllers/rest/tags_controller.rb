@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Rest
-  # Handles requests for tags read operations
+  # Handles requests for tag read operations
   class TagsController < Rest::ApplicationController
     graphql :index do
       arguments do
