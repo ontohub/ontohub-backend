@@ -7,7 +7,9 @@ RSpec.describe Types::RepositoryType do
   let(:arguments) { {} }
 
   context 'visibility field' do
-    let(:visibility_field) { repository_type.fields['visibility'] }
+    let(:visibility_field) do
+      OntohubBackendSchema.get_fields(repository_type)['visibility']
+    end
 
     context 'public' do
       let(:repository) { create :repository, public_access: true }
@@ -26,14 +28,24 @@ RSpec.describe Types::RepositoryType do
     end
   end
 
-  let(:default_branch_field) { repository_type.fields['defaultBranch'] }
-  let(:branches_field) { repository_type.fields['branches'] }
-  let(:branch_field) { repository_type.fields['branch'] }
-  let(:tags_field) { repository_type.fields['tags'] }
-  let(:tag_field) { repository_type.fields['tag'] }
-  let(:commit_field) { repository_type.fields['commit'] }
-  let(:diff_field) { repository_type.fields['diff'] }
-  let(:log_field) { repository_type.fields['log'] }
+  let(:default_branch_field) do
+    OntohubBackendSchema.get_fields(repository_type)['defaultBranch']
+  end
+  let(:branches_field) do
+    OntohubBackendSchema.get_fields(repository_type)['branches']
+  end
+  let(:branch_field) do
+    OntohubBackendSchema.get_fields(repository_type)['branch']
+  end
+  let(:tags_field) do
+    OntohubBackendSchema.get_fields(repository_type)['tags']
+  end
+  let(:tag_field) { OntohubBackendSchema.get_fields(repository_type)['tag'] }
+  let(:commit_field) do
+    OntohubBackendSchema.get_fields(repository_type)['commit']
+  end
+  let(:diff_field) { OntohubBackendSchema.get_fields(repository_type)['diff'] }
+  let(:log_field) { OntohubBackendSchema.get_fields(repository_type)['log'] }
 
   context 'empty repository' do
     let(:repository) { create :repository_compound, :empty_git }

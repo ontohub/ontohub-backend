@@ -30,6 +30,10 @@ RSpec.describe 'OrganizationalUnit query' do
         ... on User {
           email
           emailHash
+          publicKeys {
+            key
+            name
+          }
           organizations {
             id
           }
@@ -48,15 +52,34 @@ RSpec.describe 'OrganizationalUnit query' do
   context 'User' do
     subject { user }
 
-    it 'returns the user fields' do
-      user = result['data']['organizationalUnit']
-      expect(user).to include(
-        'id' => subject.slug,
-        'displayName' => subject.display_name,
-        'email' => subject.email,
-        'emailHash' => subject.email_hash,
-        'organizations' => [{'id' => organization.slug}]
-      )
+    context 'authorized to see private data' do
+      let(:context) { {current_user: subject} }
+
+      it 'returns the user fields' do
+        user = result['data']['organizationalUnit']
+        expect(user).to include(
+          'id' => subject.slug,
+          'displayName' => subject.display_name,
+          'email' => subject.email,
+          'emailHash' => subject.email_hash,
+          'publicKeys' => subject.public_keys,
+          'organizations' => [{'id' => organization.slug}]
+        )
+      end
+    end
+
+    context 'unauthorized to see private data' do
+      it 'returns the user fields' do
+        user = result['data']['organizationalUnit']
+        expect(user).to include(
+          'id' => subject.slug,
+          'displayName' => subject.display_name,
+          'email' => nil,
+          'emailHash' => subject.email_hash,
+          'publicKeys' => nil,
+          'organizations' => [{'id' => organization.slug}]
+        )
+      end
     end
   end
 

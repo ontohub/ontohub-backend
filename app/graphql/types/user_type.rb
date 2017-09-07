@@ -9,10 +9,12 @@ Types::UserType = GraphQL::ObjectType.define do
 
   field :email, types.String do
     description 'Email address of the user'
+    authorize :access_private_data
   end
 
   field :unconfirmedEmail, types.String do
     description 'Email address of the user that still needs to be confirmed'
+    authorize :access_private_data
     property :unconfirmed_email
   end
 
@@ -21,8 +23,9 @@ Types::UserType = GraphQL::ObjectType.define do
     property :email_hash
   end
 
-  field :publicKeys, !types[!Types::PublicKeyType] do
+  field :publicKeys, types[!Types::PublicKeyType] do
     description "List of a user's SSH public keys"
+    authorize :access_private_data
     property :public_keys
   end
 

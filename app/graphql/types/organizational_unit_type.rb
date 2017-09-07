@@ -29,8 +29,14 @@ Types::OrganizationalUnitType = GraphQL::InterfaceType.define do
       default_value 0
     end
 
-    resolve(lambda do |organizational_unit, arguments, _context|
-      organizational_unit.repositories_dataset.order(:slug).
+    scope RepositoryPolicy
+
+    resource(lambda do |org_unit, _arguments, _context|
+      org_unit.repositories_dataset
+    end)
+
+    resolve(lambda do |repositories, arguments, _context|
+      repositories.order(:slug).
         limit(arguments['limit'], arguments['skip']).
         map { |r| RepositoryCompound.wrap(r) }
     end)

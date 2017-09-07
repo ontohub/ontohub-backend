@@ -807,7 +807,7 @@ type User implements OrganizationalUnit {
   ): [Organization!]!
 
   # List of a user's SSH public keys
-  publicKeys: [PublicKey!]!
+  publicKeys: [PublicKey!]
 
   # List of repositories owned by this organizational unit
   repositories(

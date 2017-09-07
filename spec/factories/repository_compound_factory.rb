@@ -4,7 +4,10 @@ FactoryGirl.define do
   factory :repository_compound do
     transient do
       owner { create(:user) }
-      repository { create(:repository, owner: owner) }
+      public_access { true }
+      repository do
+        create(:repository, owner: owner, public_access: public_access)
+      end
       git do
         create(:git, :with_commits,
                path: RepositoryCompound.git_directory.
@@ -18,6 +21,10 @@ FactoryGirl.define do
       # create the repository and wrap it
       RepositoryCompound.wrap(repository)
     end
+  end
+
+  trait :private do
+    public_access { false }
   end
 
   trait :empty_git do

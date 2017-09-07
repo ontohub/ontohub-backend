@@ -3,6 +3,24 @@
 # Policies for RepositoriesController
 # No need for policies for Tree, Diff, Commit; just use this policy
 class RepositoryPolicy < ApplicationPolicy
+  # Scopes a repository dataset to accessible repositories of the current user
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      return scope if user&.admin?
+      return scope.where(public_access: true) unless user
+
+      scope.intersect(user.accessible_repositories_dataset.
+                        or(public_access: true))
+    end
+  end
+
   def show?
     resource.public_access ||
       !!current_user&.accessible_repositories_dataset&.

@@ -11,6 +11,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def access_private_data?
-    current_user == resource
+    !!current_user && current_user.id == resource.id
   end
 end
