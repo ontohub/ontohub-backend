@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: d9f862410b56d4376706a4db3d9de6e7953ba2d2
+  revision: 1cc9678755c60286e24034d493250832cd6c5ba4
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -270,7 +270,7 @@ GEM
       rainbow (>= 2.2.2, < 3.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
-    ruby-progressbar (1.8.3)
+    ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
     rugged (0.26.0)
     sequel (4.49.0)
