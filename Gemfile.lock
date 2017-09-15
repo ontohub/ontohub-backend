@@ -143,7 +143,7 @@ GEM
       activesupport (>= 4.2.0)
     graphiql-rails (1.4.4)
       rails
-    graphql (1.6.7)
+    graphql (1.6.8)
     graphql-batch (0.3.5)
       graphql (>= 0.8, < 2)
       promise.rb (~> 0.7.2)
@@ -338,7 +338,7 @@ DEPENDENCIES
   filelock (~> 1.1.1)
   gitlab_git!
   graphiql-rails
-  graphql (~> 1.6.3)
+  graphql (~> 1.6.8)
   graphql-batch (~> 0.3.3)
   graphql-pundit (~> 0.3.0)
   json-schema!
