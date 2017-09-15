@@ -1,17 +1,17 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: d2c9dfa919bc648a3d45e27020ecce266557e868
+  revision: f4e93e85d3acee5b2ea4bde7bfb9a4b557b0bf57
   branch: master
   specs:
     gitlab_git (11.0.0)
       activesupport (>= 4.0)
       charlock_holmes (~> 0.7.3)
-      github-linguist (~> 5.1.0)
+      github-linguist (>= 5.1, < 5.3)
       rugged (~> 0.26.0)
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 4fd7774c61f0a5f100c7e96ebd7b72d624b39922
+  revision: d045d64aa21b5817631c1c9998e6e0c99cf25f2b
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -134,7 +134,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     filelock (1.1.1)
-    github-linguist (5.1.0)
+    github-linguist (5.2.0)
       charlock_holmes (~> 0.7.3)
       escape_utils (~> 1.1.0)
       mime-types (>= 1.19)
@@ -289,7 +289,7 @@ GEM
     serverengine (1.5.11)
       sigdump (~> 0.2.2)
     sigdump (0.2.4)
-    simplecov (0.15.0)
+    simplecov (0.15.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -364,4 +364,4 @@ DEPENDENCIES
   sprockets-rails
 
 BUNDLED WITH
-   1.14.6
+   1.15.4
