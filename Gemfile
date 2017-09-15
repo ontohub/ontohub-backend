@@ -46,9 +46,9 @@ gem 'filelock', '~> 1.1.1'
 gem 'graphql', '~> 1.6.3'
 gem 'graphql-batch', '~> 0.3.3'
 gem 'graphql-pundit', '~> 0.3.0'
-gem 'jwt', '~> 1.5.6'
+gem 'jwt', '~> 2.0.0'
 gem 'pundit', '~> 1.1.0'
-gem 'recaptcha', '~> 4.3.1'
+gem 'recaptcha', '~> 4.4.1'
 gem 'sneakers', '2.6.0'
 
 group :development, :test do
