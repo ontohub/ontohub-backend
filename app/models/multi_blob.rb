@@ -49,6 +49,7 @@ class MultiBlob
         raise ValidationFailed, @errors
       end
     self.decorated_file_versions = create_decorated_file_versions(commit_sha)
+    create_file_version_parents(commit_sha)
     commit_sha
   end
   # rubocop:enable Metrics/MethodLength
@@ -228,10 +229,8 @@ class MultiBlob
 
   def create_file_version(commit_sha, file)
     options = file_options(file)
-    fv = FileVersion.new(options.merge(commit_sha: commit_sha,
-                                       repository_id: repository.pk))
-    fv.save
-    fv
+    FileVersion.create(options.merge(commit_sha: commit_sha,
+                                     repository_id: repository.pk))
   end
 
   def file_options(file)
@@ -242,6 +241,11 @@ class MultiBlob
         file[:path]
       end
     {path: path}
+  end
+
+  def create_file_version_parents(commit_sha)
+    # TODO: This should be done asynchronously.
+    FileVersionParentsCreator.new(repository.id, commit_sha).run
   end
 
   def commit_info

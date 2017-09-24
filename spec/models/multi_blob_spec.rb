@@ -37,7 +37,13 @@ RSpec.describe MultiBlob do
                          content: old_contents[i],
                          action: :create}
       end
-      git.commit_multichange(info)
+      commit_sha = git.commit_multichange(info)
+      old_files.each do |old_file|
+        FileVersion.create(repository_id: repository.id,
+                           commit_sha: commit_sha,
+                           path: old_file)
+      end
+      commit_sha
     end
     let(:files) do
       [{path: new_files[0],
@@ -751,6 +757,60 @@ RSpec.describe MultiBlob do
         expect(FileVersion.find(commit_sha: commit_sha,
                                 path: File.join(new_files[5], '.gitkeep'))).
           to be_a(FileVersion)
+      end
+    end
+
+    context 'FileVersionParent' do
+      subject { MultiBlob.new(valid_options) }
+      let!(:commit_sha) { subject.save }
+      let(:file_version) do
+        FileVersion.find(path: path, commit_sha: commit_sha)
+      end
+      let(:file_version_parent) do
+        FileVersionParent.find(queried_sha: commit_sha,
+                               last_changed_file_version_id: file_version&.id)
+      end
+
+      context 'created file' do
+        let(:path) { new_files[0] }
+        it 'creates a FileVersionParent' do
+          expect(file_version_parent).not_to be(nil)
+        end
+      end
+
+      context 'renamed file' do
+        let(:path) { new_files[1] }
+        it 'creates a FileVersionParent' do
+          expect(file_version_parent).not_to be(nil)
+        end
+      end
+
+      context 'updated file' do
+        let(:path) { old_files[2] }
+        it 'creates a FileVersionParent' do
+          expect(file_version_parent).not_to be(nil)
+        end
+      end
+
+      context 'updated and renamed file' do
+        let(:path) { new_files[3] }
+        it 'creates a FileVersionParent' do
+          expect(file_version_parent).not_to be(nil)
+        end
+      end
+
+      context 'deleted file' do
+        let(:path) { old_files[4] }
+        it 'does not create a FileVersionParent' do
+          expect(file_version_parent).to be(nil)
+        end
+      end
+
+      context 'created directory' do
+        let(:path) { File.join(new_files[5], '.gitkeep') }
+        it 'creates a FileVersionParent' do
+          expect(file_version_parent).not_to be(nil)
+        end
       end
     end
   end
