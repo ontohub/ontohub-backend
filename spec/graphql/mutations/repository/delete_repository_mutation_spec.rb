@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'deleteRepository mutation' do
-  let!(:repository) { create :repository_compound, :not_empty }
+  let!(:repository) { create :repository_compound }
 
   let(:context) { {} }
   let(:variables) { {'id' => repository.to_param} }

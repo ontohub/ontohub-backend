@@ -18,9 +18,9 @@ RSpec.describe MultiBlob do
   end
 
   context 'save' do
-    let!(:repository) { create(:repository_compound, :not_empty) }
+    let!(:repository) { create(:repository_compound) }
     let!(:git) { repository.git }
-    let!(:branch) { git.default_branch }
+    let!(:branch) { 'master' }
     let!(:user) { create(:user) }
     let(:num_setup_files) { 6 }
     let!(:file_range) { (0..num_setup_files - 1) }
