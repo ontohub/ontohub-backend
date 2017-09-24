@@ -749,7 +749,7 @@ RSpec.describe MultiBlob do
 
       it 'creates a FileVersion for the created .gitkeep file' do
         expect(FileVersion.find(commit_sha: commit_sha,
-                                path: "#{new_files[5]}/.gitkeep")).
+                                path: File.join(new_files[5], '.gitkeep'))).
           to be_a(FileVersion)
       end
     end

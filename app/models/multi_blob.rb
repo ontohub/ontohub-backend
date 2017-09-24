@@ -235,7 +235,12 @@ class MultiBlob
   end
 
   def file_options(file)
-    path = file[:action] == :mkdir ? "#{file[:path]}/.gitkeep" : file[:path]
+    path =
+      if file[:action] == :mkdir
+        File.join(file[:path], '.gitkeep')
+      else
+        file[:path]
+      end
     {path: path}
   end
 
