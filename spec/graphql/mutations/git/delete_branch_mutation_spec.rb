@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'deleteBranch mutation' do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let(:name) { generate(:branchname) }
   let(:name_argument) { name }
   let(:revision) { 'master' }

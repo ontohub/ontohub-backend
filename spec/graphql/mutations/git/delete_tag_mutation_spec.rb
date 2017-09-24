@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'deleteTag mutation' do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let(:name) { 'v.1.0' }
   let(:name_argument) { name }
   let(:revision) { 'master' }

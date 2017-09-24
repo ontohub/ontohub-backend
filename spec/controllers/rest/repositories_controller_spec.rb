@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rest::RepositoriesController do
-  subject { create :repository_compound }
+  subject { create :repository_compound, :not_empty }
   let!(:user) { subject.owner }
 
   context 'successful' do
@@ -41,7 +41,7 @@ RSpec.describe Rest::RepositoriesController do
   end
 
   context 'failing because repository is private' do
-    subject { create :repository_compound, :private }
+    subject { create :repository_compound, :not_empty, :private }
     let!(:user) { subject.owner }
 
     describe 'action: index' do

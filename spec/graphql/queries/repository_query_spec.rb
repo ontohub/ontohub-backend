@@ -38,7 +38,9 @@ RSpec.describe 'Repository query' do
 
   context 'existing repository' do
     let!(:user) { create :user }
-    let!(:repository) { create(:repository_compound, owner: user) }
+    let!(:repository) do
+      create(:repository_compound, :not_empty, owner: user)
+    end
 
     it 'returns the repository fields' do
       repository = result['data']['repository']

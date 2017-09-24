@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rest::CommitsController do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let!(:user) { repository.owner }
   let!(:commit) { repository.git.commit(repository.git.default_branch) }
 

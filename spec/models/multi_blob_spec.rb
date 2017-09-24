@@ -18,7 +18,7 @@ RSpec.describe MultiBlob do
   end
 
   context 'save' do
-    let!(:repository) { create(:repository_compound) }
+    let!(:repository) { create(:repository_compound, :not_empty) }
     let!(:git) { repository.git }
     let!(:branch) { git.default_branch }
     let!(:user) { create(:user) }

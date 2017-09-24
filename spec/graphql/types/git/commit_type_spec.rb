@@ -75,7 +75,7 @@ RSpec.shared_examples "a commit's file in GraphQL" do
 end
 
 RSpec.describe Types::Git::CommitType do
-  let(:repository) { create(:repository_compound) }
+  let(:repository) { create(:repository_compound, :not_empty) }
   let(:revision) { repository.git.default_branch }
   subject { repository.git.commit(revision) }
   let(:type) { OntohubBackendSchema.types['Commit'] }

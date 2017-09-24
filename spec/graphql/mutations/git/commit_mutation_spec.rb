@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe 'commit mutation' do
   let!(:user) { create(:user) }
-  let!(:repository) { create(:repository_compound, :empty_git) }
+  let!(:repository) { create(:repository_compound) }
 
   # Setup the repository
   let(:num_setup_files) { 6 }

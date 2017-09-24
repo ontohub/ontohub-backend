@@ -9,7 +9,7 @@ FactoryGirl.define do
         create(:repository, owner: owner, public_access: public_access)
       end
       git do
-        create(:git, :with_commits,
+        create(:git,
                path: RepositoryCompound.git_directory.
                  join("#{repository.to_param}.git"))
       end
@@ -27,10 +27,10 @@ FactoryGirl.define do
     public_access { false }
   end
 
-  trait :empty_git do
+  trait :not_empty do
     transient do
       git do
-        create(:git,
+        create(:git, :with_commits,
                path: RepositoryCompound.git_directory.
                  join("#{repository.to_param}.git"))
       end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rest::TagsController do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let!(:user) { repository.owner }
 
   context 'successful' do

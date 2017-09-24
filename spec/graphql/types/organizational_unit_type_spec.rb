@@ -4,7 +4,9 @@ require 'spec_helper'
 
 RSpec.shared_examples 'an owner of repositories' do
   before do
-    21.times { create(:repository_compound, owner: organizational_unit) }
+    21.times do
+      create(:repository_compound, :not_empty, owner: organizational_unit)
+    end
   end
 
   it 'returns only the repositories owned by the organizational unit' do

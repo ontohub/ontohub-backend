@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'saveRepository mutation' do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let(:repository_data) do
     repo = build :repository,
                  content_type: %w(ontology model specification mathematical).

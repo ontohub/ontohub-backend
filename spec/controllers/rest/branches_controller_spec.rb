@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rest::BranchesController do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let!(:user) { repository.owner }
 
   context 'successful' do
@@ -37,7 +37,7 @@ RSpec.describe Rest::BranchesController do
   end
 
   context 'failing because repository is private' do
-    let!(:private_repo) { create :repository_compound, :private }
+    let!(:private_repo) { create :repository_compound, :not_empty, :private }
 
     describe 'action: index' do
       before do

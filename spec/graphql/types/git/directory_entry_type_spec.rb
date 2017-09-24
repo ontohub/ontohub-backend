@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.shared_examples 'a directory entry in GraphQL' do
-  let(:repository) { create(:repository_compound) }
+  let(:repository) { create(:repository_compound, :not_empty) }
   let(:revision) { repository.git.default_branch }
   let(:commit) { repository.git.commit(revision) }
   let(:resolved_field) { field.resolve(subject, arguments, {}) }
