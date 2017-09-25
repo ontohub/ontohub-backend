@@ -84,7 +84,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
-    bunny (2.7.0)
+    bunny (2.7.1)
       amq-protocol (>= 2.2.0)
     byebug (9.1.0)
     charlock_holmes (0.7.5)
