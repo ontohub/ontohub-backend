@@ -338,12 +338,68 @@ Layout/TrailingWhitespace:
   StyleGuide: '#no-trailing-whitespace'
   Enabled: true
 
-#################### Style ###############################
+#################### Naming ##############################
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Description: Check the naming of accessor methods for get_/set_.
   StyleGuide: '#accessor_mutator_method_names'
   Enabled: true
+
+Naming/AsciiIdentifiers:
+  Description: 'Use only ascii symbols in identifiers.'
+  StyleGuide: '#english-identifiers'
+  Enabled: true
+
+Naming/ClassAndModuleCamelCase:
+  Description: 'Use CamelCase for classes and modules.'
+  StyleGuide: '#camelcase-classes'
+  Enabled: true
+
+Naming/ConstantName:
+  Description: 'Constants should use SCREAMING_SNAKE_CASE.'
+  StyleGuide: '#screaming-snake-case'
+  Enabled: true
+
+Naming/FileName:
+  Description: 'Use snake_case for source file names.'
+  StyleGuide: '#snake-case-files'
+  Enabled: true
+
+Naming/HeredocDelimiterCase:
+  Description: 'Use configured case for heredoc delimiters.'
+  StyleGuide: '#heredoc-delimiters'
+  Enabled: true
+
+Naming/HeredocDelimiterNaming:
+  Description: 'Use descriptive heredoc delimiters.'
+  StyleGuide: '#heredoc-delimiters'
+  Enabled: true
+
+Naming/MethodName:
+  Description: 'Use the configured style when naming methods.'
+  StyleGuide: '#snake-case-symbols-methods-vars'
+  Enabled: true
+
+Naming/PredicateName:
+  Description: 'Check the names of predicate methods.'
+  StyleGuide: '#bool-methods-qmark'
+  Enabled: true
+
+Naming/BinaryOperatorParameterName:
+  Description: 'When defining binary operators, name the argument other.'
+  StyleGuide: '#other-arg'
+  Enabled: true
+
+Naming/VariableName:
+  Description: 'Use the configured style when naming variables.'
+  StyleGuide: '#snake-case-symbols-methods-vars'
+  Enabled: true
+
+Naming/VariableNumber:
+  Description: 'Use the configured style when numbering variables.'
+  Enabled: true
+
+#################### Style ###############################
 
 Style/Alias:
   Description: 'Use alias instead of alias_method.'
@@ -363,11 +419,6 @@ Style/ArrayJoin:
 Style/AsciiComments:
   Description: 'Use only ascii symbols in comments.'
   StyleGuide: '#english-comments'
-  Enabled: true
-
-Style/AsciiIdentifiers:
-  Description: 'Use only ascii symbols in identifiers.'
-  StyleGuide: '#english-identifiers'
   Enabled: true
 
 Style/Attr:
@@ -412,13 +463,9 @@ Style/CharacterLiteral:
   StyleGuide: '#no-character-literals'
   Enabled: true
 
-Style/ClassAndModuleCamelCase:
-  Description: 'Use CamelCase for classes and modules.'
-  StyleGuide: '#camelcase-classes'
-  Enabled: true
-
 Style/ClassAndModuleChildren:
   Description: 'Checks style of children classes and modules.'
+  StyleGuide: '#namespace-definition'
   Enabled: true
 
 Style/ClassCheck:
@@ -459,14 +506,15 @@ Style/ConditionalAssignment:
                  of assigning that variable inside of each branch.
   Enabled: true
 
-Style/ConstantName:
-  Description: 'Constants should use SCREAMING_SNAKE_CASE.'
-  StyleGuide: '#screaming-snake-case'
-  Enabled: true
-
 Style/DefWithParentheses:
   Description: 'Use def with parentheses when there are arguments.'
   StyleGuide: '#method-parens'
+  Enabled: true
+
+Style/Dir:
+  Description: >-
+                 Use the `__dir__` method to retrieve the canonicalized
+                 absolute path to the current file.
   Enabled: true
 
 Style/Documentation:
@@ -514,14 +562,14 @@ Style/EndBlock:
   StyleGuide: '#no-END-blocks'
   Enabled: true
 
+Style/Encoding:
+  Description: 'Use UTF-8 as the source file encoding.'
+  StyleGuide: '#utf-8'
+  Enabled: true
+
 Style/EvenOdd:
   Description: 'Favor the use of Integer#even? && Integer#odd?'
   StyleGuide: '#predicate-methods'
-  Enabled: true
-
-Style/FileName:
-  Description: 'Use snake_case for source file names.'
-  StyleGuide: '#snake-case-files'
   Enabled: true
 
 Style/FrozenStringLiteralComment:
@@ -634,14 +682,15 @@ Style/MethodDefParentheses:
   StyleGuide: '#method-parens'
   Enabled: true
 
-Style/MethodName:
-  Description: 'Use the configured style when naming methods.'
-  StyleGuide: '#snake-case-symbols-methods-vars'
-  Enabled: true
-
 Style/MethodMissing:
   Description: 'Avoid using `method_missing`.'
   StyleGuide: '#no-method-missing'
+  Enabled: true
+
+Style/MinMax:
+  Description: >-
+                 Use `Enumerable#minmax` instead of `Enumerable#min`
+                 and `Enumerable#max` in conjunction.'
   Enabled: true
 
 Style/MixinGrouping:
@@ -768,16 +817,16 @@ Style/OneLineConditional:
   StyleGuide: '#ternary-operator'
   Enabled: true
 
-Style/OpMethod:
-  Description: 'When defining binary operators, name the argument other.'
-  StyleGuide: '#other-arg'
-  Enabled: true
-
 Style/OptionalArguments:
   Description: >-
                  Checks for optional arguments that do not appear at the end
                  of the argument list
   StyleGuide: '#optional-arguments'
+  Enabled: true
+
+Style/OrAssignment:
+  Description: 'Recommend usage of double pipe equals (||=) where applicable.'
+  StyleGuide: '#double-pipe-for-uninit'
   Enabled: true
 
 Style/ParallelAssignment:
@@ -809,11 +858,6 @@ Style/PerlBackrefs:
   StyleGuide: '#no-perl-regexp-last-matchers'
   Enabled: true
 
-Style/PredicateName:
-  Description: 'Check the names of predicate methods.'
-  StyleGuide: '#bool-methods-qmark'
-  Enabled: true
-
 Style/PreferredHashMethods:
   Description: 'Checks use of `has_key?` and `has_value?` Hash methods.'
   StyleGuide: '#hash-key'
@@ -832,6 +876,10 @@ Style/RaiseArgs:
 Style/RedundantBegin:
   Description: "Don't use begin blocks when they are not needed."
   StyleGuide: '#begin-implicit'
+  Enabled: true
+
+Style/RedundantConditional:
+  Description: "Don't return true/false from a conditional."
   Enabled: true
 
 Style/RedundantException:
@@ -988,15 +1036,6 @@ Style/VariableInterpolation:
   StyleGuide: '#curlies-interpolate'
   Enabled: true
 
-Style/VariableName:
-  Description: 'Use the configured style when naming variables.'
-  StyleGuide: '#snake-case-symbols-methods-vars'
-  Enabled: true
-
-Style/VariableNumber:
-  Description: 'Use the configured style when numbering variables.'
-  Enabled: true
-
 Style/WhenThen:
   Description: 'Use when x then ... for one-line cases.'
   StyleGuide: '#one-line-cases'
@@ -1113,6 +1152,10 @@ Lint/BlockAlignment:
   Description: 'Align block ends correctly.'
   Enabled: true
 
+Lint/BooleanSymbol:
+  Description: 'Check for `:true` and `:false` symbols.'
+  Enabled: true
+
 Lint/CircularArgumentReference:
   Description: "Default values in optional keyword arguments and optional ordinal arguments should not refer back to the name of the argument."
   Enabled: true
@@ -1217,10 +1260,8 @@ Lint/InheritException:
   Description: 'Avoid inheriting from the `Exception` class.'
   Enabled: true
 
-Lint/InvalidCharacterLiteral:
-  Description: >-
-                 Checks for invalid character literals with a non-escaped
-                 whitespace character.
+Lint/InterpolationCheck:
+  Description: 'Raise warning for interpolation in single q strs'
   Enabled: true
 
 Lint/LiteralInCondition:
@@ -1280,6 +1321,10 @@ Lint/RandOne:
                  and most likely a mistake.
   Enabled: true
 
+Lint/RedundantWithIndex:
+  Description: 'Checks for redundant `with_index`.'
+  Enabled: true
+
 Lint/RequireParentheses:
   Description: >-
                  Use parentheses in the method call to avoid confusion
@@ -1293,6 +1338,11 @@ Lint/RescueException:
 
 Lint/RescueType:
   Description: 'Avoid rescuing from non constants that could result in a `TypeError`.'
+  Enabled: true
+
+Lint/RescueWithoutErrorClass:
+  Description: 'Avoid rescuing without specifying an error class.'
+  StyleGuide: '#no-blind-rescues'
   Enabled: true
 
 Lint/SafeNavigationChain:
@@ -1353,6 +1403,20 @@ Lint/UnreachableCode:
   Description: 'Unreachable code.'
   Enabled: true
 
+Lint/UriEscapeUnescape:
+  Description: >-
+                 `URI.escape` method is obsolete and should not be used. Instead, use
+                 `CGI.escape`, `URI.encode_www_form` or `URI.encode_www_form_component`
+                 depending on your specific use case.
+                 Also `URI.unescape` method is obsolete and should not be used. Instead, use
+                 `CGI.unescape`, `URI.decode_www_form` or `URI.decode_www_form_component`
+                 depending on your specific use case.
+  Enabled: true
+
+Lint/UriRegexp:
+  Description: 'Use `URI::DEFAULT_PARSER.make_regexp` instead of `URI.regexp`.'
+  Enabled: true
+
 Lint/UselessAccessModifier:
   Description: 'Checks for useless access modifiers.'
   Enabled: true
@@ -1370,6 +1434,10 @@ Lint/UselessComparison:
 
 Lint/UselessElseWithoutRescue:
   Description: 'Checks for useless `else` in `begin..end` without `rescue`.'
+  Enabled: true
+
+Lint/ReturnInVoidContext:
+  Description: 'Checks for return in void context.'
   Enabled: true
 
 Lint/UselessSetterCall:
@@ -1518,7 +1586,7 @@ Performance/Size:
   Enabled: true
 
 Performance/CompareWithBlock:
-  Description: 'Use `sort_by(&:foo)` instead of `sort_by { |a, b| a.foo <=> b.foo }`.'
+  Description: 'Use `sort_by(&:foo)` instead of `sort { |a, b| a.foo <=> b.foo }`.'
   Enabled: true
 
 Performance/StartWith:
@@ -1540,6 +1608,15 @@ Performance/StringReplacement:
 
 Performance/TimesMap:
   Description: 'Checks for .times.map calls.'
+  AutoCorrect: false
+  Enabled: true
+
+Performance/UnfreezeString:
+  Description: 'Use unary plus to get an unfrozen string literal.'
+  Enabled: true
+
+Performance/UriDefaultParser:
+  Description: 'Use `URI::DEFAULT_PARSER` instead of `URI::Parser.new`.'
   Enabled: true
 
 #################### Rails #################################
@@ -1620,6 +1697,11 @@ Rails/FindEach:
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'
   StyleGuide: 'https://github.com/bbatsov/rails-style-guide#has-many-through'
+  Enabled: true
+
+Rails/HasManyOrHasOneDependent:
+  Description: 'Define the dependent option to the has_many and has_one associations.'
+  StyleGuide: 'https://github.com/bbatsov/rails-style-guide#has_many-has_one-dependent-option'
   Enabled: true
 
 Rails/HttpPositionalArguments:
@@ -1739,6 +1821,16 @@ Security/YAMLLoad:
 
 Bundler/DuplicatedGem:
   Description: 'Checks for duplicate gem entries in Gemfile.'
+  Enabled: true
+  Include:
+    - '**/Gemfile'
+    - '**/gems.rb'
+
+Bundler/InsecureProtocolSource:
+  Description: >-
+                 The source `:gemcutter`, `:rubygems` and `:rubyforge` are deprecated
+                 because HTTP requests are insecure. Please change your source to
+                 'https://rubygems.org' if possible, or 'http://rubygems.org' if not.
   Enabled: true
   Include:
     - '**/Gemfile'
