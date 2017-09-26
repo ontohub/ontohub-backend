@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Documents",
+  "description": "REST Documents Controller",
+  "type": "object",
+  "required": ["data"],
+  "definitions": {
+    "actions": {
+      "show": {"$ref": "#/definitions/self"}
+    },
+    "self": {
+      "properties": {
+        "data": {
+          "type": "object",
+          "required": ["repository"],
+          "properties": {
+            "repository": {
+              "type": "object",
+              "required": ["commit"],
+              "properties": {
+                "commit": {
+                  "type": "object",
+                  "required": ["document"],
+                  "properties": {
+                    "document": {
+                      "type": "object",
+                      "required": ["__typename", "locId", "documentLinksBySource", "documentLinksByTarget", "documentLinks"],
+                      "properties": {
+                        "__typename": {"$ref": "#/definitions/Document__typename"},
+                        "locId": {"$ref": "#/definitions/DocumentLocId"},
+                        "documentLinksBySource": {"$ref": "#/definitions/DocumentLinks"},
+                        "documentLinksByTarget": {"$ref": "#/definitions/DocumentLinks"},
+                        "documentLinks": {"$ref": "#/definitions/DocumentLinks"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Document__typename": {
+      "type": "String",
+      "description": "The type of the document",
+      "enum": ["Library", "NativeDocument"],
+      "example": "Library"
+    },
+    "DocumentLocId": {
+      "type": "String",
+      "description": "The Loc/Id of the file",
+      "example": "RelationsAndOrders"
+    },
+    "DocumentLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target"],
+        "properties": {
+          "source": {"$ref": "#/definitions/Document"},
+          "target": {"$ref": "#/definitions/Document"}
+        }
+      }
+    },
+    "Document": {
+      "type": "object",
+      "required": ["__typename", "locId"],
+      "properties": {
+        "__typename": {"$ref": "#/definitions/Document__typename"},
+        "locId": {"$ref": "#/definitions/DocumentLocId"}
+      }
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit that owns the repository"
+    },
+    "repository_id": {
+      "type": "string",
+      "example": "fixtures",
+      "description": "The id of the repository"
+    },
+    "revision": {
+      "type": "string",
+      "example": "master",
+      "description": "The optional revision of the repository. Leave out \"revision/master/\" from the URL to use the default revision."
+    },
+    "locId": {
+      "type": "string",
+      "example": "RelationsAndOrders",
+      "description": "The Loc/Id of the document."
+    }
+  },
+  "properties": {"$ref": "#/definitions/self/properties"},
+  "links": [
+    {
+      "title": "Show",
+      "description": "Show the details of document. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/{#/definitions/organizational_unit_id}/{#/definitions/repository_id}/revision/{#/definitions/revision}/tree/{#/definitions/locId}",
+      "targetSchema": { "rel": "self" }
+    }
+  ]
+}

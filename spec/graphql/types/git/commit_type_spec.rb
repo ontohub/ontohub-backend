@@ -74,10 +74,17 @@ RSpec.shared_examples "a commit's file in GraphQL" do
   end
 end
 
+RSpec.shared_examples "a commit's document in GraphQL" do
+  it 'finds the document' do
+    expect(resolved_field).to eq(document)
+  end
+end
+
 RSpec.describe Types::Git::CommitType do
   let(:repository) { create(:repository_compound, :not_empty) }
   let(:revision) { repository.git.default_branch }
   subject { repository.git.commit(revision) }
+  let(:file_version) { FileVersion.find(commit_sha: subject.id) }
   let(:type) { OntohubBackendSchema.types['Commit'] }
   let(:arguments) { {} }
   let(:resolved_field) { field.resolve(subject, arguments, {}) }
@@ -184,6 +191,22 @@ RSpec.describe Types::Git::CommitType do
                                  encoding: 'base64')
       end
       it_behaves_like "a commit's file in GraphQL"
+    end
+  end
+
+  context 'document field' do
+    let(:field) { type.get_field('document') }
+    let(:arguments) { {'locId' => loc_id} }
+    let(:loc_id) { document.loc_id }
+
+    context 'on a Library' do
+      let!(:document) { create(:library, file_version: file_version) }
+      it_behaves_like "a commit's document in GraphQL"
+    end
+
+    context 'on a NativeDocument' do
+      let!(:document) { create(:native_document, file_version: file_version) }
+      it_behaves_like "a commit's document in GraphQL"
     end
   end
 

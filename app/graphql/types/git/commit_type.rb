@@ -101,6 +101,19 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :document, Types::DocumentType do
+    description 'A document containing OMS data'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the document'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      Document.where_commit_sha(commit_sha: commit.id,
+                                loc_id: arguments['locId']).first
+    end)
+  end
+
   field :lsFiles, !types[!types.String] do
     description 'A list of all file paths in the repository'
 

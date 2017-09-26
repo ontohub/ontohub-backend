@@ -45,6 +45,10 @@ Rails.application.routes.draw do
       get '/:path', controller: 'rest/trees', action: 'show',
                     constraints: {path: UNTIL_DOUBLE_SLASHES}
     end
+    scope '/documents' do
+      get '/:document_loc_id', controller: 'rest/documents', action: 'show',
+                               constraints: {path: UNTIL_DOUBLE_SLASHES}
+    end
   end
 
   # REST controller actions
