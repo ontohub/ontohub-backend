@@ -12,7 +12,7 @@ RSpec.describe Rest::CommitsController do
       before do
         get :show, params: {organizational_unit_id: user.to_param,
                             repository_id:
-                            repository.to_param.sub(%r{\A[^/]*/}, '')}
+                              repository.to_param.sub(%r{\A[^/]*/}, '')}
       end
       it { expect(response).to have_http_status(:ok) }
       it { |example| expect([example, response]).to comply_with_rest_api }
