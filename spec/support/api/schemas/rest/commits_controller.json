@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Rest Branches",
+  "title": "Rest Commits",
   "description": "Rest Commit Controller",
   "definitions": {
     "actions": {
@@ -46,9 +46,7 @@
                 },
                 "parentIds": {
                   "type": "array",
-                  "items": {
-                    "id":""
-                  }
+                  "items": {"$ref": "#/definitions/commit_id"}
                 },
                 "referenceNames": {
                   "type": "array",
@@ -59,14 +57,40 @@
                   }
                 },
                 "references": {
-
+                  "type": "object",
+                  "required": ["name", "target"],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "master",
+                      "description": "The name of the reference"
+                    },
+                    "target": {
+                      "$ref": "#/definitions/commit_id"
+                    }
+                  }
                 },
                 "author": {
                   "type": "object",
-                  "required":["account", "email", "name"],
+                  "required": ["account", "email", "name"],
                   "properties": {
                     "account": {
-
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "required": ["id"],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "ada",        
+                              "description": "The id of this Ontohub account"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "email": {
                       "type": "string",
@@ -85,10 +109,10 @@
                   "example": "15036604892",
                   "description": "The time the commit was authored at"
                 },
-                "commiter": {
+                "committer": {
                   "type": "object",
                   "required": ["account", "email", "name"],
-                  "properites": {
+                  "properties": {
                     "account": {
                       "oneOf": [
                         {
@@ -97,7 +121,7 @@
                           "properties": {
                             "id": {
                               "type": "string",
-                              "example": "ada/fixtures",        
+                              "example": "ada",        
                               "description": "The id of this Ontohub account"
                             }
                           }
@@ -129,6 +153,21 @@
           }
         }
       }
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit that owns the repository"
+    },
+    "repository_id": {
+      "type": "string",
+      "example": "fixtures",
+      "description": "The id of the repository"
+    },
+    "commit_id": {
+      "type": "string",
+      "example": "7472e930126045fef940c954dfb34c8b8a7e7b20",
+      "description": "ID of this commit"
     }
   },
   "properties": { "$ref": "#/definitions/repository/properties" },
@@ -139,7 +178,7 @@
       "rel": "self",
       "method": "GET",
       "mediaType": "application/json",
-      "href": "/{#/definitions/id}",
+      "href": "/{#/definitions/organizational_unit_id}/{#/definitions/repository_id}/commits/{#/definitions/commit_id}",
       "targetSchema": { "$ref": "#/definitions/actions/show" }
     }
   ]

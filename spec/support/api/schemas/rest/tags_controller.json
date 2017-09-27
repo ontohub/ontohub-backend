@@ -7,7 +7,7 @@
       "show": {
         "properties": {
           "data": {
-            "oneOf": [ 
+            "oneOf": [
               {
                 "type": "object",
                 "required": ["repository"],
@@ -31,7 +31,7 @@
               "repository": {
                 "required": ["tags"],
                 "properties": {
-                  "branches": {
+                  "tags": {
                     "type": "array",
                     "items": {"$ref": "#/definitions/name"}
                   }
@@ -44,8 +44,13 @@
     },
     "id": {
       "type": "string",
-      "example": "ada/fixtures",        
+      "example": "ada/fixtures",
       "description": "The id of the repository"
+    },
+    "name": {
+      "type": "string",
+      "example": "1.0",
+      "description": "The name of the tag"
     },
     "repository": {
       "properties": {
@@ -55,13 +60,9 @@
           "properties": {
             "tag": {
               "type": "object",
-              "requiered": ["name", "target", "annotation"],
+              "required": ["name", "target", "annotation"],
               "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "1.0",
-                  "description": "The name of the tag"
-                },
+                "name": {"$ref": "#/definitions/name"},
                 "target": {
                   "type": "object",
                   "required": ["id"],
@@ -90,6 +91,11 @@
           }
         }
       }
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit that owns the repository"
     }
   },
   "properties": { "$ref": "#/definitions/repository/properties" },
