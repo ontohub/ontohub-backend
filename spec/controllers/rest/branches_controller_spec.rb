@@ -24,7 +24,7 @@ RSpec.describe Rest::BranchesController do
       before do
         get :show, params: {organizational_unit_id: user.to_param,
                             repository_id:
-                            repository.to_param.sub(%r{\A[^/]*/}, ''),
+                              repository.to_param.sub(%r{\A[^/]*/}, ''),
                             name: repository.git.default_branch}
       end
       it { expect(response).to have_http_status(:ok) }

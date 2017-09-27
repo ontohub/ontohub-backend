@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Rest Commits",
+  "description": "Rest Commit Controller",
+  "definitions": {
+    "actions": {
+      "show": {
+        "properties": {
+          "data": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["repository"],
+                "properties": {
+                  "repository": {"$ref": "#/definitions/repository"}
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          } 
+        }
+      }
+    },
+    "repository": {
+      "properties": {
+        "repository": {
+          "type": "object",
+          "required": ["commit"],
+          "properties": {
+            "commit": {
+              "type": "object",
+              "required": ["id", "message", "parentIds", "referenceNames",
+                "references", "author", "authoredAt", "committer", "committedAt"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "7472e930126045fef940c954dfb34c8b8a7e7b20",
+                  "description": "ID of this commit"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "8: Quia magni nihil blanditiis est quasi.",
+                  "description": "The commit message"
+                },
+                "parentIds": {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/commit_id"}
+                },
+                "referenceNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "master",
+                    "description": "The names of the references that point to this commit"
+                  }
+                },
+                "references": {
+                  "type": "object",
+                  "required": ["name", "target"],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "master",
+                      "description": "The name of the reference"
+                    },
+                    "target": {
+                      "$ref": "#/definitions/commit_id"
+                    }
+                  }
+                },
+                "author": {
+                  "type": "object",
+                  "required": ["account", "email", "name"],
+                  "properties": {
+                    "account": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "required": ["id"],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "ada",        
+                              "description": "The id of this Ontohub account"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ada@example.com",
+                      "description": "Email address of the user"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "ada",
+                      "description": "Name of the user"
+                    }
+                  }
+                },
+                "authoredAt": {
+                  "type": "integer",
+                  "example": "15036604892",
+                  "description": "The time the commit was authored at"
+                },
+                "committer": {
+                  "type": "object",
+                  "required": ["account", "email", "name"],
+                  "properties": {
+                    "account": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "required": ["id"],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "ada",        
+                              "description": "The id of this Ontohub account"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "ada@example.com",
+                      "description": "Email address of the user"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "ada",
+                      "description": "Name of the user"
+                    }
+                  }
+                },
+                "committedAt": {
+                  "type": "integer",
+                  "example": "15036604892",
+                  "description": "The time the commit was created"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit that owns the repository"
+    },
+    "repository_id": {
+      "type": "string",
+      "example": "fixtures",
+      "description": "The id of the repository"
+    },
+    "commit_id": {
+      "type": "string",
+      "example": "7472e930126045fef940c954dfb34c8b8a7e7b20",
+      "description": "ID of this commit"
+    }
+  },
+  "properties": { "$ref": "#/definitions/repository/properties" },
+  "links": [
+    {
+      "title": "Show",
+      "description": "Show the details of a commit. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/{#/definitions/organizational_unit_id}/{#/definitions/repository_id}/commits/{#/definitions/commit_id}",
+      "targetSchema": { "$ref": "#/definitions/actions/show" }
+    }
+  ]
+}

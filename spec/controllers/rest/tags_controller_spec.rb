@@ -11,7 +11,7 @@ RSpec.describe Rest::TagsController do
       before do
         get :index, params: {organizational_unit_id: user.to_param,
                              repository_id:
-                             repository.to_param.sub(%r{\A[^/]*/}, '')}
+                              repository.to_param.sub(%r{\A[^/]*/}, '')}
       end
       it { expect(response).to have_http_status(:ok) }
       it { |example| expect([example, response]).to comply_with_rest_api }
@@ -26,7 +26,7 @@ RSpec.describe Rest::TagsController do
         repository.git.create_tag(tag_name, repository.git.default_branch)
         get :show, params: {organizational_unit_id: user.to_param,
                             repository_id:
-                            repository.to_param.sub(%r{\A[^/]*/}, ''),
+                              repository.to_param.sub(%r{\A[^/]*/}, ''),
                             name: tag_name}
       end
       it { expect(response).to have_http_status(:ok) }
