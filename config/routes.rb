@@ -78,6 +78,11 @@ Rails.application.routes.draw do
           get '/branches/:name', controller: 'rest/branches', action: 'show'
           get '/tags', controller: 'rest/tags', action: 'index'
           get '/tags/:name', controller: 'rest/tags', action: 'show'
+          get '/commits', controller: 'rest/commits', action: 'show'
+
+          scope 'revision/:revision' do
+            get '/commits', controller: 'rest/commits', action: 'show'
+          end
         end
       end
     end
