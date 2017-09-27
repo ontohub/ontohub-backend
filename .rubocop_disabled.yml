@@ -59,11 +59,6 @@ Style/DocumentationMethod:
     - 'spec/**/*'
     - 'test/**/*'
 
-Style/Encoding:
-  Description: 'Use UTF-8 as the source file encoding.'
-  StyleGuide: '#utf-8'
-  Enabled: false
-
 Style/ImplicitRuntimeError:
   Description: >-
                  Use `raise` or `fail` with an explicit exception class and
@@ -103,6 +98,10 @@ Style/MissingElse:
 
 Style/OptionHash:
   Description: "Don't use option hashes when you can use keyword arguments."
+  Enabled: false
+
+Style/ReturnNil:
+  Description: 'Use return instead of return nil.'
   Enabled: false
 
 Style/Send:
