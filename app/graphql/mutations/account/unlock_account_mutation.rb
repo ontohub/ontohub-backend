@@ -12,6 +12,8 @@ module Mutations
         description 'The unlock account token from the unlock account email'
       end
 
+      authorize! :unlock_account, :unlock
+
       resolve UnlockAccountResolver.new
     end
 

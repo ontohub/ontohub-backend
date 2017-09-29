@@ -12,6 +12,8 @@ module Mutations
         description 'The email address of the user'
       end
 
+      authorize! :resend_unlocking_email, :unlock
+
       resolve ResendUnlockAccountEmailResolver.new
     end
 

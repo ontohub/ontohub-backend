@@ -12,6 +12,8 @@ module Mutations
         description 'The email address of the user'
       end
 
+      authorize! :create, :confirmation
+
       resolve ResendConfirmationEmailResolver.new
     end
 

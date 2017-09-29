@@ -12,6 +12,8 @@ module Mutations
         description 'The email address of the user'
       end
 
+      authorize! :resend_password_recovery_email, :password
+
       resolve ResendPasswordResetEmailResolver.new
     end
 
