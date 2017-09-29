@@ -68,14 +68,14 @@ RSpec.describe 'saveAccount mutation' do
     end
   end
 
-  context 'User does not exist' do
+  context 'User is not signed in' do
     let(:variables) { {'data' => user_data, 'password' => ''} }
     let(:context) { {current_user: nil} }
 
     it 'returns an error' do
       expect(subject['data']['saveAccount']).to be_nil
       expect(subject['errors']).
-        to include(include('message' => 'resource not found'))
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end
