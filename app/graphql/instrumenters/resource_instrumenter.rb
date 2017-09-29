@@ -8,9 +8,12 @@ module Instrumenters
   class ResourceInstrumenter
     def instrument(_type, field)
       old_resolve = field.resolve_proc
-      resource_proc = field.metadata[:resource]
-      new_resolve = resolve_proc(old_resolve, resource_proc)
-      if resource_proc
+      resource_meta = field.metadata[:resource]
+      if resource_meta
+        resource_proc = resource_meta[:proc]
+        new_resolve = resolve_proc(old_resolve,
+                                  resource_proc,
+                                  resource_meta[:raise_on_nil])
         field.redefine do
           resolve new_resolve
         end
@@ -21,10 +24,10 @@ module Instrumenters
 
     protected
 
-    def resolve_proc(old_resolve, resource_proc)
+    def resolve_proc(old_resolve, resource_proc, raise_on_nil)
       lambda do |root, arguments, context|
         resource = resource_proc.call(root, arguments, context)
-        if resource
+        if resource || !raise_on_nil
           old_resolve.call(resource, arguments, context)
         else
           context.add_error(GraphQL::ExecutionError.new('resource not found'))
@@ -32,8 +35,17 @@ module Instrumenters
       end
     end
   end
+
+  def self.assign_resource(raise_on_nil)
+    lambda do |defn, proc|
+      opts = {raise_on_nil: raise_on_nil, proc: proc}
+      GraphQL::Define::InstanceDefinable::AssignMetadataKey.new(:resource).
+        call(defn, opts)
+    end
+  end
 end
 
 GraphQL::Field.accepts_definitions(
-  resource: GraphQL::Define.assign_metadata_key(:resource)
+  resource: Instrumenters.assign_resource(false),
+  resource!: Instrumenters.assign_resource(true)
 )

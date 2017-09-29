@@ -10,7 +10,7 @@ module Mutations
         description 'The ID of the repository to delete'
       end
 
-      resource(lambda do |_root, arguments, _context|
+      resource!(lambda do |_root, arguments, _context|
         RepositoryCompound.find(slug: arguments[:slug])
       end)
       resolve DeleteRepositoryResolver.new

@@ -19,7 +19,7 @@ module Mutations
           description 'The revision the branch shall point to'
         end
 
-        resource(lambda do |_root, arguments, _context|
+        resource!(lambda do |_root, arguments, _context|
           RepositoryCompound.find(slug: arguments['repositoryId'])
         end)
 

@@ -13,7 +13,7 @@ module Mutations
         description 'Password of the current user to confirm the deletion'
       end
 
-      resource ->(_root, _arguments, context) { context[:current_user] }
+      resource! ->(_root, _arguments, context) { context[:current_user] }
       resolve DeleteAccountResolver.new
     end
 

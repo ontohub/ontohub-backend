@@ -78,4 +78,17 @@ RSpec.describe 'addPublicKey mutation' do
       end
     end
   end
+
+  context 'User is not signed in' do
+    let(:current_user) { nil }
+    let(:public_key_blueprint) { build(:public_key) }
+    let(:key) { public_key_blueprint.key }
+    let(:key_name) { public_key_blueprint.name }
+    let(:variables) { {'key' => "#{key} #{key_name}"} }
+
+    it 'returns an error' do
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
+    end
+  end
 end

@@ -12,6 +12,10 @@ module Mutations
 
       resource ->(_root, _arguments, context) { context[:current_user] }
 
+      authorize!(lambda do |user, _arguments, context|
+        UserPolicy.new(user, context[:current_user]).access_private_data?
+      end)
+
       resolve AddPublicKeyResolver.new
     end
 
