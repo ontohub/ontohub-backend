@@ -51,7 +51,7 @@ RSpec.describe 'deleteAccount mutation' do
     it 'returns an error' do
       expect(subject['data']['deleteAccount']).to be_nil
       expect(subject['errors']).
-        to include(include('message' => 'resource not found'))
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end
