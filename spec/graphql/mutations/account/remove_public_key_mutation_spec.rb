@@ -55,9 +55,11 @@ RSpec.describe 'removePublicKey mutation' do
 
   context 'User is not signed in' do
     let(:current_user) { nil }
+    let(:variables) { {'name' => 'some-key'} }
 
     it 'returns an error' do
-      skip 'Needs authorization'
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end
