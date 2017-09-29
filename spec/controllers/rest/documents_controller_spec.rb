@@ -39,20 +39,6 @@ RSpec.shared_examples 'a REST DocumentsController' do
         it 'is the document' do
           expect(response_data.dig('repository', 'commit', 'document')).
             to include('__typename' => document.class.to_s,
-                       'documentLinksBySource' =>
-                         include(include('source' =>
-                                           include('locId' => loc_id),
-                                         'target' =>
-                                           include('locId' =>
-                                                     link_source.target.
-                                                       loc_id))),
-                       'documentLinksByTarget' =>
-                         include(include('source' =>
-                                           include('locId' =>
-                                                   link_target.source.
-                                                     loc_id),
-                                         'target' =>
-                                           include('locId' => loc_id))),
                        'documentLinks' =>
                          include(include('source' =>
                                            include('locId' => loc_id),

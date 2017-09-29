@@ -21,26 +21,6 @@ module Rest
               document(locId: $documentLocId) {
                 __typename
                 locId
-                documentLinksBySource {
-                  source {
-                    __typename
-                    locId
-                  }
-                  target {
-                    __typename
-                    locId
-                  }
-                }
-                documentLinksByTarget {
-                  source {
-                    __typename
-                    locId
-                  }
-                  target {
-                    __typename
-                    locId
-                  }
-                }
                 documentLinks {
                   source {
                     __typename

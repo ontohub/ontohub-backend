@@ -24,12 +24,10 @@
                   "properties": {
                     "document": {
                       "type": "object",
-                      "required": ["__typename", "locId", "documentLinksBySource", "documentLinksByTarget", "documentLinks"],
+                      "required": ["__typename", "locId", "documentLinks"],
                       "properties": {
                         "__typename": {"$ref": "#/definitions/Document__typename"},
                         "locId": {"$ref": "#/definitions/DocumentLocId"},
-                        "documentLinksBySource": {"$ref": "#/definitions/DocumentLinks"},
-                        "documentLinksByTarget": {"$ref": "#/definitions/DocumentLinks"},
                         "documentLinks": {"$ref": "#/definitions/DocumentLinks"}
                       }
                     }

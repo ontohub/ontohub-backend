@@ -12,13 +12,41 @@ RSpec.shared_examples 'a document in GraphQL' do
     create(:document_link, target: subject)
   end
 
-  %w(locId documentLinks documentLinksBySource documentLinksByTarget).
-    each do |field_name|
-    context "#{field_name} field" do
-      let(:field) { type.get_field(field_name) }
+  context 'locId field' do
+    let(:field) { type.get_field('locId') }
 
+    it 'resolves the field correctly' do
+      expect(resolved_field).to eq(subject.loc_id)
+    end
+  end
+
+  context 'documentLinks field' do
+    let(:field) { type.get_field('documentLinks') }
+
+    context 'without arguments' do
       it 'resolves the field correctly' do
-        expect(resolved_field).to eq(subject.public_send(field_name.underscore))
+        expect(resolved_field).to eq(subject.document_links)
+      end
+    end
+
+    context 'with argument origin: source' do
+      let(:arguments) { {'origin' => 'any'} }
+      it 'resolves the field correctly' do
+        expect(resolved_field).to eq(subject.document_links)
+      end
+    end
+
+    context 'with argument origin: source' do
+      let(:arguments) { {'origin' => 'source'} }
+      it 'resolves the field correctly' do
+        expect(resolved_field).to eq(subject.document_links_by_source)
+      end
+    end
+
+    context 'with argument origin: target' do
+      let(:arguments) { {'origin' => 'target'} }
+      it 'resolves the field correctly' do
+        expect(resolved_field).to eq(subject.document_links_by_target)
       end
     end
   end

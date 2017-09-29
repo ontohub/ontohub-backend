@@ -160,13 +160,10 @@ interface DirectoryEntry {
 # A Document is a container for OMS
 interface Document {
   # All DocumentLinks that this Document is part of
-  documentLinks: [DocumentLink!]!
-
-  # All DocumentLinks that this Document is the source of
-  documentLinksBySource: [DocumentLink!]!
-
-  # All DocumentLinks that this Document is the target of
-  documentLinksByTarget: [DocumentLink!]!
+  documentLinks(
+    # Specifies which end of the link the current document is. Possible values: 'source', 'target'
+    origin: LinkOrigin = any
+  ): [DocumentLink!]!
 
   # The Loc/Id of the document
   locId: ID!
@@ -292,16 +289,25 @@ type GlobalSearchScope {
 # A Library is a container for any number of OMS
 type Library implements Document {
   # All DocumentLinks that this Document is part of
-  documentLinks: [DocumentLink!]!
-
-  # All DocumentLinks that this Document is the source of
-  documentLinksBySource: [DocumentLink!]!
-
-  # All DocumentLinks that this Document is the target of
-  documentLinksByTarget: [DocumentLink!]!
+  documentLinks(
+    # Specifies which end of the link the current document is. Possible values: 'source', 'target'
+    origin: LinkOrigin = any
+  ): [DocumentLink!]!
 
   # The Loc/Id of the document
   locId: ID!
+}
+
+# Specifies which end of the link the current object is
+enum LinkOrigin {
+  # The current object is any end of the link
+  any
+
+  # The current object is the source of the link
+  source
+
+  # The current object is the target of the link
+  target
 }
 
 # Base mutation type
@@ -501,13 +507,10 @@ type Mutation {
 # A NativeDocument is a container for exactly one OMS
 type NativeDocument implements Document {
   # All DocumentLinks that this Document is part of
-  documentLinks: [DocumentLink!]!
-
-  # All DocumentLinks that this Document is the source of
-  documentLinksBySource: [DocumentLink!]!
-
-  # All DocumentLinks that this Document is the target of
-  documentLinksByTarget: [DocumentLink!]!
+  documentLinks(
+    # Specifies which end of the link the current document is. Possible values: 'source', 'target'
+    origin: LinkOrigin = any
+  ): [DocumentLink!]!
 
   # The Loc/Id of the document
   locId: ID!

@@ -9,18 +9,25 @@ Types::DocumentType = GraphQL::InterfaceType.define do
     property :loc_id
   end
 
-  field :documentLinksBySource, !types[!Types::DocumentLinkType] do
-    description 'All DocumentLinks that this Document is the source of'
-    property :document_links_by_source
-  end
-
-  field :documentLinksByTarget, !types[!Types::DocumentLinkType] do
-    description 'All DocumentLinks that this Document is the target of'
-    property :document_links_by_target
-  end
-
   field :documentLinks, !types[!Types::DocumentLinkType] do
     description 'All DocumentLinks that this Document is part of'
-    property :document_links
+
+    argument :origin, Types::LinkOriginEnum do
+      description <<~DESCRIPTION
+        Specifies which end of the link the current document is. Possible values: 'source', 'target'
+      DESCRIPTION
+      default_value 'any'
+    end
+
+    resolve(lambda do |document, arguments, _context|
+      case arguments['origin']
+      when 'source'
+        document.document_links_by_source
+      when 'target'
+        document.document_links_by_target
+      else
+        document.document_links
+      end
+    end)
   end
 end
