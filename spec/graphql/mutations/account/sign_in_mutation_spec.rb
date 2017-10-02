@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe 'signIn mutation', stub_abstract_devise_mutation: true do
+RSpec.describe Mutations::Account::SignInMutation,
+               stub_abstract_devise_mutation: true do
   let!(:user) { create :user }
 
   let(:context) { {} }
