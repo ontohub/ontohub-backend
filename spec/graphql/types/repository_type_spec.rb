@@ -48,7 +48,7 @@ RSpec.describe Types::RepositoryType do
   let(:log_field) { OntohubBackendSchema.get_fields(repository_type)['log'] }
 
   context 'empty repository' do
-    let(:repository) { create :repository_compound, :empty_git }
+    let(:repository) { create :repository_compound }
     context 'defaultBranch field' do
       it 'returns nil' do
         default_branch = default_branch_field.resolve(repository, arguments, {})
@@ -124,7 +124,7 @@ RSpec.describe Types::RepositoryType do
   end
 
   context 'non-empty repository' do
-    let(:repository) { create :repository_compound }
+    let(:repository) { create :repository_compound, :not_empty }
     context 'defaultBranch field' do
       it 'returns master' do
         default_branch = default_branch_field.resolve(repository, arguments, {})

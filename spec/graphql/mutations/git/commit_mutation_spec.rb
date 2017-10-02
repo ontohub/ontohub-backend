@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe 'commit mutation' do
   let!(:user) { create(:user) }
-  let!(:repository) { create(:repository_compound, :empty_git) }
+  let!(:repository) { create(:repository_compound) }
 
   # Setup the repository
   let(:num_setup_files) { 6 }
@@ -22,7 +22,13 @@ RSpec.describe 'commit mutation' do
                        content: old_contents[i],
                        action: :create}
     end
-    repository.git.commit_multichange(info)
+    commit_sha = repository.git.commit_multichange(info)
+    old_files.each do |old_file|
+      FileVersion.create(repository_id: repository.id,
+                         commit_sha: commit_sha,
+                         path: old_file)
+    end
+    commit_sha
   end
 
   let(:branch) { 'master' }

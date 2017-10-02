@@ -14,6 +14,10 @@ module Rest
           }
         }
       QUERY
+
+      plain do |graphql_executor, _variables, _context|
+        graphql_executor.call.dig('data', 'version', 'full')
+      end
     end
   end
 end

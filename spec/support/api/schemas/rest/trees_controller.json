@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Trees",
+  "description": "REST Trees Controller",
+  "type": "object",
+  "required": ["data"],
+  "definitions": {
+    "actions": {
+      "show": {"$ref": "#/definitions/self"}
+    },
+    "self": {
+      "properties": {
+        "data": {
+          "type": "object",
+          "required": ["repository"],
+          "properties": {
+            "repository": {
+              "type": "object",
+              "required": ["commit"],
+              "properties": {
+                "commit": {
+                  "type": "object",
+                  "required": ["directory", "file"],
+                  "properties": {
+                    "directory": {
+                      "oneOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": ["__typename", "name", "path"],
+                            "properties": {
+                              "__typename": {
+                                "type": "String",
+                                "description": "The type of the entry",
+                                "enum": ["Directory", "File"],
+                                "example": "File"
+                              },
+                              "name": {
+                                "type": "String",
+                                "description": "The name of the file",
+                                "example": "ontohub.txt"
+                              },
+                              "path": {
+                                "type": "String",
+                                "description": "The path of the file",
+                                "example": "texts/ontohub.txt"
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "type": "null",
+                          "example": null
+                        }
+                      ]
+                    },
+                    "file": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "required": ["__typename", "name", "path", "content", "encoding", "loadedSize", "size"],
+                          "properties": {
+                            "__typename": {
+                              "type": "String",
+                              "description": "The type of the entry",
+                              "enum": ["File"],
+                              "example": "File"
+                            },
+                            "name": {
+                              "type": "String",
+                              "description": "The name of the file",
+                              "example": "ontohub.txt"
+                            },
+                            "path": {
+                              "type": "String",
+                              "description": "The path of the file",
+                              "example": "texts/ontohub.txt"
+                            },
+                            "content": {
+                              "type": "String",
+                              "description": "The content of the file",
+                              "example": "Lorem ipsum dolor sit..."
+                            },
+                            "encoding": {
+                              "type": "String",
+                              "enum": ["plain", "base64"],
+                              "description": "The encoding of the file content",
+                              "example": "plain"
+                            },
+                            "loadedSize": {
+                              "type": "integer",
+                              "description": "The number of bytes of the content sent",
+                              "example": 10485760
+                            },
+                            "size": {
+                              "type": "integer",
+                              "description": "The number of bytes the content has on the server",
+                              "example": 20971520
+                            }
+                          }
+                        },
+                        {
+                          "type": "null",
+                          "example": null
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit that owns the repository"
+    },
+    "repository_id": {
+      "type": "string",
+      "example": "fixtures",
+      "description": "The id of the repository"
+    },
+    "revision": {
+      "type": "string",
+      "example": "master",
+      "description": "The optional revision of the repository. Leave out \"revision/master/\" from the URL to use the default revision."
+    },
+    "path": {
+      "type": "string",
+      "example": "texts/ontohub.txt",
+      "description": "The path of the file or directory."
+    }
+  },
+  "properties": {"$ref": "#/definitions/self/properties"},
+  "links": [
+    {
+      "title": "Show",
+      "description": "Show the details of a file or a directory. Note that other than in the example response, at least one of 'directory' or 'file' is always null because a path cannot be a directory and a file at the same time. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/{#/definitions/organizational_unit_id}/{#/definitions/repository_id}/revision/{#/definitions/revision}/tree/{#/definitions/path}",
+      "targetSchema": { "rel": "self" }
+    }
+  ]
+}

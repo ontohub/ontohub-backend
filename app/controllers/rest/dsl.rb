@@ -5,10 +5,11 @@ module Rest
   module DSL
     # Contains Graphql options for one REST actions
     class Graphql
-      attr_reader :query_string, :arguments_proc, :context_proc
+      attr_reader :query_string, :arguments_proc, :context_proc, :plain_proc
 
       def initialize
         @arguments_proc = proc {}
+        @plain_proc = proc {}
       end
 
       def query(query_string)
@@ -21,6 +22,29 @@ module Rest
 
       def context(&block)
         @context_proc = block
+      end
+
+      def plain(&block)
+        @plain_proc = block
+      end
+    end
+
+    # Contains helper methods for a request.
+    class Request
+      # rubocop:disable Metrics/MethodLength
+      def self.respond_with_text?(request)
+        # rubocop:enable Metrics/MethodLength
+        text_index = request.accepts.index(:text)
+        json_index = request.accepts.index(:json)
+        if json_index && text_index
+          text_index < json_index
+        elsif text_index
+          true
+        elsif json_index
+          false
+        else
+          false
+        end
       end
     end
 
@@ -41,13 +65,23 @@ module Rest
         global_context = instance_eval(&context_proc || proc { {} })
         local_context = instance_eval(&obj.context_proc || proc { {} })
         context = global_context.merge(local_context)
+        graphql_executor = proc do
+          OntohubBackendSchema.execute(
+            obj.query_string,
+            variables: variables || {},
+            context: context
+          )
+        end
 
-        result = OntohubBackendSchema.execute(
-          obj.query_string,
-          variables: variables || {},
-          context: context
-        )
-        render json: result
+        if Rest::DSL::Request.respond_with_text?(request)
+          plain = proc do
+            obj.plain_proc.call(graphql_executor, variables, context)
+          end
+          text, status = instance_eval(&plain)
+          render plain: text, status: status || :ok
+        else
+          render json: graphql_executor.call
+        end
       end
     end
   end

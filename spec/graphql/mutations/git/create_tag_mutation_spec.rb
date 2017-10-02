@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe 'createTag mutation' do
   let!(:user) { create :user }
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let(:name) { generate(:tagname) }
   let(:annotation) { Faker::Lorem.sentence }
   let(:revision) { 'master' }

@@ -39,6 +39,18 @@ Rails.application.routes.draw do
 
   post '/graphql', to: 'graphql#execute'
 
+  routes_with_optional_revision = lambda do
+    get '/commits', controller: 'rest/commits', action: 'show'
+    scope '/tree' do
+      get '/:path', controller: 'rest/trees', action: 'show',
+                    constraints: {path: UNTIL_DOUBLE_SLASHES}
+    end
+    scope '/documents' do
+      get '/:document_loc_id', controller: 'rest/documents', action: 'show',
+                               constraints: {path: UNTIL_DOUBLE_SLASHES}
+    end
+  end
+
   # REST controller actions
   allow_double_slashes_in_routes do
     scope format: false, defaults: {format: :json} do
@@ -78,10 +90,10 @@ Rails.application.routes.draw do
           get '/branches/:name', controller: 'rest/branches', action: 'show'
           get '/tags', controller: 'rest/tags', action: 'index'
           get '/tags/:name', controller: 'rest/tags', action: 'show'
-          get '/commits', controller: 'rest/commits', action: 'show'
 
-          scope 'revision/:revision' do
-            get '/commits', controller: 'rest/commits', action: 'show'
+          routes_with_optional_revision.call
+          scope '/revision/:revision' do
+            routes_with_optional_revision.call
           end
         end
       end

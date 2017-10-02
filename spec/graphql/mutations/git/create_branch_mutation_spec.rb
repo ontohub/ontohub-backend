@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'createBranch mutation' do
-  let!(:repository) { create :repository_compound }
+  let!(:repository) { create :repository_compound, :not_empty }
   let(:name) { "feature_#{Faker::Internet.user_name}" }
   let(:revision) { 'master' }
 

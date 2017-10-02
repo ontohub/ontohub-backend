@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe GitFile do
-  let!(:repository) { create(:repository_compound) }
+  let!(:repository) { create(:repository_compound, :not_empty) }
   let(:git) { repository.git }
   let(:commit) { git.commit(git.default_branch) }
 

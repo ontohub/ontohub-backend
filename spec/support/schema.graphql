@@ -30,6 +30,12 @@ type Commit {
     path: ID!
   ): [DirectoryEntry!]
 
+  # A document containing OMS data
+  document(
+    # The Loc/Id of the document
+    locId: ID!
+  ): Document
+
   # A file
   file(
     # Load more than the 10 Megabytes for the web view
@@ -151,6 +157,27 @@ interface DirectoryEntry {
   path: String!
 }
 
+# A Document is a container for OMS
+interface Document {
+  # All DocumentLinks that this Document is part of
+  documentLinks(
+    # Specifies which end of the link the current document is. Possible values: 'source', 'target'
+    origin: LinkOrigin = any
+  ): [DocumentLink!]!
+
+  # The Loc/Id of the document
+  locId: ID!
+}
+
+# A DocumentLink shows a dependency between Documents
+type DocumentLink {
+  # The source Document
+  source: Document!
+
+  # The target Document
+  target: Document!
+}
+
 # A file of a repository
 type File implements DirectoryEntry {
   # The content of the file
@@ -257,6 +284,30 @@ type GlobalSearchScope {
 
   # A list of result entries
   entries: [RankedGlobalSearchEntry!]!
+}
+
+# A Library is a container for any number of OMS
+type Library implements Document {
+  # All DocumentLinks that this Document is part of
+  documentLinks(
+    # Specifies which end of the link the current document is. Possible values: 'source', 'target'
+    origin: LinkOrigin = any
+  ): [DocumentLink!]!
+
+  # The Loc/Id of the document
+  locId: ID!
+}
+
+# Specifies which end of the link the current object is
+enum LinkOrigin {
+  # The current object is any end of the link
+  any
+
+  # The current object is the source of the link
+  source
+
+  # The current object is the target of the link
+  target
 }
 
 # Base mutation type
@@ -451,6 +502,18 @@ type Mutation {
     # The unlock account token from the unlock account email
     token: String!
   ): SessionToken
+}
+
+# A NativeDocument is a container for exactly one OMS
+type NativeDocument implements Document {
+  # All DocumentLinks that this Document is part of
+  documentLinks(
+    # Specifies which end of the link the current document is. Possible values: 'source', 'target'
+    origin: LinkOrigin = any
+  ): [DocumentLink!]!
+
+  # The Loc/Id of the document
+  locId: ID!
 }
 
 # Data for committing
