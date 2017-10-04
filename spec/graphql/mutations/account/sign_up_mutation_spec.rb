@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 require 'shared_examples/confirmation_email'
 
-RSpec.describe 'signUp mutation',
+RSpec.describe Mutations::Account::SignUpMutation,
   type: :mailer, no_transaction: true, stub_abstract_devise_mutation: true do
   let(:user_data) do
     user = build(:user)
@@ -113,6 +113,19 @@ RSpec.describe 'signUp mutation',
           expect(subject['errors']).
             to include(include('message' => include(error)))
         end
+      end
+    end
+
+    context 'already signed in' do
+      let(:context) { {current_user: create(:user)} }
+
+      it 'returns no data' do
+        expect(subject['data']['signUp']).to be(nil)
+      end
+
+      it 'returns an error' do
+        expect(subject['errors']).
+          to include(include('message' => "You're not authorized to do this"))
       end
     end
   end

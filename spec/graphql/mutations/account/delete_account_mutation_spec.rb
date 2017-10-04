@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe 'deleteAccount mutation' do
+RSpec.describe Mutations::Account::DeleteAccountMutation do
   let!(:user) { create :user }
   let(:password) { user.password }
 
@@ -49,9 +49,12 @@ RSpec.describe 'deleteAccount mutation' do
     let(:context) { {current_user: nil} }
 
     it 'returns an error' do
-      expect(subject['data']['deleteAccount']).to be_nil
       expect(subject['errors']).
-        to include(include('message' => 'resource not found'))
+        to include(include('message' => "You're not authorized to do this"))
+    end
+
+    it 'returns no data' do
+      expect(subject['data']['deleteAccount']).to be(nil)
     end
   end
 end

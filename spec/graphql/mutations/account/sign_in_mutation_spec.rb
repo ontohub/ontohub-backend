@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe 'signIn mutation', stub_abstract_devise_mutation: true do
+RSpec.describe Mutations::Account::SignInMutation,
+               stub_abstract_devise_mutation: true do
   let!(:user) { create :user }
 
   let(:context) { {} }
@@ -62,6 +63,19 @@ RSpec.describe 'signIn mutation', stub_abstract_devise_mutation: true do
     it 'returns an error' do
       expect(subject['errors']).
         to include(include('message' => 'Invalid username or password.'))
+    end
+  end
+
+  context 'already signed in' do
+    let(:context) { {current_user: user} }
+
+    it 'returns no data' do
+      expect(subject['data']['signIn']).to be(nil)
+    end
+
+    it 'returns an error' do
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end

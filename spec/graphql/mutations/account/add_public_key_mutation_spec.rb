@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe 'addPublicKey mutation' do
+RSpec.describe Mutations::Account::AddPublicKeyMutation do
   let!(:user) { create :user }
 
   let(:context) { {current_user: current_user} }
@@ -76,6 +76,23 @@ RSpec.describe 'addPublicKey mutation' do
           to include(include('message' => 'key is invalid'),
                      include('message' => 'name is not present'))
       end
+    end
+  end
+
+  context 'User is not signed in' do
+    let(:current_user) { nil }
+    let(:public_key_blueprint) { build(:public_key) }
+    let(:key) { public_key_blueprint.key }
+    let(:key_name) { public_key_blueprint.name }
+    let(:variables) { {'key' => "#{key} #{key_name}"} }
+
+    it 'returns an error' do
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
+    end
+
+    it 'returns no data' do
+      expect(subject['data']['addPublicKey']).to be(nil)
     end
   end
 end

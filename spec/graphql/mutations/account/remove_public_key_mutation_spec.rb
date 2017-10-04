@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe 'removePublicKey mutation' do
+RSpec.describe Mutations::Account::RemovePublicKeyMutation do
   let!(:user) { create :user }
   let(:key_name) { 'stub@localhost' }
   let!(:existing_key) { create :public_key, user: user, name: key_name }
@@ -50,14 +50,24 @@ RSpec.describe 'removePublicKey mutation' do
         expect(subject['errors']).
           to include(include('message' => 'Public key not found'))
       end
+
+      it 'returns no data' do
+        expect(subject['data']['removePublicKey']).to be(nil)
+      end
     end
   end
 
   context 'User is not signed in' do
     let(:current_user) { nil }
+    let(:variables) { {'name' => 'some-key'} }
 
     it 'returns an error' do
-      skip 'Needs authorization'
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
+    end
+
+    it 'returns no data' do
+      expect(subject['data']['removePublicKey']).to be(nil)
     end
   end
 end

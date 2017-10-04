@@ -16,6 +16,8 @@ module Mutations
         description 'The reset token from the password reset email'
       end
 
+      authorize! :recover_password, :password
+
       resolve ResetPasswordResolver.new
     end
 

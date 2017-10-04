@@ -13,7 +13,7 @@ module Mutations
         description 'The ID of the organization to delete'
       end
 
-      resource(lambda do |_root, arguments, _context|
+      resource!(lambda do |_root, arguments, _context|
         ::Organization.find(slug: arguments[:slug])
       end)
       resolve DeleteOrganizationResolver.new

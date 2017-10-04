@@ -15,6 +15,9 @@ module Mutations
       end
 
       resource ->(_root, _arguments, context) { context[:current_user] }
+
+      authorize! :update, :account
+
       resolve SaveAccountResolver.new
     end
 

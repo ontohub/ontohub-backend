@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.shared_examples "a commit's author/committer in GraphQL" do
   let(:expected_object) do

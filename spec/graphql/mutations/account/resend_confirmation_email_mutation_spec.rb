@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 require 'shared_examples/confirmation_email'
 
-RSpec.describe 'resendConfirmationEmail mutation',
+RSpec.describe Mutations::Account::ResendConfirmationEmailMutation,
   type: :mailer, no_transaction: true, stub_abstract_devise_mutation: true do
   let!(:user) { create :user }
 

@@ -14,7 +14,7 @@ module Mutations
         description 'Updated fields of the repository'
       end
 
-      resource(lambda do |_root, arguments, _context|
+      resource!(lambda do |_root, arguments, _context|
         RepositoryCompound.find(slug: arguments[:slug])
       end)
       resolve SaveRepositoryResolver.new

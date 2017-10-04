@@ -7,14 +7,6 @@ require 'database_cleaner'
 require 'factory_girl_rails'
 require 'ontohub-models/factories'
 
-module GraphQL
-  class Field
-    def default_arguments(args = {})
-      arguments.transform_values(&:default_value).merge(args)
-    end
-  end
-end
-
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`

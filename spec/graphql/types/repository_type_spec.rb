@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe Types::RepositoryType do
   let(:repository_type) { OntohubBackendSchema.types['Repository'] }

@@ -14,7 +14,7 @@ module Mutations
         description 'Updated fields of the organization'
       end
 
-      resource(lambda do |_root, arguments, _context|
+      resource!(lambda do |_root, arguments, _context|
         ::Organization.find(slug: arguments[:slug])
       end)
       resolve SaveOrganizationResolver.new
