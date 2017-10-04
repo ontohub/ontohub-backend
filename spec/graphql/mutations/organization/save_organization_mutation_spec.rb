@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'saveOrganization mutation' do
+RSpec.describe Mutations::Organization::SaveOrganizationMutation do
   let!(:organization) { create :organization }
   let(:organization_data) do
     org = build :organization
@@ -10,7 +10,12 @@ RSpec.describe 'saveOrganization mutation' do
       transform_keys { |k| k.to_s.camelize(:lower) }
   end
 
-  let(:context) { {} }
+  let(:membership) do
+    create :organization_membership, organization_id: organization.id,
+                                     role: :admin
+  end
+  let(:admin) { membership.member }
+  let(:context) { {current_user: admin} }
   let(:variables) { {'id' => organization.slug, 'data' => organization_data} }
 
   let(:result) do
@@ -55,6 +60,19 @@ RSpec.describe 'saveOrganization mutation' do
       expect(subject['data']['saveOrganization']).to be_nil
       expect(subject['errors']).
         to include(include('message' => 'resource not found'))
+    end
+  end
+
+  context 'Not signed in' do
+    let(:context) { {} }
+
+    it 'returns no data' do
+      expect(subject['data']['saveOrganization']).to be(nil)
+    end
+
+    it 'returns an error' do
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end
