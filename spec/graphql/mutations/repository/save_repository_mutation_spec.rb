@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe 'saveRepository mutation' do
   let!(:repository) { create :repository_compound }

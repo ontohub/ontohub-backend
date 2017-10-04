@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'ostruct'
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.shared_examples 'number of entries' do
   it 'returns the correct number of entries' do

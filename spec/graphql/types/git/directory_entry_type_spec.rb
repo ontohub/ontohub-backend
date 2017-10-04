@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.shared_examples 'a directory entry in GraphQL' do
   let(:repository) { create(:repository_compound) }

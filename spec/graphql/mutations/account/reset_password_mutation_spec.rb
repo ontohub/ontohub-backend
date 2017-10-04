@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 require 'shared_examples/password_has_been_reset_email'
 
 RSpec.describe Mutations::Account::ResetPasswordMutation,

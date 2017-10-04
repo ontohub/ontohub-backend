@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe Mutations::Account::ConfirmEmailMutation,
                stub_abstract_devise_mutation: true do
