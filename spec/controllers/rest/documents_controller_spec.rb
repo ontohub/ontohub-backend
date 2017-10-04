@@ -3,14 +3,16 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'a REST DocumentsController' do
-  describe 'action: show' do
+  describe 'action: show', :perform_enqueued do
     let(:repository) { create(:repository_compound) }
     let(:file_content) { generate(:content) }
     let(:file_path) { generate(:filepath) }
     let(:commit_sha) do
-      create(:additional_file, repository: repository,
-                               path: file_path,
-                               content: file_content)
+      perform_enqueued_jobs do
+        create(:additional_file, repository: repository,
+                                 path: file_path,
+                                 content: file_content)
+      end
     end
     let(:file_version) do
       FileVersion.find(commit_sha: commit_sha,
@@ -30,7 +32,9 @@ RSpec.shared_examples 'a REST DocumentsController' do
     end
 
     context 'json' do
-      before { get :show, params: params }
+      before do
+        get :show, params: params
+      end
 
       context 'on a document' do
         it { expect(response).to have_http_status(:ok) }

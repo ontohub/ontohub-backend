@@ -762,55 +762,11 @@ RSpec.describe MultiBlob do
 
     context 'FileVersionParent' do
       subject { MultiBlob.new(valid_options) }
-      let!(:commit_sha) { subject.save }
-      let(:file_version) do
-        FileVersion.find(path: path, commit_sha: commit_sha)
-      end
-      let(:file_version_parent) do
-        FileVersionParent.find(queried_sha: commit_sha,
-                               last_changed_file_version_id: file_version&.id)
-      end
-
-      context 'created file' do
-        let(:path) { new_files[0] }
-        it 'creates a FileVersionParent' do
-          expect(file_version_parent).not_to be(nil)
-        end
-      end
-
-      context 'renamed file' do
-        let(:path) { new_files[1] }
-        it 'creates a FileVersionParent' do
-          expect(file_version_parent).not_to be(nil)
-        end
-      end
-
-      context 'updated file' do
-        let(:path) { old_files[2] }
-        it 'creates a FileVersionParent' do
-          expect(file_version_parent).not_to be(nil)
-        end
-      end
-
-      context 'updated and renamed file' do
-        let(:path) { new_files[3] }
-        it 'creates a FileVersionParent' do
-          expect(file_version_parent).not_to be(nil)
-        end
-      end
-
-      context 'deleted file' do
-        let(:path) { old_files[4] }
-        it 'does not create a FileVersionParent' do
-          expect(file_version_parent).to be(nil)
-        end
-      end
-
-      context 'created directory' do
-        let(:path) { File.join(new_files[5], '.gitkeep') }
-        it 'creates a FileVersionParent' do
-          expect(file_version_parent).not_to be(nil)
-        end
+      it 'enqueues a post-processing job' do
+        commit_sha = subject.save
+        expect(ProcessCommitJob).
+          to have_been_enqueued.
+          with(subject.repository.id, commit_sha)
       end
     end
   end
