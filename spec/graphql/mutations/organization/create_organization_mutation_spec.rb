@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'createOrganization mutation' do
+RSpec.describe Mutations::Organization::CreateOrganizationMutation do
   let!(:current_user) { create :user }
   let(:organization_data) do
     org = build :organization
@@ -55,10 +55,26 @@ RSpec.describe 'createOrganization mutation' do
       create :organization, name: organization_data['id']
     end
 
-    it 'returns an error' do
+    it 'returns no data' do
       expect(subject['data']['createOrganization']).to be(nil)
+    end
+
+    it 'returns an error' do
       expect(subject['errors']).
         to include(include('message' => 'name is already taken'))
+    end
+  end
+
+  context 'Not signed in' do
+    let(:context) { {} }
+
+    it 'returns no data' do
+      expect(subject['data']['createOrganization']).to be(nil)
+    end
+
+    it 'returns an error' do
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end
