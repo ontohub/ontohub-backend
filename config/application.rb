@@ -50,10 +50,7 @@ module OntohubBackend
     config.autoload_paths << Rails.root.join('lib')
 
     config.after_initialize do
-      SettingsPresenceValidator.new(Settings).call
-      SettingsNormalizer.new(Settings).call
-      SettingsInitializer.new(Settings).call
-      SettingsValidator.new(Settings).call
+      SettingsHandler.new(Settings).call
     end
 
     # Configure active job to use sneakers/rabbitmq backend

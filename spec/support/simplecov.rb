@@ -8,6 +8,9 @@ unless defined?(SimpleCov)
 
     # The config of the 'config' gem does not need to be tested.
     add_filter 'config/initializers/config.rb'
+    # The monkey-patch for the development mode of the 'config' gem does not
+    # need to be tested.
+    add_filter 'config/initializers/core_extensions/config.rb'
   end
   require 'codecov'
   formatters = [SimpleCov::Formatter::HTMLFormatter]
