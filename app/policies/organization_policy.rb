@@ -2,6 +2,10 @@
 
 # Policies for OrganizationsController
 class OrganizationPolicy < ApplicationPolicy
+  def create?
+    !!current_user
+  end
+
   def show?
     true
   end

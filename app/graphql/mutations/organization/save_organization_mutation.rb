@@ -17,6 +17,9 @@ module Mutations
       resource!(lambda do |_root, arguments, _context|
         ::Organization.find(slug: arguments[:slug])
       end)
+
+      authorize! :update
+
       resolve SaveOrganizationResolver.new
     end
 

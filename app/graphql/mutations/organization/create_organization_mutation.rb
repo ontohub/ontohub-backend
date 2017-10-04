@@ -10,6 +10,8 @@ module Mutations
         description 'The parameters of the new organization'
       end
 
+      authorize! :create, :organization
+
       resolve CreateOrganizationResolver.new
     end
     # GraphQL mutation to create a new organization and

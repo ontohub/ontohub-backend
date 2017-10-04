@@ -7,6 +7,32 @@ RSpec.describe OrganizationPolicy do
   let(:admin) { create :user, :admin }
   let(:organization) { create :organization }
 
+  context 'create?' do
+    context 'signed in' do
+      subject { OrganizationPolicy.new(user, organization) }
+
+      it 'allows to create the organization' do
+        expect(subject.create?).to be(true)
+      end
+    end
+
+    context 'signed in as admin' do
+      subject { OrganizationPolicy.new(admin, organization) }
+
+      it 'allows to create the organization' do
+        expect(subject.create?).to be(true)
+      end
+    end
+
+    context 'not signed in' do
+      subject { OrganizationPolicy.new(nil, organization) }
+
+      it 'does not allow to create the organization' do
+        expect(subject.create?).to be(false)
+      end
+    end
+  end
+
   context 'show?' do
     context 'signed in' do
       subject { OrganizationPolicy.new(user, organization) }
