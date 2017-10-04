@@ -20,7 +20,7 @@ RSpec.describe OrganizationPolicy do
       subject { OrganizationPolicy.new(admin, organization) }
 
       it 'allows to create the organization' do
-        expect(subject.show?).to be(true)
+        expect(subject.create?).to be(true)
       end
     end
 
