@@ -16,7 +16,7 @@ RSpec.describe ProcessCommitJob, type: :job do
         and_return(file_version_parents_creator)
 
       allow(file_version_parents_creator).
-        to receive(:run)
+        to receive(:call)
 
       # Run the job
       ProcessCommitJob.new.perform(repository_id, commit_sha)
@@ -24,7 +24,7 @@ RSpec.describe ProcessCommitJob, type: :job do
 
     it 'calls the FileVersionParentsCreator' do
       expect(file_version_parents_creator).
-        to have_received(:run)
+        to have_received(:call)
     end
   end
 end
