@@ -82,4 +82,14 @@ RSpec.describe 'createRepository mutation' do
         to include(include('message' => "You're not authorized to do this"))
     end
   end
+
+  context 'Not authorized for the namespace' do
+    let(:context) { {current_user: create(:user)} }
+
+    it 'returns an error' do
+      expect(subject['data']['createRepository']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
+    end
+  end
 end
