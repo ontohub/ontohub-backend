@@ -65,4 +65,17 @@ RSpec.describe Mutations::Account::SignInMutation,
         to include(include('message' => 'Invalid username or password.'))
     end
   end
+
+  context 'already signed in' do
+    let(:context) { {current_user: user} }
+
+    it 'returns no data' do
+      expect(subject['data']['signIn']).to be(nil)
+    end
+
+    it 'returns an error' do
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
+    end
+  end
 end
