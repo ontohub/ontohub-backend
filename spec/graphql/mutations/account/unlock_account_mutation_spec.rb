@@ -2,7 +2,8 @@
 
 require 'spec_helper'
 
-RSpec.describe 'unlockAccount mutation', stub_abstract_devise_mutation: true do
+RSpec.describe Mutations::Account::UnlockAccountMutation,
+               stub_abstract_devise_mutation: true do
   let!(:user) { create :user }
   let!(:token) { user.lock_access! }
 

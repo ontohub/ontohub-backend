@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'shared_examples/password_has_been_reset_email'
 
-RSpec.describe 'resetPassword mutation',
+RSpec.describe Mutations::Account::ResetPasswordMutation,
   type: :mailer, no_transaction: true, stub_abstract_devise_mutation: true do
   let!(:user) { create :user }
   let!(:token) { user.send_reset_password_instructions }

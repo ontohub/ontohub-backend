@@ -14,6 +14,7 @@ module GraphQL
     end
   end
 end
+Dir[Rails.root.join('app/graphql/instrumenters/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

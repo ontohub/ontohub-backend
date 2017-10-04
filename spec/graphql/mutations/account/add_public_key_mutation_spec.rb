@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe 'addPublicKey mutation' do
+RSpec.describe Mutations::Account::AddPublicKeyMutation do
   let!(:user) { create :user }
 
   let(:context) { {current_user: current_user} }
@@ -89,6 +89,10 @@ RSpec.describe 'addPublicKey mutation' do
     it 'returns an error' do
       expect(subject['errors']).
         to include(include('message' => "You're not authorized to do this"))
+    end
+
+    it 'returns no data' do
+      expect(subject['data']['addPublicKey']).to be(nil)
     end
   end
 end

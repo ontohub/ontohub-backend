@@ -2,7 +2,8 @@
 
 require 'spec_helper'
 
-RSpec.describe 'confirmEmail mutation', stub_abstract_devise_mutation: true do
+RSpec.describe Mutations::Account::ConfirmEmailMutation,
+               stub_abstract_devise_mutation: true do
   let!(:user) { create :user }
 
   let(:context) { {} }
