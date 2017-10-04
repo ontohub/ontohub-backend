@@ -19,7 +19,7 @@ RSpec.describe 'createRepository mutation' do
     repo
   end
 
-  let(:context) {}
+  let(:context) { {current_user: user} }
   let(:variables) { {'data' => repository_data} }
 
   let(:result) do
@@ -70,6 +70,16 @@ RSpec.describe 'createRepository mutation' do
       expect(subject['data']['createRepository']).to be(nil)
       expect(subject['errors']).
         to include(include('message' => 'name is already taken'))
+    end
+  end
+
+  context 'Not signed in' do
+    let(:context) { {} }
+
+    it 'returns an error' do
+      expect(subject['data']['createRepository']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end
