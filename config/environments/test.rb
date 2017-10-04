@@ -51,4 +51,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Configure active job to use the test backend
+  config.active_job.queue_adapter = :test
 end

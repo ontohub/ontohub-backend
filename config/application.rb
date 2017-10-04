@@ -52,8 +52,5 @@ module OntohubBackend
     config.after_initialize do
       SettingsHandler.new(Settings).call
     end
-
-    # Configure active job to use sneakers/rabbitmq backend
-    config.active_job.queue_adapter = :sneakers
   end
 end
