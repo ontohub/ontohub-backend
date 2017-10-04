@@ -16,6 +16,9 @@ module Mutations
       resource!(lambda do |_root, arguments, _context|
         ::Organization.find(slug: arguments[:slug])
       end)
+
+      authorize! :destroy
+
       resolve DeleteOrganizationResolver.new
     end
 
