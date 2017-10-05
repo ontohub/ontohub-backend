@@ -9,10 +9,27 @@ The main Ontohub service that serves the data for the frontend and other clients
 
 ## Run the backend
 
-You need to have the `postgres` and `rabbitmq` services started. To run the sneakers workers, run in one terminal `rails sneakers:run`.
-The backend can then be started (in another terminal) in development mode with `rails server`.
+You need to have the `postgres` and `rabbitmq` services started.
+
+We use the [invoker](http://invoker.codemancers.com) process manager during development to run all the needed processes with one command.
+You can start it with either `bundle exec rails invoker` or `bundle exec invoker start invoker.ini` (the former only calls the latter).
+
+Alternatively, you can start the processes yourself:
+To run the sneakers workers, run in one terminal `bundle exec rails sneakers:run`.
+The backend can then be started (in another terminal) in development mode with `bundle exec rails server`.
 
 The backend is then reachable from the browser at [http://localhost:3000](http://localhost:3000). The interactive GraphiQL console can be accessed at [http://localhost:3000/graphiql](http://localhost:3000/graphiql).
+
+If you are running Linux or macOS, you can reach the backend at [http://ontohub-backend.dev](http://ontohub-backend.dev) after you run
+```text
+sudo -E chruby-exec ruby-$(cat .ruby-version) -- bundle exec invoker setup
+```
+once in the ontohub-backend repository.
+This installs support for `.dev` domains to your system and needs to be done only once.
+To uninstall it, run
+```text
+sudo -E chruby-exec ruby-$(cat .ruby-version) -- bundle exec invoker uninstall
+```
 
 ## Dependencies
 
