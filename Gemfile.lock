@@ -86,6 +86,8 @@ GEM
     builder (3.2.3)
     bunny (2.7.1)
       amq-protocol (>= 2.2.0)
+    bunny-mock (1.7.0)
+      bunny (>= 1.7)
     byebug (9.1.0)
     charlock_holmes (0.7.5)
     chewy (0.10.1)
@@ -358,6 +360,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print (~> 1.8.0)
   bunny
+  bunny-mock (~> 1.7.0)
   codecov (~> 0.1.10)
   config (~> 1.4.0)
   database_cleaner (~> 1.6.1)
