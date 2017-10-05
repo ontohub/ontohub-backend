@@ -15,7 +15,7 @@ RSpec.describe 'saveRepository mutation' do
     data
   end
 
-  let(:context) { {} }
+  let(:context) { {current_user: repository.owner} }
   let(:variables) { {'id' => repository.to_param, 'data' => repository_data} }
 
   let(:result) do
@@ -62,6 +62,16 @@ RSpec.describe 'saveRepository mutation' do
       expect(subject['data']['saveRepository']).to be_nil
       expect(subject['errors']).
         to include(include('message' => 'resource not found'))
+    end
+  end
+
+  context 'Not signed in' do
+    let(:context) { {} }
+
+    it 'returns an error' do
+      expect(subject['data']['saveRepository']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => "You're not authorized to do this"))
     end
   end
 end

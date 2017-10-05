@@ -17,6 +17,9 @@ module Mutations
       resource!(lambda do |_root, arguments, _context|
         RepositoryCompound.find(slug: arguments[:slug])
       end)
+
+      authorize! :update
+
       resolve SaveRepositoryResolver.new
     end
 
