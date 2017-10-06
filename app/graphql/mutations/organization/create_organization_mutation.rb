@@ -10,7 +10,7 @@ module Mutations
         description 'The parameters of the new organization'
       end
 
-      authorize! :create, :organization
+      authorize! :create, policy: :organization
 
       resolve CreateOrganizationResolver.new
     end

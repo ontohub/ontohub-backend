@@ -12,7 +12,7 @@ module Mutations
         description 'The email address of the user'
       end
 
-      authorize! :create, :confirmation
+      authorize! :create, policy: :confirmation
 
       resolve ResendConfirmationEmailResolver.new
     end

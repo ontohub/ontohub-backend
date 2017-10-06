@@ -16,7 +16,7 @@ module Mutations
         description 'A reCAPTCHA token'
       end
 
-      authorize! :create, :account
+      authorize! :create, policy: :account
 
       resolve SignUpResolver.new
     end

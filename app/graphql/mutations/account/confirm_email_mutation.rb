@@ -10,7 +10,7 @@ module Mutations
         description 'The confirmation token from the confirmation email'
       end
 
-      authorize! :update, :confirmation
+      authorize! :update, policy: :confirmation
 
       resolve ConfirmEmailResolver.new
     end

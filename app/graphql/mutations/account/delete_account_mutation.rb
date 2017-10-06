@@ -15,7 +15,7 @@ module Mutations
 
       resource ->(_root, _arguments, context) { context[:current_user] }
 
-      authorize! :destroy, :account
+      authorize! :destroy, policy: :account
 
       resolve DeleteAccountResolver.new
     end

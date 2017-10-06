@@ -12,7 +12,7 @@ module Mutations
         description 'The email address of the user'
       end
 
-      authorize! :resend_password_recovery_email, :password
+      authorize! :resend_password_recovery_email, policy: :password
 
       resolve ResendPasswordResetEmailResolver.new
     end
