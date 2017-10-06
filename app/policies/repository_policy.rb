@@ -63,16 +63,15 @@ class RepositoryPolicy < ApplicationPolicy
 
     if owner.is_a?(Organization)
       !!OrganizationMembership.
-        find(member: current_user,
+        find(member_id: current_user.id,
              organization: owner,
              role: %w(write admin))
-    elsif owner.is_a?(User)
+    else
+      # Owner can only be an Organization or a User
       !!RepositoryMembership.
-        find(member: current_user,
+        find(member_id: current_user.id,
              repository_id: resource.id,
              role: %w(write admin))
-    else
-      false
     end
   end
 end
