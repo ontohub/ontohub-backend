@@ -258,6 +258,7 @@ RSpec.describe 'commit mutation' do
           to include(include('message' => include('path already exists')))
       end
     end
+
     context 'because the user is not signed in' do
       let(:context) { {} }
 
