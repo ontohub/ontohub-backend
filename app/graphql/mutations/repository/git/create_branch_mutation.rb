@@ -23,6 +23,8 @@ module Mutations
           RepositoryCompound.find(slug: arguments['repositoryId'])
         end)
 
+        authorize! :write, policy: :repository
+
         resolve CreateBranchResolver.new
       end
 

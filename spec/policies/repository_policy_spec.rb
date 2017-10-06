@@ -327,6 +327,92 @@ RSpec.describe RepositoryPolicy do
     end
   end
 
+  context 'write?' do
+    [true, false].each do |public_access|
+      context "with public access #{public_access}" do
+        let(:repository) { create :repository, public_access: public_access }
+
+        context 'not signed in' do
+          subject { RepositoryPolicy.new(nil, repository) }
+
+          it 'does not allow to write to the repository' do
+            expect(subject.write?).to be(false)
+          end
+        end
+
+        context 'signed in' do
+          context 'as admin role' do
+            subject { RepositoryPolicy.new(admin, repository) }
+
+            it 'allows to write to the repository' do
+              expect(subject.write?).to be(true)
+            end
+          end
+
+          context 'as a user role without access' do
+            subject { RepositoryPolicy.new(user, repository) }
+
+            it 'does not allow to write to the repository' do
+              expect(subject.write?).to be(false)
+            end
+          end
+
+          context 'as a user role with access' do
+            context 'by ownership' do
+              let(:repository_by_user) do
+                create :repository, owner: user
+              end
+              subject { RepositoryPolicy.new(user, repository_by_user) }
+
+              it 'allows to write to the repository' do
+                expect(subject.write?).to be(true)
+              end
+            end
+
+            context 'by repository membership' do
+              subject { RepositoryPolicy.new(user, repository) }
+
+              %w(admin write).each do |role|
+                it "with role #{role} allows to write to the "\
+                  'repository' do
+                  repository.add_member(user, role)
+                  expect(subject.write?).to be(true)
+                end
+              end
+
+              it 'with role read does not allow to write the repository' do
+                repository.add_member(user, 'read')
+                expect(subject.write?).to be(false)
+              end
+            end
+
+            context 'by organization membership' do
+              let(:repository_by_organization) do
+                create :repository, owner: organization
+              end
+              subject do
+                RepositoryPolicy.new(user, repository_by_organization)
+              end
+
+              %w(admin write).each do |role|
+                it "with role #{role} allows to write to the "\
+                  'repository' do
+                  organization.add_member(user, role)
+                  expect(subject.write?).to be(true)
+                end
+              end
+
+              it 'with role read does not allow to write to the repository' do
+                organization.add_member(user, 'read')
+                expect(subject.write?).to be(false)
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   context 'destroy?' do
     [true, false].each do |public_access|
       context "with public access #{public_access}" do

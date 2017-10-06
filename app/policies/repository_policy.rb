@@ -53,4 +53,25 @@ class RepositoryPolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def write?
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+    owner = resource.owner
+    return false unless current_user
+    return true if owner.id == current_user.id
+
+    if owner.is_a?(Organization)
+      !!OrganizationMembership.
+        find(member_id: current_user.id,
+             organization: owner,
+             role: %w(write admin))
+    else
+      # Owner can only be an Organization or a User
+      !!RepositoryMembership.
+        find(member_id: current_user.id,
+             repository_id: resource.id,
+             role: %w(write admin))
+    end
+  end
 end

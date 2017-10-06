@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'createTag mutation' do
   let!(:user) { create :user }
-  let!(:repository) { create :repository_compound, :not_empty }
+  let!(:repository) { create :repository_compound, :not_empty, owner: user }
   let(:name) { generate(:tagname) }
   let(:annotation) { Faker::Lorem.sentence }
   let(:revision) { 'master' }
@@ -89,6 +89,19 @@ RSpec.describe 'createTag mutation' do
     it 'returns an error' do
       expect(subject['errors']).
         to include(include('message' => include('already exists')))
+    end
+
+    context 'because the user is not signed in' do
+      let(:context) { {} }
+
+      it 'returns no data' do
+        expect(subject['data']['commit']).to be(nil)
+      end
+
+      it 'returns an error' do
+        expect(subject['errors']).
+          to include(include('message' => "You're not authorized to do this"))
+      end
     end
   end
 end

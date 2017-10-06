@@ -12,7 +12,7 @@ module Mutations
         description 'The unlock account token from the unlock account email'
       end
 
-      authorize! :unlock_account, :unlock
+      authorize! :unlock_account, policy: :unlock
 
       resolve UnlockAccountResolver.new
     end

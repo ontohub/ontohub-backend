@@ -124,7 +124,7 @@ GEM
       multi_json
     erubi (1.6.1)
     escape_utils (1.1.1)
-    factory_girl (4.8.0)
+    factory_girl (4.8.1)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
@@ -144,12 +144,12 @@ GEM
       activesupport (>= 4.2.0)
     graphiql-rails (1.4.5)
       rails
-    graphql (1.6.8)
+    graphql (1.7.3)
     graphql-batch (0.3.5)
       graphql (>= 0.8, < 2)
       promise.rb (~> 0.7.2)
-    graphql-pundit (0.3.0)
-      graphql (~> 1.6.4)
+    graphql-pundit (0.4.0)
+      graphql (>= 1.6.4, < 1.8.0)
       pundit (~> 1.1.0)
     i18n (0.8.6)
     interception (0.5)
@@ -338,9 +338,9 @@ DEPENDENCIES
   filelock (~> 1.1.1)
   gitlab_git!
   graphiql-rails
-  graphql (~> 1.6.3)
+  graphql (~> 1.7.3)
   graphql-batch (~> 0.3.3)
-  graphql-pundit (~> 0.3.0)
+  graphql-pundit (~> 0.4.0)
   json-schema!
   jwt (~> 2.0.0)
   listen (~> 3.1.5)

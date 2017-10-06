@@ -16,7 +16,7 @@ module Mutations
         description "The user's password"
       end
 
-      authorize! :create, :session
+      authorize! :create, policy: :session
 
       resolve SignInResolver.new
     end
