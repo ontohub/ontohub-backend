@@ -177,7 +177,7 @@ GEM
       thor (~> 0.19)
       uuid (~> 2.3)
     json (2.1.0)
-    jwt (2.0.0)
+    jwt (2.1.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -374,7 +374,7 @@ DEPENDENCIES
   graphql-pundit (~> 0.4.0)
   invoker
   json-schema!
-  jwt (~> 2.0.0)
+  jwt (~> 2.1.0)
   listen (~> 3.1.5)
   ontohub-models!
   pry (~> 0.11.1)
