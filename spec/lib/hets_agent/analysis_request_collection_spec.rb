@@ -47,7 +47,7 @@ RSpec.describe HetsAgent::AnalysisRequestCollection do
                      arguments: include(server_url: Settings.server_url,
                                         repository_slug: repository.to_param,
                                         revision: commit_sha,
-                                        url_mappings: {}))
+                                        url_mappings: []))
       end
     end
   end

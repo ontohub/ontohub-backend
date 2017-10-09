@@ -49,7 +49,7 @@ module HetsAgent
           revision: commit_sha,
           file_path: file_path,
           file_version_id: file_version_id,
-          url_mappings: {},
+          url_mappings: [],
         },
       }
     end
