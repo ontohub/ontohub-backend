@@ -4,10 +4,14 @@ connection = Sneakers::CONFIG[:connection]
 begin
   connection.start
   channel = connection.create_channel
-  queue = channel.queue(HetsAgent::Invoker::WORKER_QUEUE_NAME,
-                        durable: true,
-                        auto_delete: false)
-  queue.purge
+
+  channel.queue(HetsAgent::Invoker::WORKER_QUEUE_NAME,
+                durable: true,
+                auto_delete: false).purge
+
+  channel.queue('post_process_hets',
+                durable: true,
+                auto_delete: false).purge
 ensure
   connection.close
 end

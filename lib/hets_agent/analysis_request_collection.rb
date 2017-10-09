@@ -49,9 +49,15 @@ module HetsAgent
           revision: commit_sha,
           file_path: file_path,
           file_version_id: file_version_id,
-          url_mappings: [],
+          url_mappings: url_mappings,
         },
       }
+    end
+
+    def url_mappings
+      repository.url_mappings.map do |url_mapping|
+        {url_mapping.source => url_mapping.target}
+      end
     end
   end
 end

@@ -1,0 +1,390 @@
+library Basic/Numbers
+version 1.0
+%authors: M. Roggenbach <csmarkus@swansea.ac.uk>, T. Mossakowski, L. Schroeder
+%date: 18 December 2003
+
+%{ This library provides specifications of naturals, integers, and
+rationals. Concerning the rationals, the specification Rat includes
+the datatype proper, while the specification DecimalFraction adds the
+notions needed to represent rationals as decimal fractions. }%
+
+%display __<=__ %LATEX __\leq__
+%display __>=__ %LATEX __\geq__
+
+%prec(
+  { __ -? __ , __ - __, __ + __ } <
+  { __*__, __ /? __, __ / __, __div__, __mod__, __ quot __, __rem__ }
+)%
+
+%prec(
+  { __*__, __ /? __, __ / __, __div__, __mod__, __ quot __, __rem__ } <
+  { __ ^ __}
+)%
+
+%prec( {-__} <> {__ ^ __} )%
+
+%prec { __ E __ } < { __ ::: __ }
+
+%left_assoc __ + __, __ * __, __ @@ __
+
+%number __@@__
+
+%floating __:::__, __E__
+
+spec Nat = %mono
+
+  free type Nat ::= 0 | suc(pre:? Nat)
+
+  preds   __ <= __, __ >= __, __dvd__,
+          __ <  __, __ > __:   Nat * Nat;
+          even, odd:           Nat
+
+  ops   __! :                       Nat -> Nat;
+        __ + __, __ * __, __ ^ __,
+        min, max, __ -!__ :         Nat * Nat ->  Nat;
+        __ -?__, __ /? __,
+        __ div __, __ mod __:       Nat * Nat ->? Nat;
+
+  %% Operations to represent natural numbers with digits:
+
+  ops  1: Nat = suc (0);                      %(1_def_Nat)%
+       2: Nat = suc (1);                      %(2_def_Nat)%
+       3: Nat = suc (2);                      %(3_def_Nat)%
+       4: Nat = suc (3);                      %(4_def_Nat)%
+       5: Nat = suc (4);                      %(5_def_Nat)%
+       6: Nat = suc (5);                      %(6_def_Nat)%
+       7: Nat = suc (6);                      %(7_def_Nat)%
+       8: Nat = suc (7);                      %(8_def_Nat)%
+       9: Nat = suc (8);                      %(9_def_Nat)%
+
+       __ @@ __ (m:Nat;n:Nat): Nat = (m * suc(9)) + n   %(decimal_def)%
+
+  %% implied operation attributes :
+
+  ops __+__: Nat * Nat -> Nat,
+             comm, assoc, unit 0; %implied
+      __*__: Nat * Nat -> Nat,
+             comm, assoc, unit 1; %implied
+      min:   Nat * Nat -> Nat,
+             comm, assoc;         %implied
+      max:   Nat * Nat -> Nat,
+             comm, assoc, unit 0; %implied
+
+  forall m,n,r,s,t : Nat
+
+  %% axioms concerning predicates
+
+     . 0 <= n                           %(leq_def1_Nat)% %simp
+     . m dvd n <=> (exists k : Nat . n = m * k) %(dvd_def_Nat)% %simp
+     . not suc(n) <= 0                  %(leq_def2_Nat)% %simp
+     . suc(m) <= suc(n) <=> m <= n      %(leq_def3_Nat)% %simp
+
+     . m >= n <=> n <= m                %(geq_def_Nat)% %simp
+     . m < n  <=> (m <= n /\ not m=n)   %(less_def_Nat)% %simp
+     . m > n  <=> n < m                 %(greater_def_Nat)% %simp
+
+     . even(0)                          %(even_0_Nat)% %simp
+     . even(suc(m)) <=> odd(m)          %(even_suc_Nat)% %simp
+     . odd(m) <=> not even(m)           %(odd_def_Nat)% %simp
+
+  %% axioms concerning operations
+
+     . 0! = 1                           %(factorial_0)% %simp
+     . suc(n)! =suc(n)*n!               %(factorial_suc)% %simp
+
+     . 0 + m = m                        %(add_0_Nat)% %simp
+     . suc(n) + m = suc(n + m)          %(add_suc_Nat)% %simp
+
+     . 0 * m = 0                        %(mult_0_Nat)% %simp
+     . suc(n) * m = (n * m) + m         %(mult_suc_Nat)% %simp
+     . m ^ 0 = 1                        %(power_0_Nat)% %simp
+     . m ^ suc(n)  = m * m ^ n          %(power_suc_Nat)% %simp
+
+     . min(m,n) = m when m <= n else n  %(min_def_Nat)%
+     . max(m,n) = n when m <= n else m  %(max_def_Nat)%
+
+     . n -! m = 0      if m >  n        %(subTotal_def1_Nat)% %simp
+     . n -! m = n -? m if m <= n        %(subTotal_def2_Nat)% %simp
+
+     . def(m-?n) <=> m >= n             %(sub_dom_Nat)% %implied
+     . m -? n = r <=> m = r + n         %(sub_def_Nat)%
+
+     . def(m /? n) <=>
+       not n=0 /\ m mod n = 0               %(divide_dom_Nat)% %implied
+     . not def(m /? 0)                      %(divide_0_Nat)%
+     . ( m /? n = r <=> m = r * n ) if n>0  %(divide_Pos_Nat)%
+
+     . def ( m div n ) <=> not n=0             %(div_dom_Nat)% %implied
+     . m div n = r <=>
+       (exists s: Nat . m = n*r + s /\ s < n)  %(div_Nat)%
+
+     . def ( m mod n ) <=> not n=0             %(mod_dom_Nat)% %implied
+     . m mod n = s <=>
+       (exists r: Nat . m = n*r + s /\ s < n)  %(mod_Nat)%
+
+  %% important laws
+
+     . (r + s) * t = (r * t) + (s * t)  %(distr1_Nat)% %implied
+     . t * (r + s) = (t * r) + (t * s)  %(distr2_Nat)% %implied
+
+then %mono
+     sort Pos = { p: Nat . p > 0 } %(Pos_def)%
+     ops   suc: Nat -> Pos;
+           1: Pos = suc(0);             %(1_as_Pos_def)%
+           __*__: Pos * Pos -> Pos;
+           __+__: Pos * Nat -> Pos;
+           __+__: Nat * Pos -> Pos
+
+then %implies
+
+     forall m,n,r,s:Nat
+     . min(m,0)=0                                  %(min_0)%  %simp
+     . m = (m div n) * n + (m mod n) if not n = 0  %(div_mod_Nat)%
+     . m ^(r+s) = m^r * m^s                        %(power_Nat)%
+
+end
+
+spec Int = %mono
+
+  Nat
+
+then %mono
+
+     generated type Int ::= __ - __(Nat;Nat)
+     forall a,b,c,d: Nat
+     .  a - b = c - d <=> a + d = c + b    %(equality_Int)%
+
+     sort  Nat < Int
+     forall a: Nat . a = a - 0             %(Nat2Int_embedding)%
+then %def
+
+     preds __ <= __, __ >= __,
+           __ <  __, __ >  __: Int * Int;
+           even, odd :         Int
+
+     ops  - __, sign: Int -> Int;
+          abs:        Int -> Nat;
+          __ + __,__ * __, __ - __,
+          min, max:                          Int * Int -> Int;
+          __ ^ __:                           Int * Nat -> Int;
+          __ /? __,
+          __ div __, __ quot __, __ rem __ : Int * Int ->? Int;
+          __ mod __:                         Int * Int ->? Nat;
+          0,1,2,3,4,5,6,7,8,9:               Int
+
+  %% implied operation attributes :
+
+     ops __+__:   Int * Int -> Int,
+                  comm, assoc, unit 0; %implied
+         __*__:   Int * Int -> Int,
+                  comm, assoc, unit 1; %implied
+         min,max: Int * Int -> Int,
+                  comm, assoc;         %implied
+
+     forall  m,n,r,s,t: Int; a,b,c,d: Nat
+
+  %% axioms concerning predicates
+
+     . m <= n <=> n - m in Nat                 %(leq_def_Int)%     %simp
+     . m >= n <=> n <= m                       %(geq_def_Int)%
+     . m < n <=> (m <= n /\ not m=n)           %(less_def_Int)%
+     . m > n <=> n < m                         %(greater_def_Int)%
+
+     . even(m) <=> even(abs(m))                %(even_def_Int)%    %simp
+     . odd(m)  <=> not even(m)                 %(odd_def_Int)%
+     . odd(m)  <=> odd(abs(m))                 %(odd_alt_Int)%     %simp
+
+  %% axioms concerning operations
+
+     . - (a - b) = b - a                       %(neg_def_Int)%     %simp
+
+     . sign(m) = 0 when m = 0
+           else (1 when m > 0 else -1)         %(sign_def_Int)%    %simp
+
+     . abs(m) = - m when m < 0
+            else  m                            %(abs_def_Int)%     %simp
+
+     . (a - b) + (c - d) = (a + c) - (b + d)   %(add_def_Int)%     %simp
+     . (a - b) * (c - d) =
+       (a * c + b * d) - (b * c + a * d)       %(mult_def_Int)%    %simp
+     .  m - n = m + ( - n )                    %(sub_def_Int)%     %simp
+
+     . min(m,n) = m when m <= n else n         %(min_def_Int)%     %simp
+     . max(m,n) = n when m <= n else m         %(max_def_Int)%     %simp
+
+     . (- 1) ^ a = 1 when even(a) else - 1     %(power_neg1_Int)%  %simp
+     . m ^ a = sign(m)^a * abs(m)^a
+       if not m = -1                           %(power_others_Int)% %simp
+
+     . def (m /? n) <=> m mod n = 0            %(divide_dom2_Int)% %implied
+     . m /? n = r <=> not n = 0 /\ n * r = m   %(divide_alt_Int)% %implied
+     . m /? n =
+       sign(m) * sign(n) * (abs(m) /? abs(n))  %(divide_Int)%              %simp
+
+     . def ( m div n ) <=> not n=0             %(div_dom_Int)% %implied
+     . m div n = r <=>
+       (exists a: Nat .
+        m = n*r + a /\ a < abs(n) )            %(div_Int)%                 %simp
+
+
+     . def ( m quot n ) <=> not n=0            %(quot_dom_Int)% %implied
+     . (m quot n = r <=>
+         (exists s: Int .
+           m = n*r + s /\
+             0 >= s /\ s > - abs(n) )
+       ) if m < 0                              %(quot_neg_Int)%            %simp
+     . (m quot n = r <=>
+         (exists s: Int .
+            m = n*r + s /\
+              0 <= s /\ s < abs(n) )
+       ) if m >= 0                             %(quot_nonneg_Int)%         %simp
+
+     . def ( m rem n ) <=> not n=0             %(rem_dom_Int)% %implied
+     . (m rem n = s <=>
+         (exists r: Int .
+           m = n*r + s /\
+             0 >= s /\ s > - abs(n) )
+       ) if m < 0                              %(rem_neg_Int)%            %simp
+     . (m rem n = s <=>
+         (exists r: Int .
+            m = n*r + s /\
+              0 <= s /\ s < abs(n) )
+       ) if m >= 0                             %(rem_nonneg_Int)%         %simp
+
+     . def ( m mod n ) <=> not n=0             %(mod_dom_Int)% %implied
+     . m mod n = a <=>
+       (exists r: Int .
+        m = n*r + a /\ a < abs(n))             %(mod_Int)%                %simp
+
+  %% important laws
+
+     . (r + s) * t = (r * t) + (s * t)  %(distr1_Int)% %implied
+     . t * (r + s) = (t * r) + (t * s)  %(distr2_Int)% %implied
+
+then %implies
+
+     forall m,n,r: Int; a,b: Nat
+     . def(a -? b) => a -? b = a - b                %(Int_Nat_sub_compat)%
+
+     . m = sign(m) * abs(m)                         %(abs_decomp_Int)%
+
+     . m mod n = m mod abs(n)                       %(mod_abs_Int)%
+
+     . m = (m div n) * n + (m mod n) if not n = 0   %(div_mod_Int)%
+
+     . abs(m quot n) = abs(m) quot abs(n)           %(quot_abs_Int)%
+     . abs(m rem  n) = abs(m) rem  abs(n)           %(rem_abs_Int)%
+     . m = (m quot n) * n + (m rem n) if not n = 0  %(quot_rem_Int)%
+
+     . m ^(a+b) = m^a * m^b                         %(power_Int)%
+
+end
+
+spec Rat = %mono
+
+     Int
+
+then %mono
+
+     generated type Rat ::= __ / __ (Int;Pos)
+     forall i,j: Int; p,q: Pos
+     . i / p = j / q <=> i*q = j*p              %(equality_Rat)%
+
+     sort Int < Rat
+     forall i:Int . i = i / 1                   %(Int2Rat_embedding)%
+
+then %def
+
+     preds    __ <= __, __ < __,
+              __ >= __, __ > __: Rat * Rat;
+
+     ops -__, abs:  Rat -> Rat;
+         __ + __,__ - __, __ * __,
+         min,max:                   Rat * Rat -> Rat;
+         __ / __ :                  Rat * Rat ->? Rat;
+         __ ^ __:                   Rat * Int ->? Rat;
+         0,1,2,3,4,5,6,7,8,9:       Rat
+
+  %% implied operation attributes :
+
+     ops __+__:   Rat * Rat -> Rat,
+                  comm, assoc, unit 0; %implied
+         __*__:   Rat * Rat -> Rat,
+                  comm, assoc, unit 1; %implied
+         min,max: Rat * Rat -> Rat,
+                  comm, assoc;         %implied
+
+     forall p,q:Pos; n:Nat; i,j: Int; x,y,z: Rat
+
+  %% axioms concerning predicates
+
+     . (i / p <= j / q <=> i * q <= j * p ) %(leq_def_Rat)%
+     . x >= y <=> y <= x                    %(geq_def_Rat)%
+     . x < y <=> (x <= y /\ not x=y )       %(less_def_Rat)%
+     . x > y <=> y < x                      %(greater_def_Rat)%
+
+  %% axioms concerning operations
+
+     . - (i/p) = (-i)/p                 %(minus_def_Rat)%
+
+     . abs(i / p) = abs(i) / p          %(abs_def_Rat)%
+
+     . (i / p) + (j / q) =
+       (i * q + j * p) / (p * q)        %(add_def_Rat)%
+
+     . x-y = x + (-y)                   %(sub_def_Rat)%
+
+     . (i / p) * (j / q) =
+       (i * j) / (p * q)                %(mult_def_Rat)%
+
+     . min(x,y) = x when x <= y else y  %(min_def_Rat)%
+     . max(x,y) = y when x <= y else x  %(max_def_Rat)%
+
+     . not def x/0                      %(divide_def1_Rat)%
+     . (x/y=z <=> x=z*y)
+       if not y = 0                     %(divide_def2_Rat)%
+
+     . x ^ 0 = 1                        %(power_0_Rat)%
+     . x ^ suc(n) = x * x ^ n           %(power_suc_Rat)%
+     . x ^ (-p) = 1 / (x ^ p)           %(power_neg_Rat)%
+
+  %% important laws
+
+     . (x + y) * z = (x * z) + (y * z)  %(distr1_Rat)% %implied
+     . z * (x + y) = (z * x) + (z * y)  %(distr2_Rat)% %implied
+
+then %implies
+
+     forall i,j: Int; p,q:Pos; x,y:Rat
+     . (i / p) - (j / q) =
+       (i * q - j * p) / (p * q)        %(sub_rule_Rat)%
+
+
+     . def (x/y) <=> not y = 0          %(divide_dom_Rat)%
+     . (i/p) / (j/q) =
+       (i * q ) / (p * j) if not j=0    %(divide_rule_Rat)%
+
+     . x^(i+j) = x^i * x^j              %(power_Rat)%
+
+end
+
+spec DecimalFraction = %mono
+     Rat
+then %def
+local
+     op   tenPower: Nat -> Nat
+     forall n,m: Nat
+     %% tenPower(n):= min { 10^k | k in N \{0}, 10^k > n }:
+     . tenPower(n)= 10 when n < 10 else
+                    10 * tenPower(n div 10)    %(tenPower_def)%
+within
+     %% operations to represent a rational as a decimal fraction:
+     ops   __ ::: __ : Nat * Nat -> Rat;
+           __ E __ :   Rat * Int -> Rat
+     forall r:Rat; n,m: Nat; p: Pos; i:Int
+     %%  represent the decimal fraction n.m as rational:
+     . n:::m = n + (m/tenPower(m))             %(decfract_def)%
+
+     %%  introduce an exponent:
+     . r E i = r * (10 ^ i)                    %(exponent_DecimalFraction)%
+end
