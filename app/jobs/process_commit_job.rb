@@ -6,6 +6,8 @@ class ProcessCommitJob < ApplicationJob
 
   def perform(repository_id, commit_sha)
     FileVersionParentsCreator.new(repository_id, commit_sha).call
-    HetsAgentInvoker.new(repository_id, commit_sha).call
+    request_collection =
+      HetsAgent::AnalysisRequestCollection.new(repository_id, commit_sha)
+    HetsAgent::Invoker.new(request_collection).call
   end
 end
