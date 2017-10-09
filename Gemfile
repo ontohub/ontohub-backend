@@ -59,6 +59,9 @@ end
 
 group :development do
   gem 'graphiql-rails'
+  # We want the process manager "invoker" to be present in the most current
+  # version to be compatible with current OS versions.
+  gem 'invoker'
   gem 'listen', '~> 3.1.5'
   gem 'rubocop', '~> 0.50.0', require: false
   # Spring speeds up development by keeping your application running in the
@@ -69,6 +72,7 @@ group :development do
 end
 
 group :test do
+  gem 'bunny-mock', '~> 1.7.0'
   gem 'codecov', '~> 0.1.10', require: false
   gem 'database_cleaner', '~> 1.6.1'
   gem 'factory_girl_rails', '~> 4.8.0'

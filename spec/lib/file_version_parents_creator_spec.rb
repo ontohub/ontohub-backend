@@ -29,7 +29,7 @@ RSpec.describe(FileVersionParentsCreator) do
     let!(:commit_sha1) { commit_file_directly.call(files) }
 
     before do
-      FileVersionParentsCreator.new(repository.id, commit_sha1).run
+      FileVersionParentsCreator.new(repository.id, commit_sha1).call
     end
 
     it 'creates the "reflexive" FileVersionParents' do
@@ -48,7 +48,7 @@ RSpec.describe(FileVersionParentsCreator) do
       let!(:commit_sha2) { commit_file_directly.call([generate(:filepath)]) }
 
       before do
-        FileVersionParentsCreator.new(repository.id, commit_sha2).run
+        FileVersionParentsCreator.new(repository.id, commit_sha2).call
       end
 
       it 'creates the backwards FileVersionParents' do

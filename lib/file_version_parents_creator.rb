@@ -12,7 +12,7 @@ class FileVersionParentsCreator
     @git = @repository.git
   end
 
-  def run
+  def call
     git.ls_files(commit_sha).each do |filepath|
       target_sha = git.log(ref: commit_sha, path: filepath, limit: 1).first.id
       file_version = FileVersion.find(path: filepath, commit_sha: target_sha)

@@ -1,3 +1,10 @@
 # frozen_string_literal: true
 
-Sneakers.configure(connection: Bunny.new)
+if Rails.env.test?
+  require Rails.root.join('spec/support/bunnymock_recent_history_exchange.rb')
+  Sneakers.configure(connection: BunnyMock.new)
+else
+  # :nocov:
+  Sneakers.configure(connection: Bunny.new)
+  # :nocov:
+end

@@ -10,6 +10,7 @@ rvm:
 
 services:
   - postgresql
+  - rabbitmq
 
 addons:
   postgresql: '9.6'
@@ -21,6 +22,9 @@ addons:
   apt:
     packages:
     - git-svn
+
+before_install:
+  - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
 
 before_script:
   - RAILS_ENV=test bundle exec rails db:recreate

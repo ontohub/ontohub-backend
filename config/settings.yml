@@ -12,3 +12,5 @@ data_directory: 'data'
 sneakers:
   - classes: MailersWorker
     workers: 1
+  - classes: ProcessCommitWorker
+    workers: 1

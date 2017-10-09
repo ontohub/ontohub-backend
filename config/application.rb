@@ -22,6 +22,8 @@ Bundler.require(*Rails.groups)
 module OntohubBackend
   # The base application class - Rails default
   class Application < Rails::Application
+    config.hets_version_requirement = '>= 0.100.0'
+
     # Settings in config/environments/* take precedence over those specified
     # here.
     # Application configuration should go into files in config/initializers
@@ -51,9 +53,13 @@ module OntohubBackend
 
     config.after_initialize do
       SettingsHandler.new(Settings).call
-    end
 
-    # Configure active job to use sneakers/rabbitmq backend
-    config.active_job.queue_adapter = :sneakers
+      # Only interact with the HetsAgent if the application is not run via rake
+      # but as the rails server
+      unless defined?(Rake)
+        HetsAgentIninializer.new.call
+        HetsAgent::Invoker.new(HetsAgent::LogicGraphRequestCollection.new).call
+      end
+    end
   end
 end

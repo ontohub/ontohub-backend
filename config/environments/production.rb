@@ -53,6 +53,9 @@ Rails.application.configure do
   # environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "ontohub-backend_#{Rails.env}"
+  #
+  # Configure active job to use sneakers/rabbitmq backend
+  config.active_job.queue_adapter = :sneakers
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to
