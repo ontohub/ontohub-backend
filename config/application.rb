@@ -58,6 +58,7 @@ module OntohubBackend
       # but as the rails server
       unless defined?(Rake)
         HetsAgentIninializer.new.call
+        HetsAgent::Invoker.new(HetsAgent::LogicGraphRequestCollection.new).call
       end
     end
   end
