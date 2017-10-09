@@ -53,7 +53,12 @@ module OntohubBackend
 
     config.after_initialize do
       SettingsHandler.new(Settings).call
-      HetsAgentIninializer.new.call
+
+      # Only interact with the HetsAgent if the application is not run via rake
+      # but as the rails server
+      unless defined?(Rake)
+        HetsAgentIninializer.new.call
+      end
     end
   end
 end
