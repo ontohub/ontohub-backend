@@ -5,5 +5,5 @@ Organization.new(name: 'seed-user-organization',
                  description: 'All users that are created in the seeds').save
 
 Organization.new(name: 'the-league-of-extraordinary-users',
-                 display_name: 'The Leaegue of Extraordinary Users',
+                 display_name: 'The League of Extraordinary Users',
                  description: 'Really fabulous, wow.').save
