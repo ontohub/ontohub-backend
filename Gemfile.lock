@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 1cc9678755c60286e24034d493250832cd6c5ba4
+  revision: 5e5d8a51749ea44e822d87669c8b1f2c64950171
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -156,7 +156,7 @@ GEM
       multi_json
     em-proxy (0.1.9)
       eventmachine
-    erubi (1.6.1)
+    erubi (1.7.0)
     escape_utils (1.1.1)
     eventmachine (1.0.9.1)
     facter (2.5.1)
