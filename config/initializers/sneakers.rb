@@ -5,7 +5,10 @@ if Rails.env.test?
   Sneakers.configure(connection: BunnyMock.new)
 else
   # :nocov:
-  Sneakers.configure(connection: Bunny.new)
-  Sneakers.logger.level = Logger::WARN
+  Sneakers.configure(connection: Bunny.new(username: Settings.rabbitmq.username,
+                                           password: Settings.rabbitmq.password,
+                                           host: Settings.rabbitmq.host,
+                                           port: Settings.rabbitmq.port))
+  Sneakers.logger.level = Logger::ERROR
   # :nocov:
 end
