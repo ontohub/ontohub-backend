@@ -3,7 +3,10 @@ dist: trusty
 
 language: ruby
 
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - $HOME/system-test
 
 rvm:
   - 2.4.2
@@ -34,3 +37,18 @@ matrix:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec
+    - env: WITH_SYSTEM_TEST=1
+      before_script:
+        - |
+          if [ -d $HOME/system-test/.git ]
+          then
+            pushd $HOME/system-test
+            git pull
+            popd
+          else
+            git clone --depth=1 https://github.com/ontohub/system-test.git $HOME/system-test
+          fi
+      script:
+        - pushd $HOME/system-test
+        - cucumber
+        - popd
