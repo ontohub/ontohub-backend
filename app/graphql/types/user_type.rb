@@ -55,4 +55,31 @@ Types::UserType = GraphQL::ObjectType.define do
         limit(arguments['limit'], arguments['skip'])
     end)
   end
+
+  field :repositoryMemberships do
+    type !types[!Types::Repository::MembershipType]
+    description "List of the user's repository memberships"
+
+    argument :limit, types.Int do
+      description 'Maximum number of memberships to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n memberships'
+      default_value 0
+    end
+
+    argument :role, Types::Repository::RoleEnum do
+      description 'Filter the repositories by the membership role'
+    end
+
+    resolve(lambda do |user, arguments, _context|
+      dataset = RepositoryMembership.where(member_id: user.id)
+      dataset = dataset.where(role: arguments['role']) if arguments['role']
+      dataset.join(:repositories, id: :repository_id).
+        order(Sequel[:repositories][:slug]).
+        limit(arguments['limit'], arguments['skip'])
+    end)
+  end
 end

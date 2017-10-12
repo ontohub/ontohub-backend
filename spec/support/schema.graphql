@@ -780,6 +780,18 @@ type Repository {
     skipMerges: Boolean = false
   ): [Commit!]!
 
+  # List of the repository's memberships
+  memberships(
+    # Maximum number of memberships to list
+    limit: Int = 20
+
+    # Filter the users by the membership role
+    role: RepositoryRole
+
+    # Skip the first n memberships
+    skip: Int = 0
+  ): [RepositoryMembership!]!
+
   # Name of the repository
   name: String!
 
@@ -817,6 +829,25 @@ enum RepositoryContentType {
   model
   ontology
   specification
+}
+
+# The membership of a user in a repository
+type RepositoryMembership {
+  # The member
+  member: User!
+
+  # The repository
+  repository: Repository!
+
+  # The member's role in the repository
+  role: RepositoryRole!
+}
+
+# Possible values for repository roles
+enum RepositoryRole {
+  admin
+  read
+  write
 }
 
 # Possible values for repository visibilities
@@ -895,6 +926,18 @@ type User implements OrganizationalUnit {
     # Skip the first n repositories
     skip: Int = 0
   ): [Repository!]!
+
+  # List of the user's repository memberships
+  repositoryMemberships(
+    # Maximum number of memberships to list
+    limit: Int = 20
+
+    # Filter the repositories by the membership role
+    role: RepositoryRole
+
+    # Skip the first n memberships
+    skip: Int = 0
+  ): [RepositoryMembership!]!
 
   # Email address of the user that still needs to be confirmed
   unconfirmedEmail: String

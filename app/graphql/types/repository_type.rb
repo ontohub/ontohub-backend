@@ -35,6 +35,32 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :memberships, !types[!Types::Repository::MembershipType] do
+    description "List of the repository's memberships"
+
+    argument :limit, types.Int do
+      description 'Maximum number of memberships to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n memberships'
+      default_value 0
+    end
+
+    argument :role, Types::Repository::RoleEnum do
+      description 'Filter the users by the membership role'
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      dataset = RepositoryMembership.where(repository_id: repository.id)
+      dataset = dataset.where(role: arguments['role']) if arguments['role']
+      dataset.join(:organizational_units, id: :member_id).
+        order(Sequel[:organizational_units][:slug]).
+        limit(arguments['limit'], arguments['skip'])
+    end)
+  end
+
   field :defaultBranch, types.String do
     description 'Default branch of the repository'
     property :default_branch
