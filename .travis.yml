@@ -10,7 +10,6 @@ rvm:
 
 services:
   - postgresql
-  - rabbitmq
 
 notifications:
   email: false
@@ -24,6 +23,10 @@ addons:
 matrix:
   include:
     - env: WITH_SEEDS=1
+      services:
+        - rabbitmq
+      before_install:
+        - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       script:
         - bundle exec rails db:recreate:seed
     - env: WITH_RSPEC=1
@@ -31,6 +34,3 @@ matrix:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec
-
-before_install:
-  - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
