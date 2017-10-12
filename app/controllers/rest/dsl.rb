@@ -20,8 +20,11 @@ module Rest
         @arguments_proc = block
       end
 
+      # This is not yet used anywhere
       def context(&block)
+        # :nocov:
         @context_proc = block
+        # :nocov:
       end
 
       def plain(&block)
