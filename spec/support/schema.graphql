@@ -589,14 +589,17 @@ type Organization implements OrganizationalUnit {
   # ID of the organizational unit
   id: ID!
 
-  # List of members
-  members(
-    # Maximum number of members to list
+  # List of the organization's memberships
+  memberships(
+    # Maximum number of memberships to list
     limit: Int = 20
 
-    # Skip the first n members
+    # Filter the users by the membership role
+    role: OrganizationRole
+
+    # Skip the first n memberships
     skip: Int = 0
-  ): [User!]!
+  ): [OrganizationMembership!]!
 
   # List of repositories owned by this organizational unit
   repositories(
@@ -615,6 +618,18 @@ input OrganizationChangeset {
 
   # The name of the organization
   displayName: String
+}
+
+# The membership of a user in an organization
+type OrganizationMembership {
+  # The member
+  member: User!
+
+  # The organization
+  organization: Organization!
+
+  # The member's role in the organization
+  role: OrganizationRole!
 }
 
 # A user's role in an organization
@@ -857,17 +872,17 @@ type User implements OrganizationalUnit {
   # ID of the organizational unit
   id: ID!
 
-  # List of organizations the user is a member of
-  organizations(
-    # Maximum number of organizations to list
+  # List of the user's organization memberships
+  organizationMemberships(
+    # Maximum number of memberships to list
     limit: Int = 20
 
-    # Filter the organizations by the user's role
+    # Filter the organizations by the membership role
     role: OrganizationRole
 
-    # Skip the first n organizations
+    # Skip the first n memberships
     skip: Int = 0
-  ): [Organization!]!
+  ): [OrganizationMembership!]!
 
   # List of a user's SSH public keys
   publicKeys: [PublicKey!]

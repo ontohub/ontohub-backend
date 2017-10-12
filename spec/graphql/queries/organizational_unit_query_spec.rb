@@ -34,14 +34,26 @@ RSpec.describe 'OrganizationalUnit query' do
             key
             name
           }
-          organizations {
-            id
+          organizationMemberships {
+            organization {
+              id
+            }
+            member {
+              id
+            }
+            role
           }
         }
         ... on Organization {
           description
-          members {
-            id
+          memberships {
+            organization {
+              id
+            }
+            member {
+              id
+            }
+            role
           }
         }
       }
@@ -63,7 +75,11 @@ RSpec.describe 'OrganizationalUnit query' do
           'email' => subject.email,
           'emailHash' => subject.email_hash,
           'publicKeys' => subject.public_keys,
-          'organizations' => [{'id' => organization.slug}]
+          'organizationMemberships' => [
+            {'member' => {'id' => subject.slug},
+             'organization' => {'id' => organization.slug},
+             'role' => 'read'},
+          ]
         )
       end
     end
@@ -77,7 +93,11 @@ RSpec.describe 'OrganizationalUnit query' do
           'email' => nil,
           'emailHash' => subject.email_hash,
           'publicKeys' => nil,
-          'organizations' => [{'id' => organization.slug}]
+          'organizationMemberships' => [
+            {'member' => {'id' => subject.slug},
+             'organization' => {'id' => organization.slug},
+             'role' => 'read'},
+          ]
         )
       end
     end
@@ -92,7 +112,11 @@ RSpec.describe 'OrganizationalUnit query' do
         'id' => subject.slug,
         'displayName' => subject.display_name,
         'description' => subject.description,
-        'members' => [{'id' => user.slug}]
+        'memberships' => [
+          {'member' => {'id' => user.slug},
+           'organization' => {'id' => subject.slug},
+           'role' => 'read'},
+        ]
       )
     end
   end

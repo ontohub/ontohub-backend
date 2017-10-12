@@ -20,57 +20,57 @@ RSpec.describe Types::UserType do
   subject { user }
   let(:user_type) { OntohubBackendSchema.types['User'] }
 
-  context 'organizations field' do
-    let(:organizations_field) do
-      OntohubBackendSchema.get_fields(user_type)['organizations']
+  context 'organizationMemberships field' do
+    let(:organization_memberships_field) do
+      OntohubBackendSchema.get_fields(user_type)['organizationMemberships']
     end
-    it 'returns only the organizations to user is a member in' do
-      organizations = organizations_field.resolve(
+    it 'returns only the memberships of the user' do
+      organization_memberships = organization_memberships_field.resolve(
         user,
-        organizations_field.default_arguments,
+        organization_memberships_field.default_arguments,
         {}
       )
-      expect(organizations.count).to eq(20)
-    end
-
-    it 'limits the organization list' do
-      organizations = organizations_field.resolve(
-        user,
-        organizations_field.default_arguments('limit' => 1),
-        {}
-      )
-      expect(organizations.count).to eq(1)
+      expect(organization_memberships.count).to eq(20)
     end
 
-    it 'skips a number of organizations' do
-      organizations = organizations_field.resolve(
+    it 'limits the membership list' do
+      organization_memberships = organization_memberships_field.resolve(
         user,
-        organizations_field.default_arguments('skip' => 5),
+        organization_memberships_field.default_arguments('limit' => 1),
         {}
       )
-      expect(organizations.count).to eq(16)
+      expect(organization_memberships.count).to eq(1)
+    end
+
+    it 'skips a number of memberships' do
+      organization_memberships = organization_memberships_field.resolve(
+        user,
+        organization_memberships_field.default_arguments('skip' => 5),
+        {}
+      )
+      expect(organization_memberships.count).to eq(16)
     end
 
     context 'filters by role' do
-      let(:organizations) do
-        organizations_field.resolve(
+      let(:organization_memberships) do
+        organization_memberships_field.resolve(
           user,
-          organizations_field.default_arguments('role' => role),
+          organization_memberships_field.default_arguments('role' => role),
           {}
         )
       end
 
       context 'read' do
         let(:role) { 'read' }
-        it 'returns the organizations with the role: read' do
-          expect(organizations.count).to eq(20)
+        it 'returns the memberships with the role: read' do
+          expect(organization_memberships.count).to eq(20)
         end
       end
 
       context 'admin' do
         let(:role) { 'admin' }
-        it 'returns the organizations with the role: admin' do
-          expect(organizations.count).to eq(1)
+        it 'returns the memberships with the role: admin' do
+          expect(organization_memberships.count).to eq(1)
         end
       end
     end

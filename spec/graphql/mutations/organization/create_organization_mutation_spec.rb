@@ -29,8 +29,14 @@ RSpec.describe Mutations::Organization::CreateOrganizationMutation do
         id
         displayName
         description
-        members {
-          id
+        memberships {
+          member {
+            id
+          }
+          organization {
+            id
+          }
+          role
         }
       }
     }
@@ -45,7 +51,11 @@ RSpec.describe Mutations::Organization::CreateOrganizationMutation do
         'id' => organization_data['id'],
         'description' => organization_data['description'],
         'displayName' => organization_data['displayName'],
-        'members' => [{'id' => current_user.slug}]
+        'memberships' => [
+          {'member' => {'id' => current_user.slug},
+           'organization' => {'id' => organization_data['id']},
+           'role' => 'read'},
+        ]
       )
     end
   end
