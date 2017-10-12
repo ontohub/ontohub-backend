@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Rest Histories",
+  "description": "Rest History Controller",
+  "definitions": {
+    "actions": {
+      "index": {
+        "properties": {
+          "data": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["repository"],
+                "properties": {
+                  "repository": {"$ref": "#/definitions/repository"}
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          } 
+        }
+      }
+    },
+    "repository": {
+      "properties": {
+        "repository": {
+          "type": "object",
+          "required": ["log"],
+          "properties": {
+            "log": {
+              "type": "array",
+              "items": {"$ref": "#/definitions/commit"}
+            }
+          }
+        }
+      }
+    },
+    "commit": {
+      "type": "object",
+      "required": ["id", "message", "commitedAt"],
+      "properites": {
+        "id": {
+          "type": "string",
+          "example": "7472e930126045fef940c954dfb34c8b8a7e7b20",
+          "description": "ID of this commit"
+        },
+        "message": {
+          "type": "string",
+          "example": "8: Quia magni nihil blanditiis est quasi.",
+          "description": "The commit message"
+        },
+        "commitedAt": {
+          "type": "integer",
+          "example": "15036604892",
+          "description": "The time the commit was created"
+        }
+      }
+    },
+    "organizational_unit_id": {
+      "type": "string",
+      "example": "ada",
+      "description": "The id of the organizational unit that owns the repository"
+    },
+    "repository_id": {
+      "type": "string",
+      "example": "fixtures",
+      "description": "The id of the repository"
+    }
+  },
+  "properties": { "$ref": "#/definitions/repository/properties" },
+  "links": [
+    {
+      "title": "Index",
+      "description": "List all commits of a repository. Returns HTTP 200 (OK).",
+      "rel": "self",
+      "method": "GET",
+      "mediaType": "application/json",
+      "href": "/{#/definitions/organizational_unit_id}/{#/definitions/repository_id}/history/{#/definitions/path}",
+      "targetSchema": { "$ref": "#/definitions/actions/index" }
+    }
+  ]
+}

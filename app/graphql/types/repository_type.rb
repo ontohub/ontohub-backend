@@ -138,7 +138,7 @@ Types::RepositoryType = GraphQL::ObjectType.define do
       The history (git log) of the repository starting with the most recent changes
     DESCRIPTION
 
-    argument :revision, !types.String do
+    argument :revision, types.String do
       description 'The newest revision to show in the history'
     end
 
@@ -171,7 +171,8 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |repository, arguments, _context|
-      repository.git.log(ref: arguments['revision'],
+      revision = arguments['revision'] || repository.git.default_branch
+      repository.git.log(ref: revision,
                          path: arguments['path'],
                          limit: arguments['limit'],
                          offset: arguments['skip'],

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
   routes_with_optional_revision = lambda do
     get '/commits', controller: 'rest/commits', action: 'show'
+    get '/history/*path', controller: 'rest/history', action: 'index'
     scope '/tree' do
       get '/:path', controller: 'rest/trees', action: 'show',
                     constraints: {path: UNTIL_DOUBLE_SLASHES}
