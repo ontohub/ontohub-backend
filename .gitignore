@@ -45,6 +45,7 @@ config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
 config/environments/*.local.rb
+.env.local
 
 # We dont want to have migrations in this repository.
 # Put them in ontohub-models.
@@ -61,3 +62,4 @@ db/schema.rb
 
 # Ignore Vscode
 .vscode/
+
