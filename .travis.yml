@@ -24,15 +24,13 @@ addons:
 matrix:
   include:
     - env: WITH_SEEDS=1
+      script:
+        - bundle exec rails db:recreate:seed
     - env: WITH_RSPEC=1
+      before_script:
+        - RAILS_ENV=test bundle exec rails db:recreate
+      script:
+        - bundle exec rspec
 
 before_install:
   - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
-
-before_script:
-  - if [ -n "$WITH_RSPEC" ]; then RAILS_ENV=test bundle exec rails db:recreate;   fi
-
-script:
-  - bundle exec rake
-  - if [ -n "$WITH_SEEDS" ]; then bundle exec rails db:recreate:seed; fi
-  - if [ -n "$WITH_RSPEC" ]; then bundle exec rspec; fi
