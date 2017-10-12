@@ -756,7 +756,7 @@ type Repository {
     path: String = "/"
 
     # The newest revision to show in the history
-    revision: String!
+    revision: String
 
     # Skip the first n commits
     skip: Int = 0
