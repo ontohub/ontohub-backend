@@ -6,5 +6,6 @@ if Rails.env.test?
 else
   # :nocov:
   Sneakers.configure(connection: Bunny.new)
+  Sneakers.logger.level = Logger::WARN
   # :nocov:
 end
