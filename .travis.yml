@@ -69,5 +69,6 @@ matrix:
         - popd
       script:
         - pushd $HOME/system-test
+        - echo "Testing commit $TRAVIS_COMMIT"
         - ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT cucumber
         - popd
