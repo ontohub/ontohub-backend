@@ -24,6 +24,9 @@ addons:
     - git-svn
 
 matrix:
+  fast_finish: true
+  allow_failures:
+    - env: WITH_SYSTEM_TEST=1
   include:
     - env: WITH_SEEDS=1
       services:
