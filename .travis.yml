@@ -41,6 +41,10 @@ matrix:
       script:
         - bundle exec rspec
     - env: WITH_SYSTEM_TEST=1 BUNDLE_GEMFILE=$HOME/system-test/Gemfile
+      services:
+        - rabbitmq
+      before_install:
+        - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
         - export EMAJ_VERSION=2.1.0
         - curl -Lo /tmp/emaj.zip http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip
