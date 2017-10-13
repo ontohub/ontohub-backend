@@ -2,7 +2,7 @@
 
 module Rest
   # Handles requests for commit read operations
-  class CommitsController < Rest::ApplicationController
+  class CommitController < Rest::ApplicationController
     graphql :show do
       arguments do
         organizational_unit_id = params[:organizational_unit_id]

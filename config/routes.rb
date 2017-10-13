@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   post '/graphql', to: 'graphql#execute'
 
   routes_with_optional_revision = lambda do
-    get '/commits', controller: 'rest/commits', action: 'show'
+    get '/commit', controller: 'rest/commit', action: 'show'
     get '/history/*path', controller: 'rest/history', action: 'index'
     scope '/tree' do
       get '/:path', controller: 'rest/trees', action: 'show',
