@@ -29,6 +29,9 @@ RSpec.describe 'Repository query' do
         contentType
         defaultBranch
         branches
+        permissions {
+          role
+        }
       }
     }
     QUERY
@@ -39,7 +42,13 @@ RSpec.describe 'Repository query' do
   context 'existing repository' do
     let!(:user) { create :user }
     let!(:repository) do
-      create(:repository_compound, :not_empty, owner: user)
+      create(:repository_compound, :not_empty)
+    end
+
+    let(:context) { {current_user: user} }
+
+    before do
+      repository.add_member(user, 'admin')
     end
 
     it 'returns the repository fields' do
@@ -52,7 +61,8 @@ RSpec.describe 'Repository query' do
         'visibility' => subject.public_access ? 'public' : 'private',
         'contentType' => subject.content_type,
         'defaultBranch' => subject.git.default_branch,
-        'branches' => match_array(subject.git.branch_names)
+        'branches' => match_array(subject.git.branch_names),
+        'permissions' => {'role' => 'admin'}
       )
     end
   end

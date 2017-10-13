@@ -807,6 +807,9 @@ type Repository {
   # Owner of the repository
   owner: OrganizationalUnit!
 
+  # The current_user's permissions for this repository
+  permissions: RepositoryPermissions
+
   # Details of a tag
   tag(
     # The name of the tag
@@ -849,6 +852,12 @@ type RepositoryMembership {
   repository: Repository!
 
   # The member's role in the repository
+  role: RepositoryRole!
+}
+
+# Holds permission information for an repository
+type RepositoryPermissions {
+  # The user's role in the repository
   role: RepositoryRole!
 }
 
