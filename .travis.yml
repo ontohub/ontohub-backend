@@ -37,7 +37,7 @@ matrix:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec
-    - env: WITH_SYSTEM_TEST=1
+    - env: WITH_SYSTEM_TEST=1 BUNDLE_GEMFILE=$HOME/system-test/Gemfile
       before_script:
         - |
           if [ -d $HOME/system-test/.git ]
@@ -49,9 +49,6 @@ matrix:
             git clone --depth=1 https://github.com/ontohub/system-test.git $HOME/system-test
           fi
         - pushd $HOME/system-test
-        - pwd
-        - ls
-        - env
         - bundle install
         - popd
       script:
