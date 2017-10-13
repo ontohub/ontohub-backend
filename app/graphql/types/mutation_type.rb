@@ -22,10 +22,14 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :signUp, Mutations::Account::SignUpMutation
   field :unlockAccount, Mutations::Account::UnlockAccountMutation
 
+  field :addOrganizationMember,
+        Mutations::Organization::AddOrganizationMemberMutation
   field :createOrganization,
         Mutations::Organization::CreateOrganizationMutation
   field :deleteOrganization,
         Mutations::Organization::DeleteOrganizationMutation
+  field :removeOrganizationMember,
+        Mutations::Organization::RemoveOrganizationMemberMutation
   field :saveOrganization, Mutations::Organization::SaveOrganizationMutation
 
   field :createRepository, Mutations::Repository::CreateRepositoryMutation

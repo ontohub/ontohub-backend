@@ -312,6 +312,18 @@ enum LinkOrigin {
 
 # Base mutation type
 type Mutation {
+  # Adds a new member to an organization or updates an existing membership
+  addOrganizationMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the organization
+    organization: ID!
+
+    # The role in the organization
+    role: OrganizationRole!
+  ): OrganizationMembership
+
   # Adds a new SSH public key
   addPublicKey(
     # The public key to add
@@ -408,6 +420,15 @@ type Mutation {
 
     # The repository to delete the tag from
     repositoryId: ID!
+  ): Boolean
+
+  # Removes a member from an organization
+  removeOrganizationMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the organization
+    organization: ID!
   ): Boolean
 
   # Removes an SSH public key
