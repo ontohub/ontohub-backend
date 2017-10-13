@@ -40,13 +40,13 @@ matrix:
     - env: WITH_SYSTEM_TEST=1 BUNDLE_GEMFILE=$HOME/system-test/Gemfile
       install:
         - export EMAJ_VERSION=2.1.0
-        - curl http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip > /tmp/emaj.zip
+        - curl -Lo /tmp/emaj.zip http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip
         - export EMAJ_TMPDIR=/tmp/emaj
         - unzip /tmp/emaj.zip -d $EMAJ_TMPDIR/
-        - export EMAJ_SQL_FILE=$EMAJ_TMPDIR/sql/emaj--$EMAJ_VERSION.sql
-        - export EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/sql/emaj.control
+        - export EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
+        - export EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
         - export SHAREDIR=$(pg_config --sharedir)
-        - cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/
+        - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
         - |
           if [ -d $HOME/system-test/.git ]
