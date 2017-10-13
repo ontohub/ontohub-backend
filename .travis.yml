@@ -48,6 +48,9 @@ matrix:
           else
             git clone --depth=1 https://github.com/ontohub/system-test.git $HOME/system-test
           fi
+        - pushd $HOME/system-test
+        - bundle install
+        - popd
       script:
         - pushd $HOME/system-test
         - cucumber
