@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "REST Histories",
+  "title": "REST History",
   "description": "REST History Controller",
   "definitions": {
     "actions": {

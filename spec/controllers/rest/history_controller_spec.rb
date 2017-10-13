@@ -27,6 +27,35 @@ RSpec.describe Rest::HistoryController do
           map { |commit| commit['id'] }).to eq(commits)
       end
     end
+    context 'successful (with optional arguments)' do
+      let!(:limit) { 1 }
+      let!(:skip) { 0 }
+      let!(:skipMerges) { 'false' }
+      let!(:before) { (Time.now + 1.day).to_f }
+      let!(:after) { (Time.now - 1.day).to_f }
+      describe 'action: index' do
+        before do
+          get :index, params: {organizational_unit_id: user.to_param,
+                               repository_id:
+                                 repository.to_param.sub(%r{\A[^/]*/}, ''),
+                               path: path,
+                               limit: limit,
+                               skip: skip,
+                               skipMerges: skipMerges,
+                               before: before,
+                               after: after}
+        end
+        it { expect(response).to have_http_status(:ok) }
+        it { |example| expect([example, response]).to comply_with_rest_api }
+        it 'finds the repository' do
+          expect(response_data['repository']).not_to be(nil)
+        end
+        it 'checks if all commits are present' do
+          expect(response_data['repository']['log'].
+            map { |commit| commit['id'] }).to eq(commits)
+        end
+      end
+    end
   end
 
   context 'successful (with revision)' do
