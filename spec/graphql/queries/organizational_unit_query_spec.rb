@@ -46,6 +46,9 @@ RSpec.describe 'OrganizationalUnit query' do
         }
         ... on Organization {
           description
+          permissions {
+            role
+          }
           memberships {
             organization {
               id
@@ -104,6 +107,8 @@ RSpec.describe 'OrganizationalUnit query' do
   end
 
   context 'Organization' do
+    let(:context) { {current_user: user} }
+
     subject { organization }
 
     it 'returns the organization fields' do
@@ -112,6 +117,9 @@ RSpec.describe 'OrganizationalUnit query' do
         'id' => subject.slug,
         'displayName' => subject.display_name,
         'description' => subject.description,
+        'permissions' => {
+          'role' => 'read',
+        },
         'memberships' => [
           {'member' => {'id' => user.slug},
            'organization' => {'id' => subject.slug},

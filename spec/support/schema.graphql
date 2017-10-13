@@ -601,6 +601,9 @@ type Organization implements OrganizationalUnit {
     skip: Int = 0
   ): [OrganizationMembership!]!
 
+  # The current_user's permissions for this organization
+  permissions: OrganizationPermissions
+
   # List of repositories owned by this organizational unit
   repositories(
     # Maximum number of repositories to list
@@ -629,6 +632,12 @@ type OrganizationMembership {
   organization: Organization!
 
   # The member's role in the organization
+  role: OrganizationRole!
+}
+
+# Holds permission information for an organization
+type OrganizationPermissions {
+  # The user's role in the organization
   role: OrganizationRole!
 }
 
