@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Rest Histories",
-  "description": "Rest History Controller",
+  "title": "REST Histories",
+  "description": "REST History Controller",
   "definitions": {
     "actions": {
       "index": {
@@ -67,6 +67,11 @@
       "type": "string",
       "example": "fixtures",
       "description": "The id of the repository"
+    },
+    "path": {
+      "type": "string",
+      "example": "texts/ontohub.txt",
+      "description": "The path of the directory or file to inspect the history of"
     }
   },
   "properties": { "$ref": "#/definitions/repository/properties" },
