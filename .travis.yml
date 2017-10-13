@@ -46,13 +46,13 @@ matrix:
       before_install:
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
-        - export EMAJ_VERSION=2.1.0
+        - EMAJ_VERSION=2.1.0
         - curl -Lo /tmp/emaj.zip http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip
-        - export EMAJ_TMPDIR=/tmp/emaj
+        - EMAJ_TMPDIR=/tmp/emaj
         - unzip /tmp/emaj.zip -d $EMAJ_TMPDIR/
-        - export EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
-        - export EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
-        - export SHAREDIR=$(pg_config --sharedir)
+        - EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
+        - EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
+        - SHAREDIR=$(pg_config --sharedir)
         - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
         - |
@@ -69,5 +69,5 @@ matrix:
         - popd
       script:
         - pushd $HOME/system-test
-        - cucumber
+        - ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT cucumber
         - popd
