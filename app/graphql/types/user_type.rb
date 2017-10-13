@@ -29,30 +29,56 @@ Types::UserType = GraphQL::ObjectType.define do
     property :public_keys
   end
 
-  field :organizations, !types[!Types::OrganizationType] do
-    description 'List of organizations the user is a member of'
+  field :organizationMemberships do
+    type !types[!Types::Organization::MembershipType]
+    description "List of the user's organization memberships"
 
     argument :limit, types.Int do
-      description 'Maximum number of organizations to list'
+      description 'Maximum number of memberships to list'
       default_value 20
     end
 
     argument :skip, types.Int do
-      description 'Skip the first n organizations'
+      description 'Skip the first n memberships'
       default_value 0
     end
 
     argument :role, Types::Organization::RoleEnum do
-      description "Filter the organizations by the user's role"
+      description 'Filter the organizations by the membership role'
     end
 
     resolve(lambda do |user, arguments, _context|
-      dataset = if arguments['role']
-                  user.organizations_by_role(arguments['role'])
-                else
-                  user.organizations_dataset
-                end
-      dataset.order(:slug).
+      dataset = OrganizationMembership.where(member_id: user.id)
+      dataset = dataset.where(role: arguments['role']) if arguments['role']
+      dataset.join(:organizational_units, id: :organization_id).
+        order(Sequel[:organizational_units][:slug]).
+        limit(arguments['limit'], arguments['skip'])
+    end)
+  end
+
+  field :repositoryMemberships do
+    type !types[!Types::Repository::MembershipType]
+    description "List of the user's repository memberships"
+
+    argument :limit, types.Int do
+      description 'Maximum number of memberships to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n memberships'
+      default_value 0
+    end
+
+    argument :role, Types::Repository::RoleEnum do
+      description 'Filter the repositories by the membership role'
+    end
+
+    resolve(lambda do |user, arguments, _context|
+      dataset = RepositoryMembership.where(member_id: user.id)
+      dataset = dataset.where(role: arguments['role']) if arguments['role']
+      dataset.join(:repositories, id: :repository_id).
+        order(Sequel[:repositories][:slug]).
         limit(arguments['limit'], arguments['skip'])
     end)
   end

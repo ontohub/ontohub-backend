@@ -16,35 +16,35 @@ RSpec.describe Types::OrganizationType do
   subject { organization }
   let(:organization_type) { OntohubBackendSchema.types['Organization'] }
 
-  context 'members field' do
-    let(:members_field) do
-      OntohubBackendSchema.get_fields(organization_type)['members']
+  context 'memberships field' do
+    let(:memberships_field) do
+      OntohubBackendSchema.get_fields(organization_type)['memberships']
     end
-    it 'returns only the members' do
-      members = members_field.resolve(
+    it 'returns only the memberships' do
+      memberships = memberships_field.resolve(
         organization,
-        members_field.default_arguments,
+        memberships_field.default_arguments,
         {}
       )
-      expect(members.count).to eq(20)
-    end
-
-    it 'limits the member list' do
-      members = members_field.resolve(
-        organization,
-        members_field.default_arguments('limit' => 1),
-        {}
-      )
-      expect(members.count).to eq(1)
+      expect(memberships.count).to eq(20)
     end
 
-    it 'skips a number of members' do
-      members = members_field.resolve(
+    it 'limits the memberships list' do
+      memberships = memberships_field.resolve(
         organization,
-        members_field.default_arguments('skip' => 5),
+        memberships_field.default_arguments('limit' => 1),
         {}
       )
-      expect(members.count).to eq(16)
+      expect(memberships.count).to eq(1)
+    end
+
+    it 'skips a number of memberships' do
+      memberships = memberships_field.resolve(
+        organization,
+        memberships_field.default_arguments('skip' => 5),
+        {}
+      )
+      expect(memberships.count).to eq(16)
     end
   end
 end

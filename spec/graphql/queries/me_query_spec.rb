@@ -29,8 +29,14 @@ RSpec.describe 'me query' do
         displayName
         email
         emailHash
-        organizations {
-          id
+        organizationMemberships {
+          organization {
+            id
+          }
+          member {
+            id
+          }
+          role
         }
       }
     }
@@ -46,7 +52,11 @@ RSpec.describe 'me query' do
         'displayName' => subject.display_name,
         'email' => subject.email,
         'emailHash' => subject.email_hash,
-        'organizations' => [{'id' => organization.slug}]
+        'organizationMemberships' => [
+          {'member' => {'id' => subject.slug},
+           'organization' => {'id' => organization.slug},
+           'role' => 'read'},
+        ]
       )
     end
   end

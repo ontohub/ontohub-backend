@@ -9,21 +9,29 @@ Types::OrganizationType = GraphQL::ObjectType.define do
     description 'Description of the organization'
   end
 
-  field :members, !types[!Types::UserType] do
-    description 'List of members'
+  field :memberships do
+    type !types[!Types::Organization::MembershipType]
+    description "List of the organization's memberships"
 
     argument :limit, types.Int do
-      description 'Maximum number of members to list'
+      description 'Maximum number of memberships to list'
       default_value 20
     end
 
     argument :skip, types.Int do
-      description 'Skip the first n members'
+      description 'Skip the first n memberships'
       default_value 0
     end
 
+    argument :role, Types::Organization::RoleEnum do
+      description 'Filter the users by the membership role'
+    end
+
     resolve(lambda do |organization, arguments, _context|
-      organization.members_dataset.order(:slug).
+      dataset = OrganizationMembership.where(organization_id: organization.id)
+      dataset = dataset.where(role: arguments['role']) if arguments['role']
+      dataset.join(:organizational_units, id: :member_id).
+        order(Sequel[:organizational_units][:slug]).
         limit(arguments['limit'], arguments['skip'])
     end)
   end
