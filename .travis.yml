@@ -3,32 +3,72 @@ dist: trusty
 
 language: ruby
 
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - $HOME/system-test
 
 rvm:
   - 2.4.2
 
 services:
   - postgresql
-  - rabbitmq
-
-addons:
-  postgresql: '9.6'
 
 notifications:
   email: false
 
 addons:
+  postgresql: '9.6'
   apt:
     packages:
     - git-svn
 
-before_install:
-  - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
-
-before_script:
-  - RAILS_ENV=test bundle exec rails db:recreate
-  - RAILS_ENV=development bundle exec rails db:recreate:seed
-
-script:
-  - bundle exec rake
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: WITH_SYSTEM_TEST=1
+  include:
+    - env: WITH_SEEDS=1
+      services:
+        - rabbitmq
+      before_install:
+        - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
+      script:
+        - bundle exec rails db:recreate:seed
+    - env: WITH_RSPEC=1
+      before_script:
+        - RAILS_ENV=test bundle exec rails db:recreate
+      script:
+        - bundle exec rspec
+    - env: WITH_SYSTEM_TEST=1 BUNDLE_GEMFILE=$HOME/system-test/Gemfile
+      services:
+        - rabbitmq
+      before_install:
+        - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
+      install:
+        - EMAJ_VERSION=2.1.0
+        - curl -Lo /tmp/emaj.zip http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip
+        - EMAJ_TMPDIR=/tmp/emaj
+        - unzip /tmp/emaj.zip -d $EMAJ_TMPDIR/
+        - EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
+        - EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
+        - SHAREDIR=$(pg_config --sharedir)
+        - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
+      before_script:
+        - |
+          if [ -d $HOME/system-test/.git ]
+          then
+            pushd $HOME/system-test
+            git pull
+            popd
+          else
+            git clone --depth=1 https://github.com/ontohub/system-test.git $HOME/system-test
+          fi
+        - pushd $HOME/system-test
+        - bundle install
+        - popd
+      script:
+        - pushd $HOME/system-test
+        - echo "Testing commit $TRAVIS_COMMIT"
+        - ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT cucumber
+        - popd
