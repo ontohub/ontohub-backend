@@ -330,6 +330,18 @@ type Mutation {
     key: String!
   ): PublicKey
 
+  # Adds a new member to a repository or updates an existing membership
+  addRepositoryMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the repository
+    repository: ID!
+
+    # The role in the repository
+    role: RepositoryRole!
+  ): RepositoryMembership
+
   # Creates a new commit
   commit(
     # The information of the commit
@@ -435,6 +447,15 @@ type Mutation {
   removePublicKey(
     # The name of the public key to remove
     name: String!
+  ): Boolean
+
+  # Removes a member from a repository
+  removeRepositoryMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the repository
+    repository: ID!
   ): Boolean
 
   # Resends the confirmation email to a user
