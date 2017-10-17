@@ -85,7 +85,7 @@
             },
             "description": {
               "type": "string",
-              "example": "This is a dummy repository.",
+              "example": "This is a fixture repository from the user ada.",
               "description": "Description of the repository"
             },
             "id": {
@@ -93,7 +93,7 @@
             },
             "name": {
               "type": "string",
-              "example": "repo0",
+              "example": "fixtures",
               "description": "ID of the repository"
             },
             "owner": {
