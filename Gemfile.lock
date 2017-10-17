@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 5e5d8a51749ea44e822d87669c8b1f2c64950171
+  revision: 9cafea6f5cf5d91a6b858196abed5e844874a98d
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -189,7 +189,8 @@ GEM
       graphql (>= 1.6.4, < 1.8.0)
       pundit (~> 1.1.0)
     http-parser-lite (0.6.0)
-    i18n (0.8.6)
+    i18n (0.9.0)
+      concurrent-ruby (~> 1.0)
     inflecto (0.0.2)
     iniparse (1.4.4)
     interception (0.5)
