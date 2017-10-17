@@ -7,7 +7,7 @@
       "show": {
         "properties": {
           "data": {
-            "oneOf": [ 
+            "oneOf": [
               {
                 "type": "object",
                 "required": ["repository"],
@@ -102,4 +102,4 @@
       "targetSchema": { "$ref": "#/definitions/actions/index" }
     }
   ]
-} 
+}

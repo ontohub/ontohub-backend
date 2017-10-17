@@ -19,7 +19,7 @@
                 "type": "null"
               }
             ]
-          } 
+          }
         }
       }
     },
@@ -82,7 +82,7 @@
                           "properties": {
                             "id": {
                               "type": "string",
-                              "example": "ada",        
+                              "example": "ada",
                               "description": "The id of this Ontohub account"
                             }
                           }
@@ -121,7 +121,7 @@
                           "properties": {
                             "id": {
                               "type": "string",
-                              "example": "ada",        
+                              "example": "ada",
                               "description": "The id of this Ontohub account"
                             }
                           }
