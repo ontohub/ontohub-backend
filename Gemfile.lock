@@ -1,12 +1,12 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: 1df043e5b506806ee04d609c1d1e0432d62e773c
+  revision: f8ad9ec1be05afdf8785adad3fe00170de61f573
   branch: master
   specs:
     gitlab_git (11.0.0)
       activesupport (>= 4.0)
       charlock_holmes (~> 0.7.3)
-      github-linguist (>= 5.1, < 5.3)
+      github-linguist (>= 5.1, < 5.4)
       rugged (~> 0.26.0)
 
 GIT
@@ -172,8 +172,8 @@ GEM
     ffi (1.9.18)
     filelock (1.1.1)
     formatador (0.2.5)
-    github-linguist (5.2.0)
-      charlock_holmes (~> 0.7.3)
+    github-linguist (5.3.0)
+      charlock_holmes (~> 0.7.5)
       escape_utils (~> 1.1.0)
       mime-types (>= 1.19)
       rugged (>= 0.25.1)
@@ -189,7 +189,8 @@ GEM
       graphql (>= 1.6.4, < 1.8.0)
       pundit (~> 1.1.0)
     http-parser-lite (0.6.0)
-    i18n (0.8.6)
+    i18n (0.9.0)
+      concurrent-ruby (~> 1.0)
     inflecto (0.0.2)
     iniparse (1.4.4)
     interception (0.5)
