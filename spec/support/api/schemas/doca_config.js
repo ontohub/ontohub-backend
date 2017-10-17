@@ -1,6 +1,6 @@
 // this is passed to json-schema-example-loader
 export default {
-  title: 'Ontohub API Documentation',
+  title: 'Ontohub REST (read-only) API Documentation',
   curl: {
     baseUrl: 'http://localhost:3000',
     requestHeaders: {

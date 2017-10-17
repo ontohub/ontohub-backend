@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "REST Commit",
-  "description": "REST Commit Controller",
+  "title": "Commit",
+  "description": "Commit Controller",
   "definitions": {
     "actions": {
       "show": {

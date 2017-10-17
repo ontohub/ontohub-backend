@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Rest Branches",
-  "description": "Rest Branches Controller",
+  "title": "Branches",
+  "description": "Branches Controller",
   "definitions": {
     "actions": {
       "show": {
