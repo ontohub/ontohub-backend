@@ -48,7 +48,7 @@ gem 'graphql-batch', '~> 0.3.3'
 gem 'graphql-pundit', '~> 0.4.0'
 gem 'jwt', '~> 2.1.0'
 gem 'pundit', '~> 1.1.0'
-gem 'recaptcha', '~> 4.6.0'
+gem 'recaptcha', '~> 4.6.1'
 gem 'sneakers', '2.6.0'
 
 group :development, :test do
