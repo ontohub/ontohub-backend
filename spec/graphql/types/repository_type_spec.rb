@@ -418,4 +418,17 @@ RSpec.describe Types::RepositoryType do
       expect(memberships.count).to eq(16)
     end
   end
+  context 'urlMappings' do
+    let(:repository) { create :repository }
+    let(:url_mappings) { create_list(:url_mapping, 2, repository: repository) }
+    let(:url_mappings_field) do
+      OntohubBackendSchema.get_fields(repository_type)['urlMappings']
+    end
+    let(:resolved_url_mappings) do
+      url_mappings_field.resolve(repository, {}, {})
+    end
+    it 'returns URL mappings' do
+      expect(resolved_url_mappings).to eq(url_mappings)
+    end
+  end
 end
