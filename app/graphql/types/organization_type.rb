@@ -35,4 +35,13 @@ Types::OrganizationType = GraphQL::ObjectType.define do
         limit(arguments['limit'], arguments['skip'])
     end)
   end
+
+  field :permissions, Types::Organization::PermissionsType do
+    description "The current_user's permissions for this organization"
+
+    resolve(lambda do |organization, _arguments, context|
+      return unless context[:current_user]
+      organization
+    end)
+  end
 end

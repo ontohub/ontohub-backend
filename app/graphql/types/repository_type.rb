@@ -35,6 +35,15 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :permissions, Types::Repository::PermissionsType do
+    description "The current_user's permissions for this repository"
+
+    resolve(lambda do |repository, _arguments, context|
+      return unless context[:current_user]
+      repository
+    end)
+  end
+
   field :memberships, !types[!Types::Repository::MembershipType] do
     description "List of the repository's memberships"
 
