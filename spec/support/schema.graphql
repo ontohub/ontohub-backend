@@ -312,11 +312,35 @@ enum LinkOrigin {
 
 # Base mutation type
 type Mutation {
+  # Adds a new member to an organization or updates an existing membership
+  addOrganizationMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the organization
+    organization: ID!
+
+    # The role in the organization
+    role: OrganizationRole!
+  ): OrganizationMembership
+
   # Adds a new SSH public key
   addPublicKey(
     # The public key to add
     key: String!
   ): PublicKey
+
+  # Adds a new member to a repository or updates an existing membership
+  addRepositoryMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the repository
+    repository: ID!
+
+    # The role in the repository
+    role: RepositoryRole!
+  ): RepositoryMembership
 
   # Creates a new commit
   commit(
@@ -410,10 +434,28 @@ type Mutation {
     repositoryId: ID!
   ): Boolean
 
+  # Removes a member from an organization
+  removeOrganizationMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the organization
+    organization: ID!
+  ): Boolean
+
   # Removes an SSH public key
   removePublicKey(
     # The name of the public key to remove
     name: String!
+  ): Boolean
+
+  # Removes a member from a repository
+  removeRepositoryMember(
+    # The ID of the member
+    member: ID!
+
+    # The ID of the repository
+    repository: ID!
   ): Boolean
 
   # Resends the confirmation email to a user
