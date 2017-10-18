@@ -12,41 +12,43 @@ RSpec.describe Types::Repository::PermissionsType do
     OntohubBackendSchema.types['RepositoryPermissions']
   end
 
-  before do
-    subject.add_member(user, 'admin')
+  let(:role_field) do
+    OntohubBackendSchema.get_fields(permissions_type)['role']
   end
 
-  context 'role' do
-    context 'user is a member of the repository' do
-      let(:role_field) do
-        OntohubBackendSchema.get_fields(permissions_type)['role']
-      end
+  context 'User is a member of the repository' do
+    %w(admin read write).each do |role|
+      context "role: #{role}" do
+        before do
+          subject.add_member(user, role)
+        end
 
-      it 'returns the role' do
-        role = role_field.resolve(
-          subject,
-          role_field.default_arguments,
-          current_user: user
-        )
+        it 'returns the role' do
+          resolved_role = role_field.resolve(
+            subject,
+            role_field.default_arguments,
+            current_user: user
+          )
 
-        expect(role).to eq('admin')
+          expect(resolved_role).to eq(role)
+        end
       end
     end
+  end
 
-    context 'user is the owner of the repository' do
-      let(:role_field) do
-        OntohubBackendSchema.get_fields(permissions_type)['role']
-      end
+  context 'User is the owner of the repository' do
+    let(:role_field) do
+      OntohubBackendSchema.get_fields(permissions_type)['role']
+    end
 
-      it 'returns the role: admin' do
-        role = role_field.resolve(
-          subject,
-          role_field.default_arguments,
-          current_user: subject.owner
-        )
+    it 'returns the role: admin' do
+      role = role_field.resolve(
+        subject,
+        role_field.default_arguments,
+        current_user: subject.owner
+      )
 
-        expect(role).to eq('admin')
-      end
+      expect(role).to eq('admin')
     end
   end
 end

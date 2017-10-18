@@ -12,23 +12,25 @@ RSpec.describe Types::Organization::PermissionsType do
     OntohubBackendSchema.types['OrganizationPermissions']
   end
 
-  before do
-    subject.add_member(user, 'admin')
+  let(:role_field) do
+    OntohubBackendSchema.get_fields(permissions_type)['role']
   end
 
-  context 'role' do
-    let(:role_field) do
-      OntohubBackendSchema.get_fields(permissions_type)['role']
-    end
+  %w(admin read write).each do |role|
+    context "role: #{role}" do
+      before do
+        subject.add_member(user, role)
+      end
 
-    it 'returns the role' do
-      role = role_field.resolve(
-        subject,
-        role_field.default_arguments,
-        current_user: user
-      )
+      it 'returns the role' do
+        resolved_role = role_field.resolve(
+          subject,
+          role_field.default_arguments,
+          current_user: user
+        )
 
-      expect(role).to eq('admin')
+        expect(resolved_role).to eq(role)
+      end
     end
   end
 end
