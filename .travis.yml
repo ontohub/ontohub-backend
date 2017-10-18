@@ -40,20 +40,24 @@ matrix:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec
-    - env: WITH_SYSTEM_TEST=1 BUNDLE_GEMFILE=$HOME/system-test/Gemfile
+    - env: WITH_SYSTEM_TEST=1
+      gemfile: $HOME/system-test/Gemfile
       services:
         - rabbitmq
       before_install:
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
-        - EMAJ_VERSION=2.1.0
-        - curl -Lo /tmp/emaj.zip http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip
-        - EMAJ_TMPDIR=/tmp/emaj
-        - unzip /tmp/emaj.zip -d $EMAJ_TMPDIR/
-        - EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
-        - EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
-        - SHAREDIR=$(pg_config --sharedir)
-        - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
+        - |
+          EMAJ_VERSION=2.1.0
+          curl -Lo /tmp/emaj.zip http://api.pgxn.org/dist/e-maj/$EMAJ_VERSION/e-maj-$EMAJ_VERSION.zip
+        - |
+          EMAJ_TMPDIR=/tmp/emaj
+          unzip /tmp/emaj.zip -d $EMAJ_TMPDIR/
+        - |
+          EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
+          EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
+          SHAREDIR=$(pg_config --sharedir)
+          sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
         - |
           if [ -d $HOME/system-test/.git ]
@@ -64,11 +68,13 @@ matrix:
           else
             git clone --depth=1 https://github.com/ontohub/system-test.git $HOME/system-test
           fi
-        - pushd $HOME/system-test
-        - bundle install
-        - popd
+        - |
+          pushd $HOME/system-test
+          bundle install
+          popd
       script:
-        - pushd $HOME/system-test
-        - echo "Testing commit $TRAVIS_COMMIT"
-        - ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT cucumber
-        - popd
+        - |
+          pushd $HOME/system-test
+          echo "Testing commit $TRAVIS_COMMIT"
+          ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT cucumber
+          popd

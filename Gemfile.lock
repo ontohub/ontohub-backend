@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: f8ad9ec1be05afdf8785adad3fe00170de61f573
+  revision: a4470869f08102ff5ea4a920c6e3e7c07123d2e5
   branch: master
   specs:
     gitlab_git (11.0.0)
@@ -172,7 +172,7 @@ GEM
     ffi (1.9.18)
     filelock (1.1.1)
     formatador (0.2.5)
-    github-linguist (5.3.0)
+    github-linguist (5.3.1)
       charlock_holmes (~> 0.7.5)
       escape_utils (~> 1.1.0)
       mime-types (>= 1.19)
