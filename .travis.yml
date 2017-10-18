@@ -40,7 +40,8 @@ matrix:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec
-    - env: WITH_SYSTEM_TEST=1 BUNDLE_GEMFILE=$HOME/system-test/Gemfile
+    - env: WITH_SYSTEM_TEST=1
+      gemfile: $HOME/system-test/Gemfile
       services:
         - rabbitmq
       before_install:
