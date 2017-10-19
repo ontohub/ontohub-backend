@@ -34,7 +34,7 @@ gem 'config', '~> 1.5.0'
 
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.8.0'
-gem 'pry', '~> 0.11.1'
+gem 'pry', '~> 0.11.2'
 gem 'pry-byebug', '~> 3.5.0', platform: :mri
 gem 'pry-rails', '~> 0.3.4'
 gem 'pry-rescue', '~> 1.4.4', platform: :mri

@@ -241,7 +241,7 @@ GEM
     pg (0.21.0)
     powerpack (0.1.1)
     promise.rb (0.7.4)
-    pry (0.11.1)
+    pry (0.11.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     pry-byebug (3.5.0)
@@ -407,7 +407,7 @@ DEPENDENCIES
   jwt (~> 2.1.0)
   listen (~> 3.1.5)
   ontohub-models!
-  pry (~> 0.11.1)
+  pry (~> 0.11.2)
   pry-byebug (~> 3.5.0)
   pry-rails (~> 0.3.4)
   pry-rescue (~> 1.4.4)
