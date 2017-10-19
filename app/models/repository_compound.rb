@@ -4,9 +4,11 @@
 # It forwards model methods directly to the Repository object.
 class RepositoryCompound
   class << self
-    def find(*args)
-      repository = Repository.find(*args)
-      wrap(repository) if repository
+    %i(find first first!).each do |method|
+      define_method(method) do |*args|
+        repository = Repository.public_send(method, *args)
+        wrap(repository) if repository
+      end
     end
 
     def wrap(repository)
@@ -38,8 +40,9 @@ class RepositoryCompound
 
   def save
     Sequel::Model.db.transaction do
+      new = repository.new?
       repository.save
-      @git = Gitlab::Git::Wrapper.create(git_path) if repository.exists?
+      @git = Gitlab::Git::Wrapper.create(git_path) if repository.exists? && new
       true
     end
   end
@@ -54,6 +57,10 @@ class RepositoryCompound
 
   def git
     @git ||= Gitlab::Git::Wrapper.new(git_path) unless repository.nil?
+  end
+
+  def ==(other)
+    repository == other.repository
   end
 
   protected
