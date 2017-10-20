@@ -2,10 +2,20 @@
 
 RSpec.describe HetsAgent::AnalysisRequestCollection do
   let(:repository) { create(:repository_compound, :not_empty) }
-  let(:files_count) { 2 }
+  let(:files_count) { 5 }
+  let(:document_files_count) { 3 }
+  let(:file_paths) do
+    (0..files_count - 1).map do |i|
+      if i < document_files_count
+        "#{generate(:filepath)}.dol"
+      else
+        "#{generate(:filepath)}.txt"
+      end
+    end
+  end
   let(:commit_sha) do
-    files = (1..files_count).map do
-      {path: generate(:filepath),
+    files = (0..files_count - 1).map do |i|
+      {path: file_paths[i],
        content: generate(:content),
        encoding: 'plain',
        action: 'create'}
@@ -20,8 +30,9 @@ RSpec.describe HetsAgent::AnalysisRequestCollection do
   end
 
   context 'requests' do
-    it 'as many requests exist as files were touched' do
-      expect(subject.requests.length).to eq(files_count)
+    it 'as many requests exist as document files were touched' do
+      expect(subject.requests.length).
+        to eq(document_files_count)
     end
 
     it 'contains one request for every touched file' do
@@ -37,7 +48,7 @@ RSpec.describe HetsAgent::AnalysisRequestCollection do
       end.
         to change { file_versions.length }.
         from(files_count).
-        to(0)
+        to(files_count - document_files_count)
     end
 
     it 'has the correct request format except for file_path/file_version_id' do

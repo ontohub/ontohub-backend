@@ -35,6 +35,10 @@ module HetsAgent
 
       file_path = diff.new_path
       return unless file_path
+      unless OntohubBackend::Application.config.document_file_extensions.
+          include?(File.extname(file_path))
+        return
+      end
 
       file_version = FileVersion.first!(commit_sha: commit_sha,
                                         path: file_path)

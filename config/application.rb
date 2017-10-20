@@ -23,6 +23,10 @@ module OntohubBackend
   # The base application class - Rails default
   class Application < Rails::Application
     config.hets_version_requirement = '>= 0.100.0'
+    config.document_file_extensions =
+      %w(casl dol hascasl het owl omn obo hs exp maude elf hol isa thy prf
+         omdoc hpf clf clif xml fcstd rdf xmi qvt p tptp gen_trm baf).
+        map { |ext| ".#{ext}" }
 
     # Settings in config/environments/* take precedence over those specified
     # here.
