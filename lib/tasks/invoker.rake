@@ -8,14 +8,14 @@ end
 namespace :invoker do
   desc 'Stops all processes that are using the database'
   task :stop_all do
-    %w(ontohub-backend sneakers).each do |process|
+    %w(ontohub-backend sneakers hets-agent).each do |process|
       system('bundle', 'exec', 'invoker', 'remove', process)
     end
   end
 
   desc 'Starts all processes that are using the database'
   task :start_all do
-    %w(ontohub-backend sneakers).each do |process|
+    %w(ontohub-backend sneakers hets-agent).each do |process|
       system('bundle', 'exec', 'invoker', 'add', process)
     end
   end
