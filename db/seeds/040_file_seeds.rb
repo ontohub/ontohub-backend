@@ -7,7 +7,7 @@ repository = RepositoryCompound.wrap(Repository.find(slug: 'ada/fixtures'))
   file = Base64.encode64(File.read(Rails.root.
     join("db/seeds/fixtures/ontohub.#{file_type}")))
 
-  FactoryGirl.create(:additional_file,
+  FactoryBot.create(:additional_file,
                      repository: repository,
                      user: repository.owner,
                      path: "icons/ontohub.#{file_type}",
@@ -19,7 +19,7 @@ end
 text = File.read(Rails.root.join('db/seeds/fixtures/ontohub.txt'))
 path = 'texts/ontohub.txt'
 
-FactoryGirl.create(:additional_file,
+FactoryBot.create(:additional_file,
                    repository: repository,
                    user: repository.owner,
                    path: path,
@@ -30,7 +30,7 @@ FactoryGirl.create(:additional_file,
 new_content = File.read(Rails.root.
   join('db/seeds/fixtures/ontohub_new_content.txt'))
 
-FactoryGirl.create(:additional_commit,
+FactoryBot.create(:additional_commit,
                     repository: repository,
                     user: repository.owner,
                     files: [{path: path,
@@ -42,7 +42,7 @@ FactoryGirl.create(:additional_commit,
 pdf = Base64.encode64(File.read(Rails.root.
   join('db/seeds/fixtures/ontohub.pdf')))
 
-FactoryGirl.create(:additional_file,
+FactoryBot.create(:additional_file,
                    repository: repository,
                    user: repository.owner,
                    path: 'pdf/ontohub.pdf',
@@ -74,7 +74,7 @@ to_be_created_content = File.read(Rails.root.
   join('db/seeds/fixtures/ontohub_to_be_created.txt'))
 to_be_created_path = 'texts/ontohub_created.txt'
 
-FactoryGirl.create(:additional_commit,
+FactoryBot.create(:additional_commit,
                     repository: repository,
                     user: repository.owner,
                     files: [{path: to_be_changed_path,
@@ -94,7 +94,7 @@ FactoryGirl.create(:additional_commit,
                              encoding: 'plain',
                              action: 'create'}])
 
-FactoryGirl.create(:additional_commit,
+FactoryBot.create(:additional_commit,
                     repository: repository,
                     user: repository.owner,
                     files: [{path: to_be_changed_path,

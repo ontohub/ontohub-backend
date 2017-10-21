@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :settings, class: OpenStruct do
     skip_create
     initialize_with { OpenStruct.new }
