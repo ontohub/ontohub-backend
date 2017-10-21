@@ -20,3 +20,5 @@ sneakers:
     workers: 1
   - classes: ProcessCommitWorker
     workers: 1
+  - classes: PostProcessHetsWorker
+    workers: 1

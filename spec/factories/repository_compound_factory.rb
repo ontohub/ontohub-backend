@@ -29,8 +29,10 @@ FactoryBot.define do
 
   trait :not_empty do
     transient do
+      commit_count { 1 }
       git do
         create(:git, :with_commits,
+               commit_count: commit_count,
                path: RepositoryCompound.git_directory.
                  join("#{repository.to_param}.git"))
       end
