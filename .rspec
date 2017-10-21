@@ -1,2 +1,3 @@
 --color
+--format Fuubar
 --require rails_helper

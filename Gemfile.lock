@@ -172,6 +172,9 @@ GEM
     ffi (1.9.18)
     filelock (1.1.1)
     formatador (0.2.5)
+    fuubar (2.2.0)
+      rspec-core (~> 3.0)
+      ruby-progressbar (~> 1.4)
     github-linguist (5.3.1)
       charlock_holmes (~> 0.7.5)
       escape_utils (~> 1.1.0)
@@ -397,6 +400,7 @@ DEPENDENCIES
   factory_bot_rails (~> 4.8.2)
   faker (~> 1.8.4)
   filelock (~> 1.1.1)
+  fuubar (~> 2.2.0)
   gitlab_git!
   graphiql-rails
   graphql (~> 1.7.4)
