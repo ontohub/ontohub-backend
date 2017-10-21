@@ -2,6 +2,7 @@
 
 RSpec.describe HetsAgent::AnalysisRequestCollection do
   let(:repository) { create(:repository_compound, :not_empty) }
+  let!(:url_mappings) { create_list(:url_mapping, 2, repository: repository) }
   let(:files_count) { 5 }
   let(:document_files_count) { 3 }
   let(:file_paths) do
@@ -55,10 +56,15 @@ RSpec.describe HetsAgent::AnalysisRequestCollection do
       subject.each do |request|
         expect(request).
           to include(action: 'analysis',
-                     arguments: include(server_url: Settings.server_url,
-                                        repository_slug: repository.to_param,
-                                        revision: commit_sha,
-                                        url_mappings: []))
+                     arguments:
+                       include(server_url: Settings.server_url,
+                               repository_slug: repository.to_param,
+                               revision: commit_sha,
+                               url_mappings:
+                                 match_array([{url_mappings[0].source =>
+                                               url_mappings[0].target},
+                                              {url_mappings[1].source =>
+                                               url_mappings[1].target}])))
       end
     end
   end
