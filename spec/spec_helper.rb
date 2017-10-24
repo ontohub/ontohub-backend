@@ -6,6 +6,7 @@ require 'rspec'
 require 'database_cleaner'
 require 'factory_bot_rails'
 require 'ontohub-models/factories'
+require 'fuubar'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -61,4 +62,8 @@ RSpec.configure do |config|
 
   # Allow to find all factories
   config.include FactoryBot::Syntax::Methods
+
+  config.fuubar_progress_bar_options = {format: '[%B] %c/%C',
+                                        progress_mark: '#',
+                                        remainder_mark: '-'}
 end

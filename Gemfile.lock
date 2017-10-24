@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 717f0feba95b65d77686c9ccb4d05ee22a030495
-  branch: upgrade_factory_bot
+  revision: 47b9b0f5fafdf676fb9f54b3d62b08a2574f915e
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
@@ -81,7 +81,7 @@ GEM
     ast (2.3.0)
     awesome_print (1.8.0)
     bcrypt (3.1.11)
-    binding_of_caller (0.7.2)
+    binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
     bunny (2.7.1)
@@ -101,7 +101,7 @@ GEM
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.0.5)
-    config (1.5.0)
+    config (1.5.1)
       activesupport (>= 3.0)
       deep_merge (~> 1.1.1)
       dry-validation (~> 0.10.4)
@@ -130,7 +130,7 @@ GEM
       dry-container (~> 0.2, >= 0.2.6)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
-    dry-types (0.12.0)
+    dry-types (0.12.1)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1)
       dry-container (~> 0.3)
@@ -263,7 +263,7 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.3)
-    rack-cors (1.0.1)
+    rack-cors (1.0.2)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rails (5.1.4)
@@ -295,7 +295,7 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    recaptcha (4.6.1)
+    recaptcha (4.6.2)
       json
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
