@@ -41,20 +41,19 @@ class ImportingDocumentsReanalyzer
   end
 
   def process
-    Document.where(file_version_id: file_version.id).each do |document|
-      previous_revision = find_previous_revision(document)
-      next if previous_revision.nil?
+    return if Document.where(file_version_id: file_version.id).empty?
+    previous_revision = find_previous_revision
+    return if previous_revision.nil?
 
-      previous_revision.imported_by.each do |importer|
-        Sequel::Model.db.transaction do
-          next if already_analyzed?(importer)
-          reanalyze_importer(importer)
-        end
+    previous_revision.imported_by.each do |importer|
+      Sequel::Model.db.transaction do
+        next if already_analyzed?(importer)
+        reanalyze_importer(importer)
       end
     end
   end
 
-  def find_previous_revision(document)
+  def find_previous_revision
     target_sha = git.log(ref: commit_sha, path: file_path, limit: 2)[1]&.id
     return nil if target_sha.nil?
 
