@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:git_user) do |n|
     {email: "git-user-#{n}@example.com",
      name: "git-user#-#{n}",

@@ -4,7 +4,7 @@ require_relative 'support/simplecov'
 
 require 'rspec'
 require 'database_cleaner'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'ontohub-models/factories'
 
 RSpec.configure do |config|
@@ -60,5 +60,5 @@ RSpec.configure do |config|
   config.order = :random
 
   # Allow to find all factories
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end

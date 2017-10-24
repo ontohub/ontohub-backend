@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'faker'
 require 'ontohub-models/factories'
 
