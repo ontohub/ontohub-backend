@@ -30,7 +30,7 @@ gem 'ontohub-models', github: 'ontohub/ontohub-models',
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'
 
-gem 'config', '~> 1.5.0'
+gem 'config', '~> 1.5.1'
 
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.8.0'
