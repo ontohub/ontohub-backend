@@ -39,7 +39,7 @@ matrix:
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
-        - bundle exec rspec
+        - bundle exec rspec --format progress
     - env: WITH_SYSTEM_TEST=1
       gemfile: $HOME/system-test/Gemfile
       services:

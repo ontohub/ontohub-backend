@@ -25,7 +25,7 @@ gem 'rack-cors'
 # * `app/graphql/mutations/unlock_account_mutation.rb`
 # when the models bring in a new version of Devise
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: 'upgrade_factory_bot'
+                      branch: 'master'
 
 gem 'gitlab_git', github: 'ontohub/gitlab_git',
                   branch: 'master'
@@ -77,6 +77,7 @@ group :test do
   gem 'database_cleaner', '~> 1.6.1'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'faker', '~> 1.8.4'
+  gem 'fuubar', '~> 2.2.0'
   # As soon as a version > 2.8.0 of json-schema is released, use it instead of
   # master.
   gem 'json-schema', github: 'ruby-json-schema/json-schema', branch: 'master'
