@@ -60,8 +60,7 @@ class ImportingDocumentsReanalyzer
 
     previous_file_version = FileVersion.find(path: file_path,
                                              commit_sha: target_sha)
-    Document.first(file_version_id: previous_file_version&.id,
-                   kind: document.kind)
+    Document.first(file_version_id: previous_file_version&.id)
   end
 
   def already_analyzed?(document)
