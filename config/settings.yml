@@ -9,8 +9,16 @@ jwt:
 # This directory will be created if it does not exist.
 data_directory: 'data'
 
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+
 sneakers:
   - classes: MailersWorker
     workers: 1
   - classes: ProcessCommitWorker
+    workers: 1
+  - classes: PostProcessHetsWorker
     workers: 1

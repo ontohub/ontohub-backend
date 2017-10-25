@@ -29,8 +29,10 @@ FactoryBot.define do
 
   trait :not_empty do
     transient do
+      commit_count { 1 }
       git do
         create(:git, :with_commits,
+               commit_count: commit_count,
                path: RepositoryCompound.git_directory.
                  join("#{repository.to_param}.git"))
       end
@@ -54,13 +56,14 @@ FactoryBot.define do
       user { create(:user) }
       branch { repository.git.default_branch }
       files { [] }
+      commit_message { generate(:commit_message) }
     end
     skip_create
     initialize_with do
       MultiBlob.new(user: user,
                     repository: repository,
                     branch: branch,
-                    commit_message: generate(:commit_message),
+                    commit_message: commit_message,
                     files: files).save
     end
   end
@@ -74,6 +77,7 @@ FactoryBot.define do
       encoding { 'plain' }
       branch { nil } # will be delegated to factory :additional_commit
       user { nil } # will be delegated to factory :additional_commit
+      commit_message { nil } # will be delegated to factory :additional_commit
     end
     skip_create
     initialize_with do
@@ -84,6 +88,7 @@ FactoryBot.define do
       options = {repository: repository, files: files}
       options[:branch] = branch if branch
       options[:user] = user if user
+      options[:commit_message] = commit_message if commit_message
       create(:additional_commit, **options)
     end
   end

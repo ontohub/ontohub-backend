@@ -4,8 +4,13 @@ require 'rails_helper'
 
 RSpec.describe ProcessCommitJob, type: :job do
   describe 'perform' do
-    let(:repository_id) { 1 }
+    let(:repository) { create(:repository_compound) }
     let(:commit_sha) { '0' * 40 }
+    let(:file_versions) do
+      create_list(:file_version, 2,
+                  repository: repository,
+                  commit_sha: commit_sha)
+    end
     let(:file_version_parents_creator) { double(:file_version_parents_creator) }
     let(:analysis_request_collection) { double(:analysis_request_collection) }
     let(:hets_agent_invoker) { double(:hets_agent_invoker) }
@@ -14,16 +19,20 @@ RSpec.describe ProcessCommitJob, type: :job do
       # Stub the FileVersionParentsCreator
       allow(FileVersionParentsCreator).
         to receive(:new).
-        with(repository_id, commit_sha).
+        with(repository.id, commit_sha).
         and_return(file_version_parents_creator)
 
       allow(file_version_parents_creator).
         to receive(:call)
 
+      allow(analysis_request_collection).
+        to receive(:map).
+        and_return([file_versions.first.id])
+
       # Stub the HetsAgent::AnalysisRequestCollection
       allow(HetsAgent::AnalysisRequestCollection).
         to receive(:new).
-        with(repository_id, commit_sha).
+        with(repository.id, commit_sha).
         and_return(analysis_request_collection)
 
       # Stub the HetsAgent::Invoker
@@ -36,12 +45,24 @@ RSpec.describe ProcessCommitJob, type: :job do
         to receive(:call)
 
       # Run the job
-      ProcessCommitJob.new.perform(repository_id, commit_sha)
+      ProcessCommitJob.new.perform(repository.id, commit_sha)
+    end
+
+    it 'creates the FileVersionParentsCreator' do
+      expect(FileVersionParentsCreator).
+        to have_received(:new).
+        with(repository.id, commit_sha)
     end
 
     it 'calls the FileVersionParentsCreator' do
       expect(file_version_parents_creator).
         to have_received(:call)
+    end
+
+    it 'sets the non-document-file versions finished' do
+      expect(FileVersion.
+               where(evaluation_state: 'finished_successfully').map(:id)).
+        to eq([file_versions.last.id])
     end
 
     it 'creates the HetsAgentInvoker' do

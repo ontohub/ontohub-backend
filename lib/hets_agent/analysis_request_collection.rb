@@ -12,7 +12,7 @@ module HetsAgent
 
     def initialize(repository_id, commit_sha)
       @commit_sha = commit_sha
-      @repository = RepositoryCompound.find(id: repository_id)
+      @repository = RepositoryCompound.first!(id: repository_id)
       @git = @repository.git
     end
 
@@ -30,28 +30,41 @@ module HetsAgent
 
     protected
 
-    # rubocop:disable Metrics/MethodLength
     def hets_agent_arguments(diff)
-      # rubocop:enable Metrics/MethodLength
       return if diff.deleted_file
 
       file_path = diff.new_path
       return unless file_path
+      unless OntohubBackend::Application.config.document_file_extensions.
+          include?(File.extname(file_path))
+        return
+      end
 
-      file_version_id = FileVersion.first!(commit_sha: commit_sha,
-                                           path: file_path).id
+      file_version = FileVersion.first!(commit_sha: commit_sha,
+                                        path: file_path)
+      arguments(file_version)
+    end
 
+    # rubocop:disable Metrics/MethodLength
+    def arguments(file_version)
+      # rubocop:enable Metrics/MethodLength
       {
         action: 'analysis',
         arguments: {
           server_url: Settings.server_url,
           repository_slug: repository.to_param,
           revision: commit_sha,
-          file_path: file_path,
-          file_version_id: file_version_id,
-          url_mappings: [],
+          file_path: file_version.path,
+          file_version_id: file_version.id,
+          url_mappings: url_mappings,
         },
       }
+    end
+
+    def url_mappings
+      repository.url_mappings.map do |url_mapping|
+        {url_mapping.source => url_mapping.target}
+      end
     end
   end
 end

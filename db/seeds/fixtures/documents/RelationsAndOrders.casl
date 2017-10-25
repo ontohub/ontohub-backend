@@ -1,0 +1,247 @@
+library Basic/RelationsAndOrders
+version 1.0
+%authors: M. Roggenbach <csmarkus@swansea.ac.uk>, T. Mossakowski, L. Schroeder
+%date: 18 December 2003
+
+%{ This library provides
+
+- specifications of binary relations of different sort,
+- views stating that the numbers specified in the
+   Library Basic/Numbers are totally ordered, and
+- a specification of Boolean Algebras.
+
+Then, the different concepts specified are enriched with additional
+operations and predicates: In case of partial orders, the specification
+ExtPartialOrder provides the notions of inf, sup; the specification
+ExtTotalOrder adds the functions min and max to total orders;
+ExtBooleanAlgebra defines a complement operation as well as a
+less-or-equal relation for Boolean algebras.
+
+Finally, the library provides non parametrized variants of these
+enriched specifications. }%
+
+%display __~__    %LATEX __\sim__
+%display __<=__    %LATEX __\leq__
+%display __>=__    %LATEX __\geq__
+%display __cup __ %LATEX __\sqcup__
+%display __cap __ %LATEX __\sqcap__
+%display compl__  %LATEX __^{-1}
+
+%prec { __ cup __ } < { __ cap __}
+
+from Basic/Numbers get Nat, Int, Rat
+
+
+spec Relation =
+     sort Elem
+     pred __ ~ __: Elem * Elem
+end
+
+spec ReflexiveRelation =
+     Relation
+then
+     forall x:Elem
+     . x ~ x                        %(refl)%
+end
+
+spec IrreflexiveRelation =
+     Relation
+then
+     forall x:Elem
+     . not x ~ x                  %(irrefl)%
+end
+
+spec SymmetricRelation =
+     Relation
+then forall x,y:Elem
+     . x ~ y if y ~ x                %(sym)%
+end
+
+spec AsymmetricRelation =
+     Relation
+then forall x,y:Elem
+     . not x ~ y if y ~ x           %(asym)%
+end
+
+spec AntisymmetricRelation =
+     Relation
+then forall x,y:Elem
+     . x = y if x ~ y /\ y ~ x %(antisym)%
+end
+
+spec TransitiveRelation =
+     Relation
+then forall x,y,z:Elem
+     . x ~ z if x ~ y /\ y ~ z     %(trans)%
+end
+
+spec SimilarityRelation =
+     ReflexiveRelation and SymmetricRelation
+end
+
+spec PartialEquivalenceRelation =
+     SymmetricRelation and TransitiveRelation
+end
+
+spec EquivalenceRelation =
+     ReflexiveRelation and PartialEquivalenceRelation
+end
+
+spec PreOrder =
+     {ReflexiveRelation and TransitiveRelation}
+     with pred __ ~ __ |-> __ <= __
+end
+
+spec StrictOrder =
+     { {IrreflexiveRelation and TransitiveRelation}
+       then %implies
+             AsymmetricRelation }
+     with pred __ ~ __ |-> __ < __
+end
+
+spec PartialOrder =
+     PreOrder
+and  AntisymmetricRelation with pred __ ~ __ |-> __ <= __
+end
+
+spec TotalOrder =
+     PartialOrder
+then forall x,y:Elem
+     . x <= y \/ y <= x                    %(dichotomy_TotalOrder)%
+end
+
+spec StrictTotalOrder =
+     StrictOrder
+then forall x,y:Elem
+     . x < y \/ y < x \/ x=y        %(trichotomy_StrictTotalOrder)%
+end
+
+spec RightUniqueRelation =
+     sorts S, T
+     pred __ R __: S * T
+     forall s:S; t1,t2:T
+     . s R t1 /\ s R t2 => t1=t2
+end
+
+spec LeftTotalRelation =
+     sorts S, T
+     pred __ R __: S * T
+     forall s:S . exists t:T . s R t
+end
+
+spec BooleanAlgebra =
+
+     sort Elem
+
+     ops 0,1:       Elem;
+         __ cap __: Elem * Elem -> Elem, assoc, comm, unit 1;
+         __ cup __: Elem * Elem -> Elem, assoc, comm, unit 0;
+
+     forall x,y,z:Elem
+
+     . x cap ( x cup y) = x             %(absorption_def1)%
+     . x cup ( x cap y) = x             %(absorption_def2)%
+
+     . x cap 0 = 0                      %(zeroAndCap)%
+     . x cup 1 = 1                      %(oneAndCup)%
+
+     . x cap ( y cup z) = (x cap y) cup ( x cap z)
+                                        %(distr1_BooleanAlgebra)%
+     . x cup ( y cap z) = (x cup y) cap ( x cup z)
+                                        %(distr2_BooleanAlgebra)%
+
+     . exists x': Elem . x cup x' = 1 /\ x cap x' = 0
+                                        %(inverse_BooleanAlgebra)%
+
+then %implies
+
+     op __ cup __, __ cap __ : Elem * Elem -> Elem , idem
+
+     forall x: Elem
+     . exists! x': Elem .
+         x cup x' = 1 /\ x cap x' = 0   %(uniqueComplement_BooleanAlgebra)%
+end
+
+
+spec ExtPartialOrder [PartialOrder]
+= %def
+  {  preds __ <= __, __ < __,
+           __ >= __, __ > __: Elem * Elem;
+     forall x,y:Elem
+     . x >= y <=> y <= x                   %(geq_def_ExtPartialOrder)%
+     . x < y <=> (x <= y /\ not (x=y))     %(less_def_ExtPartialOrder)%
+     . x > y <=> y < x                     %(greater_def_ExtPartialOrder)%
+  }
+and
+  { ops inf,sup : Elem * Elem ->? Elem,
+                  comm %implied
+    forall x,y,z: Elem
+    . inf(x,y) = z <=>
+      z <= x /\ z <= y /\ (forall t: Elem . t <= x /\ t <= y => t <= z)
+                                      %(inf_def_ExtPartialOrder)%
+    . sup(x,y) = z <=>
+      x <= z /\ y <= z /\ (forall t: Elem . x <= t /\ y <= t => z <= t)
+                                      %(sup_def_ExtPartialOrder)%
+  }
+end
+
+spec ExtTotalOrder [TotalOrder] = %def
+  ExtPartialOrder [PartialOrder]
+and
+  { ops min, max: Elem * Elem -> Elem,
+                  comm,assoc %implied
+    forall x,y: Elem
+    . min(x,y) = x when x <= y else y      %(min_def_ExtTotalOrder)%
+    . max(x,y) = y when x <= y else x      %(max_def_ExtTotalOrder)%
+  }
+then %implies
+     forall x,y: Elem
+     . min(x,y)=inf(x,y)             %(min_inf_relation)%
+     . max(x,y)=sup(x,y)             %(max_sup_relation)%
+end
+
+spec ExtBooleanAlgebra [BooleanAlgebra] = %def
+     {   preds __ <= __, __ < __,
+               __ >= __, __ > __: Elem * Elem;
+         forall x,y:Elem
+         . x <= y <=> x cap y = x           %(leq_def_ExtBooleanAlgebra)%
+         . x >= y <=> y <= x                %(geq_def_ExtBooleanAlgebra)%
+         . x < y <=> (x <= y /\ not (x=y))  %(less_def_ExtBooleanAlgebra)%
+         . x > y <=> y < x                  %(greater_def_ExtBooleanAlgebr)%
+     }
+and
+     { op compl__: Elem -> Elem
+       forall x,y:Elem
+       . compl(x)=y <=> x cup y = 1 /\ x cap y = 0
+                                            %(compl_def_ExtBooleanAlgebra)%
+
+     then %implies
+       forall x,y: Elem
+       . compl(x cap y) = compl(x) cup compl(y)             %(de_Morgan1)%
+       . compl(x cup y) = compl(x) cap compl(y)             %(de_Morgan2)%
+       . compl(compl(x)) = x        %(involution_compl_ExtBooleanAlgebra)%
+
+     }
+end
+
+spec RichPartialOrder   = ExtPartialOrder   [PartialOrder]
+spec RichTotalOrder     = ExtTotalOrder     [TotalOrder]
+spec RichBooleanAlgebra = ExtBooleanAlgebra [BooleanAlgebra]
+
+
+
+view TotalOrder_in_Nat : TotalOrder to Nat =
+     sort Elem |-> Nat
+end
+
+view TotalOrder_in_Int : TotalOrder to Int =
+     sort Elem |-> Int
+end
+
+view TotalOrder_in_Rat : TotalOrder to Rat =
+     sort Elem |-> Rat
+end
+
+view PartialOrder_in_ExtBooleanAlgebra [BooleanAlgebra] :
+   PartialOrder to ExtBooleanAlgebra[BooleanAlgebra]
+end
