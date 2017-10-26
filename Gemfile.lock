@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: c5dab310b1000f899bce9100f3cf73afcfdfe717
+  revision: e7ff89df8daf6d865ddd0e26a0ca60838a99d4d2
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -180,7 +180,7 @@ GEM
       escape_utils (~> 1.1.0)
       mime-types (>= 1.19)
       rugged (>= 0.25.1)
-    globalid (0.4.0)
+    globalid (0.4.1)
       activesupport (>= 4.2.0)
     graphiql-rails (1.4.5)
       rails
@@ -291,7 +291,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.2.2)
       rake
-    rake (12.1.0)
+    rake (12.2.1)
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
