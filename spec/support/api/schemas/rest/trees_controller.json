@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Trees",
-  "description": "REST Trees Controller",
+  "description": "Trees Controller",
   "type": "object",
   "required": ["data"],
   "definitions": {

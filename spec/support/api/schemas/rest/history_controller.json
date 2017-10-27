@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "REST History",
-  "description": "REST History Controller",
+  "title": "History",
+  "description": "History Controller",
   "definitions": {
     "actions": {
       "index": {
@@ -19,7 +19,7 @@
                 "type": "null"
               }
             ]
-          } 
+          }
         }
       }
     },

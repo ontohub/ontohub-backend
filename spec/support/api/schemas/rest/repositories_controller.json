@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Rest Repositories",
-  "description": "Rest Repositories Controller",
+  "title": "Repositories",
+  "description": "Repositories Controller",
   "definitions": {
     "actions": {
       "show": {
@@ -85,7 +85,7 @@
             },
             "description": {
               "type": "string",
-              "example": "This is a dummy repository.",
+              "example": "This is a fixture repository from the user ada.",
               "description": "Description of the repository"
             },
             "id": {
@@ -93,7 +93,7 @@
             },
             "name": {
               "type": "string",
-              "example": "repo0",
+              "example": "fixtures",
               "description": "ID of the repository"
             },
             "owner": {
