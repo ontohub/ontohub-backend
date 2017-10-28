@@ -7,6 +7,8 @@ unless defined?(UNTIL_DOUBLE_SLASHES)
   UNTIL_DOUBLE_SLASHES = %r{([^/]+)(/[^/]+)*}
 end
 
+REVISION = /([^\.]+)(\.[^\.]+)*([^\.]+)/ unless defined?(REVISION)
+
 # :nocov:
 def rake_task?(tasks = [])
   defined?(Rake) && tasks.any? do |task|
@@ -41,6 +43,11 @@ Rails.application.routes.draw do
 
   routes_with_optional_revision = lambda do
     get '/commit', controller: 'rest/commit', action: 'show'
+    get '/diff/:revision', controller: 'rest/diffs', action: 'single_commit',
+                           constraints: {revision: REVISION}
+    get '/diff/:from..:to', controller: 'rest/diffs', action: 'commit_range',
+                            constraints: {from: REVISION,
+                                          to: REVISION}
     get '/history/*path', controller: 'rest/history', action: 'index'
     scope '/tree' do
       get '/:path', controller: 'rest/trees', action: 'show',
