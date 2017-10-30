@@ -22,9 +22,9 @@ module ControllerLoginHelpers
       user
     end
 
-    # rubocop:disable Style/AccessorMethodName
+    # rubocop:disable Naming/AccessorMethodName
     def set_token_header(user)
-      # rubocop:enable Style/AccessorMethodName
+      # rubocop:enable Naming/AccessorMethodName
       payload = {user_id: user.to_param}
       token = JWTWrapper.encode(payload)
       request.env['HTTP_AUTHORIZATION'] = "Bearer #{token}"

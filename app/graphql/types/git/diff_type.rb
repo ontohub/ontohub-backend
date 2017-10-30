@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Types::Git::DiffType = GraphQL::ObjectType.define do
-  # rubocop:enable Metrics/BlockLength
   name 'Diff'
   description 'Change of a file'
 

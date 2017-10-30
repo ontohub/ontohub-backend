@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Allows specifying a `resource` proc on fields, whose result will be passed
+# to the resolve function of the field as the first argument.
 module Instrumenters
   # Allows specifying a `resource` proc on fields, whose result will be passed
   # to the resolve function of the field as the first argument.
@@ -9,17 +11,13 @@ module Instrumenters
     def instrument(_type, field)
       old_resolve = field.resolve_proc
       resource_meta = field.metadata[:resource]
-      if resource_meta
-        resource_proc = resource_meta[:proc]
-        new_resolve = resolve_proc(old_resolve,
-                                  resource_proc,
-                                  resource_meta[:raise_on_nil])
-        field.redefine do
-          resolve new_resolve
-        end
-      else
-        field
-      end
+      return field unless resource_meta
+
+      resource_proc = resource_meta[:proc]
+      new_resolve = resolve_proc(old_resolve,
+                                resource_proc,
+                                resource_meta[:raise_on_nil])
+      field.redefine { resolve new_resolve }
     end
 
     protected

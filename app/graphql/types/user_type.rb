@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Types::UserType = GraphQL::ObjectType.define do
-  # rubocop:enable Metrics/BlockLength
   name 'User'
   interfaces [Types::OrganizationalUnitType]
   description 'Data of a user'

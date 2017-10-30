@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Types::Git::CommitType = GraphQL::ObjectType.define do
-  # rubocop:enable Metrics/BlockLength
   name 'Commit'
   description 'A commit of a repository'
 

@@ -55,8 +55,8 @@ class SettingsValidator
 
   # :nocov:
   def print_errors
-    $stderr.puts(ERROR_MESSAGE_HEADER)
-    $stderr.puts(@error_messages.join("\n\n"))
+    warn(ERROR_MESSAGE_HEADER)
+    warn(@error_messages.join("\n\n"))
   end
   # :nocov:
 
@@ -142,7 +142,7 @@ class SettingsValidator
   def validate_worker_class(key, value)
     worker_class = value.constantize
     return true if worker_class.instance_methods.include?(:work)
-  rescue
+  rescue NameError
     add_error(key, ['is not a valid worker class', value.inspect])
   end
 

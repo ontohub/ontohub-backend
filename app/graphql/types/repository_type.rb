@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Types::RepositoryType = GraphQL::ObjectType.define do
-  # rubocop:enable Metrics/BlockLength
   name 'Repository'
   description 'Data of a repository'
 
@@ -131,9 +129,7 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
-  # rubocop:disable Metrics/BlockLength
   field :diff, !types[!Types::Git::DiffType] do
-    # rubocop:enable Metrics/BlockLength
     description 'The changes between two commits'
 
     argument :from, !types.String do
@@ -166,9 +162,7 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
-  # rubocop:disable Metrics/BlockLength
   field :log, !types[!Types::Git::CommitType] do
-    # rubocop:enable Metrics/BlockLength
     description <<~DESCRIPTION
       The history (git log) of the repository starting with the most recent changes
     DESCRIPTION
