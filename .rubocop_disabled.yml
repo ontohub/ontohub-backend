@@ -59,6 +59,9 @@ Style/DocumentationMethod:
     - 'spec/**/*'
     - 'test/**/*'
 
+Style/DoubleNegation:
+  Enabled: false
+
 Style/ImplicitRuntimeError:
   Description: >-
                  Use `raise` or `fail` with an explicit exception class and
