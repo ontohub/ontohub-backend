@@ -182,7 +182,7 @@ GEM
       rugged (>= 0.25.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    graphiql-rails (1.4.5)
+    graphiql-rails (1.4.6)
       rails
     graphql (1.7.4)
     graphql-batch (0.3.5)
