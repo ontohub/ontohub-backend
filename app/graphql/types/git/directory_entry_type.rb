@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Types::Git::DirectoryEntryType = GraphQL::InterfaceType.define do
-  # rubocop:enable Metrics/BlockLength
   name 'DirectoryEntry'
   description 'A directory entry (directory or file) of a repository'
 
@@ -14,9 +12,7 @@ Types::Git::DirectoryEntryType = GraphQL::InterfaceType.define do
     description 'The path of the entry'
   end
 
-  # rubocop:disable Metrics/BlockLength
   field :log, !types[!Types::Git::CommitType] do
-    # rubocop:enable Metrics/BlockLength
     description <<~DESCRIPTION
       The history (git log) of this entry starting with the most recent changes
     DESCRIPTION

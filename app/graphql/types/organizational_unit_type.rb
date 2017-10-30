@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Types::OrganizationalUnitType = GraphQL::InterfaceType.define do
-  # rubocop:enable Metrics/BlockLength
   name 'OrganizationalUnit'
   description 'Common fields of organizational units'
 
