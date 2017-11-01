@@ -31,4 +31,13 @@ Types::DocumentType = GraphQL::InterfaceType.define do
       end
     end)
   end
+
+  field :importedBy, !types[!Types::DocumentType] do
+    description 'The documents which import this Document'
+    property :imported_by
+  end
+
+  field :imports, !types[!Types::DocumentType] do
+    description 'The documents which are imported by this Document'
+  end
 end
