@@ -130,6 +130,18 @@ Types::QueryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :signatureMorphism, Types::SignatureMorphismType do
+    description 'A SignatureMorphism'
+
+    argument :id, !types.Int do
+      description 'The id of the SignatureMorphism'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      SignatureMorphism.first(id: arguments['id'])
+    end)
+  end
+
   field :reasoningAttempt, Types::ReasoningAttemptType do
     description 'A ReasoningAttempt'
 

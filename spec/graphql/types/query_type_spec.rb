@@ -50,4 +50,13 @@ RSpec.describe Types::QueryType do
     let(:bad_arguments) { {'id' => "bad-#{serialization.to_param}"} }
     let(:expected_object) { serialization }
   end
+
+  it_behaves_like 'having a GraphQL field for an object', 'signatureMorphism' do
+    let(:signature_morphism) { create(:signature_morphism) }
+
+    let(:root) { nil }
+    let(:good_arguments) { {'id' => signature_morphism.to_param} }
+    let(:bad_arguments) { {'id' => 0} }
+    let(:expected_object) { signature_morphism }
+  end
 end
