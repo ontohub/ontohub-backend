@@ -4,10 +4,11 @@ Types::DocumentType = GraphQL::InterfaceType.define do
   name 'Document'
   description 'A Document is a container for OMS'
 
-  field :locId, !types.ID do
-    description 'The Loc/Id of the document'
-    property :loc_id
-  end
+  # Instead of
+  # implements Types::LocIdBaseType, inherit: true
+  # we need to use
+  Types::LocIdBaseMethods.get(self)
+  # because of https://github.com/rmosolgo/graphql-ruby/issues/1067
 
   field :documentLinks, !types[!Types::DocumentLinkType] do
     description 'All DocumentLinks that this Document is part of'
