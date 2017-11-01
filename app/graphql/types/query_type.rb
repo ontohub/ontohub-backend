@@ -130,6 +130,18 @@ Types::QueryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :reasonerConfiguration, Types::ReasonerConfigurationType do
+    description 'A ReasonerConfiguration'
+
+    argument :id, !types.Int do
+      description 'The id of the ReasonerConfiguration'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      ReasonerConfiguration.first(id: arguments['id'])
+    end)
+  end
+
   field :generatedAxiom, Types::GeneratedAxiomType do
     description 'A GeneratedAxiom'
 
