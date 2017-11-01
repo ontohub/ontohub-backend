@@ -159,4 +159,17 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
                                 loc_id: arguments['locId']).first
     end)
   end
+
+  field :symbol, Types::SymbolType do
+    description 'A Symbol'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the Symbol'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      OMSSymbol.where_commit_sha(commit_sha: commit.id,
+                                 loc_id: arguments['locId']).first
+    end)
+  end
 end
