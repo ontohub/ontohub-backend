@@ -25,5 +25,7 @@ OntohubBackendSchema = GraphQL::Schema.define do
     Types::WarnType,
     Types::HintType,
     Types::DebugType,
+    Types::ManualPremiseSelectionType,
+    Types::SinePremiseSelectionType,
   ]
 end

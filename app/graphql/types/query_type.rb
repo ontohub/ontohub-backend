@@ -165,4 +165,16 @@ Types::QueryType = GraphQL::ObjectType.define do
       GeneratedAxiom.first(id: arguments['id'])
     end)
   end
+
+  field :premiseSelection, Types::PremiseSelectionType do
+    description 'A PremiseSelection'
+
+    argument :id, !types.Int do
+      description 'The id of the PremiseSelection'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      PremiseSelection.first(id: arguments['id'])
+    end)
+  end
 end
