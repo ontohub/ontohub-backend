@@ -118,6 +118,22 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :fileVersion, Types::FileVersionType do
+    description 'A FileVersion for the given path'
+
+    argument :path, !types.ID do
+      description 'The path of the FileVersion'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      repository_slug =
+        commit.repository.path.match(%r{\/([^\/]+\/[^\/]+)\.git\z})[1]
+      FileVersion.first(repository: Repository.first(slug: repository_slug),
+                        commit_sha: commit.id,
+                        path: arguments['path'])
+    end)
+  end
+
   field :document, Types::DocumentType do
     description 'A document containing OMS data'
 

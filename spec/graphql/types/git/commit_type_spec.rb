@@ -234,4 +234,11 @@ RSpec.describe Types::Git::CommitType do
       end
     end
   end
+
+  it_behaves_like 'having a GraphQL field for an object', 'fileVersion' do
+    let(:root) { commit }
+    let(:good_arguments) { {'path' => file_version.path} }
+    let(:bad_arguments) { {'path' => "bad-#{file_version.path}"} }
+    let(:expected_object) { file_version }
+  end
 end
