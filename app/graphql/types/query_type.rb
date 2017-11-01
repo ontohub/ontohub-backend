@@ -129,4 +129,16 @@ Types::QueryType = GraphQL::ObjectType.define do
       Reasoner.first(slug: arguments['id'])
     end)
   end
+
+  field :generatedAxiom, Types::GeneratedAxiomType do
+    description 'A GeneratedAxiom'
+
+    argument :id, !types.Int do
+      description 'The id of the GeneratedAxiom'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      GeneratedAxiom.first(id: arguments['id'])
+    end)
+  end
 end
