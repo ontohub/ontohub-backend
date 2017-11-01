@@ -57,4 +57,16 @@ Types::QueryType = GraphQL::ObjectType.define do
       Version.new(Version::VERSION)
     end)
   end
+
+  field :serialization, Types::SerializationType do
+    description 'A Serialization for the given ID'
+
+    argument :id, !types.ID do
+      description 'The ID of the Serialization'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      Serialization.first(slug: arguments['id'])
+    end)
+  end
 end
