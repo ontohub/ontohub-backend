@@ -3,5 +3,6 @@
 Types::Git::BranchType = GraphQL::ObjectType.define do
   name 'Branch'
   description 'A git branch'
-  interfaces [Types::Git::ReferenceType]
+
+  implements Types::Git::ReferenceType, inherit: true
 end

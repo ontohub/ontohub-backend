@@ -3,7 +3,8 @@
 Types::Git::TagType = GraphQL::ObjectType.define do
   name 'Tag'
   description 'A git tag'
-  interfaces [Types::Git::ReferenceType]
+
+  implements Types::Git::ReferenceType, inherit: true
 
   field :annotation, types.String do
     description 'An annotation of the tag'

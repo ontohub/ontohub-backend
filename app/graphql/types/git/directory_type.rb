@@ -3,5 +3,6 @@
 Types::Git::DirectoryType = GraphQL::ObjectType.define do
   name 'Directory'
   description 'A directory of a repository'
-  interfaces [Types::Git::DirectoryEntryType]
+
+  implements Types::Git::DirectoryEntryType, inherit: true
 end

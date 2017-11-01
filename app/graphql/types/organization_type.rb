@@ -2,8 +2,9 @@
 
 Types::OrganizationType = GraphQL::ObjectType.define do
   name 'Organization'
-  interfaces [Types::OrganizationalUnitType]
   description 'Data of an organization'
+
+  implements Types::OrganizationalUnitType, inherit: true
 
   field :description, types.String do
     description 'Description of the organization'
