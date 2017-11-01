@@ -172,4 +172,17 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
                                  loc_id: arguments['locId']).first
     end)
   end
+
+  field :mapping, Types::MappingType do
+    description 'A Mapping'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the Mapping'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      Mapping.where_commit_sha(commit_sha: commit.id,
+                               loc_id: arguments['locId']).first
+    end)
+  end
 end

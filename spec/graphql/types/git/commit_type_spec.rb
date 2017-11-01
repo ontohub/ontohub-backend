@@ -263,4 +263,15 @@ RSpec.describe Types::Git::CommitType do
     let(:bad_arguments) { {'locId' => "bad-#{symbol.loc_id}"} }
     let(:expected_object) { symbol }
   end
+
+  it_behaves_like 'having a GraphQL field for an object', 'mapping' do
+    let(:document) { create(:native_document, file_version: file_version) }
+    let(:oms) { create(:oms, document: document) }
+    let(:mapping) { create(:mapping, source: oms) }
+
+    let(:root) { commit }
+    let(:good_arguments) { {'locId' => mapping.loc_id} }
+    let(:bad_arguments) { {'locId' => "bad-#{mapping.loc_id}"} }
+    let(:expected_object) { mapping }
+  end
 end
