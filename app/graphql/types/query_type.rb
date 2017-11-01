@@ -118,6 +118,18 @@ Types::QueryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :reasoningAttempt, Types::ReasoningAttemptType do
+    description 'A ReasoningAttempt'
+
+    argument :id, !types.Int do
+      description 'The id of the ReasoningAttempt'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      ReasoningAttempt.first(id: arguments['id'])
+    end)
+  end
+
   field :reasoner, Types::ReasonerType do
     description 'A Reasoner'
 
