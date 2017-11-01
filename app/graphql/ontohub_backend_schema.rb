@@ -21,5 +21,9 @@ OntohubBackendSchema = GraphQL::Schema.define do
     Types::Git::DirectoryType,
     Types::NativeDocumentType,
     Types::LibraryType,
+    Types::ErrorType,
+    Types::WarnType,
+    Types::HintType,
+    Types::DebugType,
   ]
 end
