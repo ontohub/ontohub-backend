@@ -117,4 +117,16 @@ Types::QueryType = GraphQL::ObjectType.define do
       Serialization.first(slug: arguments['id'])
     end)
   end
+
+  field :reasoner, Types::ReasonerType do
+    description 'A Reasoner'
+
+    argument :id, !types.ID do
+      description 'The id of the Reasoner'
+    end
+
+    resolve(lambda do |_root, arguments, _context|
+      Reasoner.first(slug: arguments['id'])
+    end)
+  end
 end
