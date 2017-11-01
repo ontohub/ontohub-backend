@@ -147,6 +147,19 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :oms, Types::OMSType do
+    description 'An OMS'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the OMS'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      OMS.where_commit_sha(commit_sha: commit.id,
+                           loc_id: arguments['locId']).first
+    end)
+  end
+
   field :sentence, Types::SentenceType do
     description 'A Sentence'
 

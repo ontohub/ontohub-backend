@@ -242,6 +242,16 @@ RSpec.describe Types::Git::CommitType do
     let(:expected_object) { file_version }
   end
 
+  it_behaves_like 'having a GraphQL field for an object', 'oms' do
+    let(:document) { create(:native_document, file_version: file_version) }
+    let(:oms) { create(:oms, document: document) }
+
+    let(:root) { commit }
+    let(:good_arguments) { {'locId' => oms.loc_id} }
+    let(:bad_arguments) { {'locId' => "bad-#{oms.loc_id}"} }
+    let(:expected_object) { oms }
+  end
+
   it_behaves_like 'having a GraphQL field for an object', 'sentence' do
     let(:document) { create(:native_document, file_version: file_version) }
     let(:oms) { create(:oms, document: document) }

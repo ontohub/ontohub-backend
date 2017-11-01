@@ -6,4 +6,8 @@ Types::NativeDocumentType = GraphQL::ObjectType.define do
 
   implements Types::LocIdBaseType, inherit: true
   implements Types::DocumentType, inherit: true
+
+  field :oms, !Types::OMSType do
+    description 'The OMS in this NativeDocument'
+  end
 end

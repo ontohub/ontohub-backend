@@ -1,0 +1,38 @@
+# frozen_string_literal: true
+
+Types::OMSOriginEnum = GraphQL::EnumType.define do
+  name 'OMSOrigin'
+  description 'Specifies the origin of the OMS'
+
+  # TODO: Till, please review and supply descriptions.
+  value 'dg_empty', ''
+  value 'dg_basic', ''
+  value 'dg_basic_spec', ''
+  value 'dg_extension', ''
+  value 'dg_logic_coercion', ''
+  value 'dg_translation', ''
+  value 'dg_union', ''
+  value 'dg_intersect', ''
+  value 'dg_extract', ''
+  value 'dg_restriction', ''
+  value 'dg_reveal_translation', ''
+  value 'free', ''
+  value 'cofree', ''
+  value 'np_free', ''
+  value 'minimize', ''
+  value 'dg_local', ''
+  value 'dg_closed', ''
+  value 'dg_logic_qual', ''
+  value 'dg_data', ''
+  value 'dg_formal_params', ''
+  value 'dg_imports', ''
+  value 'dg_inst', ''
+  value 'dg_fit_spec', ''
+  value 'dg_fit_view', ''
+  value 'dg_proof', ''
+  value 'dg_normal_form', ''
+  value 'dg_integrated_scc', ''
+  value 'dg_flattening', ''
+  value 'dg_alignment', ''
+  value 'dg_test', ''
+end
