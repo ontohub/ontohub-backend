@@ -8,6 +8,10 @@ require 'factory_bot_rails'
 require 'ontohub-models/factories'
 require 'fuubar'
 
+Dir.glob('spec/shared_examples/**/*.rb').each do |file|
+  require_relative file.sub(%r{\Aspec/}, '')
+end
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'shared_examples/resend_unlock_account_email'
 
 RSpec.describe Mutations::Account::ResendUnlockAccountEmailMutation,
   type: :mailer, no_transaction: true, stub_abstract_devise_mutation: true do
