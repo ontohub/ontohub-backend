@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: dfc9cd000aacc327828eea2c44b5cdc32846cdde
+  revision: 322ba8d032b0780a6d45ed2686555d40149465d8
   branch: master
   specs:
     gitlab_git (11.0.0)
@@ -175,7 +175,7 @@ GEM
     fuubar (2.2.0)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
-    github-linguist (5.3.1)
+    github-linguist (5.3.2)
       charlock_holmes (~> 0.7.5)
       escape_utils (~> 1.1.0)
       mime-types (>= 1.19)
