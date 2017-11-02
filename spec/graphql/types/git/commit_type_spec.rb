@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Types::Git::CommitType do
   RSpec.shared_examples "a commit's author/committer in GraphQL" do
     let(:expected_object) do
-      GitUser.new(subject.send("#{person}_name"),
-                  subject.send("#{person}_email"))
+      GitUser.new(commit.send("#{person}_name"),
+                  commit.send("#{person}_email"))
     end
 
     before do
@@ -83,11 +83,11 @@ RSpec.describe Types::Git::CommitType do
 
   let(:repository) { create(:repository_compound, :not_empty) }
   let(:revision) { repository.git.default_branch }
-  subject { repository.git.commit(revision) }
-  let(:file_version) { FileVersion.first(commit_sha: subject.id) }
+  let(:commit) { repository.git.commit(revision) }
+  let(:file_version) { FileVersion.first(commit_sha: commit.id) }
   let(:type) { OntohubBackendSchema.types['Commit'] }
   let(:arguments) { {} }
-  let(:resolved_field) { field.resolve(subject, arguments, {}) }
+  let(:resolved_field) { field.resolve(commit, arguments, {}) }
   let(:binary) { false }
 
   context 'author field' do
@@ -95,7 +95,7 @@ RSpec.describe Types::Git::CommitType do
     let(:field) { type.get_field('author') }
 
     context 'with a corresponding user' do
-      let!(:account) { create(:user, email: subject.send("#{person}_email")) }
+      let!(:account) { create(:user, email: commit.send("#{person}_email")) }
       it_behaves_like "a commit's author/committer in GraphQL"
     end
 
@@ -110,7 +110,7 @@ RSpec.describe Types::Git::CommitType do
     let(:field) { type.get_field('committer') }
 
     context 'with a corresponding user' do
-      let!(:account) { create(:user, email: subject.send("#{person}_email")) }
+      let!(:account) { create(:user, email: commit.send("#{person}_email")) }
       it_behaves_like "a commit's author/committer in GraphQL"
     end
 
@@ -137,9 +137,9 @@ RSpec.describe Types::Git::CommitType do
       it 'lists all directories and files' do
         index = repository.git.tree(revision, path).map do |tree|
           if tree.type == :tree
-            GitDirectory.new(subject, tree.path, tree.name)
+            GitDirectory.new(commit, tree.path, tree.name)
           else
-            GitFile.new(subject, tree.path)
+            GitFile.new(commit, tree.path)
           end
         end
         received = resolved_field.map { |e| {path: e.path, kind: e.kind} }
@@ -227,7 +227,7 @@ RSpec.describe Types::Git::CommitType do
     %i(a_mode b_mode deleted_file diff line_count new_file new_path old_path
        renamed_file).each do |attribute|
       it "matches each diff of the commit in #{attribute}" do
-        subject.diffs.each_with_index do |diff, index|
+        commit.diffs.each_with_index do |diff, index|
           expect(resolved_field[index].public_send(attribute)).
             to eq(diff.public_send(attribute))
         end
