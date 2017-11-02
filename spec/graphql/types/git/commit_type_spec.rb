@@ -2,65 +2,34 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples "a commit's author/committer in GraphQL" do
-  let(:expected_object) do
-    GitUser.new(subject.send("#{person}_name"),
-                subject.send("#{person}_email"))
-  end
-
-  before do
-    allow(expected_object).to receive(:account).and_return(account)
-  end
-
-  %i(name email account).each do |field|
-    it "returns the correct #{field}" do
-      expect(resolved_field.send(field)).to eq(expected_object.send(field))
+RSpec.describe Types::Git::CommitType do
+  RSpec.shared_examples "a commit's author/committer in GraphQL" do
+    let(:expected_object) do
+      GitUser.new(subject.send("#{person}_name"),
+                  subject.send("#{person}_email"))
     end
-  end
-end
 
-RSpec.shared_examples "a commit's file in GraphQL" do
-  let(:received) do
-    received = {}
-    %i(name path size loaded_size content encoding).each do |attribute|
-      received[attribute] = resolved_field.public_send(attribute)
+    before do
+      allow(expected_object).to receive(:account).and_return(account)
     end
-    received
-  end
 
-  context 'that is small' do
-    it 'shows the file' do
-      expect(received).
-        to eq(name: blob.name,
-              path: path,
-              size: blob.size,
-              loaded_size: blob.size,
-              content: binary ? Base64.encode64(blob.data) : blob.data,
-              encoding: expected_encoding)
-    end
-  end
-
-  context 'that is large' do
-    before { stub_const('Bringit::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
-
-    context 'without loadAllData' do
-      it 'shows the truncated file' do
-        content = blob.data[0..Bringit::Blob::MAX_DATA_DISPLAY_SIZE - 1]
-        expect(received).
-          to eq(name: blob.name,
-                path: path,
-                size: blob.size,
-                loaded_size: Bringit::Blob::MAX_DATA_DISPLAY_SIZE,
-                content: binary ? Base64.encode64(content) : content,
-                encoding: expected_encoding)
+    %i(name email account).each do |field|
+      it "returns the correct #{field}" do
+        expect(resolved_field.send(field)).to eq(expected_object.send(field))
       end
     end
+  end
 
-    context 'with loadAllData' do
-      let(:arguments) do
-        {'path' => path,
-         'loadAllData' => true}
+  RSpec.shared_examples "a commit's file in GraphQL" do
+    let(:received) do
+      received = {}
+      %i(name path size loaded_size content encoding).each do |attribute|
+        received[attribute] = resolved_field.public_send(attribute)
       end
+      received
+    end
+
+    context 'that is small' do
       it 'shows the file' do
         expect(received).
           to eq(name: blob.name,
@@ -71,16 +40,47 @@ RSpec.shared_examples "a commit's file in GraphQL" do
                 encoding: expected_encoding)
       end
     end
-  end
-end
 
-RSpec.shared_examples "a commit's document in GraphQL" do
-  it 'finds the document' do
-    expect(resolved_field).to eq(document)
-  end
-end
+    context 'that is large' do
+      before { stub_const('Bringit::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
 
-RSpec.describe Types::Git::CommitType do
+      context 'without loadAllData' do
+        it 'shows the truncated file' do
+          content = blob.data[0..Bringit::Blob::MAX_DATA_DISPLAY_SIZE - 1]
+          expect(received).
+            to eq(name: blob.name,
+                  path: path,
+                  size: blob.size,
+                  loaded_size: Bringit::Blob::MAX_DATA_DISPLAY_SIZE,
+                  content: binary ? Base64.encode64(content) : content,
+                  encoding: expected_encoding)
+        end
+      end
+
+      context 'with loadAllData' do
+        let(:arguments) do
+          {'path' => path,
+           'loadAllData' => true}
+        end
+        it 'shows the file' do
+          expect(received).
+            to eq(name: blob.name,
+                  path: path,
+                  size: blob.size,
+                  loaded_size: blob.size,
+                  content: binary ? Base64.encode64(blob.data) : blob.data,
+                  encoding: expected_encoding)
+        end
+      end
+    end
+  end
+
+  RSpec.shared_examples "a commit's document in GraphQL" do
+    it 'finds the document' do
+      expect(resolved_field).to eq(document)
+    end
+  end
+
   let(:repository) { create(:repository_compound, :not_empty) }
   let(:revision) { repository.git.default_branch }
   subject { repository.git.commit(revision) }
