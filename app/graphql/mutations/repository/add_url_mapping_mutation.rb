@@ -28,8 +28,8 @@ module Mutations
     # GraphQL mutation to add new URL mappings
     class AddUrlMappingResolver
       def call(repository, arguments, _context)
-        UrlMapping.create(repository: repository, source: arguments[:source], 
-                          target: arguments[:target])        
+        UrlMapping.create(repository: repository, source: arguments[:source],
+                          target: arguments[:target])
       end
     end
   end
