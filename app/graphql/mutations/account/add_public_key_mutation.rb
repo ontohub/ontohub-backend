@@ -10,7 +10,8 @@ module Mutations
         description 'The public key to add'
       end
 
-      resource ->(_root, _arguments, context) { context[:current_user] }
+      resource ->(_root, _arguments, context) { context[:current_user] },
+               pass_through: true
 
       authorize!(lambda do |user, _arguments, context|
         UserPolicy.new(user, context[:current_user]).access_private_data?

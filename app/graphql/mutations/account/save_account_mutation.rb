@@ -14,7 +14,8 @@ module Mutations
         description 'Password of the current user to confirm the update'
       end
 
-      resource ->(_root, _arguments, context) { context[:current_user] }
+      resource ->(_root, _arguments, context) { context[:current_user] },
+               pass_through: true
 
       authorize! :update, policy: :account
 
