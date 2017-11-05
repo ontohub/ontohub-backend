@@ -33,7 +33,7 @@ Types::QueryType = GraphQL::ObjectType.define do
 
     authorize :show
 
-    resource!(lambda do |_root, arguments, _context|
+    resource(lambda do |_root, arguments, _context|
       RepositoryCompound.find(slug: arguments[:slug])
     end)
 
