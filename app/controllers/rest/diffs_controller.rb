@@ -45,7 +45,7 @@ module Rest
       end
 
       query <<-QUERY
-        query ($repository: ID!, $from: String!, $to: String!, $paths: [String!]) {
+        query ($repository: ID!, $from: ID!, $to: ID!, $paths: [String!]) {
           repository(id: $repository) {
             diff(from: $from, to: $to, paths: $paths) {
               deletedFile
