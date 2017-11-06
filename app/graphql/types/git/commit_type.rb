@@ -50,7 +50,6 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
 
   field :references, !types[!Types::Git::ReferenceType] do
     description 'The references that point to this commit'
-    property :references
   end
 
   field :directory, types[!Types::Git::DirectoryEntryType] do
