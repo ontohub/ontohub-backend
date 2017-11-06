@@ -817,13 +817,13 @@ type Repository {
   # The changes between two commits
   diff(
     # The base commit for the diff
-    from: String!
+    from: ID!
 
     # An optional list of paths to restrict the diff to
     paths: [String!]
 
     # The target commit for the diff
-    to: String!
+    to: ID!
   ): [Diff!]!
 
   # ID of the repository
