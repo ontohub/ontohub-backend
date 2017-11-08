@@ -15,7 +15,7 @@ module Mutations
       end
 
       resource!(lambda do |_root, arguments, _context|
-        ::RepositoryCompound.first(slug: arguments[:repositoryId])
+        RepositoryCompound.first(slug: arguments[:repositoryId])
       end)
 
       authorize! :update
