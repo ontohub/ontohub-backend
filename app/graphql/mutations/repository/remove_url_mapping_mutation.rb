@@ -14,8 +14,10 @@ module Mutations
         description 'The ID of the URL mapping'
       end
 
-      resource!(lambda do |_root, arguments, _context|
-        RepositoryCompound.first(slug: arguments[:repositoryId])
+      resource!(lambda do |_root, arguments, context|
+        repo = RepositoryCompound.first(slug: arguments[:repositoryId])
+        may_read = RepositoryPolicy.new(context[:current_user], repo).show?
+        repo if may_read
       end)
 
       authorize! :update

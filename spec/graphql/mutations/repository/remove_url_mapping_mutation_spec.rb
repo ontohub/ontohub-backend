@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Mutations::Repository::RemoveUrlMappingMutation do
   let!(:user) { create :user }
-  let(:url_mapping) { create(:url_mapping) }
-  let(:repository) { url_mapping.repository }
+  let(:repository) { create(:repository_compound) }
+  let(:url_mapping) { create(:url_mapping, repository_id: repository.id) }
   before do
     repository.add_member(user, 'admin')
   end
@@ -92,6 +92,17 @@ RSpec.describe Mutations::Repository::RemoveUrlMappingMutation do
           let(:error_message) { 'resource not found' }
         end
       end
+    end
+  end
+
+  context 'Unable to see the repository' do
+    let!(:repository) { create :repository_compound, :private }
+    let(:context) { {} }
+
+    it 'returns an error' do
+      expect(subject['data']['removeMapping']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => 'resource not found'))
     end
   end
 
