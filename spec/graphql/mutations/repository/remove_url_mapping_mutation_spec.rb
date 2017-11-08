@@ -37,32 +37,18 @@ RSpec.describe Mutations::Repository::RemoveUrlMappingMutation do
 
   subject { result }
 
-  shared_examples 'handling the deletion' do
-    it 'deletes Url Mapping' do
-      expect(subject['data']['removeUrlMapping']).
-        to eq(expectation_response_matcher)
-    end
-
-    it 'deletes Url Mapping, which already has been deleted' do
-      subject
-      expect(UrlMapping.first(id: url_mapping.id)).
-        to be(expectation_database_object)
-    end
-  end
-
   shared_examples 'failing to delete' do
     it 'deletion of Url Mapping failed' do
       expect(subject['data']['removeUrlMapping']).
         to eq(expectation_response_matcher)
     end
 
-    it 'deletes Url Mapping, which already has been deleted' do
+    it 'does not remove the database entry' do
       subject
-      expect(UrlMapping.first(id: url_mapping.id)).
-        to eq(url_mapping)
+      expect(UrlMapping.first(id: url_mapping.id)).not_to be(nil)
     end
 
-    it 'error mesage when deletion faild' do
+    it 'returns an error message when deletion failed' do
       expect(subject['errors']).
         to include(include('message' => error_message))
     end
@@ -72,9 +58,15 @@ RSpec.describe Mutations::Repository::RemoveUrlMappingMutation do
     let(:current_user) { user }
     context 'repository ID is valid' do
       context 'when the URL mapping exists' do
-        it_behaves_like 'handling the deletion' do
-          let(:expectation_response_matcher) { true }
-          let(:expectation_database_object) { nil }
+        it 'deletes Url Mapping' do
+          expect(subject['data']['removeUrlMapping']).
+            to eq(true)
+        end
+    
+        it 'removes the mapping from the database' do
+          subject
+          expect(UrlMapping.first(id: url_mapping.id)).
+            to be(nil)
         end
       end
       context 'When the object does not exist' do

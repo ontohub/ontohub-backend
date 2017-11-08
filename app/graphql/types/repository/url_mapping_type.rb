@@ -8,7 +8,7 @@ Types::Repository::UrlMappingType = GraphQL::ObjectType.define do
     description 'ID of the UrlMapping'
   end
   field :number, !types.Int do
-    description 'Defines the sequence in which the mappings are executed'
+    description 'Defines the sequence in which the mappings are applied'
   end
   field :source, !types.String do
     description 'The search substring of the URL'
