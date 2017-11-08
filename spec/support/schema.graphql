@@ -472,6 +472,9 @@ type Mutation {
 
   # Removes an URL Mapping
   removeUrlMapping(
+    # The ID of the repository in which the URL mapping exits
+    repositoryId: ID!
+
     # The ID of the URL mapping
     urlMappingId: ID!
   ): Boolean
