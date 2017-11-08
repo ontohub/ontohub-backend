@@ -52,7 +52,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     description 'The references that point to this commit'
   end
 
-  field :directory, types[!Types::Git::DirectoryEntryType] do
+  field :directory, types[!Types::Git::DirectoryType] do
     description 'The entries of a directory'
     argument :path, !types.ID do
       description 'The path to the directory to list'
