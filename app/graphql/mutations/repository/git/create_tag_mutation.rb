@@ -29,6 +29,8 @@ module Mutations
 
         authorize! :write, policy: :repository
 
+        not_found_unless :show
+
         resolve CreateTagResolver.new
       end
 

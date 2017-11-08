@@ -19,6 +19,8 @@ module Mutations
           RepositoryCompound.find(slug: arguments['repositoryId'])
         end)
 
+        not_found_unless :show
+
         authorize! :write, policy: :repository
 
         resolve DeleteTagResolver.new
