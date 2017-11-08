@@ -121,7 +121,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end)
   end
 
-  field :diff, !types[Types::Git::DiffType] do
+  field :diff, !types[!Types::Git::DiffType] do
     description 'The changes that this commit introduced'
 
     resolve(lambda do |commit, _arguments, _context|
