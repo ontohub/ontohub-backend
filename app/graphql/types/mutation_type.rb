@@ -38,6 +38,9 @@ Types::MutationType = GraphQL::ObjectType.define do
         Mutations::Repository::RemoveRepositoryMemberMutation
   field :saveRepository, Mutations::Repository::SaveRepositoryMutation
 
+  field :addUrlMapping, Mutations::Repository::AddUrlMappingMutation
+  field :removeUrlMapping, Mutations::Repository::RemoveUrlMappingMutation
+
   field :setDefaultBranch, Mutations::Repository::Git::SetDefaultBranchMutation
 
   field :createBranch, Mutations::Repository::Git::CreateBranchMutation

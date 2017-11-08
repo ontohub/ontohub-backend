@@ -342,6 +342,18 @@ type Mutation {
     role: RepositoryRole!
   ): RepositoryMembership
 
+  # Adds a new URL Mapping
+  addUrlMapping(
+    # The ID of the repository
+    repositoryId: ID!
+
+    # The search substring of the URL
+    source: String!
+
+    # The replacement string of the URL
+    target: String!
+  ): UrlMapping
+
   # Creates a new commit
   commit(
     # The information of the commit
@@ -456,6 +468,15 @@ type Mutation {
 
     # The ID of the repository
     repository: ID!
+  ): Boolean
+
+  # Removes an URL Mapping
+  removeUrlMapping(
+    # The ID of the repository in which the URL mapping exits
+    repositoryId: ID!
+
+    # The ID of the URL mapping
+    urlMappingId: ID!
   ): Boolean
 
   # Resends the confirmation email to a user
@@ -861,6 +882,9 @@ type Repository {
   # Tags of the repository
   tags: [String!]!
 
+  # List of all URL Mappings of this repository
+  urlMappings: [UrlMapping!]!
+
   # Visibility of the repository
   visibility: RepositoryVisibility!
 }
@@ -948,6 +972,21 @@ type Tag implements Reference {
 
 # Represents the time
 scalar Time
+
+# Search and replace pattern for URLs inside documents
+type UrlMapping {
+  # ID of the UrlMapping
+  id: ID!
+
+  # Defines the sequence in which the mappings are applied
+  number: Int!
+
+  # The search substring of the URL
+  source: String!
+
+  # The replacement string of the URL
+  target: String!
+}
 
 # Data of a user
 type User implements OrganizationalUnit {

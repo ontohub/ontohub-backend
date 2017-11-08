@@ -33,7 +33,8 @@ class RepositoryPolicy < ApplicationPolicy
       owner.id == current_user.id
     elsif owner.is_a?(Organization)
       !!OrganizationMembership.
-        find(member: current_user, organization: owner, role: 'admin')
+        find(member_id: current_user&.id, organization_id: owner&.id,
+             role: 'admin')
     else
       false
     end
@@ -42,7 +43,7 @@ class RepositoryPolicy < ApplicationPolicy
   def update?
     return false unless current_user
     create?(resource.owner) || !!RepositoryMembership.
-      find(member: current_user, repository: resource,
+      find(member_id: current_user&.id, repository_id: resource&.id,
            role: 'admin')
   end
 

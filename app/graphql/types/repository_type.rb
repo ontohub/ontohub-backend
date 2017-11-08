@@ -68,6 +68,11 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :urlMappings, !types[!Types::Repository::UrlMappingType] do
+    description 'List of all URL Mappings of this repository'
+    property :url_mappings
+  end
+
   field :defaultBranch, types.String do
     description 'Default branch of the repository'
     property :default_branch
