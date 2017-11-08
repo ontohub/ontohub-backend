@@ -62,7 +62,7 @@ RSpec.describe Mutations::Repository::RemoveUrlMappingMutation do
           expect(subject['data']['removeUrlMapping']).
             to eq(true)
         end
-    
+
         it 'removes the mapping from the database' do
           subject
           expect(UrlMapping.first(id: url_mapping.id)).
