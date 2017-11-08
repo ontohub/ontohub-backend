@@ -22,6 +22,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def show?
+    return false unless resource
     resource.public_access ||
       !!current_user&.accessible_repositories_dataset&.
         where(slug: resource.to_param)&.any?

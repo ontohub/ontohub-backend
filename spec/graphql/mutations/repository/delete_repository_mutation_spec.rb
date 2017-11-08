@@ -53,6 +53,17 @@ RSpec.describe 'deleteRepository mutation' do
     end
   end
 
+  context 'Unable to see the repository' do
+    let!(:repository) { create :repository_compound, :private }
+    let(:context) { {} }
+
+    it 'returns an error' do
+      expect(subject['data']['deleteRepository']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => 'resource not found'))
+    end
+  end
+
   context 'Not signed in' do
     let(:context) { {} }
 
