@@ -12,7 +12,7 @@ module Devise
       end
 
       def authenticate!
-        throw(:warden) unless claims&.key?('user_id')
+        return unless claims&.key?('user_id')
 
         success! User.find(
           Sequel[:organizational_units][:slug] => claims['user_id']
