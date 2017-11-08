@@ -100,7 +100,7 @@ RSpec.describe Mutations::Repository::RemoveUrlMappingMutation do
     let(:context) { {} }
 
     it 'returns an error' do
-      expect(subject['data']['removeMapping']).to be(nil)
+      expect(subject['data']['removeUrlMapping']).to be(nil)
       expect(subject['errors']).
         to include(include('message' => 'resource not found'))
     end
