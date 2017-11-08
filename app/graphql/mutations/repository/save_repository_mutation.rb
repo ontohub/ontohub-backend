@@ -14,8 +14,10 @@ module Mutations
         description 'Updated fields of the repository'
       end
 
-      resource!(lambda do |_root, arguments, _context|
-        RepositoryCompound.find(slug: arguments[:slug])
+      resource!(lambda do |_root, arguments, context|
+        repo = RepositoryCompound.find(slug: arguments[:slug])
+        may_read = RepositoryPolicy.new(context[:current_user], repo).show?
+        repo if may_read
       end)
 
       authorize! :update
