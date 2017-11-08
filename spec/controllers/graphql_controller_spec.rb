@@ -126,10 +126,9 @@ RSpec.describe GraphqlController do
             params: params
         end
 
-        it { expect(response).to have_http_status(:unauthorized) }
-        it 'returns the queried user data' do
-          expect(response.body).
-            to eq('You need to sign in or sign up before continuing.')
+        it { expect(response).to have_http_status(:ok) }
+        it 'returns no user data' do
+          expect(result.dig('data', 'me')).to be(nil)
         end
       end
     end
