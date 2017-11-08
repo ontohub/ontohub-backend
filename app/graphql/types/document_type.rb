@@ -20,24 +20,67 @@ Types::DocumentType = GraphQL::InterfaceType.define do
       default_value 'any'
     end
 
+    argument :limit, types.Int do
+      description 'Maximum number of entries to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n entries'
+      default_value 0
+    end
+
     resolve(lambda do |document, arguments, _context|
       case arguments['origin']
       when 'source'
-        document.document_links_by_source
+        document.document_links_by_source_dataset
       when 'target'
-        document.document_links_by_target
+        document.document_links_by_target_dataset
       else
-        document.document_links
-      end
+        document.document_links_dataset
+      end.order(Sequel[:document_links][:source_id],
+                Sequel[:document_links][:target_id]).
+        limit(arguments['limit'], arguments['skip'])
     end)
   end
 
   field :importedBy, !types[!Types::DocumentType] do
     description 'The documents which import this Document'
-    property :imported_by
+
+    argument :limit, types.Int do
+      description 'Maximum number of entries to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n entries'
+      default_value 0
+    end
+
+    resolve(lambda do |document, arguments, _context|
+      document.imported_by_dataset.
+        order(Sequel[:loc_id_bases][:loc_id]).
+        limit(arguments['limit'], arguments['skip'])
+    end)
   end
 
   field :imports, !types[!Types::DocumentType] do
     description 'The documents which are imported by this Document'
+
+    argument :limit, types.Int do
+      description 'Maximum number of entries to list'
+      default_value 20
+    end
+
+    argument :skip, types.Int do
+      description 'Skip the first n entries'
+      default_value 0
+    end
+
+    resolve(lambda do |document, arguments, _context|
+      document.imports_dataset.
+        order(Sequel[:loc_id_bases][:loc_id]).
+        limit(arguments['limit'], arguments['skip'])
+    end)
   end
 end

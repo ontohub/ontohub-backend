@@ -7,11 +7,6 @@ RSpec.shared_examples 'a document in GraphQL' do
   let(:arguments) { {} }
   let(:resolved_field) { field.resolve(subject, arguments, {}) }
 
-  before do
-    create(:document_link, source: subject)
-    create(:document_link, target: subject)
-  end
-
   context 'locId field' do
     let(:field) { type.get_field('locId') }
 
@@ -21,32 +16,45 @@ RSpec.shared_examples 'a document in GraphQL' do
   end
 
   context 'documentLinks field' do
-    let(:field) { type.get_field('documentLinks') }
-
-    context 'without arguments' do
-      it 'resolves the field correctly' do
-        expect(resolved_field).to eq(subject.document_links)
+    it_behaves_like 'having a GraphQL field with origin and limit and skip',
+      'documentLinks' do
+      let(:root) { subject }
+      let(:links_source) do
+        create_list(:document_link, 21, source: subject).sort_by do |link|
+          [link.source_id, link.target_id]
+        end
+      end
+      let(:links_target) do
+        create_list(:document_link, 21, target: subject).sort_by do |link|
+          [link.source_id, link.target_id]
+        end
+      end
+      let!(:links_all) do
+        (links_source + links_target).sort_by do |link|
+          [link.source_id, link.target_id]
+        end
       end
     end
+  end
 
-    context 'with argument origin: source' do
-      let(:arguments) { {'origin' => 'any'} }
-      it 'resolves the field correctly' do
-        expect(resolved_field).to eq(subject.document_links)
+  it_behaves_like 'having a GraphQL field with limit and skip', 'importedBy' do
+    let(:root) { subject }
+    let!(:available_items) { create_list(:document, 21).sort_by(&:loc_id) }
+
+    before do
+      available_items.each do |importer|
+        create(:document_link, source: importer, target: subject)
       end
     end
+  end
 
-    context 'with argument origin: source' do
-      let(:arguments) { {'origin' => 'source'} }
-      it 'resolves the field correctly' do
-        expect(resolved_field).to eq(subject.document_links_by_source)
-      end
-    end
+  it_behaves_like 'having a GraphQL field with limit and skip', 'imports' do
+    let(:root) { subject }
+    let!(:available_items) { create_list(:document, 21).sort_by(&:loc_id) }
 
-    context 'with argument origin: target' do
-      let(:arguments) { {'origin' => 'target'} }
-      it 'resolves the field correctly' do
-        expect(resolved_field).to eq(subject.document_links_by_target)
+    before do
+      available_items.each do |importee|
+        create(:document_link, source: subject, target: importee)
       end
     end
   end
