@@ -42,6 +42,17 @@ RSpec.describe Mutations::Repository::RemoveRepositoryMemberMutation do
     end
   end
 
+  context 'Unable to see the repository' do
+    let!(:repository) { create :repository_compound, :private }
+    let(:context) { {} }
+
+    it 'returns an error' do
+      expect(subject['data']['removeRepositoryMember']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => 'resource not found'))
+    end
+  end
+
   context 'Not signed in' do
     let(:context) { {} }
 
