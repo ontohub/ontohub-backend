@@ -45,9 +45,6 @@ Rails.application.routes.draw do
     get '/commit', controller: 'rest/commit', action: 'show'
     get '/diff/:revision', controller: 'rest/diffs', action: 'single_commit',
                            constraints: {revision: REVISION}
-    get '/diff/:from..:to', controller: 'rest/diffs', action: 'commit_range',
-                            constraints: {from: REVISION,
-                                          to: REVISION}
     get '/history/*path', controller: 'rest/history', action: 'index'
     scope '/tree' do
       get '/:path', controller: 'rest/trees', action: 'show',
@@ -98,6 +95,9 @@ Rails.application.routes.draw do
           get '/branches/:name', controller: 'rest/branches', action: 'show'
           get '/tags', controller: 'rest/tags', action: 'index'
           get '/tags/:name', controller: 'rest/tags', action: 'show'
+          get '/diff/:from..:to', controller: 'rest/diffs',
+                                  action: 'commit_range',
+                                  constraints: {from: REVISION, to: REVISION}
 
           routes_with_optional_revision.call
           scope '/revision/:revision' do

@@ -13,27 +13,34 @@
             "required": ["repository"],
             "properties": {
               "repository": {
-                "type": "object",
-                "required": ["commit"],
-                "properties": {
-                  "commit": {
-                    "oneOf": [
-                      {
-                        "type": "object",
-                        "required": ["diff"],
-                        "properties": {
-                          "diff": {
-                            "type": "array",
-                            "items": {"$ref": "#/definitions/diff"}
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": ["commit"],
+                    "properties": {
+                      "commit": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "required": ["diff"],
+                            "properties": {
+                              "diff": {
+                                "type": "array",
+                                "items": {"$ref": "#/definitions/diff"}
+                              }
+                            }
+                          },
+                          {
+                            "type": "null"
                           }
-                        }
-                      },
-                      {
-                        "type": "null"
+                        ]
                       }
-                    ]
+                    }
+                  },
+                  {
+                    "type": "null"
                   }
-                }
+                ]
               }
             }
           }
