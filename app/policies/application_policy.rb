@@ -8,9 +8,19 @@ class ApplicationPolicy
     @current_user = current_user
     @resource = resource
 
-    return unless @current_user&.admin?
+    if current_user.is_a?(ApiKey)
+      define_methods(false, show?: true)
+    elsif current_user&.admin?
+      define_methods(true)
+    end
+  end
+
+  private
+
+  def define_methods(default_result, **exceptions)
     (self.class.instance_methods - Object.methods).each do |method|
-      define_singleton_method(method, ->(*_args) { true })
+      result = exceptions[method] || default_result
+      define_singleton_method(method, ->(*_args) { result })
     end
   end
 end
