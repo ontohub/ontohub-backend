@@ -29,6 +29,15 @@ module ControllerLoginHelpers
       token = JWTWrapper.encode(payload)
       request.env['HTTP_AUTHORIZATION'] = "Bearer #{token}"
     end
+
+    def create_api_key_and_set_header
+      raw_key ||= SecureRandom.hex(80)
+      request.env['HTTP_AUTHORIZATION'] = "ApiKey #{raw_key}"
+      encoded_key =
+        ApiKey.digest(Rails.application.secrets.api_key_base, raw_key)
+      api_key = ApiKey.create(key: encoded_key, comment: 'test key')
+      {api_key: api_key, raw: raw_key}
+    end
   end
 end
 

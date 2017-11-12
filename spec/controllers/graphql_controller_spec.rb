@@ -72,7 +72,7 @@ RSpec.describe GraphqlController do
     end
   end
 
-  context 'signed in' do
+  context 'signed in as a user' do
     let(:me_query) do
       <<-QUERY
       query {
@@ -130,6 +130,55 @@ RSpec.describe GraphqlController do
         it 'returns no user data' do
           expect(result.dig('data', 'me')).to be(nil)
         end
+      end
+    end
+  end
+
+  context 'signed in via API key' do
+    let!(:api_key_data) { create_api_key_and_set_header }
+    let(:raw_key) { api_key_data[:raw] }
+    let(:api_key) { api_key_data[:api_key] }
+
+    let!(:repository) { create(:repository, :private) }
+
+    let(:query) do
+      <<-QUERY
+        query Repository($id: ID!) {
+          repository(id: $id) {
+            id
+          }
+        }
+      QUERY
+    end
+
+    let(:params) do
+      {query: query,
+       variables: {'id' => repository.to_param}}
+    end
+
+    let(:result) { JSON.parse(response.body) }
+
+    context 'with a valid API key' do
+      before do
+        post :execute, params: params
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+      it 'returns the queried repository data' do
+        expect(result).
+          to match('data' => {'repository' => {'id' => repository.to_param}})
+      end
+    end
+
+    context 'with an invalid API key' do
+      before do
+        request.env['HTTP_AUTHORIZATION'] = 'ApiKey ThisIsAnInvalidKey'
+        post :execute, params: params
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+      it 'returns no repository data' do
+        expect(result).to match('data' => {'repository' => nil})
       end
     end
   end
