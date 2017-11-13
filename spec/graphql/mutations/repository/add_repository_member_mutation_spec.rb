@@ -77,6 +77,18 @@ RSpec.describe Mutations::Repository::AddRepositoryMemberMutation do
     end
   end
 
+  context 'Unable to see the repository' do
+    let!(:repository) { create :repository_compound, :private }
+    let(:context) { {} }
+    let(:role) { 'read' }
+
+    it 'returns an error' do
+      expect(subject['data']['addRepositoryMember']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => 'resource not found'))
+    end
+  end
+
   context 'Not signed in' do
     let(:context) { {} }
     let(:role) { 'read' }

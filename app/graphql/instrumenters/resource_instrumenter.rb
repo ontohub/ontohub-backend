@@ -16,18 +16,19 @@ module Instrumenters
       resource_proc = resource_meta[:proc]
       new_resolve = resolve_proc(old_resolve,
                                 resource_proc,
-                                resource_meta[:raise_on_nil])
+                                resource_meta[:raise_on_nil],
+                                resource_meta[:pass_through])
       field.redefine { resolve new_resolve }
     end
 
     protected
 
-    def resolve_proc(old_resolve, resource_proc, raise_on_nil)
+    def resolve_proc(old_resolve, resource_proc, raise_on_nil, pass_through)
       lambda do |root, arguments, context|
         resource = resource_proc.call(root, arguments, context)
-        if resource || !raise_on_nil
+        if resource || pass_through
           old_resolve.call(resource, arguments, context)
-        else
+        elsif raise_on_nil
           context.add_error(GraphQL::ExecutionError.new('resource not found'))
         end
       end
@@ -35,8 +36,10 @@ module Instrumenters
   end
 
   def self.assign_resource(raise_on_nil)
-    lambda do |defn, proc|
-      opts = {raise_on_nil: raise_on_nil, proc: proc}
+    lambda do |defn, proc, pass_through: false|
+      opts = {raise_on_nil: raise_on_nil,
+              proc: proc,
+              pass_through: pass_through}
       GraphQL::Define::InstanceDefinable::AssignMetadataKey.new(:resource).
         call(defn, opts)
     end

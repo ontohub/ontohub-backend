@@ -20,9 +20,11 @@ module Mutations
         description 'The role in the repository'
       end
 
-      resource(lambda do |_root, arguments, _context|
-        ::Repository.first(slug: arguments['repository'])
+      resource!(lambda do |_root, arguments, _context|
+        RepositoryCompound.first(slug: arguments['repository'])
       end)
+
+      not_found_unless :show
 
       authorize! :update, policy: :repository
 

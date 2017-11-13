@@ -91,11 +91,25 @@ RSpec.describe 'createTag mutation' do
         to include(include('message' => include('already exists')))
     end
 
+    context 'because the repository is private' do
+      let!(:repository) { create(:repository_compound, :private, :not_empty) }
+      let(:context) { {} }
+
+      it 'returns no data' do
+        expect(subject['data']['createTag']).to be(nil)
+      end
+
+      it 'returns an error' do
+        expect(subject['errors']).
+          to include(include('message' => 'resource not found'))
+      end
+    end
+
     context 'because the user is not signed in' do
       let(:context) { {} }
 
       it 'returns no data' do
-        expect(subject['data']['commit']).to be(nil)
+        expect(subject['data']['createTag']).to be(nil)
       end
 
       it 'returns an error' do

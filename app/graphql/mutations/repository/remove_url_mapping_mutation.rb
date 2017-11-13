@@ -18,6 +18,8 @@ module Mutations
         RepositoryCompound.first(slug: arguments[:repositoryId])
       end)
 
+      not_found_unless :show
+
       authorize! :update
 
       resolve RemoveUrlMappingResolver.new

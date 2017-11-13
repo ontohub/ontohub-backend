@@ -52,6 +52,14 @@ RSpec.describe RepositoryPolicy do
   end
 
   context 'show?' do
+    context 'no repository' do
+      subject { RepositoryPolicy.new(user, nil) }
+
+      it 'returns false' do
+        expect(subject.show?).to be(false)
+      end
+    end
+
     context 'public repository' do
       context 'signed in' do
         subject { RepositoryPolicy.new(user, public_repo) }

@@ -14,6 +14,8 @@ module Mutations
         RepositoryCompound.find(slug: arguments[:slug])
       end)
 
+      not_found_unless :show
+
       authorize! :destroy
 
       resolve DeleteRepositoryResolver.new

@@ -55,6 +55,17 @@ RSpec.describe Mutations::Repository::AddUrlMappingMutation do
     end
   end
 
+  context 'Unable to see the repository' do
+    let!(:repository) { create :repository_compound, :private }
+    let(:context) { {} }
+
+    it 'returns an error' do
+      expect(subject['data']['addUrlMapping']).to be(nil)
+      expect(subject['errors']).
+        to include(include('message' => 'resource not found'))
+    end
+  end
+
   context 'User not signed in' do
     let(:current_user) { nil }
     it 'returns an error' do

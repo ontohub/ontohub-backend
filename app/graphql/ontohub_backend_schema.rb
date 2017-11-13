@@ -13,6 +13,7 @@ OntohubBackendSchema = GraphQL::Schema.define do
   # correct order
   instrument(:field, Instrumenters::ValidationErrorInstrumenter.new)
   instrument(:field, GraphQL::Pundit::Instrumenter.new)
+  instrument(:field, Instrumenters::NotFoundUnlessInstrumenter.new)
   instrument(:field, Instrumenters::ResourceInstrumenter.new)
   query(Types::QueryType)
   mutation(Types::MutationType)

@@ -74,5 +74,26 @@ RSpec.describe 'Repository query' do
       repository = result['data']['repository']
       expect(repository).to be_nil
     end
+
+    it 'does not return an error' do
+      expect(subject['errors'] || {}).
+        not_to include(include('message' => 'resource not found'))
+    end
+  end
+
+  context 'private repository' do
+    let!(:repository) do
+      create(:repository_compound, :not_empty, :private)
+    end
+
+    it 'returns null' do
+      repository = result['data']['repository']
+      expect(repository).to be_nil
+    end
+
+    it 'does not return an error' do
+      expect(result['errors'] || {}).
+        not_to include(include('message' => 'resource not found'))
+    end
   end
 end
