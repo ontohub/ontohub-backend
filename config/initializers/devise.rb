@@ -281,12 +281,13 @@ Devise.setup do |config|
   # end
 
   config.warden do |manager|
-    # Registering your new Strategy
+    # Register the custom Strategies
+    manager.strategies.add(:api, Devise::Strategies::ApiKey)
     manager.strategies.add(:jwt, Devise::Strategies::JsonWebToken)
 
-    # Adding the new JWT Strategy to the top of Warden's list,
-    # Scoped by what Devise would scope (typically :user)
-    manager.default_strategies(scope: :user).unshift :jwt
+    # Add the new ApiKey and JWT strategies to the top of Warden's list
+    manager.default_strategies(:jwt, :api, :database_authenticatable,
+                               scope: :user)
   end
 
   # ==> Mountable engine configurations When using Devise inside an engine,

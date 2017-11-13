@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 0f279f0a7734da0a42c205fe0728dcaade6caef8
+  revision: c8482f769f7a1e0de0111c5b6e1ce2a36ffb8ca4
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -431,4 +431,4 @@ DEPENDENCIES
   sprockets-rails
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
