@@ -69,4 +69,6 @@ RSpec.configure do |config|
 
   # Configure faker to use the RSpec seed
   Faker::Config.random = Random.new(config.seed)
+  # Configure ruby to use the RSpec seed for randomization
+  srand config.seed
 end
