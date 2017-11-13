@@ -15,13 +15,13 @@ RSpec.describe RepositoryPolicy do
 
     before do
       2.times do
-        create :repository
+        create(:repository, public_access: false)
       end
       3.times do
-        create :repository, public_access: true
+        create(:repository, public_access: true)
       end
       2.times do
-        repo = create :repository
+        repo = create(:repository, public_access: false)
         repo.add_member(user, :read)
       end
     end
