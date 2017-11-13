@@ -44,7 +44,7 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 gem 'bunny'
 gem 'filelock', '~> 1.1.1'
 gem 'graphql', '~> 1.7.5'
-gem 'graphql-batch', '~> 0.3.3'
+gem 'graphql-batch', '~> 0.3.8'
 gem 'graphql-pundit', '~> 0.5.0'
 gem 'jwt', '~> 2.1.0'
 gem 'pundit', '~> 1.1.0'
