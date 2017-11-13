@@ -37,6 +37,8 @@ matrix:
         - bundle exec rails db:recreate:seed
     - env: WITH_RSPEC=1
       before_script:
+        - locale
+        - psql -U postgres -l
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec --format progress
