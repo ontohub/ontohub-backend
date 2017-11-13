@@ -66,4 +66,9 @@ RSpec.configure do |config|
   config.fuubar_progress_bar_options = {format: '[%B] %c/%C',
                                         progress_mark: '#',
                                         remainder_mark: '-'}
+
+  # Configure faker to use the RSpec seed
+  Faker::Config.random = Random.new(config.seed)
+  # Configure ruby to use the RSpec seed for randomization
+  srand config.seed
 end
