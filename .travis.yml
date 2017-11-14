@@ -39,6 +39,9 @@ matrix:
       before_script:
         - locale
         - psql -U postgres -l
+        - psql -U postgres -c "select a from (values ('foo-z'), ('foom')) as x(a) order by x.a;"
+        - ruby -e 'puts ["foo-z", "foom"].sort'
+        - echo "foo-z\nfoom" | sort
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec --format progress
