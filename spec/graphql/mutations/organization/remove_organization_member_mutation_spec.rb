@@ -39,20 +39,41 @@ RSpec.describe Mutations::Organization::RemoveOrganizationMemberMutation do
 
   context 'Successful removal' do
     it 'returns true' do
-      expect(subject['data']['removeOrganizationMember']).to be(true)
+      expect(subject).to match('data' => {'removeOrganizationMember' => true})
+    end
+  end
+
+  context 'User does not exist' do
+    let(:variables) do
+      {'user' => "bad-#{user.to_param}",
+       'organization' => organization.to_param}
+    end
+
+    it 'returns false' do
+      expect(subject).to match('data' => {'removeOrganizationMember' => false})
+    end
+  end
+
+  context 'User is not a member' do
+    let(:variables) do
+      {'user' => create(:user).to_param,
+       'organization' => organization.to_param}
+    end
+
+    it 'returns false' do
+      expect(subject).to match('data' => {'removeOrganizationMember' => false})
     end
   end
 
   context 'Not signed in' do
     let(:context) { {} }
 
-    it 'returns no data' do
-      expect(subject['data']['removeOrganizationMember']).to be(nil)
-    end
-
     it 'returns an error' do
-      expect(subject['errors']).
-        to include(include('message' => "You're not authorized to do this"))
+      expect(subject.to_h).
+        to match('data' => {'removeOrganizationMember' => nil},
+                 'errors' =>
+                   include(include('message' =>
+                                     "You're not authorized to do this")))
     end
   end
 end
