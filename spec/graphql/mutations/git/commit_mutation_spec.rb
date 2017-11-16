@@ -56,7 +56,7 @@ RSpec.describe 'commit mutation' do
       'content' => new_contents[3],
       'encoding' => 'plain',
       'path' => old_files[3],
-      'action' => 'update'},
+      'action' => 'rename_and_update'},
 
      {'path' => old_files[4],
       'action' => 'remove'},
@@ -147,11 +147,11 @@ RSpec.describe 'commit mutation' do
         expect(git.blob(branch, old_files[1])).to be_nil
       end
 
-      it 'performs the non-renaming update action: new content correct' do
+      it 'performs the update action: new content correct' do
         expect(git.blob(branch, old_files[2]).data).to eq(new_contents[2])
       end
 
-      it 'performs the non-renaming update action: old content not there' do
+      it 'performs the update action: old content not there' do
         expect(git.blob(branch, old_files[2]).data).not_to eq(old_contents[2])
       end
 

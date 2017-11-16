@@ -7,6 +7,7 @@ Types::Git::Commit::ActionEnum = GraphQL::EnumType.define do
   value 'create'
   value 'rename'
   value 'update'
+  value 'rename_and_update'
   value 'remove'
   value 'mkdir'
 end
