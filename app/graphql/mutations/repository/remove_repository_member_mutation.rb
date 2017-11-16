@@ -28,9 +28,10 @@ module Mutations
     # GraphQL mutation to remove a member from a repository
     class RemoveRepositoryMemberResolver
       def call(repository, arguments, _context)
-        user = User.first(slug: arguments['member'])
+        member = repository.members_dataset.first(slug: arguments['member'])
+        return false unless member
 
-        repository.remove_member(user)
+        repository.remove_member(member)
         true
       end
     end
