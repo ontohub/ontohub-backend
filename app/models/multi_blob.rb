@@ -81,14 +81,14 @@ class MultiBlob
          encoding: file[:encoding],
          action: :update}
       when :rename_and_update
-        {path: file[:path],
-         previous_path: file[:previous_path],
+        {path: file[:new_path],
+         previous_path: file[:path],
          content: file[:content],
          encoding: file[:encoding],
          action: :rename_and_update}
       when :rename
-        {path: file[:path],
-         previous_path: file[:previous_path],
+        {path: file[:new_path],
+         previous_path: file[:path],
          action: :rename}
       when :remove
         {path: file[:path],
@@ -116,7 +116,8 @@ class MultiBlob
       prefix = "files/#{index}/"
 
       if file[:path].blank?
-        @errors.add("#{prefix}path", 'must be present')
+        field = file[:action].to_s.match?(/\Arename/) ? 'new_path' : 'path'
+        @errors.add("#{prefix}#{field}", 'must be present')
       end
 
       case file[:action]
@@ -131,20 +132,26 @@ class MultiBlob
                       "path does not exist: #{file[:path]}")
         end
       when :rename_and_update
+        # `path` from the GraphQL API is mapped to `previous_path` of
+        # Gitlab::Git.
         if file[:previous_path].blank?
-          @errors.add("#{prefix}previous_path", 'must be present')
+          @errors.add("#{prefix}path", 'must be present')
         elsif path_does_not_exist?(file[:previous_path])
-          @errors.add("#{prefix}previous_path",
+          @errors.add("#{prefix}path",
                       "path does not exist: #{file[:previous_path]}")
         elsif file[:previous_path] == file[:path]
-          @errors.add("#{prefix}path", 'previous_path and path must differ')
+          @errors.add("#{prefix}new_path", 'path and new_path must differ')
         end
       when :rename
+        # `path` from the GraphQL API is mapped to `previous_path` of
+        # Gitlab::Git.
         if file[:previous_path].blank?
-          @errors.add("#{prefix}previous_path", 'must be present')
+          @errors.add("#{prefix}path", 'must be present')
         elsif path_does_not_exist?(file[:previous_path])
-          @errors.add("#{prefix}previous_path",
+          @errors.add("#{prefix}path",
                       "path does not exist: #{file[:previous_path]}")
+        elsif file[:previous_path] == file[:path]
+          @errors.add("#{prefix}new_path", 'path and new_path must differ')
         end
       when :remove
         if path_does_not_exist?(file[:path])

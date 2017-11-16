@@ -46,18 +46,8 @@ module Mutations
         end
 
         def files(arguments)
-          # TODO: Restructure as soon as REST controllers are fully refactored
-          # to use graphql. There shall be no previous_path in MultiBlob. Adjust
-          # MultiBlob to use the same interface as GraphQL.
           arguments['newCommit']['files'].map do |file|
-            file = file.to_h.symbolize_keys
-            if file[:action] =~ /\Arename/
-              previous_path = file.delete(:path)
-              new_path = file.delete(:new_path)
-              file[:path] = new_path
-              file[:previous_path] = previous_path
-            end
-            file
+            file.to_h.symbolize_keys
           end
         end
       end
