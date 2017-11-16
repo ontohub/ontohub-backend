@@ -669,6 +669,29 @@ RSpec.describe MultiBlob do
             end
           end
         end
+
+        context 'path matches new_path' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: old_files[0],
+                             path: old_files[0],
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/new_path"].first).
+                to match(/path and new_path must differ/)
+            end
+          end
+        end
       end
 
       context 'remove' do
