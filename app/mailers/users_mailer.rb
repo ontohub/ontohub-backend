@@ -6,7 +6,7 @@ class UsersMailer < Devise::Mailer
   include Devise::Controllers::UrlHelpers
 
   def initialize_from_record(user_id)
-    user = User.find(id: user_id)
+    user = User.first(id: user_id)
     @scope_name = :user
     @resource = instance_variable_set("@#{devise_mapping.name}", user)
   end

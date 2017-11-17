@@ -2,11 +2,11 @@
 
 # Fill ada fixtures repository
 
-repo = Repository.find(slug: 'ada/fixtures')
-repo.add_member(User.find(slug: 'bob'), 'admin')
-repo.add_member(User.find(slug: 'cam'), 'write')
-repo.add_member(User.find(slug: 'dan'), 'read')
+repo = Repository.first(slug: 'ada/fixtures')
+repo.add_member(User.first(slug: 'bob'), 'admin')
+repo.add_member(User.first(slug: 'cam'), 'write')
+repo.add_member(User.first(slug: 'dan'), 'read')
 
 # Fill top secret repository
-Repository.find(slug: 'the-league-of-extraordinary-users/top-secret').
-  add_member(User.find(slug: 'eva'), 'read')
+Repository.first(slug: 'the-league-of-extraordinary-users/top-secret').
+  add_member(User.first(slug: 'eva'), 'read')

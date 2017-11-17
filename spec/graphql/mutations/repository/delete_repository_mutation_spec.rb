@@ -33,7 +33,7 @@ RSpec.describe 'deleteRepository mutation' do
 
     it 'deletes the repository' do
       subject
-      repo = Repository.find(slug: repository.slug)
+      repo = Repository.first(slug: repository.slug)
       expect(repo).to be_nil
     end
 

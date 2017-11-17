@@ -34,9 +34,9 @@ RSpec.describe(FileVersionParentsCreator) do
 
     it 'creates the "reflexive" FileVersionParents' do
       files.each do |file|
-        file_version = FileVersion.find(repository_id: repository.id,
-                                        commit_sha: commit_sha1,
-                                        path: file)
+        file_version = FileVersion.first(repository_id: repository.id,
+                                         commit_sha: commit_sha1,
+                                         path: file)
         expect(FileVersionParent.
                  find(queried_sha: commit_sha1,
                       last_changed_file_version: file_version)).
@@ -53,9 +53,9 @@ RSpec.describe(FileVersionParentsCreator) do
 
       it 'creates the backwards FileVersionParents' do
         files.each do |file|
-          file_version = FileVersion.find(repository_id: repository.id,
-                                          commit_sha: commit_sha1,
-                                          path: file)
+          file_version = FileVersion.first(repository_id: repository.id,
+                                           commit_sha: commit_sha1,
+                                           path: file)
           expect(FileVersionParent.
                    find(queried_sha: commit_sha2,
                         last_changed_file_version: file_version)).

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-repository = RepositoryCompound.wrap(Repository.find(slug: 'ada/fixtures'))
+repository = RepositoryCompound.wrap(Repository.first(slug: 'ada/fixtures'))
 
 # Commit new images
 %w(jpg png svg).each do |file_type|

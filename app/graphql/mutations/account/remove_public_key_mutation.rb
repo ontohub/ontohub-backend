@@ -23,7 +23,7 @@ module Mutations
     # GraphQL mutation to remove a public key
     class RemovePublicKeyResolver
       def call(user, arguments, _context)
-        key = PublicKey.find(user_id: user.id, name: arguments[:name].strip)
+        key = PublicKey.first(user_id: user.id, name: arguments[:name].strip)
 
         raise GraphQL::ExecutionError, 'Public key not found' unless key
 

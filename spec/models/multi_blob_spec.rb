@@ -729,32 +729,32 @@ RSpec.describe MultiBlob do
       let!(:commit_sha) { subject.save }
 
       it 'creates a FileVersion for the created file' do
-        expect(FileVersion.find(commit_sha: commit_sha, path: new_files[0])).
+        expect(FileVersion.first(commit_sha: commit_sha, path: new_files[0])).
           to be_a(FileVersion)
       end
 
       it 'creates a FileVersion for the renamed file' do
-        expect(FileVersion.find(commit_sha: commit_sha, path: new_files[1])).
+        expect(FileVersion.first(commit_sha: commit_sha, path: new_files[1])).
           to be_a(FileVersion)
       end
 
       it 'creates a FileVersion for the updated file' do
-        expect(FileVersion.find(commit_sha: commit_sha, path: old_files[2])).
+        expect(FileVersion.first(commit_sha: commit_sha, path: old_files[2])).
           to be_a(FileVersion)
       end
 
       it 'creates a FileVersion for the updated and renamed file' do
-        expect(FileVersion.find(commit_sha: commit_sha, path: new_files[3])).
+        expect(FileVersion.first(commit_sha: commit_sha, path: new_files[3])).
           to be_a(FileVersion)
       end
 
       it 'does not create a FileVersion for the removed file' do
-        expect(FileVersion.find(commit_sha: commit_sha, path: old_files[4])).
+        expect(FileVersion.first(commit_sha: commit_sha, path: old_files[4])).
           to be(nil)
       end
 
       it 'creates a FileVersion for the created .gitkeep file' do
-        expect(FileVersion.find(commit_sha: commit_sha,
+        expect(FileVersion.first(commit_sha: commit_sha,
                                 path: File.join(new_files[5], '.gitkeep'))).
           to be_a(FileVersion)
       end

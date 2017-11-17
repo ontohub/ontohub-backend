@@ -3,7 +3,7 @@
 # Create repositories.
 organization_fixtures_repo =
   RepositoryCompound.
-    new(owner: Organization.find(slug: 'seed-user-organization'),
+    new(owner: Organization.first(slug: 'seed-user-organization'),
         name: 'Fixtures',
         content_type: 'model',
         public_access: true,
@@ -12,7 +12,7 @@ organization_fixtures_repo.save
 
 ada_fixtures_repo =
   RepositoryCompound.
-    new(owner: User.find(slug: 'ada'),
+    new(owner: User.first(slug: 'ada'),
         name: 'Fixtures',
         content_type: 'specification',
         public_access: true,
@@ -21,7 +21,7 @@ ada_fixtures_repo.save
 
 organization_math_repo =
   RepositoryCompound.
-    new(owner: Organization.find(slug: 'seed-user-organization'),
+    new(owner: Organization.first(slug: 'seed-user-organization'),
         name: 'Math',
         content_type: 'mathematical',
         public_access: true,
@@ -30,7 +30,7 @@ organization_math_repo.save
 
 top_secret_repo =
   RepositoryCompound.
-    new(owner: Organization.find(slug: 'the-league-of-extraordinary-users'),
+    new(owner: Organization.first(slug: 'the-league-of-extraordinary-users'),
         name: 'Top Secret',
         content_type: 'ontology',
         public_access: false,

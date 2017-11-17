@@ -15,9 +15,9 @@ RSpec.shared_examples 'a REST DocumentsController' do
       end
     end
     let(:file_version) do
-      FileVersion.find(commit_sha: commit_sha,
-                       path: file_path,
-                       repository_id: repository.id)
+      FileVersion.first(commit_sha: commit_sha,
+                        path: file_path,
+                        repository_id: repository.id)
     end
     let(:document) { create(document_factory, file_version: file_version) }
     let(:loc_id) { document.loc_id }

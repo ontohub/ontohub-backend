@@ -10,6 +10,6 @@ class GitUser
   end
 
   def account
-    @account ||= User.find(email: email)
+    @account ||= User.first(email: email)
   end
 end

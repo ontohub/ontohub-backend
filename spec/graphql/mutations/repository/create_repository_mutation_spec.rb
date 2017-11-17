@@ -56,7 +56,7 @@ RSpec.describe 'createRepository mutation' do
     end
     it 'creates the git repository' do
       subject
-      repository = RepositoryCompound.find(name: repository_blueprint.name)
+      repository = RepositoryCompound.first(name: repository_blueprint.name)
       expect(repository.git.repo_exists?).to be(true)
     end
   end

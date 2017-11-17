@@ -11,7 +11,7 @@ module Mutations
       end
 
       resource!(lambda do |_root, arguments, _context|
-        OrganizationalUnit.find(slug: arguments['data']['owner'])
+        OrganizationalUnit.first(slug: arguments['data']['owner'])
       end)
 
       authorize!(lambda do |owner, _arguments, context|

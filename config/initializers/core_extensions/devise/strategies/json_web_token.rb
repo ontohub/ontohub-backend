@@ -8,7 +8,7 @@ module Devise
     class JsonWebToken < HttpAuthorization
       def authenticate!
         return unless claims&.key?('user_id')
-        success! User.find(
+        success! User.first(
           Sequel[:organizational_units][:slug] => claims['user_id']
         )
       end

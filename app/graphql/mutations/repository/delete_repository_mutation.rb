@@ -11,7 +11,7 @@ module Mutations
       end
 
       resource!(lambda do |_root, arguments, _context|
-        RepositoryCompound.find(slug: arguments[:slug])
+        RepositoryCompound.first(slug: arguments[:slug])
       end)
 
       not_found_unless :show
