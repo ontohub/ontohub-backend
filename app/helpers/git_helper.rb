@@ -9,4 +9,8 @@ module GitHelper
      email: user.email,
      time: time || Time.now}
   end
+
+  def exclusively(repository)
+    FileLockHelper.exclusively(repository.to_param, timeout: 1.minute) { yield }
+  end
 end
