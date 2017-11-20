@@ -11,6 +11,8 @@ module GitHelper
   end
 
   def exclusively(repository)
-    FileLockHelper.exclusively(repository.to_param, timeout: 1.minute) { yield }
+    lockfile_path =
+      RepositoryCompound.wrap(repository).git.path.join('ontohub-backend.lock')
+    FileLockHelper.exclusively(lockfile_path, timeout: 1.minute) { yield }
   end
 end
