@@ -26,9 +26,10 @@ module Mutations
     # GraphQL mutation to remove a member from an organization
     class RemoveOrganizationMemberResolver
       def call(organization, arguments, _context)
-        user = User.first(slug: arguments['member'])
+        member = organization.members_dataset.first(slug: arguments['member'])
+        return false unless member
 
-        organization.remove_member(user)
+        organization.remove_member(member)
         true
       end
     end
