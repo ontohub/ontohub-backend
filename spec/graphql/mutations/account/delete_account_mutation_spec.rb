@@ -31,7 +31,7 @@ RSpec.describe Mutations::Account::DeleteAccountMutation do
 
     it 'deletes the account' do
       subject
-      expect(User.find(id: user.id)).to be(nil)
+      expect(User.first(id: user.id)).to be(nil)
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Mutations::Account::DeleteAccountMutation do
 
     it 'does not delete the account' do
       subject
-      expect(User.find(id: user.id)).to_not be(nil)
+      expect(User.first(id: user.id)).to_not be(nil)
     end
   end
 

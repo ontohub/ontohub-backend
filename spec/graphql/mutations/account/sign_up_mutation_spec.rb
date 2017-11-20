@@ -43,7 +43,7 @@ RSpec.describe Mutations::Account::SignUpMutation,
   subject { result }
 
   context 'successful' do
-    let(:user) { User.find(slug: user_data['username']) }
+    let(:user) { User.first(slug: user_data['username']) }
 
     context 'with immediate access' do
       before { subject }

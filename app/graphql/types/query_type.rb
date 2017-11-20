@@ -20,7 +20,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |_root, arguments, _context|
-      OrganizationalUnit.find(slug: arguments[:slug])
+      OrganizationalUnit.first(slug: arguments[:slug])
     end)
   end
 
@@ -34,7 +34,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     authorize :show
 
     resource(lambda do |_root, arguments, _context|
-      RepositoryCompound.find(slug: arguments[:slug])
+      RepositoryCompound.first(slug: arguments[:slug])
     end)
 
     resolve ->(repo, _arguments, _context) { repo }

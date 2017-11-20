@@ -38,7 +38,7 @@ module Rest
       QUERY
 
       plain do |_graphql_executor, variables, _context|
-        repository = RepositoryCompound.find(slug: variables['repository'])
+        repository = RepositoryCompound.first(slug: variables['repository'])
         git = repository.git
         commit = git.commit(variables['revision'] || git.default_branch)
         document =

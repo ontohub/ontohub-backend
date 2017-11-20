@@ -2,7 +2,7 @@
 
 documents = Rails.root.join('db/seeds/fixtures/documents')
 
-ada_fixtures_repo = RepositoryCompound.find(slug: 'ada/fixtures')
+ada_fixtures_repo = RepositoryCompound.first(slug: 'ada/fixtures')
 
 %w(Numbers.casl RelationsAndOrders.casl).each do |file|
   FactoryBot.
@@ -91,7 +91,7 @@ FactoryBot.
 # Create some Hets-lib files in a subdirectory, using a UrlMapping
 
 organization_fixtures_repo =
-  RepositoryCompound.find(slug: 'seed-user-organization/fixtures')
+  RepositoryCompound.first(slug: 'seed-user-organization/fixtures')
 
 UrlMapping.create(repository_id: organization_fixtures_repo.id,
                   source: 'Basic/',

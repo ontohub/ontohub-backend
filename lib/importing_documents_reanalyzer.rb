@@ -57,8 +57,8 @@ class ImportingDocumentsReanalyzer
     target_sha = git.log(ref: commit_sha, path: file_path, limit: 2)[1]&.id
     return nil if target_sha.nil?
 
-    previous_file_version = FileVersion.find(path: file_path,
-                                             commit_sha: target_sha)
+    previous_file_version = FileVersion.first(path: file_path,
+                                              commit_sha: target_sha)
     Document.first(file_version_id: previous_file_version&.id)
   end
 

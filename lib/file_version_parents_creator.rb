@@ -8,14 +8,14 @@ class FileVersionParentsCreator
 
   def initialize(repository_id, commit_sha)
     @commit_sha = commit_sha
-    @repository = RepositoryCompound.find(id: repository_id)
+    @repository = RepositoryCompound.first(id: repository_id)
     @git = @repository.git
   end
 
   def call
     git.ls_files(commit_sha).each do |filepath|
       target_sha = git.log(ref: commit_sha, path: filepath, limit: 1).first.id
-      file_version = FileVersion.find(path: filepath, commit_sha: target_sha)
+      file_version = FileVersion.first(path: filepath, commit_sha: target_sha)
       FileVersionParent.create(queried_sha: commit_sha,
                                last_changed_file_version: file_version)
     end

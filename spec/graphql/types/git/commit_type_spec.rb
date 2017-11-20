@@ -84,7 +84,7 @@ RSpec.describe Types::Git::CommitType do
   let(:repository) { create(:repository_compound, :not_empty) }
   let(:revision) { repository.git.default_branch }
   subject { repository.git.commit(revision) }
-  let(:file_version) { FileVersion.find(commit_sha: subject.id) }
+  let(:file_version) { FileVersion.first(commit_sha: subject.id) }
   let(:type) { OntohubBackendSchema.types['Commit'] }
   let(:arguments) { {} }
   let(:resolved_field) { field.resolve(subject, arguments, {}) }
