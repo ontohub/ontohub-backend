@@ -10,7 +10,7 @@ class AuthorizedKeysFile
         "#{key.key.strip} #{key.name}"
       end
 
-      FileLockHelper.exclusively(LOCK_FILE, timeout: 5) do
+      FileLockHelper.exclusively(LOCK_FILE, timeout: 5.seconds) do
         path = Rails.root.join('tmp/data/authorized_keys')
         path.dirname.mkpath
         File.write(path, keys.join("\n"))
