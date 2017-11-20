@@ -27,6 +27,7 @@ module OntohubBackend
       %w(casl dol hascasl het owl omn obo hs exp maude elf hol isa thy prf
          omdoc hpf clf clif xml fcstd rdf xmi qvt p tptp gen_trm baf).
         map { |ext| ".#{ext}" }
+    config.lockdir = File.join(Dir.tmpdir, 'ontohub-backend', 'lock')
 
     # Settings in config/environments/* take precedence over those specified
     # here.

@@ -40,7 +40,9 @@ class MultiBlob
     raise ValidationFailed, @errors unless valid?
     self.commit_sha =
       begin
-        git.commit_multichange(commit_info, previous_head_sha)
+        GitHelper.exclusively(repository) do
+          git.commit_multichange(commit_info, previous_head_sha)
+        end
       rescue Gitlab::Git::Committing::HeadChangedError
         @errors.add(:branch,
                     'Could not save the file in the git repository '\
