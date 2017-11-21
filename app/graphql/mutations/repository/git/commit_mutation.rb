@@ -37,7 +37,7 @@ module Mutations
 
         def build_resource(repository, arguments, context)
           MultiBlob.new(files: files(arguments),
-                        previous_head_sha:
+                        last_known_head_id:
                           arguments['newCommit']['lastKnownHeadId'],
                         commit_message: arguments['newCommit']['message'],
                         branch: arguments['newCommit']['branch'],

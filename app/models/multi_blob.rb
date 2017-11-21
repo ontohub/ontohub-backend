@@ -10,9 +10,10 @@ class MultiBlob
 
   # Error class to hold the errors
   class ValidationFailed < Error
-    attr_reader :errors
-    def initialize(errors)
+    attr_reader :conflicts, :errors
+    def initialize(errors: nil, conflicts: nil)
       @errors = errors
+      @conflicts = conflicts
       super(@errors.messages.to_json)
     end
   end
@@ -22,7 +23,7 @@ class MultiBlob
   attr_reader :errors
 
   # Only used for +save+
-  attr_accessor :branch, :commit_message, :files, :previous_head_sha,
+  attr_accessor :branch, :commit_message, :files, :last_known_head_id,
                 :repository, :user
 
   # Created during +save+
@@ -37,18 +38,23 @@ class MultiBlob
   # rubocop:disable Metrics/AbcSize
   def save
     normalize_params
-    raise ValidationFailed, @errors unless valid?
+    raise ValidationFailed, errors: @errors unless valid?
     self.commit_sha =
       begin
         GitHelper.exclusively(repository) do
-          git.commit_multichange(commit_info, previous_head_sha)
+          git.commit_multichange(commit_info, last_known_head_id)
         end
-      rescue Gitlab::Git::Committing::HeadChangedError
+      rescue Gitlab::Git::Committing::HeadChangedError => e
         @errors.add(:branch,
                     'Could not save the file in the git repository '\
                     'because it has changed in the meantime. '\
                     'Please try again after checking out the current revision.')
-        raise ValidationFailed, @errors
+        raise ValidationFailed, errors: @errors, conflicts: e.conflicts
+      rescue TypeError => e
+        raise unless e.message.match?(/Expecting a String or Rugged::Reference/)
+
+        @errors.add(:last_known_head_id, 'reference could not be found')
+        raise ValidationFailed, errors: @errors
       end
     self.decorated_file_versions = create_decorated_file_versions(commit_sha)
     ProcessCommitJob.perform_later(repository.id, commit_sha)
