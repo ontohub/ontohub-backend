@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 3da74746619bbb29ad17ce4836d4b63619cf7bc0
-  branch: master
+  revision: 7a9d5be4137972eabc4de47b85104a2a31468a4a
+  branch: bundle_update
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
@@ -20,10 +20,10 @@ GIT
       devise (~> 4.3.0)
       pry (~> 0.11.0)
       rails (~> 5.1.4)
-      sequel (~> 4.49.0)
+      sequel (~> 5.2.0)
       sequel-devise (~> 0.0.11)
-      sequel-rails (~> 0.9.17)
-      sequel_pg (~> 1.7.1)
+      sequel-rails (~> 1.0.0)
+      sequel_pg (~> 1.8.0)
       sequel_postgresql_triggers (~> 1.3.0)
 
 GIT
@@ -334,18 +334,18 @@ GEM
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.26.0)
-    sequel (4.49.0)
+    sequel (5.2.0)
     sequel-devise (0.0.11)
       devise
       orm_adapter-sequel
-    sequel-rails (0.9.17)
-      actionpack (>= 3.2.0)
-      activemodel
-      railties (>= 3.2.0)
-      sequel (>= 3.28, < 5.0)
-    sequel_pg (1.7.1)
-      pg (>= 0.8.0)
-      sequel (>= 4.0.0)
+    sequel-rails (1.0.0)
+      actionpack (>= 4.0.0)
+      activemodel (>= 4.0.0)
+      railties (>= 4.0.0)
+      sequel (>= 3.28, < 6.0)
+    sequel_pg (1.8.0)
+      pg (>= 0.18.0)
+      sequel (>= 4.34.0)
     sequel_postgresql_triggers (1.3.0)
       sequel
     serverengine (1.5.11)
