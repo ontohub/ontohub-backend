@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/gitlab_git.git
-  revision: 322ba8d032b0780a6d45ed2686555d40149465d8
+  revision: bdbe1c7589a51c9b206d21e2d8dd1e3dcef0c4db
   branch: master
   specs:
     gitlab_git (11.0.0)
@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: c8482f769f7a1e0de0111c5b6e1ce2a36ffb8ca4
+  revision: 3da74746619bbb29ad17ce4836d4b63619cf7bc0
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -145,13 +145,13 @@ GEM
       dry-equalizer (~> 0.2)
       dry-logic (~> 0.4, >= 0.4.0)
       dry-types (~> 0.12.0)
-    elasticsearch (5.0.4)
-      elasticsearch-api (= 5.0.4)
-      elasticsearch-transport (= 5.0.4)
-    elasticsearch-api (5.0.4)
+    elasticsearch (6.0.0)
+      elasticsearch-api (= 6.0.0)
+      elasticsearch-transport (= 6.0.0)
+    elasticsearch-api (6.0.0)
       multi_json
     elasticsearch-dsl (0.1.5)
-    elasticsearch-transport (5.0.4)
+    elasticsearch-transport (6.0.0)
       faraday
       multi_json
     em-proxy (0.1.9)

@@ -78,18 +78,19 @@ class MultiBlob
          encoding: file[:encoding],
          action: :create}
       when :update
-        options =
-          {path: file[:path],
-           content: file[:content],
-           encoding: file[:encoding],
-           action: :update}
-        unless file[:previous_path].nil?
-          options[:previous_path] = file[:previous_path]
-        end
-        options
-      when :rename
         {path: file[:path],
-         previous_path: file[:previous_path],
+         content: file[:content],
+         encoding: file[:encoding],
+         action: :update}
+      when :rename_and_update
+        {path: file[:new_path],
+         previous_path: file[:path],
+         content: file[:content],
+         encoding: file[:encoding],
+         action: :rename_and_update}
+      when :rename
+        {path: file[:new_path],
+         previous_path: file[:path],
          action: :rename}
       when :remove
         {path: file[:path],
@@ -117,7 +118,8 @@ class MultiBlob
       prefix = "files/#{index}/"
 
       if file[:path].blank?
-        @errors.add("#{prefix}path", 'must be present')
+        field = file[:action].to_s.match?(/\Arename/) ? 'new_path' : 'path'
+        @errors.add("#{prefix}#{field}", 'must be present')
       end
 
       case file[:action]
@@ -127,25 +129,31 @@ class MultiBlob
                       "path already exists: #{file[:path]}")
         end
       when :update
-        if !file[:previous_path].nil?
-          if file[:previous_path].blank?
-            @errors.add("#{prefix}previous_path", 'must be present')
-          elsif path_does_not_exist?(file[:previous_path])
-            @errors.add("#{prefix}previous_path",
-                        "path does not exist: #{file[:previous_path]}")
-          elsif file[:previous_path] == file[:path]
-            @errors.add("#{prefix}path", 'previous_path and path must differ')
-          end
-        elsif path_does_not_exist?(file[:path])
+        if path_does_not_exist?(file[:path])
           @errors.add("#{prefix}path",
                       "path does not exist: #{file[:path]}")
         end
-      when :rename
+      when :rename_and_update
+        # `path` from the GraphQL API is mapped to `previous_path` of
+        # Gitlab::Git.
         if file[:previous_path].blank?
-          @errors.add("#{prefix}previous_path", 'must be present')
+          @errors.add("#{prefix}path", 'must be present')
         elsif path_does_not_exist?(file[:previous_path])
-          @errors.add("#{prefix}previous_path",
+          @errors.add("#{prefix}path",
                       "path does not exist: #{file[:previous_path]}")
+        elsif file[:previous_path] == file[:path]
+          @errors.add("#{prefix}new_path", 'path and new_path must differ')
+        end
+      when :rename
+        # `path` from the GraphQL API is mapped to `previous_path` of
+        # Gitlab::Git.
+        if file[:previous_path].blank?
+          @errors.add("#{prefix}path", 'must be present')
+        elsif path_does_not_exist?(file[:previous_path])
+          @errors.add("#{prefix}path",
+                      "path does not exist: #{file[:previous_path]}")
+        elsif file[:previous_path] == file[:path]
+          @errors.add("#{prefix}new_path", 'path and new_path must differ')
         end
       when :remove
         if path_does_not_exist?(file[:path])
@@ -160,7 +168,7 @@ class MultiBlob
       end
 
       # rubocop:disable Style/Next
-      if %i(create update).include?(file[:action])
+      if %i(create update rename_and_update).include?(file[:action])
         # rubocop:enable Style/Next
         if file[:content].nil?
           @errors.add("#{prefix}content", 'must exist')
@@ -223,7 +231,7 @@ class MultiBlob
     applied_action = action == :mkdir ? :created : :"#{action}d"
     if action == :remove
       {action: applied_action, path: file[:path]}
-    elsif %i(create update rename mkdir).include?(action)
+    elsif %i(create update rename_and_update rename mkdir).include?(action)
       file_version = create_file_version(commit_sha, file)
       {action: applied_action, file_version: file_version}
     end

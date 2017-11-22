@@ -70,6 +70,7 @@ enum CommitAction {
   mkdir
   remove
   rename
+  rename_and_update
   update
 }
 

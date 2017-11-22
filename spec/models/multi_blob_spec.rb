@@ -51,8 +51,8 @@ RSpec.describe MultiBlob do
         encoding: 'plain',
         action: 'create'},
 
-       {path: new_files[1],
-        previous_path: old_files[1],
+       {new_path: new_files[1],
+        path: old_files[1],
         action: 'rename'},
 
        {path: old_files[2],
@@ -60,11 +60,11 @@ RSpec.describe MultiBlob do
         encoding: 'plain',
         action: 'update'},
 
-       {path: new_files[3],
+       {new_path: new_files[3],
+        path: old_files[3],
         content: new_contents[3],
         encoding: 'plain',
-        previous_path: old_files[3],
-        action: 'update'},
+        action: 'rename_and_update'},
 
        {path: old_files[4],
         action: 'remove'},
@@ -297,7 +297,7 @@ RSpec.describe MultiBlob do
           end
         end
 
-        context 'non-existant path' do
+        context 'non-existent path' do
           subject do
             MultiBlob.new(valid_options.
               merge(files: [{path: new_files[0],
@@ -317,81 +317,6 @@ RSpec.describe MultiBlob do
             rescue MultiBlob::ValidationFailed
               expect(subject.errors.messages[:"files/0/path"].first).
                 to match(/path does not exist/)
-            end
-          end
-        end
-
-        context 'no previous path with renaming' do
-          subject do
-            MultiBlob.new(valid_options.
-              merge(files: [{path: new_files[0],
-                             previous_path: '',
-                             content: new_contents[0],
-                             encoding: 'plain',
-                             action: action}]))
-          end
-
-          it 'is invalid' do
-            expect { subject.save }.
-              to raise_error(MultiBlob::ValidationFailed)
-          end
-
-          it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/previous_path"].first).
-                to match(/must be present/)
-            end
-          end
-        end
-
-        context 'non-existant previous path with renaming' do
-          subject do
-            MultiBlob.new(valid_options.
-              merge(files: [{path: new_files[1],
-                             previous_path: new_files[0],
-                             content: new_contents[0],
-                             encoding: 'plain',
-                             action: action}]))
-          end
-
-          it 'is invalid' do
-            expect { subject.save }.
-              to raise_error(MultiBlob::ValidationFailed)
-          end
-
-          it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/previous_path"].first).
-                to match(/path does not exist/)
-            end
-          end
-        end
-
-        context 'previous_path matches path' do
-          subject do
-            MultiBlob.new(valid_options.
-              merge(files: [{path: old_files[0],
-                             previous_path: old_files[0],
-                             content: new_contents[0],
-                             encoding: 'plain',
-                             action: action}]))
-          end
-
-          it 'is invalid' do
-            expect { subject.save }.
-              to raise_error(MultiBlob::ValidationFailed)
-          end
-
-          it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/previous_path and path must differ/)
             end
           end
         end
@@ -400,55 +325,6 @@ RSpec.describe MultiBlob do
           subject do
             MultiBlob.new(valid_options.
               merge(files: [{path: old_files[0],
-                             content: nil,
-                             encoding: 'plain',
-                             action: action}]))
-          end
-
-          it 'is invalid' do
-            expect { subject.save }.
-              to raise_error(MultiBlob::ValidationFailed)
-          end
-
-          it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must exist/)
-            end
-          end
-        end
-
-        context 'renaming a file without content' do
-          subject do
-            MultiBlob.new(valid_options.
-              merge(files: [{path: new_files[0],
-                             previous_path: old_files[0],
-                             content: nil,
-                             encoding: 'plain',
-                             action: action}]))
-          end
-
-          it 'is invalid' do
-            expect { subject.save }.
-              to raise_error(MultiBlob::ValidationFailed)
-          end
-
-          it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must exist/)
-            end
-          end
-        end
-
-        context 'no content' do
-          subject do
-            MultiBlob.new(valid_options.
-              merge(files: [{path: new_files[0],
                              content: nil,
                              encoding: 'plain',
                              action: action}]))
@@ -518,14 +394,41 @@ RSpec.describe MultiBlob do
         end
       end
 
-      context 'rename' do
-        let(:action) { 'rename' }
+      context 'rename_and_update' do
+        let(:action) { 'rename_and_update' }
+
+        context 'no new_path' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: '',
+                             path: old_files[0],
+                             content: new_contents[0],
+                             encoding: 'plain',
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/new_path"].first).
+                to match(/must be present/)
+            end
+          end
+        end
 
         context 'no path' do
           subject do
             MultiBlob.new(valid_options.
-              merge(files: [{path: '',
-                             previous_path: old_files[0],
+              merge(files: [{new_path: new_files[0],
+                             path: '',
+                             content: new_contents[0],
+                             encoding: 'plain',
                              action: action}]))
           end
 
@@ -544,11 +447,13 @@ RSpec.describe MultiBlob do
           end
         end
 
-        context 'no previous_path' do
+        context 'non-existent path' do
           subject do
             MultiBlob.new(valid_options.
-              merge(files: [{path: new_files[0],
-                             previous_path: '',
+              merge(files: [{new_path: new_files[1],
+                             path: new_files[0],
+                             content: new_contents[0],
+                             encoding: 'plain',
                              action: action}]))
           end
 
@@ -561,17 +466,169 @@ RSpec.describe MultiBlob do
             begin
               subject.save
             rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/previous_path"].first).
+              expect(subject.errors.messages[:"files/0/path"].first).
+                to match(/path does not exist/)
+            end
+          end
+        end
+
+        context 'path matches new_path' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: old_files[0],
+                             path: old_files[0],
+                             content: new_contents[0],
+                             encoding: 'plain',
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/new_path"].first).
+                to match(/path and new_path must differ/)
+            end
+          end
+        end
+
+        context 'without content' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: old_files[0],
+                             path: old_files[0],
+                             content: nil,
+                             encoding: 'plain',
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/content"].first).
+                to match(/must exist/)
+            end
+          end
+        end
+
+        context 'no content' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: new_files[0],
+                             path: old_files[0],
+                             content: nil,
+                             encoding: 'plain',
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/content"].first).
+                to match(/must exist/)
+            end
+          end
+        end
+
+        context 'content not a string' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: new_files[0],
+                             path: old_files[0],
+                             content: 0,
+                             encoding: 'plain',
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/content"].first).
+                to match(/must be a string/)
+            end
+          end
+        end
+
+        context 'unsupported encoding' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: new_files[0],
+                             path: old_files[0],
+                             content: new_contents[0],
+                             encoding: 'bad encoding',
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/encoding"].first).
+                to match(/encoding not supported/)
+            end
+          end
+        end
+      end
+
+      context 'rename' do
+        let(:action) { 'rename' }
+
+        context 'no new_path' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: '',
+                             path: old_files[0],
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/new_path"].first).
                 to match(/must be present/)
             end
           end
         end
 
-        context 'non-existant previous_path' do
+        context 'no path' do
           subject do
             MultiBlob.new(valid_options.
-              merge(files: [{path: new_files[0],
-                             previous_path: new_files[1],
+              merge(files: [{new_path: new_files[0],
+                             path: '',
                              action: action}]))
           end
 
@@ -584,8 +641,54 @@ RSpec.describe MultiBlob do
             begin
               subject.save
             rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/previous_path"].first).
+              expect(subject.errors.messages[:"files/0/path"].first).
+                to match(/must be present/)
+            end
+          end
+        end
+
+        context 'non-existent path' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: new_files[0],
+                             path: new_files[1],
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/path"].first).
                 to match(/path does not exist/)
+            end
+          end
+        end
+
+        context 'path matches new_path' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{new_path: old_files[0],
+                             path: old_files[0],
+                             action: action}]))
+          end
+
+          it 'is invalid' do
+            expect { subject.save }.
+              to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:"files/0/new_path"].first).
+                to match(/path and new_path must differ/)
             end
           end
         end
@@ -594,7 +697,7 @@ RSpec.describe MultiBlob do
       context 'remove' do
         let(:action) { 'remove' }
 
-        context 'non-existant path' do
+        context 'non-existent path' do
           subject do
             MultiBlob.new(valid_options.
               merge(files: [{path: new_files[0],
