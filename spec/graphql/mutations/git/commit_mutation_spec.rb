@@ -33,8 +33,8 @@ RSpec.describe 'commit mutation' do
 
   let(:branch) { 'master' }
   let(:branch_argument) { branch }
-  let(:lastKnownHeadId) { setup_commit }
-  let(:lastKnownHeadId_argument) { lastKnownHeadId }
+  let(:last_known_head_id) { setup_commit }
+  let(:last_known_head_id_argument) { last_known_head_id }
   let(:message) { generate(:commit_message) }
   let(:message_argument) { message }
   let(:files) do
@@ -70,7 +70,7 @@ RSpec.describe 'commit mutation' do
   let(:variables) do
     {'repositoryId' => repository.to_param,
      'newCommit' => {'branch' => branch_argument,
-                     'lastKnownHeadId' => lastKnownHeadId_argument,
+                     'lastKnownHeadId' => last_known_head_id_argument,
                      'message' => message_argument,
                      'files' => files_argument}}
   end
@@ -218,15 +218,55 @@ RSpec.describe 'commit mutation' do
     end
 
     context 'because of a bad lastKnownHeadId' do
-      let(:lastKnownHeadId_argument) { '0' * 40 }
+      let(:last_known_head_id_argument) { '0' * 40 }
 
-      it 'returns no data' do
-        expect(subject['data']['commit']).to be(nil)
+      it 'responds correctly' do
+        expect(subject.to_h).
+          to match('data' => {'commit' => nil},
+                   'errors' =>
+                     include(include('message' =>
+                                       match(/reference could not be found/i))))
+      end
+    end
+
+    context 'because of a merge conflict' do
+      let(:previous_commit) do
+        options =
+          {files: [{path: old_files[2],
+                    content: new_contents[2].upcase,
+                    encoding: 'plain',
+                    action: 'update'}],
+           commit_message: generate(:commit_message),
+           branch: branch,
+           repository: repository,
+           user: user}
+        MultiBlob.new(options).save
+      end
+      let(:last_known_head_id_argument) { setup_commit }
+
+      before do
+        previous_commit
       end
 
-      it 'returns an error' do
-        expect(subject['errors']).
-          to include(include('message' => include('changed in the meantime.')))
+      it 'responds correctly' do
+        merge_info =
+          {
+            'automergeable' => false,
+            'path' => old_files[2],
+            'filemode' => be > 0,
+            'data' => match(/<{7}.*={7}.*>{7}/m),
+          }
+        conflicts =
+          [{'ancestor' => be_a(Hash),
+            'ours' => be_a(Hash),
+            'theirs' => be_a(Hash),
+            'merge_info' => merge_info}]
+        expect(subject.to_h).
+          to match('data' => {'commit' => nil},
+                   'errors' =>
+                     include(include('message' =>
+                                       match(/changed in the meantime/i),
+                                     'data' => {'conflicts' => conflicts})))
       end
     end
 

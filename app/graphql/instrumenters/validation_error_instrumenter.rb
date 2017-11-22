@@ -27,7 +27,11 @@ module Instrumenters
             error.errors.details.each do |location, messages|
               messages.each do |message|
                 public_message = "#{location} - #{message[:error]}"
-                context.add_error(GraphQL::ExecutionError.new(public_message))
+                options = {}
+                options[:data] = {conflicts: error.conflicts} if error.conflicts
+                options.deep_stringify_keys!
+                context.add_error(GraphQL::ExecutionError.new(public_message,
+                                                              options: options))
               end
             end
             nil

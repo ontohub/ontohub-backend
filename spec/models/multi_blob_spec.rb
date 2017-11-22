@@ -5,7 +5,7 @@ require 'rails_helper'
 
 RSpec.describe MultiBlob do
   context 'attributes' do
-    %i(branch commit_message files previous_head_sha repository user
+    %i(branch commit_message files last_known_head_id repository user
        decorated_file_versions commit_sha).each do |attribute|
       it "contain a getter for #{attribute}" do
         expect(subject).to respond_to(attribute)
@@ -104,7 +104,7 @@ RSpec.describe MultiBlob do
       end
     end
 
-    context 'with previous HEAD sha' do
+    context 'with a last_known_head_id' do
       context 'successful' do
         subject do
           MultiBlob.new(valid_options.
@@ -112,7 +112,7 @@ RSpec.describe MultiBlob do
                            content: new_contents[0],
                            encoding: 'plain',
                            action: 'create'}],
-                  previous_head_sha: setup_commit))
+                  last_known_head_id: setup_commit))
         end
 
         it 'is successful' do
@@ -121,25 +121,76 @@ RSpec.describe MultiBlob do
       end
 
       context 'failing' do
-        subject do
-          MultiBlob.new(valid_options.
-            merge(files: [{path: new_files[0],
-                           content: new_contents[0],
-                           encoding: 'plain',
-                           action: 'create'}],
-                  previous_head_sha: '0' * 40))
+        context 'bad last_known_head_id' do
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{path: new_files[0],
+                             content: new_contents[0],
+                             encoding: 'plain',
+                             action: 'create'}],
+                    last_known_head_id: '0' * 40))
+          end
+
+          it 'raises an error' do
+            expect { subject.save }.to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:last_known_head_id].first).
+                to match(/reference could not be found/i)
+            end
+          end
         end
 
-        it 'raises an error' do
-          expect { subject.save }.to raise_error(MultiBlob::ValidationFailed)
-        end
+        context 'merge conflict' do
+          let(:previous_commit) { MultiBlob.new(valid_options).save }
+          subject do
+            MultiBlob.new(valid_options.
+              merge(files: [{path: old_files[2],
+                             content: new_contents[2].upcase,
+                             encoding: 'plain',
+                             action: 'update'}],
+                    last_known_head_id: setup_commit))
+          end
 
-        it 'has the correct error message' do
-          begin
-            subject.save
-          rescue MultiBlob::ValidationFailed
-            expect(subject.errors.messages[:branch].first).
-              to match(/changed in the meantime/)
+          before do
+            previous_commit
+            subject
+          end
+
+          it 'raises an error' do
+            expect { subject.save }.to raise_error(MultiBlob::ValidationFailed)
+          end
+
+          it 'has the correct error message' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed
+              expect(subject.errors.messages[:branch].first).
+                to match(/changed in the meantime/i)
+            end
+          end
+
+          it 'contains the conflicts including the merge info' do
+            begin
+              subject.save
+            rescue MultiBlob::ValidationFailed => error
+              merge_info =
+                {
+                  automergeable: false,
+                  path: old_files[2],
+                  filemode: be > 0,
+                  data: match(/<{7}.*={7}.*>{7}/m),
+                }
+              expect(error.conflicts).
+                to match_array([{ancestor: be_a(Hash),
+                                 ours: be_a(Hash),
+                                 theirs: be_a(Hash),
+                                 merge_info: merge_info}])
+            end
           end
         end
       end
