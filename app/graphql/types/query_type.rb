@@ -191,9 +191,15 @@ Types::QueryType = GraphQL::ObjectType.define do
       description 'The id of the ReasonerConfiguration'
     end
 
-    resolve(lambda do |_root, arguments, _context|
+    resource!(lambda do |_root, arguments, _context|
       ReasonerConfiguration.first(id: arguments['id'])
     end)
+
+    not_found_unless :show
+
+    authorize :show
+
+    resolve ->(configuration, _arguments, _context) { configuration }
   end
 
   field :generatedAxiom, Types::GeneratedAxiomType do

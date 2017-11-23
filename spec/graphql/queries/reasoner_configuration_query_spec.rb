@@ -24,6 +24,7 @@ RSpec.describe 'reasoner_configuration query' do
     QUERY
   end
 
+  let(:current_user) { create(:user) }
   let!(:reasoner_configuration) do
     create(:reasoner_configuration, configured_reasoner: reasoner)
   end
@@ -35,6 +36,11 @@ RSpec.describe 'reasoner_configuration query' do
     create_list(:proof_attempt, 2,
                 reasoner_configuration: reasoner_configuration)
   end
+  before do
+    reasoner_configuration.repositories.each do |repository|
+      repository.update(public_access: false, owner_id: current_user.id)
+    end
+  end
 
   let(:variables_existent) { {'id' => reasoner_configuration.id} }
   let(:variables_not_existent) { {'id' => 0} }
@@ -43,10 +49,11 @@ RSpec.describe 'reasoner_configuration query' do
     match('data' => {'reasonerConfiguration' => base_expectation})
   end
   let(:expectation_signed_in_not_existent) do
-    match('data' => {'reasonerConfiguration' => nil})
+    match('data' => {'reasonerConfiguration' => nil},
+          'errors' => [include('message' => 'resource not found')])
   end
   let(:expectation_not_signed_in_existent) do
-    expectation_signed_in_existent
+    expectation_signed_in_not_existent
   end
   let(:expectation_not_signed_in_not_existent) do
     expectation_signed_in_not_existent
