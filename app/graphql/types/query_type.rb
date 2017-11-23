@@ -227,8 +227,14 @@ Types::QueryType = GraphQL::ObjectType.define do
       description 'The id of the PremiseSelection'
     end
 
-    resolve(lambda do |_root, arguments, _context|
+    resource!(lambda do |_root, arguments, _context|
       PremiseSelection.first(id: arguments['id'])
     end)
+
+    not_found_unless :show
+
+    authorize :show
+
+    resolve ->(premise_selection, _arguments, _context) { premise_selection }
   end
 end

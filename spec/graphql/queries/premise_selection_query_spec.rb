@@ -47,10 +47,16 @@ RSpec.describe 'premiseSelection query' do
     QUERY
   end
 
+  let(:current_user) { create(:user) }
+  let(:reasoner_configuration) { create(:reasoner_configuration) }
   let(:oms) { create(:oms) }
   let(:selected_premises) { create_list(:axiom, 2, oms: oms).sort_by(&:loc_id) }
   let(:other_premises) { create_list(:axiom, 2, oms: oms) }
   before do
+    proof_attempt =
+      create(:proof_attempt, reasoner_configuration: reasoner_configuration)
+    proof_attempt.repository.update(public_access: false,
+                                    owner_id: current_user.id)
     selected_premises.each do |premise|
       premise_selection.add_selected_premise(premise)
     end
@@ -63,10 +69,11 @@ RSpec.describe 'premiseSelection query' do
     match('data' => {'premiseSelection' => base_expectation})
   end
   let(:expectation_signed_in_not_existent) do
-    match('data' => {'premiseSelection' => nil})
+    match('data' => {'premiseSelection' => nil},
+          'errors' => [include('message' => 'resource not found')])
   end
   let(:expectation_not_signed_in_existent) do
-    expectation_signed_in_existent
+    expectation_signed_in_not_existent
   end
   let(:expectation_not_signed_in_not_existent) do
     expectation_signed_in_not_existent
@@ -82,13 +89,19 @@ RSpec.describe 'premiseSelection query' do
   end
 
   context 'on a ManualPremiseSelection' do
-    let(:premise_selection) { create(:manual_premise_selection) }
+    let(:premise_selection) do
+      create(:manual_premise_selection,
+             reasoner_configuration: reasoner_configuration)
+    end
     let(:base_expectation) { abstract_expectation }
     it_behaves_like 'a GraphQL query', 'premiseSelection'
   end
 
   context 'on a SinePremiseSelection' do
-    let(:premise_selection) { create(:sine_premise_selection) }
+    let(:premise_selection) do
+      create(:sine_premise_selection,
+             reasoner_configuration: reasoner_configuration)
+    end
     let!(:sine_symbol_commonnesses) do
       create_list(:sine_symbol_commonness, 2,
                   sine_premise_selection: premise_selection).sort_by(&:id)
