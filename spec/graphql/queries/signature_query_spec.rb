@@ -37,12 +37,16 @@ RSpec.describe 'signature query' do
     QUERY
   end
 
+  let(:current_user) { create(:user) }
   let!(:signature) { create(:signature) }
   let!(:oms) { create_list(:oms, 2, signature: signature) }
   let!(:imported_symbols) { create_list(:symbol, 2).sort_by(&:loc_id) }
   let!(:non_imported_symbols) { create_list(:symbol, 2).sort_by(&:loc_id) }
   let(:symbols) { (imported_symbols + non_imported_symbols).sort_by(&:loc_id) }
   before do
+    signature.repositories.each do |repository|
+      repository.update(public_access: false, owner_id: current_user.id)
+    end
     imported_symbols.each { |s| signature.add_symbol(s, true) }
     non_imported_symbols.each { |s| signature.add_symbol(s, false) }
   end
@@ -63,10 +67,11 @@ RSpec.describe 'signature query' do
     match('data' => {'signature' => base_expectation})
   end
   let(:expectation_signed_in_not_existent) do
-    match('data' => {'signature' => nil})
+    match('data' => {'signature' => nil},
+          'errors' => [include('message' => 'resource not found')])
   end
   let(:expectation_not_signed_in_existent) do
-    expectation_signed_in_existent
+    expectation_signed_in_not_existent
   end
   let(:expectation_not_signed_in_not_existent) do
     expectation_signed_in_not_existent

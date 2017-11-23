@@ -125,9 +125,15 @@ Types::QueryType = GraphQL::ObjectType.define do
       description 'The id of the Signature'
     end
 
-    resolve(lambda do |_root, arguments, _context|
+    resource!(lambda do |_root, arguments, _context|
       Signature.first(id: arguments['id'])
     end)
+
+    not_found_unless :show
+
+    authorize :show
+
+    resolve ->(signature, _arguments, _context) { signature }
   end
 
   field :signatureMorphism, Types::SignatureMorphismType do
