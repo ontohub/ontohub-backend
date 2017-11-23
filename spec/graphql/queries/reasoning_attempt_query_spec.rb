@@ -47,6 +47,7 @@ RSpec.describe 'reasoningAttempt query' do
     QUERY
   end
 
+  let(:current_user) { create(:user) }
   let!(:consistency_check_attempt) do
     create(:consistency_check_attempt, time_taken: time_taken)
   end
@@ -63,10 +64,11 @@ RSpec.describe 'reasoningAttempt query' do
     match('data' => {'reasoningAttempt' => expected_reasoning_attempt})
   end
   let(:expectation_signed_in_not_existent) do
-    match('data' => {'reasoningAttempt' => nil})
+    match('data' => {'reasoningAttempt' => nil},
+          'errors' => [include('message' => 'resource not found')])
   end
   let(:expectation_not_signed_in_existent) do
-    expectation_signed_in_existent
+    expectation_signed_in_not_existent
   end
   let(:expectation_not_signed_in_not_existent) do
     expectation_signed_in_not_existent
@@ -128,6 +130,10 @@ RSpec.describe 'reasoningAttempt query' do
       oms = consistency_check_attempt.oms
       expectation_base.merge('oms' => {'locId' => oms.loc_id})
     end
+    before do
+      reasoning_attempt.repository.update(public_access: false,
+                                          owner_id: current_user.id)
+    end
     include_examples 'case timeTaken'
   end
 
@@ -136,6 +142,10 @@ RSpec.describe 'reasoningAttempt query' do
     let(:expected_reasoning_attempt) do
       conjecture = proof_attempt.conjecture
       expectation_base.merge('conjecture' => {'locId' => conjecture.loc_id})
+    end
+    before do
+      reasoning_attempt.repository.update(public_access: false,
+                                          owner_id: current_user.id)
     end
     include_examples 'case timeTaken'
   end
