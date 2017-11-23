@@ -209,9 +209,15 @@ Types::QueryType = GraphQL::ObjectType.define do
       description 'The id of the GeneratedAxiom'
     end
 
-    resolve(lambda do |_root, arguments, _context|
+    resource!(lambda do |_root, arguments, _context|
       GeneratedAxiom.first(id: arguments['id'])
     end)
+
+    not_found_unless :show
+
+    authorize :show
+
+    resolve ->(generated_axiom, _arguments, _context) { generated_axiom }
   end
 
   field :premiseSelection, Types::PremiseSelectionType do
