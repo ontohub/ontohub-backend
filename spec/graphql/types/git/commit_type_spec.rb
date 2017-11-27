@@ -41,16 +41,16 @@ RSpec.shared_examples "a commit's file in GraphQL" do
   end
 
   context 'that is large' do
-    before { stub_const('Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
+    before { stub_const('Bringit::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
 
     context 'without loadAllData' do
       it 'shows the truncated file' do
-        content = blob.data[0..Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE - 1]
+        content = blob.data[0..Bringit::Blob::MAX_DATA_DISPLAY_SIZE - 1]
         expect(received).
           to eq(name: blob.name,
                 path: path,
                 size: blob.size,
-                loaded_size: Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE,
+                loaded_size: Bringit::Blob::MAX_DATA_DISPLAY_SIZE,
                 content: binary ? Base64.encode64(content) : content,
                 encoding: expected_encoding)
       end

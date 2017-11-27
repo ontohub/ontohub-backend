@@ -17,6 +17,6 @@ class GitDirectory
   end
 
   def gitlab
-    @gitlab ||= Gitlab::Git::Wrapper.new(@commit.repository.path)
+    @gitlab ||= Bringit::Wrapper.new(@commit.repository.path)
   end
 end

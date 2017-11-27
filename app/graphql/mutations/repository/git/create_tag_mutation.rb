@@ -41,8 +41,8 @@ module Mutations
           repository.git.create_tag(arguments['name'],
                                     arguments['revision'],
                                     annotation(arguments, context))
-        rescue Gitlab::Git::Repository::InvalidRef,
-               Gitlab::Git::InvalidRefName => e
+        rescue Bringit::Repository::InvalidRef,
+               Bringit::InvalidRefName => e
           context.add_error(GraphQL::ExecutionError.new(e.message))
         end
 

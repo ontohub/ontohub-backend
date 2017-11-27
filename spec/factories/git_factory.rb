@@ -58,12 +58,12 @@ FactoryBot.define do
     end
   end
 
-  factory :git, class: Gitlab::Git::Wrapper do
+  factory :git, class: Bringit::Wrapper do
     transient do
       path { generate(:git_repository_path) }
     end
     skip_create
-    initialize_with { Gitlab::Git::Wrapper.create(path) }
+    initialize_with { Bringit::Wrapper.create(path) }
   end
 
   trait :with_commits do

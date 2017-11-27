@@ -34,8 +34,8 @@ module Mutations
       class CreateBranchResolver
         def call(repository, arguments, context)
           repository.git.create_branch(arguments['name'], arguments['revision'])
-        rescue Gitlab::Git::Repository::InvalidRef,
-               Gitlab::Git::InvalidRefName => e
+        rescue Bringit::Repository::InvalidRef,
+               Bringit::InvalidRefName => e
           context.add_error(GraphQL::ExecutionError.new(e.message))
         end
       end
