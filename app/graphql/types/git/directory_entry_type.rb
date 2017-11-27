@@ -45,9 +45,9 @@ Types::Git::DirectoryEntryType = GraphQL::InterfaceType.define do
       base = base.first if is_array
       path = is_array ? File.dirname(base.path) : base.path
       commit = base.commit
-      gitlab_wrapper = base.gitlab
+      bringit_wrapper = base.bringit
 
-      gitlab_wrapper.log(ref: commit.id,
+      bringit_wrapper.log(ref: commit.id,
                          path: path,
                          limit: arguments['limit'],
                          offset: arguments['skip'],
