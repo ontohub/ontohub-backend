@@ -184,7 +184,7 @@ GEM
     graphql-batch (0.3.8)
       graphql (>= 0.8, < 2)
       promise.rb (~> 0.7.2)
-    graphql-pundit (0.5.0)
+    graphql-pundit (0.5.1)
       graphql (>= 1.6.4, < 1.8.0)
       pundit (~> 1.1.0)
     http-parser-lite (0.6.0)
@@ -404,7 +404,7 @@ DEPENDENCIES
   graphiql-rails
   graphql (~> 1.7.6)
   graphql-batch (~> 0.3.8)
-  graphql-pundit (~> 0.5.0)
+  graphql-pundit (~> 0.5.1)
   invoker
   json-schema!
   jwt (~> 2.1.0)
