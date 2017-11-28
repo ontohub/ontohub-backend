@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/LineLength
+
 Types::MappingTypeEnum = GraphQL::EnumType.define do
   name 'MappingType'
   description 'Specifies the type of the Mapping (=link in the development graph)'
