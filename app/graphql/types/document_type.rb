@@ -57,8 +57,14 @@ Types::DocumentType = GraphQL::InterfaceType.define do
       default_value 0
     end
 
-    resolve(lambda do |document, arguments, _context|
-      document.imported_by_dataset.
+    resource(lambda do |document, _arguments, _context|
+      document.imported_by_dataset
+    end)
+
+    scope DocumentPolicy
+
+    resolve(lambda do |imported_by_dataset, arguments, _context|
+      imported_by_dataset.
         order(Sequel[:loc_id_bases][:loc_id]).
         limit(arguments['limit'], arguments['skip'])
     end)
@@ -77,8 +83,14 @@ Types::DocumentType = GraphQL::InterfaceType.define do
       default_value 0
     end
 
-    resolve(lambda do |document, arguments, _context|
-      document.imports_dataset.
+    resource(lambda do |document, _arguments, _context|
+      document.imports_dataset
+    end)
+
+    scope DocumentPolicy
+
+    resolve(lambda do |imports_dataset, arguments, _context|
+      imports_dataset.
         order(Sequel[:loc_id_bases][:loc_id]).
         limit(arguments['limit'], arguments['skip'])
     end)

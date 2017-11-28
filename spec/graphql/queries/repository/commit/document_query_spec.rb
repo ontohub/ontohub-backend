@@ -46,6 +46,14 @@ RSpec.describe 'repository/commit/document query' do
     QUERY
   end
 
+  let(:private_repository) do
+    create(:repository_compound, :not_empty,
+           public_access: false)
+  end
+  let(:private_document) do
+    create(:document, file_version: create(:file_version,
+                                           repository: private_repository))
+  end
   let(:repository) do
     create(:repository_compound, :not_empty,
            public_access: false,
@@ -65,6 +73,8 @@ RSpec.describe 'repository/commit/document query' do
     importees.each do |importee|
       create(:document_link, source: document, target: importee)
     end
+    create(:document_link, source: document, target: private_document)
+    create(:document_link, source: private_document, target: document)
   end
 
   let(:current_user) { create(:user) }
