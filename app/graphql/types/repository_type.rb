@@ -38,6 +38,10 @@ Types::RepositoryType = GraphQL::ObjectType.define do
 
     resolve(lambda do |repository, _arguments, context|
       return unless context[:current_user]
+      if RepositoryMembership.where(repository_id: repository.id,
+                                    member_id: context[:current_user].id).empty?
+        return nil
+      end
       repository
     end)
   end
@@ -137,12 +141,12 @@ Types::RepositoryType = GraphQL::ObjectType.define do
   field :diff, !types[!Types::Git::DiffType] do
     description 'The changes between two commits'
 
-    argument :from, !types.String do
-      description 'The base commit for the diff'
+    argument :from, !types.ID do
+      description 'The base revision for the diff'
     end
 
-    argument :to, !types.String do
-      description 'The target commit for the diff'
+    argument :to, !types.ID do
+      description 'The target revision for the diff'
     end
 
     argument :paths, types[!types.String] do
@@ -163,6 +167,8 @@ Types::RepositoryType = GraphQL::ObjectType.define do
         revspec = e.message.match(/revspec '(\S+)' not found/i)[1]
         %w(from to).each { |arg| argument = arg if arguments[arg] == revspec }
         GraphQL::ExecutionError.new(%("#{argument}" #{e.message}))
+      rescue Rugged::ObjectError
+        GraphQL::ExecutionError.new('revspec not found')
       end
     end)
   end
@@ -205,14 +211,18 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |repository, arguments, _context|
-      revision = arguments['revision'] || repository.git.default_branch
-      repository.git.log(ref: revision,
-                         path: arguments['path'],
-                         limit: arguments['limit'],
-                         offset: arguments['skip'],
-                         skip_merges: arguments['skipMerges'],
-                         before: arguments['before'],
-                         after: arguments['after'])
+      begin
+        revision = arguments['revision'] || repository.git.default_branch
+        repository.git.log(ref: revision,
+                           path: arguments['path'],
+                           limit: arguments['limit'],
+                           offset: arguments['skip'],
+                           skip_merges: arguments['skipMerges'],
+                           before: arguments['before'],
+                           after: arguments['after'])
+      rescue Rugged::ObjectError
+        return []
+      end
     end)
   end
 end

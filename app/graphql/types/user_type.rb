@@ -2,8 +2,9 @@
 
 Types::UserType = GraphQL::ObjectType.define do
   name 'User'
-  interfaces [Types::OrganizationalUnitType]
   description 'Data of a user'
+
+  implements Types::OrganizationalUnitType, inherit: true
 
   field :email, types.String do
     description 'Email address of the user'

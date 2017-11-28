@@ -50,10 +50,9 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
 
   field :references, !types[!Types::Git::ReferenceType] do
     description 'The references that point to this commit'
-    property :references
   end
 
-  field :directory, types[!Types::Git::DirectoryEntryType] do
+  field :directory, types[!Types::Git::DirectoryType] do
     description 'The entries of a directory'
     argument :path, !types.ID do
       description 'The path to the directory to list'
@@ -99,19 +98,6 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     end)
   end
 
-  field :document, Types::DocumentType do
-    description 'A document containing OMS data'
-
-    argument :locId, !types.ID do
-      description 'The Loc/Id of the document'
-    end
-
-    resolve(lambda do |commit, arguments, _context|
-      Document.where_commit_sha(commit_sha: commit.id,
-                                loc_id: arguments['locId']).first
-    end)
-  end
-
   field :lsFiles, !types[!types.String] do
     description 'A list of all file paths in the repository'
 
@@ -128,6 +114,87 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
       diffs = []
       commit.diffs.each { |diff| diffs << diff }
       diffs
+    end)
+  end
+
+  field :fileVersion, Types::FileVersionType do
+    description 'A FileVersion for the given path'
+
+    argument :path, !types.ID do
+      description 'The path of the FileVersion'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      repository_slug =
+        commit.repository.path.match(%r{\/([^\/]+\/[^\/]+)\.git\z})[1]
+      FileVersion.first(repository: Repository.first(slug: repository_slug),
+                        commit_sha: commit.id,
+                        path: arguments['path'])
+    end)
+  end
+
+  field :document, Types::DocumentType do
+    description 'A document containing OMS data'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the document'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      Document.where_commit_sha(commit_sha: commit.id,
+                                loc_id: arguments['locId']).first
+    end)
+  end
+
+  field :oms, Types::OMSType do
+    description 'An OMS'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the OMS'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      OMS.where_commit_sha(commit_sha: commit.id,
+                           loc_id: arguments['locId']).first
+    end)
+  end
+
+  field :sentence, Types::SentenceType do
+    description 'A Sentence'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the Sentence'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      Sentence.where_commit_sha(commit_sha: commit.id,
+                                loc_id: arguments['locId']).first
+    end)
+  end
+
+  field :symbol, Types::SymbolType do
+    description 'A Symbol'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the Symbol'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      OMSSymbol.where_commit_sha(commit_sha: commit.id,
+                                 loc_id: arguments['locId']).first
+    end)
+  end
+
+  field :mapping, Types::MappingType do
+    description 'A Mapping'
+
+    argument :locId, !types.ID do
+      description 'The Loc/Id of the Mapping'
+    end
+
+    resolve(lambda do |commit, arguments, _context|
+      Mapping.where_commit_sha(commit_sha: commit.id,
+                               loc_id: arguments['locId']).first
     end)
   end
 end

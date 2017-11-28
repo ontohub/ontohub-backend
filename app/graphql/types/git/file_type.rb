@@ -3,7 +3,8 @@
 Types::Git::FileType = GraphQL::ObjectType.define do
   name 'File'
   description 'A file of a repository'
-  interfaces [Types::Git::DirectoryEntryType]
+
+  implements Types::Git::DirectoryEntryType, inherit: true
 
   field :size, !types.Int do
     description 'The size in bytes'

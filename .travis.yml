@@ -26,21 +26,23 @@ addons:
 matrix:
   fast_finish: true
   allow_failures:
-    - env: WITH_SYSTEM_TEST=1
+    - env: JOB=system-test
   include:
-    - env: WITH_SEEDS=1
+    - env: JOB=seeds
       services:
         - rabbitmq
       before_install:
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       script:
         - bundle exec rails db:recreate:seed
-    - env: WITH_RSPEC=1
+
+    - env: JOB=rspec
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
         - bundle exec rspec --format progress
-    - env: WITH_SYSTEM_TEST=1
+
+    - env: JOB=system-test
       gemfile: $HOME/system-test/Gemfile
       services:
         - rabbitmq

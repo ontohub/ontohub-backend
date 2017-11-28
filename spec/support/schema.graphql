@@ -1,3 +1,33 @@
+# An axiom
+type Axiom implements LocIdBase, Sentence {
+  # The FileRange of this Sentence's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Sentence
+  name: String!
+
+  # The OMS to which this Sentence belongs
+  oms: OMS!
+
+  # The symbols used in this sentence
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+
+  # The definitional text of this Sentence
+  text: String!
+}
+
 # A git branch
 type Branch implements Reference {
   # The name of the reference
@@ -28,7 +58,7 @@ type Commit {
   directory(
     # The path to the directory to list
     path: ID!
-  ): [DirectoryEntry!]
+  ): [Directory!]
 
   # A document containing OMS data
   document(
@@ -45,14 +75,32 @@ type Commit {
     path: ID!
   ): File
 
+  # A FileVersion for the given path
+  fileVersion(
+    # The path of the FileVersion
+    path: ID!
+  ): FileVersion
+
   # The sha hash of the commit
   id: ID!
 
   # A list of all file paths in the repository
   lsFiles: [String!]!
 
+  # A Mapping
+  mapping(
+    # The Loc/Id of the Mapping
+    locId: ID!
+  ): Mapping
+
   # The commit message
   message: String!
+
+  # An OMS
+  oms(
+    # The Loc/Id of the OMS
+    locId: ID!
+  ): OMS
 
   # The parents of the commit
   parentIds: [ID!]!
@@ -62,6 +110,18 @@ type Commit {
 
   # The references that point to this commit
   references: [Reference!]!
+
+  # A Sentence
+  sentence(
+    # The Loc/Id of the Sentence
+    locId: ID!
+  ): Sentence
+
+  # A Symbol
+  symbol(
+    # The Loc/Id of the Symbol
+    locId: ID!
+  ): Symbol
 }
 
 # Possible actions for a commit
@@ -72,6 +132,168 @@ enum CommitAction {
   rename
   rename_and_update
   update
+}
+
+# A conjecture
+interface Conjecture {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # The FileRange of this Sentence's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Sentence
+  name: String!
+
+  # The OMS to which this Sentence belongs
+  oms: OMS!
+
+  # The attempts to prove this Conjecture
+  proofAttempts(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [ProofAttempt!]!
+
+  # The reasoning status of this Conjecture
+  reasoningStatus: ReasoningStatus!
+
+  # The symbols used in this sentence
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+
+  # The definitional text of this Sentence
+  text: String!
+}
+
+# A conservativity status
+type ConservativityStatus {
+  # The proved conservativity value
+  proved: String!
+
+  # The required conservativity value
+  required: String!
+}
+
+# An attempt to check consistency of an OMS
+type ConsistencyCheckAttempt implements ReasoningAttempt {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # Axioms that have been generated during reasoning
+  generatedAxioms: [GeneratedAxiom!]!
+
+  # The ID of this ReasoningAttempt
+  id: Int!
+
+  # The number of this ReasoningAttempt
+  number: Int!
+
+  # The OMS of interest
+  oms: OMS!
+
+  # The used ReasonerConfiguration
+  reasonerConfiguration: ReasonerConfiguration!
+
+  # The output of the Reasoner
+  reasonerOutput: ReasonerOutput
+
+  # The reasoning status of this ReasoningAttempt
+  reasoningStatus: ReasoningStatus!
+
+  # The time it took to run the reasoner
+  timeTaken: Int
+
+  # The used Reasoner
+  usedReasoner: Reasoner!
+}
+
+# A counter-theorem (disproved conjecture)
+type CounterTheorem implements Conjecture, LocIdBase, Sentence {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # The FileRange of this Sentence's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Sentence
+  name: String!
+
+  # The OMS to which this Sentence belongs
+  oms: OMS!
+
+  # The attempts to prove this Conjecture
+  proofAttempts(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [ProofAttempt!]!
+
+  # The reasoning status of this Conjecture
+  reasoningStatus: ReasoningStatus!
+
+  # The symbols used in this sentence
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+
+  # The definitional text of this Sentence
+  text: String!
+}
+
+# A debug message
+type Debug implements Diagnosis {
+  # The FileRange that this message is about
+  fileRange: FileRange
+
+  # The FileVersion which this message is about
+  fileVersion: FileVersion!
+
+  # The number of this message
+  number: Int!
+
+  # The actual message
+  text: String!
+}
+
+# A message about a file's content
+interface Diagnosis {
+  # The FileRange that this message is about
+  fileRange: FileRange
+
+  # The FileVersion which this message is about
+  fileVersion: FileVersion!
+
+  # The number of this message
+  number: Int!
+
+  # The actual message
+  text: String!
 }
 
 # Change of a file
@@ -162,9 +384,36 @@ interface DirectoryEntry {
 interface Document {
   # All DocumentLinks that this Document is part of
   documentLinks(
+    # Maximum number of entries to list
+    limit: Int = 20
+
     # Specifies which end of the link the current document is. Possible values: 'source', 'target'
     origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
   ): [DocumentLink!]!
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The documents which import this Document
+  importedBy(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Document!]!
+
+  # The documents which are imported by this Document
+  imports(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Document!]!
 
   # The Loc/Id of the document
   locId: ID!
@@ -177,6 +426,39 @@ type DocumentLink {
 
   # The target Document
   target: Document!
+}
+
+# An error message
+type Error implements Diagnosis {
+  # The FileRange that this message is about
+  fileRange: FileRange
+
+  # The FileVersion which this message is about
+  fileVersion: FileVersion!
+
+  # The number of this message
+  number: Int!
+
+  # The actual message
+  text: String!
+}
+
+# Specifies the state of evaluation
+enum EvaluationState {
+  # The object has been enqueued but is not yet processing
+  enqueued
+
+  # The object has been evaluated successfully
+  finished_successfully
+
+  # The evaluation of this object has failed
+  finished_unsuccessfully
+
+  # The object has not yet been enqueued for evaluation
+  not_yet_enqueued
+
+  # The object is currently in evaluation
+  processing
 }
 
 # A file of a repository
@@ -242,6 +524,51 @@ enum FileEncoding {
   plain
 }
 
+# Positional information of a text element in a file
+type FileRange {
+  # The column of the text element's end
+  endColumn: Int!
+
+  # The line of the text element's end
+  endLine: Int!
+
+  # The file path
+  path: String!
+
+  # The column of the text element's beginning
+  startColumn: Int!
+
+  # The line of the text element's beginning
+  startLine: Int!
+}
+
+# A versioned file
+type FileVersion {
+  # The Commit that introduced this FileVersion
+  commit: Commit!
+
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # The path of this file
+  path: String!
+
+  # The repository to which this FileVersion belongs
+  repository: Repository!
+}
+
+# An that has been generated during reasoning
+type GeneratedAxiom {
+  # The ID of the GeneratedAxiom
+  id: Int!
+
+  # The ReasoningAttempt in which this axiom has been generated
+  reasoningAttempt: ReasoningAttempt!
+
+  # The definitional text
+  text: String!
+}
+
 # Data of a git user
 type GitUser {
   # Corresponding Ontohub account of the user
@@ -287,16 +614,118 @@ type GlobalSearchScope {
   entries: [RankedGlobalSearchEntry!]!
 }
 
+# A hint
+type Hint implements Diagnosis {
+  # The FileRange that this message is about
+  fileRange: FileRange
+
+  # The FileVersion which this message is about
+  fileVersion: FileVersion!
+
+  # The number of this message
+  number: Int!
+
+  # The actual message
+  text: String!
+}
+
+# A logical language
+type Language {
+  # Where this language has been defined
+  definedBy: String!
+
+  # The description of this language
+  description: String!
+
+  # The ID of this language
+  id: ID!
+
+  # A LanguageMapping of which this Language is the source or the target
+  languageMappings(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Specifies which end of the link the current Language is
+    origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [LanguageMapping!]!
+
+  # The logics of this Language
+  logics(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Logic!]!
+
+  # The name of this language
+  name: String!
+
+  # The standardization status of this language
+  standardizationStatus: String!
+}
+
+# A mapping between two languages
+type LanguageMapping {
+  # The ID of this LanguageMapping
+  id: ID!
+
+  # The source language
+  source: Language!
+
+  # The target language
+  target: Language!
+}
+
 # A Library is a container for any number of OMS
-type Library implements Document {
+type Library implements Document, LocIdBase {
   # All DocumentLinks that this Document is part of
   documentLinks(
+    # Maximum number of entries to list
+    limit: Int = 20
+
     # Specifies which end of the link the current document is. Possible values: 'source', 'target'
     origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
   ): [DocumentLink!]!
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The documents which import this Document
+  importedBy(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Document!]!
+
+  # The documents which are imported by this Document
+  imports(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Document!]!
 
   # The Loc/Id of the document
   locId: ID!
+
+  # A list of OMS in this Library
+  oms(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [OMS!]!
 }
 
 # Specifies which end of the link the current object is
@@ -309,6 +738,246 @@ enum LinkOrigin {
 
   # The current object is the target of the link
   target
+}
+
+# An object with a Loc/Id
+interface LocIdBase {
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+}
+
+# A logic
+type Logic {
+  # The ID of this logic
+  id: ID!
+
+  # The language to which this logic belongs
+  language: Language!
+
+  # A LogicMapping of which this Logic is the source or the target
+  logicMappings(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Specifies which end of the link the current Logic is
+    origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [LogicMapping!]!
+
+  # The name of this logic
+  name: String!
+}
+
+# A mapping between two logics
+type LogicMapping {
+  # The ID of this LogicMapping
+  id: ID!
+
+  # The LanguageMapping to which this LogicMapping belongs
+  languageMapping: LanguageMapping!
+
+  # The source logic
+  source: Logic!
+
+  # The target logic
+  target: Logic!
+}
+
+# A PremiseSelection whose premises were selected by hand
+type ManualPremiseSelection implements PremiseSelection {
+  # The ID of the PremiseSelection
+  id: Int!
+
+  # The used ReasonerConfiguration
+  reasonerConfiguration: ReasonerConfiguration!
+
+  # The selected premises
+  selectedPremises(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Sentence!]!
+}
+
+# A mapping between two OMS
+type Mapping implements LocIdBase {
+  # The ConservativityStatus of this Mapping
+  conservativityStatus: ConservativityStatus!
+
+  # The human-friendly name of this Mapping
+  displayName: String!
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Language of the Mapping's freeness parameter
+  freenessParameterLanguage: Language
+
+  # The OMS of the Mapping's freeness parameter
+  freenessParameterOMS: OMS
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The technical name of this Mapping
+  name: String!
+
+  # The origin of this Mapping
+  origin: MappingOrigin!
+
+  # True if there are open proofs in this Mapping
+  pending: Boolean!
+
+  # The SignatureMorphism that this Mapping uses
+  signatureMorphism: SignatureMorphism!
+
+  # The source of the Mapping
+  source: OMS!
+
+  # The target of the Mapping
+  target: OMS!
+
+  # The type of this Mapping
+  type: MappingType!
+}
+
+# Specifies the origin (in the DOL document) of the Mapping
+enum MappingOrigin {
+  # implied extension
+  dg_implies_link
+
+  # alignment
+  dg_link_align
+
+  # closure OMS
+  dg_link_closed_lenv
+
+  # extension OMS
+  dg_link_extension
+
+  # fitting view on an instantiation of a parameterised OMS (CASL syntax)
+  dg_link_fit_view
+
+  # implict fitting view on an instantiation of a parameterised OMS (CASL syntax)
+  dg_link_fit_view_imp
+
+  # flattening of an OMS translation
+  dg_link_flattening_rename
+
+  # flattening of an OMS union
+  dg_link_flattening_union
+
+  # CASL imports
+  dg_link_imports
+
+  # reference to an OMS
+  dg_link_inst
+
+  # argument of a parameterised OMS (CASL syntax)
+  dg_link_inst_arg
+
+  # intersection
+  dg_link_intersect
+
+  # morphism created during an instantiation of a parameterised OMS (CASL syntax)
+  dg_link_morph
+
+  # proof within the development graph calculus
+  dg_link_proof
+
+  # refinement of OMS
+  dg_link_refinement
+
+  # translation OMS
+  dg_link_translation
+
+  # development graph calculus
+  dg_link_verif
+
+  # interpretation (view)
+  dg_link_view
+
+  # that of the target OMS of the mapping
+  see_source
+
+  # that of the source OMS of the mapping
+  see_target
+
+  # used for testing purposes
+  test
+}
+
+# Specifies the type of the Mapping (=link in the development graph)
+enum MappingType {
+  # cofree definition link
+  cofree_def
+
+  # open cofree theorem link
+  cofree_open
+
+  # proved cofree theorem link
+  cofree_proved
+
+  # free definition link
+  free_def
+
+  # open free theorem link
+  free_open
+
+  # proved free theorem link
+  free_proved
+
+  # global definition link
+  global_def
+
+  # open global theorem link
+  global_thm_open
+
+  # proved global theorem link
+  global_thm_proved
+
+  # hiding defintion link
+  hiding_def
+
+  # open hiding theorem link
+  hiding_open
+
+  # proved hiding theorem link
+  hiding_proved
+
+  # local definition link
+  local_def
+
+  # open local theorem link
+  local_thm_open
+
+  # proved local theorem link
+  local_thm_proved
+
+  # minimization definition link
+  minimize_def
+
+  # open minimization theorem link
+  minimize_open
+
+  # proved minimization theorem link
+  minimize_proved
+
+  # free definition link generated by Maude
+  np_free_def
+
+  # open free theorem link generated by Maude
+  np_free_open
+
+  # proved free theorem link generated by Maude
+  np_free_proved
 }
 
 # Base mutation type
@@ -569,15 +1238,45 @@ type Mutation {
 }
 
 # A NativeDocument is a container for exactly one OMS
-type NativeDocument implements Document {
+type NativeDocument implements Document, LocIdBase {
   # All DocumentLinks that this Document is part of
   documentLinks(
+    # Maximum number of entries to list
+    limit: Int = 20
+
     # Specifies which end of the link the current document is. Possible values: 'source', 'target'
     origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
   ): [DocumentLink!]!
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The documents which import this Document
+  importedBy(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Document!]!
+
+  # The documents which are imported by this Document
+  imports(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Document!]!
 
   # The Loc/Id of the document
   locId: ID!
+
+  # The OMS in this NativeDocument
+  oms: OMS!
 }
 
 # Data for committing
@@ -640,6 +1339,240 @@ input NewUser {
 
   # Name/id of the user
   username: ID!
+}
+
+# An Ontology, Model or Specification (OMS)
+type OMS implements LocIdBase {
+  # The conservativity status of this OMS
+  conservativityStatus: ConservativityStatus!
+
+  # The attempts to check this OMS's consistency
+  consistencyCheckAttempts(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [ConsistencyCheckAttempt!]!
+
+  # The description of this OMS
+  description: String
+
+  # The human-friendly name of this OMS
+  displayName: String!
+
+  # The Document containing this OMS
+  document: Document!
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The free normal form of this OMS
+  freeNormalForm: OMS
+
+  # The signature morphism leading to the free normal form
+  freeNormalFormSignatureMorphism: SignatureMorphism
+
+  # Flag indicating whether this OMS uses freeness
+  labelHasFree: Boolean!
+
+  # Flag indicating whether this OMS uses hiding
+  labelHasHiding: Boolean!
+
+  # The Language of this OMS
+  language: Language!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The Logic of this OMS
+  logic: Logic!
+
+  # Mappings of which this OMS is the the source or the target
+  mappings(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Specifies which end of the link the current OMS is
+    origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Mapping]!
+
+  # The technical name of this OMS
+  name: String!
+
+  # The technical name extension of this OMS
+  nameExtension: String!
+
+  # The index of this OMS by the name+extension
+  nameExtensionIndex: Int!
+
+  # The Range of the name of this OMS
+  nameFileRange: FileRange
+
+  # The normal form of this OMS
+  normalForm: OMS
+
+  # The signature morphism leading to the normal form
+  normalFormSignatureMorphism: SignatureMorphism
+
+  # The origin of this OMS
+  origin: OMSOrigin!
+
+  # All sentneces in this OMS
+  sentences(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Sentence!]!
+
+  # The Serialization of this OMS
+  serialization: Serialization
+
+  # The Signature of this OMS
+  signature: Signature!
+}
+
+# Specifies the origin of the OMS
+enum OMSOrigin {
+  # cofree OMS
+  cofree
+
+  # alignment
+  dg_alignment
+
+  # basic OMS
+  dg_basic
+
+  # basic OMS
+  dg_basic_spec
+
+  # closed OMS (CASL syntax)
+  dg_closed
+
+  # data part of an OMS
+  dg_data
+
+  # empty OMS
+  dg_empty
+
+  # extension OMS
+  dg_extension
+
+  # OMS module extraction
+  dg_extract
+
+  # fitting argument (CASL syntax)
+  dg_fit_spec
+
+  # fitting view (CASL syntax)
+  dg_fit_view
+
+  # flattening of an OMS
+  dg_flattening
+
+  # formal parameter OMS
+  dg_formal_params
+
+  # import OMS (CASL syntax)
+  dg_imports
+
+  # instantiation of a parameterized OMS (CASL syntax)
+  dg_inst
+
+  # computation of strongly connected component
+  dg_integrated_scc
+
+  # OMS intersection
+  dg_intersect
+
+  # local OMS (CASL syntax)
+  dg_local
+
+  # logic coercion OMS
+  dg_logic_coercion
+
+  # logic qualification
+  dg_logic_qual
+
+  # computation of normal form or colimit
+  dg_normal_form
+
+  # proof in the development graph calculus
+  dg_proof
+
+  # OMS hiding
+  dg_restriction
+
+  # OMS translation after hiding
+  dg_reveal_translation
+
+  # used for testing purposes
+  dg_test
+
+  # OMS translation
+  dg_translation
+
+  # OMS union
+  dg_union
+
+  # free OMS
+  free
+
+  # minimization OMS
+  minimize
+
+  # free OMS generated by Maude
+  np_free
+}
+
+# An open (unproved) conjecture
+type OpenConjecture implements Conjecture, LocIdBase, Sentence {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # The FileRange of this Sentence's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Sentence
+  name: String!
+
+  # The OMS to which this Sentence belongs
+  oms: OMS!
+
+  # The attempts to prove this Conjecture
+  proofAttempts(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [ProofAttempt!]!
+
+  # The reasoning status of this Conjecture
+  reasoningStatus: ReasoningStatus!
+
+  # The symbols used in this sentence
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+
+  # The definitional text of this Sentence
+  text: String!
 }
 
 # Data of an organization
@@ -730,6 +1663,57 @@ interface OrganizationalUnit {
   ): [Repository!]!
 }
 
+# A selection of premises for reasoning
+interface PremiseSelection {
+  # The ID of the PremiseSelection
+  id: Int!
+
+  # The used ReasonerConfiguration
+  reasonerConfiguration: ReasonerConfiguration!
+
+  # The selected premises
+  selectedPremises(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Sentence!]!
+}
+
+# An attempt to prove a conjecture
+type ProofAttempt implements ReasoningAttempt {
+  # The conjecture of interest
+  conjecture: Conjecture!
+
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # Axioms that have been generated during reasoning
+  generatedAxioms: [GeneratedAxiom!]!
+
+  # The ID of this ReasoningAttempt
+  id: Int!
+
+  # The number of this ReasoningAttempt
+  number: Int!
+
+  # The used ReasonerConfiguration
+  reasonerConfiguration: ReasonerConfiguration!
+
+  # The output of the Reasoner
+  reasonerOutput: ReasonerOutput
+
+  # The reasoning status of this ReasoningAttempt
+  reasoningStatus: ReasoningStatus!
+
+  # The time it took to run the reasoner
+  timeTaken: Int
+
+  # The used Reasoner
+  usedReasoner: Reasoner!
+}
+
 # A SSH public key
 type PublicKey {
   # MD5 fingerprint of the key
@@ -744,6 +1728,36 @@ type PublicKey {
 
 # Base query type
 type Query {
+  # A GeneratedAxiom
+  generatedAxiom(
+    # The id of the GeneratedAxiom
+    id: Int!
+  ): GeneratedAxiom
+
+  # A Language for the given ID
+  language(
+    # The ID of the Langauge
+    id: ID!
+  ): Language
+
+  # A LanguageMapping for the given ID
+  languageMapping(
+    # The ID of the LangaugeMapping
+    id: ID!
+  ): LanguageMapping
+
+  # A Logic for the given ID
+  logic(
+    # The ID of the Langauge
+    id: ID!
+  ): Logic
+
+  # A LogicMapping for the given ID
+  logicMapping(
+    # The ID of the LogicMapping
+    id: ID!
+  ): LogicMapping
+
   # The currently signed in user
   me: User
 
@@ -752,6 +1766,30 @@ type Query {
     # ID of the organizational unit
     id: ID!
   ): OrganizationalUnit
+
+  # A PremiseSelection
+  premiseSelection(
+    # The id of the PremiseSelection
+    id: Int!
+  ): PremiseSelection
+
+  # A Reasoner
+  reasoner(
+    # The id of the Reasoner
+    id: ID!
+  ): Reasoner
+
+  # A ReasonerConfiguration
+  reasonerConfiguration(
+    # The id of the ReasonerConfiguration
+    id: Int!
+  ): ReasonerConfiguration
+
+  # A ReasoningAttempt
+  reasoningAttempt(
+    # The id of the ReasoningAttempt
+    id: Int!
+  ): ReasoningAttempt
 
   # The repository for the given ID
   repository(
@@ -765,6 +1803,24 @@ type Query {
     query: String!
   ): SearchResult!
 
+  # A Serialization for the given ID
+  serialization(
+    # The ID of the Serialization
+    id: ID!
+  ): Serialization
+
+  # A Signature
+  signature(
+    # The id of the Signature
+    id: Int!
+  ): Signature
+
+  # A SignatureMorphism
+  signatureMorphism(
+    # The id of the SignatureMorphism
+    id: Int!
+  ): SignatureMorphism
+
   # The version of the running backend
   version: Version!
 }
@@ -777,6 +1833,101 @@ type RankedGlobalSearchEntry {
   # The ranking of the result entry. The higher the value, the better it
   # matches the search query
   ranking: Float!
+}
+
+# A Reasoning system (prover or consistency checker)
+type Reasoner {
+  # The human-friendly name of this reasoner
+  displayName: String!
+
+  # The ID of the reasoner
+  id: ID!
+}
+
+# A configuration of a Reasoner for a ReasoningAttempt
+type ReasonerConfiguration {
+  # The configured Reasoner
+  configuredReasoner: Reasoner
+
+  # The ID of the ReasonerConfiguration
+  id: Int!
+
+  # The PremiseSelections that use this configuration
+  premiseSelections: [PremiseSelection!]!
+
+  # The reasoningAttempts that use this configuration
+  reasoningAttempts: [ReasoningAttempt!]!
+}
+
+# The output of a Reasoner
+type ReasonerOutput {
+  # The Reasoner that produced this output
+  reasoner: Reasoner!
+
+  # The ReasoningAttempt in which this axiom has been generated
+  reasoningAttempt: ReasoningAttempt!
+
+  # The actual output
+  text: String!
+}
+
+# An attempt to prove a conjecture or check consistency of an OMS
+interface ReasoningAttempt {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # Axioms that have been generated during reasoning
+  generatedAxioms: [GeneratedAxiom!]!
+
+  # The ID of this ReasoningAttempt
+  id: Int!
+
+  # The number of this ReasoningAttempt
+  number: Int!
+
+  # The used ReasonerConfiguration
+  reasonerConfiguration: ReasonerConfiguration!
+
+  # The output of the Reasoner
+  reasonerOutput: ReasonerOutput
+
+  # The reasoning status of this ReasoningAttempt
+  reasoningStatus: ReasoningStatus!
+
+  # The time it took to run the reasoner
+  timeTaken: Int
+
+  # The used Reasoner
+  usedReasoner: Reasoner!
+}
+
+# Specifies the reasoning status of a Conjecture
+enum ReasoningStatus {
+  # Contradictory: There are reasoning attempts that found a proof as well as some
+  # that found a counter example. This indicates a malfunction of the reasoning system.
+  CONTR
+
+  # CounterSatisfiable: A counter example was found.
+  CSA
+
+  # CounterSatisfiable on a subset of axioms: A counter example was found but only
+  # a subset of the axioms was used. There is no conclusive result.
+  CSAS
+
+  # Error: A reasoning attempt has failed.
+  ERR
+
+  # Open: No reasoning attempt has been finished.
+  OPN
+
+  # ResourceOut: The reasoner ran out of time/memory.
+  RSO
+
+  # Theorem: A proof was found.
+  THM
+
+  # Unknown: There is no solution.
+  UNK
 }
 
 # A git reference
@@ -816,14 +1967,14 @@ type Repository {
 
   # The changes between two commits
   diff(
-    # The base commit for the diff
-    from: String!
+    # The base revision for the diff
+    from: ID!
 
     # An optional list of paths to restrict the diff to
     paths: [String!]
 
-    # The target commit for the diff
-    to: String!
+    # The target revision for the diff
+    to: ID!
   ): [Diff!]!
 
   # ID of the repository
@@ -950,6 +2101,48 @@ type SearchResult {
   ): GlobalSearchScope!
 }
 
+# A logical sentence
+interface Sentence {
+  # The FileRange of this Sentence's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Sentence
+  name: String!
+
+  # The OMS to which this Sentence belongs
+  oms: OMS!
+
+  # The symbols used in this sentence
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+
+  # The definitional text of this Sentence
+  text: String!
+}
+
+# A serialization of a language
+type Serialization {
+  # The ID of this serialization
+  id: ID!
+
+  # The language to which this serialization belongs
+  language: Language!
+
+  # The name of this serialization
+  name: String!
+}
+
 # Data of a signed in user
 type SessionToken {
   # The session token
@@ -957,6 +2150,205 @@ type SessionToken {
 
   # The current user
   me: User!
+}
+
+# A signautre of an OMS is a container for the OMS's symbols
+type Signature {
+  # The signature's symbols in JSON
+  asJson: String!
+
+  # The ID of this signature
+  id: Int!
+
+  # OMS that have this signature
+  oms: [OMS!]!
+
+  # The SignatureMorphisms of which this Signature is the target
+  signatureMorphisms(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Specifies which end of the link the current Signature is
+    origin: LinkOrigin = any
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [SignatureMorphism!]!
+
+  # The Symbols of this Signature
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Whether or not only (non-)imported Symbols should be retrieved
+    origin: SymbolOrigin = either
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+}
+
+# A morphism between two Signatures
+type SignatureMorphism {
+  # The SignatureMorphism's mappings in JSON
+  asJson: String!
+
+  # The ID of the SignatureMorphism
+  id: Int!
+
+  # The LogicMapping which this SignatureMorphism uses
+  logicMapping: LogicMapping!
+
+  # The Mappings that use this SignatureMorphism
+  mappings: [Mapping!]!
+
+  # The source Signature
+  source: Signature!
+
+  # The SymbolMappings of this SignatureMorphism
+  symbolMappings: [SymbolMapping!]!
+
+  # The target Signature
+  target: Signature!
+}
+
+# The SInE premise selection heuristic
+type SinePremiseSelection implements PremiseSelection {
+  # The maximum number of iterations to be done by the SInE heuristic. The higher,
+  # the more premises are selected. A null value indicates that this feature is disabled.
+  depthLimit: Int!
+
+  # The ID of the PremiseSelection
+  id: Int!
+
+  # The number of premises to be selected at most. A null value indicates that this feature is disabled.
+  premiseNumberLimit: Int
+
+  # The used ReasonerConfiguration
+  reasonerConfiguration: ReasonerConfiguration!
+
+  # The selected premises
+  selectedPremises(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Sentence!]!
+
+  # Shows in how many Sentences of the OMS a Symbol occurs
+  sineSymbolCommonnesses(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [SineSymbolCommonness!]!
+
+  # Shows the tolerance needed for a Symbol to trigger (select) a premise
+  sineSymbolPremiseTriggers(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [SineSymbolPremiseTrigger!]!
+
+  # A higher tolerance value causes more premises to be selected. Minimum value: 1.0.
+  tolerance: Float!
+}
+
+# Shows in how many Sentences of the OMS a Symbol occurs
+type SineSymbolCommonness {
+  # The commonness of the symbol (number of sentences in which it occurs)
+  commonness: Int!
+
+  # The SinePremiseSelection
+  sinePremiseSelection: SinePremiseSelection!
+
+  # The Symbol
+  symbol: Symbol!
+}
+
+# Shows the tolerance needed for a Symbol to trigger (select) a premise
+type SineSymbolPremiseTrigger {
+  # The tolerance needed for a Symbol to trigger (select) a premise
+  minTolerance: Float!
+
+  # The premise
+  premise: Sentence!
+
+  # The SinePremiseSelection
+  sinePremiseSelection: SinePremiseSelection!
+
+  # The Symbol
+  symbol: Symbol!
+}
+
+# A (non-logical) symbol
+type Symbol implements LocIdBase {
+  # The FileRange of this Symbol's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The fully qualified name of the Symbol
+  fullName: String!
+
+  # The kind of the Symbol
+  kind: String!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Symbol
+  name: String!
+
+  # The OMS to which this Symbol belongs to
+  oms: OMS!
+
+  # The Sentences in which this Symbol occurs
+  sentences(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Sentence!]!
+
+  # The Signatures in which this Symbol occurs
+  signatures(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Signature!]!
+}
+
+# A mapping between two symbols along a SignatureMorphism
+type SymbolMapping {
+  # The SignatureMorphism to which this SymbolMapping belongs
+  signatureMorphism: SignatureMorphism!
+
+  # The source symbol
+  source: Symbol!
+
+  # The target symbol
+  target: Symbol!
+}
+
+# Specifies which end of the link the current Symbol is
+enum SymbolOrigin {
+  # The current Symbol is either imported or or not
+  either
+
+  # The current Symbol is imported
+  imported
+
+  # The current Symbol is not imported
+  non_imported
 }
 
 # A git tag
@@ -969,6 +2361,51 @@ type Tag implements Reference {
 
   # The referenced commit
   target: Commit!
+}
+
+# A theorem (proved conjecture)
+type Theorem implements Conjecture, LocIdBase, Sentence {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # The FileRange of this Sentence's definition
+  fileRange: FileRange
+
+  # The FileVersion to which this object belongs
+  fileVersion: FileVersion!
+
+  # The Loc/Id of the document
+  locId: ID!
+
+  # The name of the Sentence
+  name: String!
+
+  # The OMS to which this Sentence belongs
+  oms: OMS!
+
+  # The attempts to prove this Conjecture
+  proofAttempts(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [ProofAttempt!]!
+
+  # The reasoning status of this Conjecture
+  reasoningStatus: ReasoningStatus!
+
+  # The symbols used in this sentence
+  symbols(
+    # Maximum number of entries to list
+    limit: Int = 20
+
+    # Skip the first n entries
+    skip: Int = 0
+  ): [Symbol!]!
+
+  # The definitional text of this Sentence
+  text: String!
 }
 
 # Represents the time
@@ -1068,4 +2505,19 @@ type Version {
 
   # Last published version
   tag: String!
+}
+
+# A warning
+type Warn implements Diagnosis {
+  # The FileRange that this message is about
+  fileRange: FileRange
+
+  # The FileVersion which this message is about
+  fileVersion: FileVersion!
+
+  # The number of this message
+  number: Int!
+
+  # The actual message
+  text: String!
 }

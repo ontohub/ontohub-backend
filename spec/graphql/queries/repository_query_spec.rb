@@ -1,99 +1,155 @@
 # frozen_string_literal: true
 
-require 'ostruct'
 require 'rails_helper'
 
-RSpec.describe 'Repository query' do
+RSpec.describe 'repository query' do
   let(:context) { {} }
-  let(:variables) { {'id' => subject.to_param} }
-
-  let(:result) do
-    OntohubBackendSchema.execute(
-      query_string,
-      context: context,
-      variables: variables
-    )
-  end
 
   let(:query_string) do
     <<-QUERY
-    query Repository($id: ID!) {
+    query ($id: ID!) {
       repository(id: $id) {
+        branches
+        contentType
+        defaultBranch
+        description
         id
         name
-        description
         owner {
           id
         }
-        visibility
-        contentType
-        defaultBranch
-        branches
         permissions {
           role
         }
+        tags
+        visibility
       }
     }
     QUERY
   end
 
-  subject { repository }
+  let(:repository_db) { create(:repository, public_access: access == 'public') }
+  let!(:repository) do
+    create(:repository_compound, :not_empty, repository: repository_db)
+  end
+  let!(:tags) { create_list(:tag, 2, repository: repository) }
+  let(:repository_data) do
+    {
+      'branches' => match_array(repository.git.branch_names),
+      'contentType' => repository.content_type,
+      'defaultBranch' => repository.git.default_branch,
+      'description' => repository.description,
+      'id' => repository.to_param,
+      'name' => repository.name,
+      'owner' => {'id' => repository.owner.to_param},
+      'tags' => match_array(tags.map(&:name)),
+      'visibility' => access,
+    }
+  end
 
-  context 'existing repository' do
-    let!(:user) { create :user }
-    let!(:repository) do
-      create(:repository_compound, :not_empty)
-    end
+  let(:current_user) { create(:user) }
 
-    let(:context) { {current_user: user} }
+  let(:variables_existent) { {'id' => repository.to_param} }
+  let(:variables_not_existent) { {'id' => "bad-#{repository.to_param}"} }
 
-    before do
-      repository.add_member(user, 'admin')
-    end
+  %w(read write admin).each do |permission|
+    context "with #{permission} permissions" do
+      let(:permissions) { {'role' => permission} }
 
-    it 'returns the repository fields' do
-      repository = result['data']['repository']
-      expect(repository).to include(
-        'id' => subject.to_param,
-        'name' => subject.name,
-        'description' => subject.description,
-        'owner' => {'id' => subject.owner.to_param},
-        'visibility' => subject.public_access ? 'public' : 'private',
-        'contentType' => subject.content_type,
-        'defaultBranch' => subject.git.default_branch,
-        'branches' => match_array(subject.git.branch_names),
-        'permissions' => {'role' => 'admin'}
-      )
+      before do
+        repository.add_member(current_user, permission)
+      end
+
+      let(:expectation) do
+        repository_data.merge('permissions' => {'role' => permission})
+      end
+
+      context 'with public access' do
+        let(:access) { 'public' }
+
+        it_behaves_like 'a GraphQL query', 'repository' do
+          let(:expectation_signed_in_existent) do
+            match('data' => {'repository' => include(
+              expectation.merge('permissions' => permissions)
+            )})
+          end
+          let(:expectation_signed_in_not_existent) do
+            match('data' => {'repository' => nil})
+          end
+          let(:expectation_not_signed_in_existent) do
+            match('data' => {'repository' => include(
+              expectation.merge('permissions' => nil)
+            )})
+          end
+          let(:expectation_not_signed_in_not_existent) do
+            expectation_signed_in_not_existent
+          end
+        end
+      end
+
+      context 'with private access' do
+        let(:access) { 'private' }
+
+        it_behaves_like 'a GraphQL query', 'repository' do
+          let(:expectation_signed_in_existent) do
+            match('data' => {'repository' => include(
+              expectation.merge('permissions' => permissions)
+            )})
+          end
+          let(:expectation_signed_in_not_existent) do
+            match('data' => {'repository' => nil})
+          end
+          let(:expectation_not_signed_in_existent) do
+            expectation_signed_in_not_existent
+          end
+          let(:expectation_not_signed_in_not_existent) do
+            expectation_signed_in_not_existent
+          end
+        end
+      end
     end
   end
 
-  context 'non-existant repository' do
-    let(:repository) { OpenStruct.new(to_param: 'bad/slug') }
+  context 'without permissions' do
+    context 'with public access' do
+      let(:access) { 'public' }
+      let(:expectation) do
+        repository_data.merge('permissions' => nil)
+      end
 
-    it 'returns null' do
-      repository = result['data']['repository']
-      expect(repository).to be_nil
+      it_behaves_like 'a GraphQL query', 'repository' do
+        let(:expectation_signed_in_existent) do
+          match('data' => {'repository' => include(expectation)})
+        end
+        let(:expectation_signed_in_not_existent) do
+          match('data' => {'repository' => nil})
+        end
+        let(:expectation_not_signed_in_existent) do
+          match('data' => {'repository' => include(expectation)})
+        end
+        let(:expectation_not_signed_in_not_existent) do
+          expectation_signed_in_not_existent
+        end
+      end
     end
 
-    it 'does not return an error' do
-      expect(subject['errors'] || {}).
-        not_to include(include('message' => 'resource not found'))
-    end
-  end
+    context 'with private access' do
+      let(:access) { 'private' }
 
-  context 'private repository' do
-    let!(:repository) do
-      create(:repository_compound, :not_empty, :private)
-    end
-
-    it 'returns null' do
-      repository = result['data']['repository']
-      expect(repository).to be_nil
-    end
-
-    it 'does not return an error' do
-      expect(result['errors'] || {}).
-        not_to include(include('message' => 'resource not found'))
+      it_behaves_like 'a GraphQL query', 'repository' do
+        let(:expectation_signed_in_existent) do
+          expectation_signed_in_not_existent
+        end
+        let(:expectation_signed_in_not_existent) do
+          match('data' => {'repository' => nil})
+        end
+        let(:expectation_not_signed_in_existent) do
+          expectation_signed_in_not_existent
+        end
+        let(:expectation_not_signed_in_not_existent) do
+          expectation_signed_in_not_existent
+        end
+      end
     end
   end
 end
