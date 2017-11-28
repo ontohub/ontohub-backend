@@ -72,6 +72,8 @@ GEM
     bcrypt (3.1.11)
     binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
+    bootsnap (1.1.5)
+      msgpack (~> 1.0)
     bringit (1.0.0)
       activesupport (>= 4.0)
       charlock_holmes (~> 0.7.3)
@@ -223,6 +225,7 @@ GEM
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
+    msgpack (1.1.0)
     multi_json (1.12.2)
     multipart-post (2.0.0)
     nio4r (2.1.0)
@@ -387,6 +390,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print (~> 1.8.0)
+  bootsnap
   bringit (~> 1.0.0)
   bunny
   bunny-mock (~> 1.7.0)
