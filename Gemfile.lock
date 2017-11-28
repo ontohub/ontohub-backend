@@ -245,7 +245,7 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    pry-byebug (3.5.0)
+    pry-byebug (3.5.1)
       byebug (~> 9.1)
       pry (~> 0.10)
     pry-rails (0.3.6)
@@ -411,7 +411,7 @@ DEPENDENCIES
   listen (~> 3.1.5)
   ontohub-models!
   pry (~> 0.11.3)
-  pry-byebug (~> 3.5.0)
+  pry-byebug (~> 3.5.1)
   pry-rails (~> 0.3.4)
   pry-rescue (~> 1.4.4)
   pry-stack_explorer (~> 0.4.9.2)
