@@ -42,7 +42,7 @@ class RepositoryCompound
     Sequel::Model.db.transaction do
       new = repository.new?
       repository.save
-      @git = Gitlab::Git::Wrapper.create(git_path) if repository.exists? && new
+      @git = Bringit::Wrapper.create(git_path) if repository.exists? && new
       true
     end
   end
@@ -56,7 +56,7 @@ class RepositoryCompound
   end
 
   def git
-    @git ||= Gitlab::Git::Wrapper.new(git_path) unless repository.nil?
+    @git ||= Bringit::Wrapper.new(git_path) unless repository.nil?
   end
 
   def ==(other)

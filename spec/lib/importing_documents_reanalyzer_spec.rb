@@ -12,7 +12,7 @@ RSpec.describe ImportingDocumentsReanalyzer do
 
   context 'return value when there are older FileVersions' do
     before do
-      allow_any_instance_of(Gitlab::Git::Wrapper).
+      allow_any_instance_of(Bringit::Wrapper).
         to receive(:log).
         with(include(ref: file_version.commit_sha, only_commit_sha: true)).
         and_return([older_file_version.commit_sha,

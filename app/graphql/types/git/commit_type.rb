@@ -59,13 +59,13 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
       description 'The path to the directory to list'
     end
     resolve(lambda do |commit, arguments, _context|
-      gitlab_wrapper = Gitlab::Git::Wrapper.new(commit.repository.path)
+      bringit_wrapper = Bringit::Wrapper.new(commit.repository.path)
       index =
-        gitlab_wrapper.tree(commit.id, arguments['path']).map do |gitlab_tree|
-          if gitlab_tree.type == :tree
-            GitDirectory.new(commit, gitlab_tree.path, gitlab_tree.name)
+        bringit_wrapper.tree(commit.id, arguments['path']).map do |bringit_tree|
+          if bringit_tree.type == :tree
+            GitDirectory.new(commit, bringit_tree.path, bringit_tree.name)
           else
-            GitFile.new(commit, gitlab_tree.path, name: gitlab_tree.name)
+            GitFile.new(commit, bringit_tree.path, name: bringit_tree.name)
           end
         end
       index.sort! do |a, b|
@@ -82,7 +82,7 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
 
     argument :loadAllData, types.Boolean do
       description <<~DESCRIPTION
-        Load more than the #{Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE / 1024 / 1024} Megabytes for the web view
+        Load more than the #{Bringit::Blob::MAX_DATA_DISPLAY_SIZE / 1024 / 1024} Megabytes for the web view
       DESCRIPTION
       default_value false
     end
@@ -116,8 +116,8 @@ Types::Git::CommitType = GraphQL::ObjectType.define do
     description 'A list of all file paths in the repository'
 
     resolve(lambda do |commit, _arguments, _context|
-      gitlab_wrapper = Gitlab::Git::Wrapper.new(commit.repository.path)
-      gitlab_wrapper.ls_files(commit.id)
+      bringit_wrapper = Bringit::Wrapper.new(commit.repository.path)
+      bringit_wrapper.ls_files(commit.id)
     end)
   end
 

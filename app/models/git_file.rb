@@ -31,8 +31,8 @@ class GitFile
     blob&.binary ? 'base64' : 'plain'
   end
 
-  def gitlab
-    @gitlab ||= Gitlab::Git::Wrapper.new(@commit.repository.path)
+  def bringit
+    @bringit ||= Bringit::Wrapper.new(@commit.repository.path)
   end
 
   def exist?
@@ -43,7 +43,7 @@ class GitFile
   protected
 
   def blob
-    @blob ||= gitlab.blob(commit.id, path)
+    @blob ||= bringit.blob(commit.id, path)
   end
 
   # We need to load the name from the blob. Since we need to load the blob for

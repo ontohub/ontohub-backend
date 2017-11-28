@@ -75,11 +75,11 @@ RSpec.describe Types::Git::DirectoryType do
   let(:path) { directory }
   subject do
     index =
-      repository.git.tree(commit.id, path).map do |gitlab_tree|
-        if gitlab_tree.type == :tree
-          GitDirectory.new(commit, gitlab_tree.path, gitlab_tree.name)
+      repository.git.tree(commit.id, path).map do |bringit_tree|
+        if bringit_tree.type == :tree
+          GitDirectory.new(commit, bringit_tree.path, bringit_tree.name)
         else
-          GitFile.new(commit, gitlab_tree.path, name: gitlab_tree.name)
+          GitFile.new(commit, bringit_tree.path, name: bringit_tree.name)
         end
       end
     index.sort do |a, b|

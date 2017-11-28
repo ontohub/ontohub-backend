@@ -27,8 +27,7 @@ gem 'rack-cors'
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
-gem 'gitlab_git', github: 'ontohub/gitlab_git',
-                  branch: 'master'
+gem 'bringit', '~> 1.0.0'
 
 gem 'config', '~> 1.6.1'
 

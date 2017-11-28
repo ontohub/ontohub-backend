@@ -57,7 +57,7 @@ RSpec.describe Rest::TreesController do
   describe 'action: show' do
     let(:load_bytes) { 5 }
     before do
-      stub_const('Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE', load_bytes)
+      stub_const('Bringit::Blob::MAX_DATA_DISPLAY_SIZE', load_bytes)
     end
 
     let(:repository) { create(:repository_compound) }

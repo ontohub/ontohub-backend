@@ -75,7 +75,7 @@ RSpec.describe GitFile do
   end
 
   context 'loading all data' do
-    before { stub_const('Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
+    before { stub_const('Bringit::Blob::MAX_DATA_DISPLAY_SIZE', 1) }
 
     context 'with load_all_data set to true' do
       let(:load_all_data) { true }
@@ -90,7 +90,7 @@ RSpec.describe GitFile do
 
       it 'has more content than the limit' do
         expect(subject.loaded_size).
-          to be > Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE
+          to be > Bringit::Blob::MAX_DATA_DISPLAY_SIZE
       end
     end
 
@@ -99,7 +99,7 @@ RSpec.describe GitFile do
 
       it 'reports the correct size' do
         expect(subject.loaded_size).
-          to eq(Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE)
+          to eq(Bringit::Blob::MAX_DATA_DISPLAY_SIZE)
       end
 
       it 'has the correct content length' do
@@ -108,7 +108,7 @@ RSpec.describe GitFile do
 
       it 'has only the limited content' do
         expect(subject.loaded_size).
-          to eq(Gitlab::Git::Blob::MAX_DATA_DISPLAY_SIZE)
+          to eq(Bringit::Blob::MAX_DATA_DISPLAY_SIZE)
       end
     end
   end

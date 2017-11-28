@@ -1,15 +1,4 @@
 GIT
-  remote: git://github.com/ontohub/gitlab_git.git
-  revision: 0710ce805920ce6645efe68ae8598acacf9deada
-  branch: master
-  specs:
-    gitlab_git (11.0.0)
-      activesupport (>= 4.0)
-      charlock_holmes (~> 0.7.3)
-      github-linguist (>= 5.1, < 5.4)
-      rugged (~> 0.26.0)
-
-GIT
   remote: git://github.com/ontohub/ontohub-models.git
   revision: 3da74746619bbb29ad17ce4836d4b63619cf7bc0
   branch: master
@@ -83,6 +72,11 @@ GEM
     bcrypt (3.1.11)
     binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
+    bringit (1.0.0)
+      activesupport (>= 4.0)
+      charlock_holmes (~> 0.7.3)
+      github-linguist (>= 5.1, < 5.4)
+      rugged (~> 0.26.0)
     builder (3.2.3)
     bunny (2.7.2)
       amq-protocol (>= 2.2.0)
@@ -393,6 +387,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print (~> 1.8.0)
+  bringit (~> 1.0.0)
   bunny
   bunny-mock (~> 1.7.0)
   codecov (~> 0.1.10)
@@ -402,7 +397,6 @@ DEPENDENCIES
   faker (~> 1.8.4)
   filelock (~> 1.1.1)
   fuubar (~> 2.2.0)
-  gitlab_git!
   graphiql-rails
   graphql (~> 1.7.6)
   graphql-batch (~> 0.3.8)

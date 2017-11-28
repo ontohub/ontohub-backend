@@ -44,7 +44,7 @@ class MultiBlob
         GitHelper.exclusively(repository) do
           git.commit_multichange(commit_info, last_known_head_id)
         end
-      rescue Gitlab::Git::Committing::HeadChangedError => e
+      rescue Bringit::Committing::HeadChangedError => e
         @errors.add(:branch,
                     'Could not save the file in the git repository '\
                     'because it has changed in the meantime. '\
@@ -141,7 +141,7 @@ class MultiBlob
         end
       when :rename_and_update
         # `path` from the GraphQL API is mapped to `previous_path` of
-        # Gitlab::Git.
+        # Bringit.
         if file[:previous_path].blank?
           @errors.add("#{prefix}path", 'must be present')
         elsif path_does_not_exist?(file[:previous_path])
@@ -152,7 +152,7 @@ class MultiBlob
         end
       when :rename
         # `path` from the GraphQL API is mapped to `previous_path` of
-        # Gitlab::Git.
+        # Bringit.
         if file[:previous_path].blank?
           @errors.add("#{prefix}path", 'must be present')
         elsif path_does_not_exist?(file[:previous_path])
