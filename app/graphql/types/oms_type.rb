@@ -82,15 +82,13 @@ Types::OMSType = GraphQL::ObjectType.define do
     description 'The origin of this OMS'
   end
 
-  # TODO: Till, please review and supply descriptions.
   field :labelHasHiding, !types.Boolean do
-    description 'TODO'
+    description 'Flag indicating whether this OMS uses hiding'
     property :label_has_hiding
   end
 
-  # TODO: Till, please review and supply descriptions.
   field :labelHasFree, !types.Boolean do
-    description 'TODO'
+    description 'Flag indicating whether this OMS uses freeness'
     property :label_has_free
   end
 
