@@ -46,7 +46,7 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 # Sneakers depends on bunny and has the version requirement
 gem 'bunny'
 gem 'filelock', '~> 1.1.1'
-gem 'graphql', '~> 1.7.6'
+gem 'graphql', '~> 1.7.7'
 gem 'graphql-batch', '~> 0.3.8'
 gem 'graphql-pundit', '~> 0.5.1'
 gem 'jwt', '~> 2.1.0'
