@@ -16,6 +16,7 @@ module AccountMethods
     return if DISABLE_CAPTCHA || captcha_ok?
     # +captcha_ok?+ is always +true+ in the test environment
     # :nocov:
+    resource.errors.replace(resource.errors.slice(:captcha))
     raise Sequel::ValidationFailed, resource
     # :nocov:
   end
