@@ -18,7 +18,7 @@ module Mutations
         description 'The type of a remote repository'
       end
 
-      argument :urlMappings, !Types::Repository::UrlMappingsType do
+      argument :newUrlMappings, !Types::Repository::NewUrlMappingsType do
         description <<~DESCRIPTION
           The orignial Url Mapping that are applied to the repository
         DESCRIPTION
