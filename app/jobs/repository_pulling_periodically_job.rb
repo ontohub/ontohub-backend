@@ -6,9 +6,8 @@ class RepositoryPullingPeriodicallyJob < ApplicationJob
   queue_as :git_pull
 
   def perform
-    repository = Repository.entries
-    repository.each do |repository_slug|
-      RepositoryPullingJob.perform(repository_slug)
+    Repository.where(remote_type: 'mirror').each do |repository|
+      RepositoryPullingJob.perform_later(repository.slug)
     end
     RepositoryPullingPeriodicallyJob.
       set(wait: OntohubBackend::Application.
