@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe RepositoryCloningJob, type: :job do
-  let(:repository) { create :repository, :mirror}
+  let(:repository) { create :repository, :mirror }
   let(:path) do
     RepositoryCompound.git_directory.join("#{repository.to_param}.git")
   end

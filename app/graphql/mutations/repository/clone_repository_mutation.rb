@@ -14,11 +14,11 @@ module Mutations
         description 'The addres of a remote repository'
       end
 
-      argument :remoteType, !Types::Respository::RepositoryRemoteTypeEnum do
+      argument :remoteType, !Types::Repository::RepositoryRemoteTypeEnum do
         description 'The type of a remote repository'
       end
 
-      argument :newUrlMappings, !Types::Repository::NewUrlMappingsType do
+      argument :newUrlMappings, !types[!Types::Repository::NewUrlMappingType] do
         description <<~DESCRIPTION
           The orignial Url Mapping that are applied to the repository
         DESCRIPTION
@@ -37,15 +37,12 @@ module Mutations
 
     # GraphQL mutation to create a new repository
     class CloneRepositoryResolver
-      def call(owner, arguments, _context)
+      def call(_owner, arguments, _context)
         params = arguments[:data].to_h
-        params['owner'] = owner
+        params['owner'] = OrganizationalUnit.first(slug: params['owner'])
         params['public_access'] = params.delete('visibility') == 'public'
-        params['remoteAddress'] = remoteAddress
-        params['remoteType'] = remoteType
-        params['urlMappings'] = urlMappings
 
-        repository = Repository.create(params)
+        repository = ::Repository.create(params)
         RepositoryCloningJob.perform_later(repository.to_param)
         repository
       end

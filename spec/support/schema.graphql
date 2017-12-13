@@ -1024,6 +1024,21 @@ type Mutation {
     target: String!
   ): UrlMapping
 
+  # Clones a repository
+  cloneRepository(
+    # The parameters of the new repository
+    data: NewRepository!
+
+    # The orignial Url Mapping that are applied to the repository
+    newUrlMappings: [NewUrlMapping!]!
+
+    # The addres of a remote repository
+    remoteAddress: String!
+
+    # The type of a remote repository
+    remoteType: RepositoryRemoteTypeEnum!
+  ): Repository
+
   # Creates a new commit
   commit(
     # The information of the commit
@@ -1324,6 +1339,15 @@ input NewRepository {
 
   # The visibility of the repository
   visibility: RepositoryVisibility!
+}
+
+# Data for a new url mapping
+input NewUrlMapping {
+  # The search substring of the URL
+  source: String!
+
+  # The replacement string of the URL
+  target: String!
 }
 
 # Data of a a new user that is about to sign up
@@ -2077,6 +2101,15 @@ type RepositoryMembership {
 type RepositoryPermissions {
   # The user's role in the repository
   role: RepositoryRole!
+}
+
+# Possible values for repository remote types
+enum RepositoryRemoteTypeEnum {
+  # A copy of a repository
+  fork
+
+  # A read-only copy of a repository that is synchronized periodically
+  mirror
 }
 
 # Possible values for repository roles

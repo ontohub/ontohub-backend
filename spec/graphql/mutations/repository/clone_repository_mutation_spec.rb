@@ -2,18 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe 'createRepository mutation' do
+RSpec.describe 'cloneRepository mutation' do
   let!(:user) { create :user }
-  
+
   let(:repository_blueprint) do
-    repo = build :repository, owner: user :mirror
+    repo = build :repository, :mirror, owner: user
     repo.send(:set_slug)
     repo
   end
 
   let(:url_mappings) do
-    build_list(:url_mapping, 2).map do |url_mapping| 
-      {'source' => url_mapping.source, 
+    build_list(:url_mapping, 2).map do |url_mapping|
+      {'source' => url_mapping.source,
        'target' => url_mapping.target}
     end
   end
@@ -28,13 +28,13 @@ RSpec.describe 'createRepository mutation' do
     repo
   end
 
-  end
-
   let(:context) { {current_user: user} }
-  let(:variables) { {'data' => repository_data,
-                     'remoteAddress' => repository_blueprint.remote_address,
-                     'type' => repository_blueprint.remote_type,
-                     'urlMappings' => url_mappings} }
+  let(:variables) do
+    {'newRepository' => repository_data,
+     'remoteAddress' => repository_blueprint.remote_address,
+     'remoteType' => repository_blueprint.remote_type,
+     'urlMappings' => url_mappings}
+  end
 
   let(:result) do
     OntohubBackendSchema.execute(
@@ -46,15 +46,22 @@ RSpec.describe 'createRepository mutation' do
 
   let(:query_string) do
     <<-QUERY
-    mutation ($newRepository: NewRepository!, $remoteAddress: String!, $remoteType: RepositoryRemoteTypeEnum!, $urlMappings: [NewUrlMapping!]!) : Repository {
-      cloneRepository(data: $newRepository, remoteAddress: $remoteAddress, type: $type, urlMappings: $urlMappings)
+    mutation CloneRepository($newRepository: NewRepository!, $remoteAddress: String!, $remoteType: RepositoryRemoteTypeEnum!, $urlMappings: [NewUrlMapping!]!) {
+      cloneRepository(data: $newRepository, remoteAddress: $remoteAddress, remoteType: $remoteType, newUrlMappings: $urlMappings) {
+        id
+        description
+        contentType
+        visibility
+      }
     }
     QUERY
   end
 
   subject { result }
 
-  context 'User not signed in' do
-    
+  it 'enqueues a clone-repository job' do
+    expect(RepositoryCloningJob).
+      to have_been_enqueued.
+      with(subject['data']['cloneRepository']['id'])
   end
 end
