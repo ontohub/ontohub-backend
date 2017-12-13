@@ -68,7 +68,7 @@ group :development do
   # version to be compatible with current OS versions.
   gem 'invoker'
   gem 'listen', '~> 3.1.5'
-  gem 'rubocop', '~> 0.51.0', require: false
+  gem 'rubocop', '~> 0.52.1', require: false
   gem 'fasterer', require: false
   # Spring speeds up development by keeping your application running in the
   # background. Read more: https://github.com/rails/spring
