@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: c891de498317504394c8fa308522906b9ceede26
+  revision: 9f4210636ffb4c5e7bab7f70fde479bcae795206
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -340,7 +340,7 @@ GEM
       activemodel (>= 4.0.0)
       railties (>= 4.0.0)
       sequel (>= 3.28, < 6.0)
-    sequel_pg (1.8.0)
+    sequel_pg (1.8.1)
       pg (>= 0.18.0)
       sequel (>= 4.34.0)
     sequel_postgresql_triggers (1.3.0)
