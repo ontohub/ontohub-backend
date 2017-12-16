@@ -72,7 +72,7 @@ GEM
     bcrypt (3.1.11)
     binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.1.6)
+    bootsnap (1.1.7)
       msgpack (~> 1.0)
     bringit (1.0.0)
       activesupport (>= 4.0)
