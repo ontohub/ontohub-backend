@@ -80,7 +80,7 @@ GEM
       github-linguist (>= 5.1, < 5.4)
       rugged (~> 0.26.0)
     builder (3.2.3)
-    bunny (2.7.2)
+    bunny (2.7.3)
       amq-protocol (>= 2.2.0)
     bunny-mock (1.7.0)
       bunny (>= 1.7)
