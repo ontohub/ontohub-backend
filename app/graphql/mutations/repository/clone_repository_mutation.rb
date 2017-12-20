@@ -35,16 +35,29 @@ module Mutations
       resolve CloneRepositoryResolver.new
     end
 
-    # GraphQL mutation to create a new repository
+    # GraphQL mutation to clone a new repository
     class CloneRepositoryResolver
-      def call(_owner, arguments, _context)
+      def call(_owner, arguments, context)
         params = arguments[:data].to_h
         params['owner'] = OrganizationalUnit.first(slug: params['owner'])
         params['public_access'] = params.delete('visibility') == 'public'
 
-        repository = ::Repository.create(params)
-        RepositoryCloningJob.perform_later(repository.to_param)
-        repository
+        if Bringit::Wrapper.valid_remote?(arguments[:remote_address])
+          repository = ::Repository.create(params)
+          RepositoryCloningJob.perform_later(repository.to_param)
+          repository
+        else
+          add_invalid_remote_error(context, arguments[:remote_address])
+        end
+      end
+
+      def add_invalid_remote_error(context, remote_address)
+        context.add_error(
+          GraphQL::ExecutionError.new(
+            "remote_address: #{remote_address} is not a git or svn repository"
+          )
+        )
+        nil
       end
     end
   end

@@ -59,9 +59,31 @@ RSpec.describe 'cloneRepository mutation' do
 
   subject { result }
 
-  it 'enqueues a clone-repository job' do
-    expect(RepositoryCloningJob).
-      to have_been_enqueued.
-      with(subject['data']['cloneRepository']['id'])
+  context 'remote is valid' do
+    before do
+      # Stub the Bringit::Wrapper
+      allow(Bringit::Wrapper).
+        to receive(:valid_remote?).
+        and_return(true)
+    end
+    it 'enqueues a clone-repository job' do
+      expect(RepositoryCloningJob).
+        to have_been_enqueued.
+        with(subject['data']['cloneRepository']['id'])
+    end
+  end
+
+  context 'remote is invalid' do
+    before do
+      # Stub the Bringit::Wrapper
+      allow(Bringit::Wrapper).
+        to receive(:valid_remote?).
+        and_return(false)
+    end
+    it 'enqueues a clone-repository job' do
+      # binding.pry
+      expect(RepositoryCloningJob).
+        not_to have_been_enqueued
+    end
   end
 end
