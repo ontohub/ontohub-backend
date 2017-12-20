@@ -89,7 +89,7 @@ RSpec.describe 'cloneRepository mutation' do
     it 'error has been added to the graphql context' do
       expect(subject.to_h).
         to match('data' => {'cloneRepository' => nil},
-                 'errors' => 
+                 'errors' =>
                    [include('message' =>
                      /remote_address: ".*" is not a git or svn repository/)])
     end
