@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# An empty git repository cannot be kept in the ontohub-backend repository
+# because git cannot handle the empty directories of an empty repository.
+# As a work-around, we create it in the seeds:
+empty_git_path = Rails.root.join('db/seeds/fixtures/repositories/git/empty.git')
+FileUtils.rm_rf(empty_git_path.to_s) if Dir.exist?(empty_git_path)
+`git init --bare #{empty_git_path}`
+
 # Create repositories.
 organization_fixtures_repo =
   RepositoryCompound.

@@ -60,6 +60,9 @@ db/schema.rb
 # Ignore application data
 /data/
 
+# Ignore the empty git repository
+/db/seeds/fixtures/repositories/git/empty.git
+
 # Ignore Vscode
 .vscode/
 
