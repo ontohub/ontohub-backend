@@ -54,7 +54,7 @@ module Mutations
       def add_invalid_remote_error(context, remote_address)
         context.add_error(
           GraphQL::ExecutionError.new(
-            "remote_address: #{remote_address} is not a git or svn repository"
+            %(remote_address: "#{remote_address}" is not a git or svn repository)
           )
         )
         nil

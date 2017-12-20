@@ -80,10 +80,18 @@ RSpec.describe 'cloneRepository mutation' do
         to receive(:valid_remote?).
         and_return(false)
     end
+
     it 'enqueues a clone-repository job' do
-      # binding.pry
       expect(RepositoryCloningJob).
         not_to have_been_enqueued
+    end
+
+    it 'error has been added to the graphql context' do
+      expect(subject.to_h).
+        to match('data' => {'cloneRepository' => nil},
+                 'errors' => 
+                   [include('message' =>
+                     /remote_address: ".*" is not a git or svn repository/)])
     end
   end
 end
