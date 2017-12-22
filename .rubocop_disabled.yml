@@ -1,5 +1,10 @@
 # These are all the cops that are disabled in the default configuration.
 
+Layout/ClassStructure:
+  Description: 'Enforces a configured order of definitions within a class body.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-classes'
+  Enabled: false
+
 Layout/FirstArrayElementLineBreak:
   Description: >-
                  Checks for a line break before the first element in a
@@ -59,9 +64,6 @@ Style/DocumentationMethod:
     - 'spec/**/*'
     - 'test/**/*'
 
-Style/DoubleNegation:
-  Enabled: false
-
 Style/ImplicitRuntimeError:
   Description: >-
                  Use `raise` or `fail` with an explicit exception class and
@@ -112,10 +114,15 @@ Style/Send:
   StyleGuide: '#prefer-public-send'
   Enabled: false
 
-Style/StringMethods:
-  Description: 'Checks if configured preferred methods are used over non-preferred.'
-  Enabled: false
-
 Style/SingleLineBlockParams:
   Description: 'Enforces the names of some block params.'
+  Enabled: false
+
+Style/StringHashKeys:
+  Description: 'Prefer symbols instead of strings as hash keys.'
+  StyleGuide: '#symbols-as-keys'
+  Enabled: false
+
+Style/StringMethods:
+  Description: 'Checks if configured preferred methods are used over non-preferred.'
   Enabled: false

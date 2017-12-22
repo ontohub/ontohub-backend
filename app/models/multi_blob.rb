@@ -4,6 +4,7 @@
 
 # Allows to apply multiple actions to a repository
 class MultiBlob
+  # rubocop:enable Metrics/ClassLength
   include ActiveModel::Model
 
   class Error < ::StandardError; end

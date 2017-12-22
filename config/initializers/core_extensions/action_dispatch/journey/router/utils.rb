@@ -11,6 +11,8 @@ module ActionDispatch
         define_singleton_method(:normalize_path) do |path|
           # rubocop:disable Style/GlobalVars
           if $do_not_merge_multiple_slashes_in_request_urls
+            # rubocop:enable Style/GlobalVars
+
             # This is basically the same as the original method, but the
             # multiple slashes are only merged if they occur at the beginning
             # of the +path+. This must only be done *after* the routes have been
@@ -43,3 +45,5 @@ module ActionDispatch
     end
   end
 end
+# rubocop:enable Style/FrozenStringLiteralComment
+# rubocop:enable Style/PerlBackrefs

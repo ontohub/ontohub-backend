@@ -502,6 +502,7 @@ Layout/SpaceBeforeBlockBraces:
   SupportedStyles:
     - space
     - no_space
+  EnforcedStyleForEmptyBraces: space
   SupportedStylesForEmptyBraces:
     - space
     - no_space
@@ -511,6 +512,19 @@ Layout/SpaceBeforeFirstArg:
   # things with the previous or next line, not counting empty lines or comment
   # lines.
   AllowForAlignment: true
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
+  SupportedStyles:
+    - space
+    - no_space
+    # 'compact' normally requires a space inside the brackets, with the exception
+    # that successive left brackets or right brackets are collapsed together
+    - compact
+  EnforcedStyleForEmptyBrackets: no_space
+  SupportedStylesForEmptyBrackets:
+    - space
+    - no_space
 
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
@@ -537,11 +551,32 @@ Layout/SpaceInsideHashLiteralBraces:
     - space
     - no_space
 
+Layout/SpaceInsideReferenceBrackets:
+  EnforcedStyle: no_space
+  SupportedStyles:
+    - space
+    - no_space
+
 Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
   SupportedStyles:
     - space
     - no_space
+
+Layout/ClassStructure:
+  Categories:
+    module_inclusion:
+      - include
+      - prepend
+      - extend
+  ExpectedOrder:
+      - module_inclusion
+      - constants
+      - public_class_methods
+      - initializer
+      - public_methods
+      - protected_methods
+      - private_methods
 
 Layout/Tab:
   # By default, the indentation width from Layout/IndentationWidth is used
@@ -687,6 +722,9 @@ Style/AndOr:
   SupportedStyles:
     - always
     - conditionals
+
+Style/AsciiComments:
+  AllowedChars: []
 
 # Checks if usage of `%()` or `%Q()` matches configuration.
 Style/BarePercentLiterals:
@@ -925,6 +963,7 @@ Style/FormatStringToken:
     - annotated
     # Prefer simple looking "template" style tokens like `%{name}`, `%{age}`
     - template
+    - unannotated
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: when_needed
@@ -966,11 +1005,7 @@ Style/HashSyntax:
   # Do not suggest { a?: 1 } over { :a? => 1 } in ruby19 style
   PreferHashRocketsForNonAlnumEndingSymbols: false
 
-Style/IfUnlessModifier:
-  MaxLineLength: 80
-
 Style/InverseMethods:
-  Enabled: true
   # `InverseMethods` are methods that can be inverted by a not (`not` or `!`)
   # The relationship of inverse methods only needs to be defined in one direction.
   # Keys and values both need to be defined as symbols.
@@ -1091,7 +1126,6 @@ Style/NonNilCheck:
 Style/NumericLiterals:
   MinDigits: 5
   Strict: false
-  Enabled: false
 
 Style/NumericLiteralPrefix:
   EnforcedOctalStyle: zero_with_o
@@ -1170,6 +1204,14 @@ Style/RegexpLiteral:
   # are found in the regexp string.
   AllowInnerSlashes: false
 
+Style/RescueStandardError:
+  EnforcedStyle: explicit
+  # implicit: Do not include the error class, `rescue`
+  # explicit: Require an error class `rescue StandardError`
+  SupportedStyles:
+    - implicit
+    - explicit
+
 Style/ReturnNil:
   EnforcedStyle: return
   SupportedStyles:
@@ -1247,8 +1289,6 @@ Style/SymbolArray:
   SupportedStyles:
     - percent
     - brackets
-  Exclude:
-    - 'db/migrate/**'
 
 Style/SymbolProc:
   # A list of method names to be ignored by the check.
@@ -1329,9 +1369,6 @@ Style/TrivialAccessors:
     - to_s
     - to_sym
 
-Style/WhileUntilModifier:
-  MaxLineLength: 80
-
 # `WordArray` enforces how array literals of word-like strings should be expressed.
 Style/WordArray:
   EnforcedStyle: percent
@@ -1366,11 +1403,6 @@ Metrics/BlockLength:
   CountComments: false  # count full line comments?
   Max: 25
   ExcludedMethods: []
-  Exclude:
-    - 'app/graphql/**/*'
-    - 'spec/**/*'
-    - 'db/migrate/*'
-    - '*.gemspec'
 
 Metrics/BlockNesting:
   CountBlocks: false
@@ -1469,12 +1501,26 @@ Lint/InheritException:
     - runtime_error
     - standard_error
 
+Lint/MissingCopEnableDirective:
+  # Maximum number of consecutive lines the cop can be disabled for.
+  # 0 allows only single-line disables
+  # 1 would mean the maximum allowed is the following:
+  #   # rubocop:disable SomeCop
+  #   a = 1
+  #   # rubocop:enable SomeCop
+  # .inf for any size
+  MaximumRangeSize: .inf
+
 Lint/SafeNavigationChain:
   Whitelist:
     - present?
     - blank?
     - presence
     - try
+
+# Checks for shadowed arguments
+Lint/ShadowedArgument:
+  IgnoreImplicitReferences: false
 
 # Checks for unused block arguments
 Lint/UnusedBlockArgument:
@@ -1506,6 +1552,10 @@ Rails/ActionFilter:
     - filter
   Include:
     - app/controllers/**/*.rb
+
+Rails/CreateTableWithTimestamps:
+  Include:
+    - db/migrate/*.rb
 
 Rails/Date:
   # The value `strict` disallows usage of `Date.today`, `Date.current`,
@@ -1556,6 +1606,14 @@ Rails/HasManyOrHasOneDependent:
   Include:
     - app/models/**/*.rb
 
+Rails/InverseOf:
+  Include:
+    - app/models/**/*.rb
+
+Rails/LexicallyScopedActionFilter:
+  Include:
+    - app/controllers/**/*.rb
+
 Rails/NotNullColumn:
   Include:
     - db/migrate/*.rb
@@ -1583,7 +1641,7 @@ Rails/ReversibleMigration:
 
 Rails/SafeNavigation:
   # This will convert usages of `try` to use safe navigation as well as `try!`.
-  # `try` and `try!` work slighly differently. `try!` and safe navigation will
+  # `try` and `try!` work slightly differently. `try!` and safe navigation will
   # both raise a `NoMethodError` if the receiver of the method call does not
   # implement the intended method. `try` will not raise an exception for this.
   ConvertTry: false

@@ -48,12 +48,12 @@ Types::Git::DirectoryEntryType = GraphQL::InterfaceType.define do
       bringit_wrapper = base.bringit
 
       bringit_wrapper.log(ref: commit.id,
-                         path: path,
-                         limit: arguments['limit'],
-                         offset: arguments['skip'],
-                         skip_merges: arguments['skipMerges'],
-                         before: arguments['before'],
-                         after: arguments['after'])
+                          path: path,
+                          limit: arguments['limit'],
+                          offset: arguments['skip'],
+                          skip_merges: arguments['skipMerges'],
+                          before: arguments['before'],
+                          after: arguments['after'])
     end)
   end
 end

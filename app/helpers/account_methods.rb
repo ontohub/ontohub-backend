@@ -9,7 +9,9 @@ module AccountMethods
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
   # This is overwriting the original method.
+  # rubocop:disable Metrics/AbcSize
   def build_resource(hash = nil)
+    # rubocop:enable Metrics/AbcSize
     self.resource = User.new_with_session(hash || {}, session)
     resource.role ||= 'user'
     resource.valid?
