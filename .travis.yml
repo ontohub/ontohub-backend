@@ -32,11 +32,14 @@ matrix:
       services:
         - rabbitmq
       before_install:
+        - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       script:
         - bundle exec rails db:recreate:seed
 
     - env: JOB=rspec
+      before_install:
+        - gem update --system
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
@@ -47,6 +50,7 @@ matrix:
       services:
         - rabbitmq
       before_install:
+        - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
         - EMAJ_VERSION=2.1.0
