@@ -32,6 +32,8 @@ matrix:
       services:
         - rabbitmq
       before_install:
+        # This is a workaround for a problem with a specific version of bundler
+        # and rubygems
         - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       script:
@@ -39,6 +41,8 @@ matrix:
 
     - env: JOB=rspec
       before_install:
+        # This is a workaround for a problem with a specific version of bundler
+        # and rubygems
         - gem update --system
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
@@ -50,6 +54,8 @@ matrix:
       services:
         - rabbitmq
       before_install:
+        # This is a workaround for a problem with a specific version of bundler
+        # and rubygems
         - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
