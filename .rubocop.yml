@@ -126,7 +126,7 @@ AllCops:
   # If a value is specified for TargetRubyVersion then it is used.
   # Else if .ruby-version exists and it contains an MRI version it is used.
   # Otherwise we fallback to the oldest officially supported Ruby version (2.1).
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
   TargetRailsVersion: 5.1
 
 #################### Layout ###########################
