@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: e677255c64a8e80b8c3806249ad8f872946993ac
+  revision: 1ec1e5d88b20f34a8efb18d6ed7c672523391fe0
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -228,7 +228,7 @@ GEM
     msgpack (1.2.0)
     multi_json (1.12.2)
     multipart-post (2.0.0)
-    nio4r (2.1.0)
+    nio4r (2.2.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
