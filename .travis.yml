@@ -9,7 +9,7 @@ cache:
     - $HOME/system-test
 
 rvm:
-  - 2.4.2
+  - 2.5.0
 
 services:
   - postgresql
@@ -32,11 +32,18 @@ matrix:
       services:
         - rabbitmq
       before_install:
+        # This is a workaround for a problem with a specific version of bundler
+        # and rubygems
+        - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       script:
         - bundle exec rails db:recreate:seed
 
     - env: JOB=rspec
+      before_install:
+        # This is a workaround for a problem with a specific version of bundler
+        # and rubygems
+        - gem update --system
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
       script:
@@ -47,6 +54,9 @@ matrix:
       services:
         - rabbitmq
       before_install:
+        # This is a workaround for a problem with a specific version of bundler
+        # and rubygems
+        - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
         - EMAJ_VERSION=2.1.0
