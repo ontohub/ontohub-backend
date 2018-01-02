@@ -3,7 +3,7 @@
 module Mutations
   module Repository
     CloneRepositoryMutation = GraphQL::Field.define do
-      type Types::RepositoryType
+      type Types::RepositoryWithoutGitType
       description 'Clones a repository from a remote server'
 
       argument :data, !Types::Repository::NewType do

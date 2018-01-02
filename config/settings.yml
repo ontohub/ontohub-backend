@@ -22,3 +22,7 @@ sneakers:
     workers: 1
   - classes: PostProcessHetsWorker
     workers: 1
+  - classes: RepositoryPullingWorker
+    workers: 1
+  - classes: RepositoryCloningWorker
+    workers: 1
