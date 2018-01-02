@@ -168,7 +168,7 @@ GEM
     ffi (1.9.18)
     filelock (1.1.1)
     formatador (0.2.5)
-    fuubar (2.2.0)
+    fuubar (2.3.0)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
     github-linguist (5.3.2)
@@ -400,7 +400,7 @@ DEPENDENCIES
   factory_bot_rails (~> 4.8.2)
   faker (~> 1.8.6)
   filelock (~> 1.1.1)
-  fuubar (~> 2.2.0)
+  fuubar (~> 2.3.0)
   graphiql-rails
   graphql (~> 1.7.7)
   graphql-batch (~> 0.3.8)
