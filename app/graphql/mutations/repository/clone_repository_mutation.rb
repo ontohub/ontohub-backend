@@ -41,17 +41,21 @@ module Mutations
         params = prepare_params(arguments)
 
         if Bringit::Wrapper.valid_remote?(params['remote_address'])
-          repository = ::Repository.create(params)
-          arguments['urlMappings'].each do |url_mapping|
-            UrlMapping.create(repository_id: repository.id,
-                              source: url_mapping['source'],
-                              target: url_mapping['target'])
-          end
-          RepositoryCloningJob.perform_later(repository.to_param)
-          repository
+          create_repository(arguments, params)
         else
           add_invalid_remote_error(context, params['remote_address'])
         end
+      end
+
+      def create_repository(arguments, params)
+        repository = ::Repository.create(params)
+        arguments['urlMappings'].each do |url_mapping|
+          UrlMapping.create(repository_id: repository.id,
+                            source: url_mapping['source'],
+                            target: url_mapping['target'])
+        end
+        RepositoryCloningJob.perform_later(repository.to_param)
+        repository
       end
 
       def prepare_params(arguments)
