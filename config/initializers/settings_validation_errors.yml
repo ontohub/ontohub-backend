@@ -1,0 +1,10 @@
+en:
+  errors:
+    scheme?: "has an invalid scheme (only %{list} are allowed)"
+    absolute?: "is not an absolute URL"
+    has_no_path?: "must not have a path"
+    has_no_query?: "must not have a query string"
+    has_no_fragment?: "must not have a fragment"
+    has_no_userinfo?: "must not have userinfo"
+    is_directory?: "is not a directory"
+    is_worker_class?: "is not a class that defines the method `work'"
