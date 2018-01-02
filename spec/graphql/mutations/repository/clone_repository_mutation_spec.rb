@@ -46,8 +46,8 @@ RSpec.describe 'cloneRepository mutation' do
 
   let(:query_string) do
     <<-QUERY
-    mutation CloneRepository($newRepository: NewRepository!, $remoteAddress: String!, $remoteType: RepositoryRemoteTypeEnum!, $urlMappings: [NewUrlMapping!]!) {
-      cloneRepository(data: $newRepository, remoteAddress: $remoteAddress, remoteType: $remoteType, newUrlMappings: $urlMappings) {
+    mutation CloneRepository($newRepository: NewRepository!, $remoteAddress: String!, $remoteType: RepositoryRemoteType!, $urlMappings: [NewUrlMapping!]!) {
+      cloneRepository(data: $newRepository, remoteAddress: $remoteAddress, remoteType: $remoteType, urlMappings: $urlMappings) {
         id
         description
         contentType
@@ -59,39 +59,75 @@ RSpec.describe 'cloneRepository mutation' do
 
   subject { result }
 
-  context 'remote is valid' do
+  context 'with a valid remote' do
     before do
       # Stub the Bringit::Wrapper
       allow(Bringit::Wrapper).
         to receive(:valid_remote?).
         and_return(true)
+
+      allow(::Repository).
+        to receive(:create).
+        with('name' => repository_data['name'],
+             'description' => repository_data['description'],
+             'owner' => user,
+             'content_type' => repository_data['contentType'],
+             'public_access' => repository_data['visibility'] == 'public',
+             'remote_address' => variables['remoteAddress'],
+             'remote_type' => variables['remoteType']).
+        and_call_original
     end
     it 'enqueues a clone-repository job' do
       expect(RepositoryCloningJob).
         to have_been_enqueued.
         with(subject['data']['cloneRepository']['id'])
     end
+
+    it 'creates the repository' do
+      expect(subject).not_to be(nil)
+    end
+
+    it 'creates the url mappings' do
+      allow(UrlMapping).to receive(:create).and_call_original
+      subject
+      url_mappings.each do |url_mapping|
+        expect(UrlMapping).
+          to have_received(:create).
+          with(repository_id:
+                 Repository.first(slug: repository_blueprint.to_param).id,
+               source: url_mapping['source'],
+               target: url_mapping['target'])
+      end
+    end
   end
 
-  context 'remote is invalid' do
+  context 'with an invalid remote' do
     before do
       # Stub the Bringit::Wrapper
       allow(Bringit::Wrapper).
         to receive(:valid_remote?).
         and_return(false)
+
+      allow(UrlMapping).
+        to receive(:create)
     end
 
-    it 'enqueues a clone-repository job' do
+    it 'does not enqueue a clone-repository job' do
       expect(RepositoryCloningJob).
         not_to have_been_enqueued
     end
 
-    it 'error has been added to the graphql context' do
+    it 'adds a GraphQL error' do
       expect(subject.to_h).
         to match('data' => {'cloneRepository' => nil},
                  'errors' =>
                    [include('message' =>
                      /remote_address: ".*" is not a git or svn repository/)])
+    end
+
+    it 'repository was not created' do
+      expect(UrlMapping).
+        not_to have_received(:create)
     end
   end
 end

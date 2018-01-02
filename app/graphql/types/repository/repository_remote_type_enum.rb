@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Types::Repository::RepositoryRemoteTypeEnum = GraphQL::EnumType.define do
-  name 'RepositoryRemoteTypeEnum'
+  name 'RepositoryRemoteType'
   description 'Possible values for repository remote types'
 
   value 'fork', 'A copy of a repository'

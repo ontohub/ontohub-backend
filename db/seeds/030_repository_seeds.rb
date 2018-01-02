@@ -55,7 +55,7 @@ repo_fixtures = Rails.root.join('db/seeds/fixtures/repositories')
     remote_type: 'fork'},
  'svn/custom_layout_with_commits.svn' =>
    {name: 'mirror of svn repository with custom layout and commits',
-    description: 'mirror of svn repository with acustom layout and commits',
+    description: 'mirror of svn repository with a custom layout and commits',
     remote_type: 'mirror'},
  'svn/empty.svn' =>
    {name: 'fork of empty svn repository',

@@ -7,7 +7,7 @@ RSpec.describe RepositoryPullingPeriodicallyJob, type: :job do
   let!(:repository_mirror2) { create :repository, :mirror }
   let!(:repository_fork) { create :repository, :fork }
 
-  it 'sets the time for the job to be scheduled' do
+  it 're-enqueues itself' do
     expect do
       RepositoryPullingPeriodicallyJob.new.perform
     end.to have_enqueued_job(RepositoryPullingPeriodicallyJob)

@@ -1024,19 +1024,19 @@ type Mutation {
     target: String!
   ): UrlMapping
 
-  # Clones a repository
+  # Clones a repository from a remote server
   cloneRepository(
     # The parameters of the new repository
     data: NewRepository!
 
-    # The orignial Url Mapping that are applied to the repository
-    newUrlMappings: [NewUrlMapping!]!
-
-    # The addres of a remote repository
+    # The address of a remote repository
     remoteAddress: String!
 
-    # The type of a remote repository
-    remoteType: RepositoryRemoteTypeEnum!
+    # The type of the cloned repository
+    remoteType: RepositoryRemoteType!
+
+    # The orignial Url Mapping that are applied to the repository
+    urlMappings: [NewUrlMapping!]!
   ): Repository
 
   # Creates a new commit
@@ -2104,7 +2104,7 @@ type RepositoryPermissions {
 }
 
 # Possible values for repository remote types
-enum RepositoryRemoteTypeEnum {
+enum RepositoryRemoteType {
   # A copy of a repository
   fork
 
