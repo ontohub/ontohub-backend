@@ -67,6 +67,9 @@ module OntohubBackend
       (Rake.application.top_level_tasks & tasks_without_connection).any?
     # :nocov:
 
+    # Sets the mirror synchronization inteval
+    config.mirror_repository_synchronization_interval = 6.hours
+
     config.after_initialize do
       SettingsHandler.new(Settings).call
 
@@ -76,6 +79,10 @@ module OntohubBackend
         HetsAgentIninializer.new.call
         HetsAgent::Invoker.new(HetsAgent::LogicGraphRequestCollection.new).call
       end
+
+      RepositoryPullingPeriodicallyJob.
+        set(wait: OntohubBackend::Application.
+          config.mirror_repository_synchronization_interval).perform_later
     end
   end
 end

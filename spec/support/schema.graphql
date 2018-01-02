@@ -28,6 +28,45 @@ type Axiom implements LocIdBase, Sentence {
   text: String!
 }
 
+# Basic data of a repository
+interface BaseRepository {
+  # Type of the repository
+  contentType: RepositoryContentType!
+
+  # Description of the repository
+  description: String
+
+  # ID of the repository
+  id: ID!
+
+  # List of the repository's memberships
+  memberships(
+    # Maximum number of memberships to list
+    limit: Int = 20
+
+    # Filter the users by the membership role
+    role: RepositoryRole
+
+    # Skip the first n memberships
+    skip: Int = 0
+  ): [RepositoryMembership!]!
+
+  # Name of the repository
+  name: String!
+
+  # Owner of the repository
+  owner: OrganizationalUnit!
+
+  # The current_user's permissions for this repository
+  permissions: RepositoryPermissions
+
+  # List of all URL Mappings of this repository
+  urlMappings: [UrlMapping!]!
+
+  # Visibility of the repository
+  visibility: RepositoryVisibility!
+}
+
 # A git branch
 type Branch implements Reference {
   # The name of the reference
@@ -1024,6 +1063,21 @@ type Mutation {
     target: String!
   ): UrlMapping
 
+  # Clones a repository from a remote server
+  cloneRepository(
+    # The parameters of the new repository
+    data: NewRepository!
+
+    # The address of a remote repository
+    remoteAddress: String!
+
+    # The type of the cloned repository
+    remoteType: RepositoryRemoteType!
+
+    # The orignial Url Mapping that are applied to the repository
+    urlMappings: [NewUrlMapping!]!
+  ): RepositoryWithoutGit
+
   # Creates a new commit
   commit(
     # The information of the commit
@@ -1324,6 +1378,15 @@ input NewRepository {
 
   # The visibility of the repository
   visibility: RepositoryVisibility!
+}
+
+# Data for a new url mapping
+input NewUrlMapping {
+  # The search substring of the URL
+  source: String!
+
+  # The replacement string of the URL
+  target: String!
 }
 
 # Data of a a new user that is about to sign up
@@ -1940,7 +2003,7 @@ interface Reference {
 }
 
 # Data of a repository
-type Repository {
+type Repository implements BaseRepository {
   # Details of a branch
   branch(
     # The name of the branch
@@ -2079,6 +2142,15 @@ type RepositoryPermissions {
   role: RepositoryRole!
 }
 
+# Possible values for repository remote types
+enum RepositoryRemoteType {
+  # A copy of a repository
+  fork
+
+  # A read-only copy of a repository that is synchronized periodically
+  mirror
+}
+
 # Possible values for repository roles
 enum RepositoryRole {
   admin
@@ -2090,6 +2162,45 @@ enum RepositoryRole {
 enum RepositoryVisibility {
   private
   public
+}
+
+# Data of a repository without git
+type RepositoryWithoutGit implements BaseRepository {
+  # Type of the repository
+  contentType: RepositoryContentType!
+
+  # Description of the repository
+  description: String
+
+  # ID of the repository
+  id: ID!
+
+  # List of the repository's memberships
+  memberships(
+    # Maximum number of memberships to list
+    limit: Int = 20
+
+    # Filter the users by the membership role
+    role: RepositoryRole
+
+    # Skip the first n memberships
+    skip: Int = 0
+  ): [RepositoryMembership!]!
+
+  # Name of the repository
+  name: String!
+
+  # Owner of the repository
+  owner: OrganizationalUnit!
+
+  # The current_user's permissions for this repository
+  permissions: RepositoryPermissions
+
+  # List of all URL Mappings of this repository
+  urlMappings: [UrlMapping!]!
+
+  # Visibility of the repository
+  visibility: RepositoryVisibility!
 }
 
 # Result returned from a search query

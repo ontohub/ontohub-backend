@@ -61,6 +61,7 @@ class RepositoryPolicy < ApplicationPolicy
   def write?
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
     owner = resource.owner
+    return false if resource.remote_type == 'mirror'
     return false unless current_user
     return true if owner.id == current_user.id
 
