@@ -83,22 +83,20 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |repository, arguments, _context|
-      begin
-        paths = Array(arguments['paths'])
-        diffs = []
-        repository.git.
-          diff(arguments['from'], arguments['to'], {}, *paths).each do |diff|
-            diffs << diff
-          end
-        diffs
-      rescue Rugged::ReferenceError => e
-        argument = nil
-        revspec = e.message.match(/revspec '(\S+)' not found/i)[1]
-        %w(from to).each { |arg| argument = arg if arguments[arg] == revspec }
-        GraphQL::ExecutionError.new(%("#{argument}" #{e.message}))
-      rescue Rugged::ObjectError
-        GraphQL::ExecutionError.new('revspec not found')
-      end
+      paths = Array(arguments['paths'])
+      diffs = []
+      repository.git.
+        diff(arguments['from'], arguments['to'], {}, *paths).each do |diff|
+          diffs << diff
+        end
+      diffs
+    rescue Rugged::ReferenceError => e
+      argument = nil
+      revspec = e.message.match(/revspec '(\S+)' not found/i)[1]
+      %w(from to).each { |arg| argument = arg if arguments[arg] == revspec }
+      GraphQL::ExecutionError.new(%("#{argument}" #{e.message}))
+    rescue Rugged::ObjectError
+      GraphQL::ExecutionError.new('revspec not found')
     end)
   end
 
@@ -140,18 +138,16 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end
 
     resolve(lambda do |repository, arguments, _context|
-      begin
-        revision = arguments['revision'] || repository.git.default_branch
-        repository.git.log(ref: revision,
-                           path: arguments['path'],
-                           limit: arguments['limit'],
-                           offset: arguments['skip'],
-                           skip_merges: arguments['skipMerges'],
-                           before: arguments['before'],
-                           after: arguments['after'])
-      rescue Rugged::ObjectError
-        return []
-      end
+      revision = arguments['revision'] || repository.git.default_branch
+      repository.git.log(ref: revision,
+                         path: arguments['path'],
+                         limit: arguments['limit'],
+                         offset: arguments['skip'],
+                         skip_merges: arguments['skipMerges'],
+                         before: arguments['before'],
+                         after: arguments['after'])
+    rescue Rugged::ObjectError
+      return []
     end)
   end
 end
