@@ -161,7 +161,7 @@ GEM
     factory_bot_rails (4.8.2)
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
-    faker (1.8.6)
+    faker (1.8.7)
       i18n (>= 0.7)
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
@@ -398,7 +398,7 @@ DEPENDENCIES
   config (~> 1.6.1)
   database_cleaner (~> 1.6.2)
   factory_bot_rails (~> 4.8.2)
-  faker (~> 1.8.6)
+  faker (~> 1.8.7)
   filelock (~> 1.1.1)
   fuubar (~> 2.3.0)
   graphiql-rails

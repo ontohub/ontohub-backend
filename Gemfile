@@ -79,7 +79,7 @@ group :test do
   gem 'codecov', '~> 0.1.10', require: false
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot_rails', '~> 4.8.2'
-  gem 'faker', '~> 1.8.6'
+  gem 'faker', '~> 1.8.7'
   gem 'fuubar', '~> 2.3.0'
   # As soon as a version > 2.8.0 of json-schema is released, use it instead of
   # master.
