@@ -126,8 +126,7 @@ RSpec.describe 'cloneRepository mutation' do
     end
 
     it 'repository was not created' do
-      expect(UrlMapping).
-        not_to have_received(:create)
+      expect(Repository.first(slug: repository_blueprint.to_param)).to be(nil)
     end
   end
 end
