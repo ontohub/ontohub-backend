@@ -28,6 +28,45 @@ type Axiom implements LocIdBase, Sentence {
   text: String!
 }
 
+# Basic data of a repository
+interface BaseRepository {
+  # Type of the repository
+  contentType: RepositoryContentType!
+
+  # Description of the repository
+  description: String
+
+  # ID of the repository
+  id: ID!
+
+  # List of the repository's memberships
+  memberships(
+    # Maximum number of memberships to list
+    limit: Int = 20
+
+    # Filter the users by the membership role
+    role: RepositoryRole
+
+    # Skip the first n memberships
+    skip: Int = 0
+  ): [RepositoryMembership!]!
+
+  # Name of the repository
+  name: String!
+
+  # Owner of the repository
+  owner: OrganizationalUnit!
+
+  # The current_user's permissions for this repository
+  permissions: RepositoryPermissions
+
+  # List of all URL Mappings of this repository
+  urlMappings: [UrlMapping!]!
+
+  # Visibility of the repository
+  visibility: RepositoryVisibility!
+}
+
 # A git branch
 type Branch implements Reference {
   # The name of the reference
@@ -1037,7 +1076,7 @@ type Mutation {
 
     # The orignial Url Mapping that are applied to the repository
     urlMappings: [NewUrlMapping!]!
-  ): Repository
+  ): RepositoryWithoutGit
 
   # Creates a new commit
   commit(
@@ -1964,7 +2003,7 @@ interface Reference {
 }
 
 # Data of a repository
-type Repository {
+type Repository implements BaseRepository {
   # Details of a branch
   branch(
     # The name of the branch
@@ -2123,6 +2162,45 @@ enum RepositoryRole {
 enum RepositoryVisibility {
   private
   public
+}
+
+# Data of a repository without git
+type RepositoryWithoutGit implements BaseRepository {
+  # Type of the repository
+  contentType: RepositoryContentType!
+
+  # Description of the repository
+  description: String
+
+  # ID of the repository
+  id: ID!
+
+  # List of the repository's memberships
+  memberships(
+    # Maximum number of memberships to list
+    limit: Int = 20
+
+    # Filter the users by the membership role
+    role: RepositoryRole
+
+    # Skip the first n memberships
+    skip: Int = 0
+  ): [RepositoryMembership!]!
+
+  # Name of the repository
+  name: String!
+
+  # Owner of the repository
+  owner: OrganizationalUnit!
+
+  # The current_user's permissions for this repository
+  permissions: RepositoryPermissions
+
+  # List of all URL Mappings of this repository
+  urlMappings: [UrlMapping!]!
+
+  # Visibility of the repository
+  visibility: RepositoryVisibility!
 }
 
 # Result returned from a search query
