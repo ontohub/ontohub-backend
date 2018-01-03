@@ -80,7 +80,7 @@ group :test do
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'faker', '~> 1.8.7'
-  gem 'fuubar', '~> 2.3.0'
+  gem 'fuubar', '~> 2.3.1'
   # As soon as a version > 2.8.0 of json-schema is released, use it instead of
   # master.
   gem 'json-schema', github: 'ruby-json-schema/json-schema', branch: 'master'
