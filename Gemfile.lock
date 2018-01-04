@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 81507f0cf1de24c156598dc07cf48f33172b300d
+  revision: 480a141e12d34b07b6532a59798e78bf524fc7f4
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -224,7 +224,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.0)
+    minitest (5.11.1)
     msgpack (1.2.0)
     multi_json (1.12.2)
     multipart-post (2.0.0)
