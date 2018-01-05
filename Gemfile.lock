@@ -165,6 +165,9 @@ GEM
       i18n (>= 0.7)
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
+    fasterer (0.3.2)
+      colorize (~> 0.7)
+      ruby_parser (~> 3.7)
     ffi (1.9.18)
     filelock (1.1.1)
     formatador (0.2.5)
@@ -328,6 +331,8 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
+    ruby_parser (3.10.1)
+      sexp_processor (~> 4.9)
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.26.0)
@@ -347,6 +352,7 @@ GEM
       sequel
     serverengine (1.5.11)
       sigdump (~> 0.2.2)
+    sexp_processor (4.10.0)
     sigdump (0.2.4)
     simplecov (0.15.1)
       docile (~> 1.1.0)
@@ -399,6 +405,7 @@ DEPENDENCIES
   database_cleaner (~> 1.6.2)
   factory_bot_rails (~> 4.8.2)
   faker (~> 1.8.7)
+  fasterer
   filelock (~> 1.1.1)
   fuubar (~> 2.3.1)
   graphiql-rails
