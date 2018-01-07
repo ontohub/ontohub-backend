@@ -15,6 +15,7 @@ rabbitmq:
   username: guest
   password: guest
   prefix: ontohub
+  exchange: ontohub
 
 sneakers:
   - classes: MailersWorker
