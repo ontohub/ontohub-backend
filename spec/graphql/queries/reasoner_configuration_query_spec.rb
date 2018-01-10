@@ -19,6 +19,7 @@ RSpec.describe 'reasoner_configuration query' do
         reasoningAttempts {
           id
         }
+        timeLimit
       }
     }
     QUERY
@@ -65,6 +66,7 @@ RSpec.describe 'reasoner_configuration query' do
       'configuredReasoner' => expected_reasoner,
       'premiseSelections' => premise_selections.map { |p| {'id' => p.id} },
       'reasoningAttempts' => reasoning_attempts.map { |a| {'id' => a.id} },
+      'timeLimit' => reasoner_configuration.time_limit
     }
   end
 

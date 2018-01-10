@@ -1920,6 +1920,9 @@ type ReasonerConfiguration {
 
   # The reasoningAttempts that use this configuration
   reasoningAttempts: [ReasoningAttempt!]!
+
+  # How much time a reasoner can work on a reasoning task
+  timeLimit: Int
 }
 
 # The output of a Reasoner

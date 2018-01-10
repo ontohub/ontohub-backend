@@ -22,4 +22,9 @@ Types::ReasonerConfigurationType = GraphQL::ObjectType.define do
     description 'The PremiseSelections that use this configuration'
     property :premise_selections
   end
+
+  field :timeLimit, types.Int do
+    description 'How much time a reasoner can work on a reasoning task'
+    property :time_limit
+  end
 end
