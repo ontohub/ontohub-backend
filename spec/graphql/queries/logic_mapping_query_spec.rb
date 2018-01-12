@@ -35,7 +35,7 @@ RSpec.describe 'LogicMapping query' do
         'source' => include('id' => logic_mapping.source.to_param),
         'target' => include('id' => logic_mapping.target.to_param),
         'languageMapping' =>
-          include('id' => logic_mapping.language_mapping.to_param)
+          include('id' => logic_mapping.language_mapping.pk)
       )})
     end
     let(:expectation_signed_in_not_existent) do

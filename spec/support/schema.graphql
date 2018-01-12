@@ -710,7 +710,7 @@ type Language {
 # A mapping between two languages
 type LanguageMapping {
   # The ID of this LanguageMapping
-  id: ID!
+  id: Int!
 
   # The source language
   source: Language!
@@ -1806,7 +1806,7 @@ type Query {
   # A LanguageMapping for the given ID
   languageMapping(
     # The ID of the LangaugeMapping
-    id: ID!
+    id: Int!
   ): LanguageMapping
 
   # A Logic for the given ID
