@@ -45,6 +45,8 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
 # Sneakers depends on bunny and has the version requirement
 gem 'bunny'
+gem 'factory_bot_rails', '~> 4.8.2' # Needed for the seeds
+gem 'faker', '~> 1.8.7' # Needed for the seeds
 gem 'filelock', '~> 1.1.1'
 gem 'graphql', '~> 1.7.7'
 gem 'graphql-batch', '~> 0.3.8'
@@ -79,8 +81,6 @@ group :test do
   gem 'bunny-mock', '~> 1.7.0'
   gem 'codecov', '~> 0.1.10', require: false
   gem 'database_cleaner', '~> 1.6.2'
-  gem 'factory_bot_rails', '~> 4.8.2'
-  gem 'faker', '~> 1.8.7'
   gem 'fuubar', '~> 2.3.1'
   # As soon as a version > 2.8.0 of json-schema is released, use it instead of
   # master.
