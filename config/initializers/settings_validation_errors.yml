@@ -8,3 +8,4 @@ en:
     has_no_userinfo?: "must not have userinfo"
     is_directory?: "is not a directory"
     is_worker_class?: "is not a class that defines the method `work'"
+    create_directory?: "could not be created"

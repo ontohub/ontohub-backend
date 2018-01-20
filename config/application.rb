@@ -75,7 +75,7 @@ module OntohubBackend
     config.after_initialize do
       require 'index' unless inside_database_rake_task
 
-      # SettingsHandler.new(Settings).call
+      SettingsHandler.new(Settings).call
 
       # Only interact with the HetsAgent if the application is not run via rake
       # but as the rails server

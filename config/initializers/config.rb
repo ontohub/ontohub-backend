@@ -76,6 +76,10 @@ Config.setup do |c|
         File.directory?(value)
       end
 
+      def create_directory?(dir)
+        !!FileUtils.mkdir_p(dir) unless File.exist?(dir)
+      end
+
       def is_worker_class?(value)
         klass = value.constantize
         klass.instance_methods.include?(:work)
@@ -96,7 +100,9 @@ Config.setup do |c|
       required(:expiration_hours).filled { int? | float? }
     end
 
-    required(:data_directory).filled(:is_directory?)
+    required(:data_directory).filled do
+      is_directory? | create_directory?
+    end
 
     required(:sneakers).each do
       schema do
