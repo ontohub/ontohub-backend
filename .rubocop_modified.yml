@@ -12,6 +12,7 @@ Metrics/LineLength:
   Exclude:
     - 'app/graphql/**/*_enum.rb'
     - 'config/initializers/devise.rb'
+    - 'features/steps/**/*.rb'
 
 Layout/AlignParameters:
   Enabled: false
@@ -21,6 +22,12 @@ Layout/DotPosition:
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Style/GlobalVars:
+  Exclude:
+    - 'features/steps/**/*.rb'
+    - 'features/support/aruba.rb'
+    - 'features/support/hooks.rb'
 
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
