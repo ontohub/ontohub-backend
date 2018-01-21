@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 480a141e12d34b07b6532a59798e78bf524fc7f4
+  revision: ad3aefa189f993aa46fd76455a976a4ca6901518
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -9,7 +9,7 @@ GIT
       devise (>= 4.3, < 4.5)
       pry (~> 0.11.0)
       rails (~> 5.1.4)
-      sequel (>= 5.2, < 5.4)
+      sequel (>= 5.2, < 5.5)
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 1.0.0)
       sequel_pg (~> 1.8.0)
@@ -336,7 +336,7 @@ GEM
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.26.0)
-    sequel (5.3.0)
+    sequel (5.4.0)
     sequel-devise (0.0.11)
       devise
       orm_adapter-sequel
