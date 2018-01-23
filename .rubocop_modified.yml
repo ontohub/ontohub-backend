@@ -1,9 +1,18 @@
 Metrics/BlockLength:
   Exclude:
     - 'app/graphql/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*'
+    - 'config/initializers/devise.rb'
     - 'spec/**/*'
     - 'db/migrate/*'
     - '*.gemspec'
+
+Metrics/LineLength:
+  Exclude:
+    - 'app/graphql/**/*_enum.rb'
+    - 'config/initializers/devise.rb'
+    - 'features/steps/**/*.rb'
 
 Layout/AlignParameters:
   Enabled: false
@@ -13,6 +22,12 @@ Layout/DotPosition:
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Style/GlobalVars:
+  Exclude:
+    - 'features/steps/**/*.rb'
+    - 'features/support/aruba.rb'
+    - 'features/support/hooks.rb'
 
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
@@ -27,6 +42,9 @@ Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 Style/DoubleNegation:
+  Enabled: false
+
+Style/FormatStringToken:
   Enabled: false
 
 Style/NumericLiterals:

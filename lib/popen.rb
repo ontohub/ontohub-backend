@@ -8,6 +8,8 @@ module Popen
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def self.popen(cmd, path = nil, vars = {})
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
     unless cmd.is_a?(Array)
       raise 'System commands must be given as an array of strings'
     end

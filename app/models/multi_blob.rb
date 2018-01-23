@@ -4,6 +4,7 @@
 
 # Allows to apply multiple actions to a repository
 class MultiBlob
+  # rubocop:enable Metrics/ClassLength
   include ActiveModel::Model
 
   class Error < ::StandardError; end
@@ -52,7 +53,6 @@ class MultiBlob
         raise ValidationFailed, errors: @errors, conflicts: e.conflicts
       rescue TypeError => e
         raise unless e.message.match?(/Expecting a String or Rugged::Reference/)
-
         @errors.add(:last_known_head_id, 'reference could not be found')
         raise ValidationFailed, errors: @errors
       end

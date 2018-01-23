@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-
 CONTAINING_ONE_SLASH = %r{[^/]+/[^/]+} unless defined?(CONTAINING_ONE_SLASH)
 unless defined?(UNTIL_DOUBLE_SLASHES)
   UNTIL_DOUBLE_SLASHES = %r{([^/]+)(/[^/]+)*}

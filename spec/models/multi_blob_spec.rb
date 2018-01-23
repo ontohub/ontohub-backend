@@ -136,12 +136,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:last_known_head_id].first).
-                to match(/reference could not be found/i)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:last_known_head_id].first).
+              to match(/reference could not be found/i)
           end
         end
 
@@ -166,31 +164,27 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:branch].first).
-                to match(/changed in the meantime/i)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:branch].first).
+              to match(/changed in the meantime/i)
           end
 
           it 'contains the conflicts including the merge info' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed => error
-              merge_info =
-                {
-                  automergeable: false,
-                  path: old_files[2],
-                  filemode: be > 0,
-                  data: match(/<{7}.*={7}.*>{7}/m),
-                }
-              expect(error.conflicts).
-                to match_array([{ancestor: be_a(Hash),
-                                 ours: be_a(Hash),
-                                 theirs: be_a(Hash),
-                                 merge_info: merge_info}])
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed => error
+            merge_info =
+              {
+                automergeable: false,
+                path: old_files[2],
+                filemode: be > 0,
+                data: match(/<{7}.*={7}.*>{7}/m),
+              }
+            expect(error.conflicts).
+              to match_array([{ancestor: be_a(Hash),
+                               ours: be_a(Hash),
+                               theirs: be_a(Hash),
+                               merge_info: merge_info}])
           end
         end
       end
@@ -215,12 +209,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/must be present/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/must be present/)
           end
         end
 
@@ -239,12 +231,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/path already exists/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/path already exists/)
           end
         end
 
@@ -263,12 +253,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must exist/)
           end
         end
 
@@ -287,12 +275,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must be a string/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must be a string/)
           end
         end
 
@@ -311,12 +297,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/encoding"].first).
-                to match(/encoding not supported/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/encoding"].first).
+              to match(/encoding not supported/)
           end
         end
       end
@@ -339,12 +323,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/must be present/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/must be present/)
           end
         end
 
@@ -363,12 +345,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/path does not exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/path does not exist/)
           end
         end
 
@@ -387,12 +367,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must exist/)
           end
         end
 
@@ -411,12 +389,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must be a string/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must be a string/)
           end
         end
 
@@ -435,12 +411,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/encoding"].first).
-                to match(/encoding not supported/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/encoding"].first).
+              to match(/encoding not supported/)
           end
         end
       end
@@ -464,12 +438,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/new_path"].first).
-                to match(/must be present/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/new_path"].first).
+              to match(/must be present/)
           end
         end
 
@@ -489,12 +461,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/must be present/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/must be present/)
           end
         end
 
@@ -514,12 +484,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/path does not exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/path does not exist/)
           end
         end
 
@@ -539,12 +507,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/new_path"].first).
-                to match(/path and new_path must differ/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/new_path"].first).
+              to match(/path and new_path must differ/)
           end
         end
 
@@ -564,12 +530,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must exist/)
           end
         end
 
@@ -589,12 +553,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must exist/)
           end
         end
 
@@ -614,12 +576,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/content"].first).
-                to match(/must be a string/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/content"].first).
+              to match(/must be a string/)
           end
         end
 
@@ -639,12 +599,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/encoding"].first).
-                to match(/encoding not supported/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/encoding"].first).
+              to match(/encoding not supported/)
           end
         end
       end
@@ -666,12 +624,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/new_path"].first).
-                to match(/must be present/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/new_path"].first).
+              to match(/must be present/)
           end
         end
 
@@ -689,12 +645,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/must be present/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/must be present/)
           end
         end
 
@@ -712,12 +666,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/path does not exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/path does not exist/)
           end
         end
 
@@ -735,12 +687,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/new_path"].first).
-                to match(/path and new_path must differ/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/new_path"].first).
+              to match(/path and new_path must differ/)
           end
         end
       end
@@ -761,12 +711,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/path does not exist/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/path does not exist/)
           end
         end
       end
@@ -787,12 +735,10 @@ RSpec.describe MultiBlob do
           end
 
           it 'has the correct error message' do
-            begin
-              subject.save
-            rescue MultiBlob::ValidationFailed
-              expect(subject.errors.messages[:"files/0/path"].first).
-                to match(/path already exists/)
-            end
+            subject.save
+          rescue MultiBlob::ValidationFailed
+            expect(subject.errors.messages[:"files/0/path"].first).
+              to match(/path already exists/)
           end
         end
       end
@@ -808,12 +754,10 @@ RSpec.describe MultiBlob do
         end
 
         it 'has the correct error message' do
-          begin
-            subject.save
-          rescue MultiBlob::ValidationFailed
-            expect(subject.errors.messages[:repository].first).
-              to match(/must be a repository/)
-          end
+          subject.save
+        rescue MultiBlob::ValidationFailed
+          expect(subject.errors.messages[:repository].first).
+            to match(/must be a repository/)
         end
       end
 
@@ -828,12 +772,10 @@ RSpec.describe MultiBlob do
         end
 
         it 'has the correct error message' do
-          begin
-            subject.save
-          rescue MultiBlob::ValidationFailed
-            expect(subject.errors.messages[:user].first).
-              to match(/must be a user/)
-          end
+          subject.save
+        rescue MultiBlob::ValidationFailed
+          expect(subject.errors.messages[:user].first).
+            to match(/must be a user/)
         end
       end
 
@@ -848,12 +790,10 @@ RSpec.describe MultiBlob do
         end
 
         it 'has the correct error message' do
-          begin
-            subject.save
-          rescue MultiBlob::ValidationFailed
-            expect(subject.errors.messages[:branch].first).
-              to match(/branch does not exist/)
-          end
+          subject.save
+        rescue MultiBlob::ValidationFailed
+          expect(subject.errors.messages[:branch].first).
+            to match(/branch does not exist/)
         end
       end
 
@@ -868,12 +808,10 @@ RSpec.describe MultiBlob do
         end
 
         it 'has the correct error message' do
-          begin
-            subject.save
-          rescue MultiBlob::ValidationFailed
-            expect(subject.errors.messages[:commit_message].first).
-              to match(/must be present/)
-          end
+          subject.save
+        rescue MultiBlob::ValidationFailed
+          expect(subject.errors.messages[:commit_message].first).
+            to match(/must be present/)
         end
       end
     end
@@ -909,7 +847,7 @@ RSpec.describe MultiBlob do
 
       it 'creates a FileVersion for the created .gitkeep file' do
         expect(FileVersion.first(commit_sha: commit_sha,
-                                path: File.join(new_files[5], '.gitkeep'))).
+                                 path: File.join(new_files[5], '.gitkeep'))).
           to be_a(FileVersion)
       end
     end

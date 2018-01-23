@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/LineLength
-
 Types::MappingOriginEnum = GraphQL::EnumType.define do
   name 'MappingOrigin'
   description 'Specifies the origin (in the DOL document) of the Mapping'
