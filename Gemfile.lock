@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/ontohub/index.git
+  revision: fda77a3903045fb463142cc47e0627e1e69c1d0b
+  branch: master
+  specs:
+    index (0.0.0)
+      awesome_print (~> 1.8.0)
+      chewy (~> 0.10.1)
+      pry (~> 0.11.0)
+
+GIT
   remote: git://github.com/ontohub/ontohub-models.git
   revision: 9b9d9dda26e25900fcc25e44926b43b580ac8648
   branch: master
@@ -411,6 +421,7 @@ DEPENDENCIES
   graphql (~> 1.7.7)
   graphql-batch (~> 0.3.9)
   graphql-pundit (~> 0.5.1)
+  index!
   invoker
   json-schema!
   jwt (~> 2.1.0)

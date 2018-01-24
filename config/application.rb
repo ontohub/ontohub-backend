@@ -22,6 +22,17 @@ Bundler.require(*Rails.groups)
 module OntohubBackend
   # The base application class - Rails default
   class Application < Rails::Application
+    # Sequel 5 and sequel-rails always try connect to the database, even if it
+    # does not exist AND it should be created by the currently running rake
+    # task. This is a workaround:
+    tasks_without_connection =
+      %w(db:drop db:create db:recreate db:recreate:seed)
+    # :nocov:
+    inside_database_rake_task =
+      defined?(Rake) &&
+      (Rake.application.top_level_tasks & tasks_without_connection).any?
+    # :nocov:
+
     config.hets_version_requirement = '>= 0.100.0'
     config.document_file_extensions =
       %w(casl dol hascasl het owl omn obo hs exp maude elf hol isa thy prf
@@ -56,21 +67,14 @@ module OntohubBackend
 
     config.autoload_paths << Rails.root.join('lib')
 
-    # Sequel 5 and sequel-rails always try connect to the database, even if it
-    # does not exist AND it should be created by the currently running rake
-    # task. This is a workaround:
-    tasks_without_connection =
-      %w(db:drop db:create db:recreate db:recreate:seed)
-    # :nocov:
-    config.sequel.skip_connect =
-      defined?(Rake) &&
-      (Rake.application.top_level_tasks & tasks_without_connection).any?
-    # :nocov:
+    config.sequel.skip_connect = inside_database_rake_task
 
     # Sets the mirror synchronization inteval
     config.mirror_repository_synchronization_interval = 6.hours
 
     config.after_initialize do
+      require 'index' unless inside_database_rake_task
+
       SettingsHandler.new(Settings).call
 
       # Only interact with the HetsAgent if the application is not run via rake
