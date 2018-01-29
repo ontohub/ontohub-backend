@@ -73,7 +73,7 @@ Types::QueryType = GraphQL::ObjectType.define do
   field :languageMapping, Types::LanguageMappingType do
     description 'A LanguageMapping for the given ID'
 
-    argument :id, !types.ID do
+    argument :id, !types.Int do
       description 'The ID of the LangaugeMapping'
     end
 

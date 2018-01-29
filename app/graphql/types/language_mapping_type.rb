@@ -4,7 +4,7 @@ Types::LanguageMappingType = GraphQL::ObjectType.define do
   name 'LanguageMapping'
   description 'A mapping between two languages'
 
-  field :id, !types.ID do
+  field :id, !types.Int do
     description 'The ID of this LanguageMapping'
   end
 

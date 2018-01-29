@@ -60,7 +60,7 @@ RSpec.describe 'Language query' do
   context 'with languageMappings' do
     let!(:language_mapping) { create(:language_mapping, source: language) }
     let(:expected_language_mappings) do
-      include(include('id' => language_mapping.to_param))
+      include(include('id' => language_mapping.pk))
     end
 
     it_behaves_like 'a GraphQL query', 'language'
