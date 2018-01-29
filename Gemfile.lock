@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 9b9d9dda26e25900fcc25e44926b43b580ac8648
+  revision: d8b13cf8f1dd5d02ccefbbee44db94058af0e875
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -13,7 +13,7 @@ GIT
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 1.0.0)
       sequel_pg (~> 1.8.0)
-      sequel_postgresql_triggers (~> 1.3.0)
+      sequel_postgresql_triggers (>= 1.3, < 1.5)
 
 GIT
   remote: git://github.com/ruby-json-schema/json-schema.git
@@ -105,7 +105,7 @@ GEM
     database_cleaner (1.6.2)
     debug_inspector (0.0.3)
     deep_merge (1.1.1)
-    devise (4.4.0)
+    devise (4.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.2)
@@ -191,7 +191,7 @@ GEM
       graphql (>= 1.6.4, < 1.8.0)
       pundit (~> 1.1.0)
     http-parser-lite (0.6.0)
-    i18n (0.9.1)
+    i18n (0.9.3)
       concurrent-ruby (~> 1.0)
     inflecto (0.0.2)
     iniparse (1.4.4)
@@ -227,7 +227,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.1)
+    minitest (5.11.2)
     msgpack (1.2.2)
     multi_json (1.13.1)
     multipart-post (2.0.0)
@@ -347,7 +347,7 @@ GEM
     sequel_pg (1.8.1)
       pg (>= 0.18.0)
       sequel (>= 4.34.0)
-    sequel_postgresql_triggers (1.3.0)
+    sequel_postgresql_triggers (1.4.0)
       sequel
     serverengine (1.5.11)
       sigdump (~> 0.2.2)
