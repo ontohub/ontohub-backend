@@ -31,6 +31,8 @@ gem 'rack-cors'
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
                       branch: 'master'
 
+gem 'index', github: 'ontohub/index', branch: 'master', require: false
+
 gem 'bringit', '~> 1.0.0'
 
 gem 'config', '~> 1.6.1'

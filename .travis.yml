@@ -66,6 +66,7 @@ matrix:
         - EMAJ_SQL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/sql/emaj--$EMAJ_VERSION.sql
         - EMAJ_CONTROL_FILE=$EMAJ_TMPDIR/e-maj-$EMAJ_VERSION/emaj.control
         - SHAREDIR=$(pg_config --sharedir)
+        - sudo mkdir -p $SHAREDIR/extension/
         - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
         - |
