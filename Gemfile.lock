@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: d8b13cf8f1dd5d02ccefbbee44db94058af0e875
+  revision: c5dab513743a1b0b32c109fb7c57d3ef6c3b468f
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -151,13 +151,13 @@ GEM
       dry-equalizer (~> 0.2)
       dry-logic (~> 0.4, >= 0.4.0)
       dry-types (~> 0.12.0)
-    elasticsearch (6.0.0)
-      elasticsearch-api (= 6.0.0)
-      elasticsearch-transport (= 6.0.0)
-    elasticsearch-api (6.0.0)
+    elasticsearch (6.0.1)
+      elasticsearch-api (= 6.0.1)
+      elasticsearch-transport (= 6.0.1)
+    elasticsearch-api (6.0.1)
       multi_json
     elasticsearch-dsl (0.1.5)
-    elasticsearch-transport (6.0.0)
+    elasticsearch-transport (6.0.1)
       faraday
       multi_json
     em-proxy (0.1.9)
@@ -237,12 +237,12 @@ GEM
     mime-types-data (3.2016.0521)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.2)
+    minitest (5.11.3)
     msgpack (1.2.2)
     multi_json (1.13.1)
     multipart-post (2.0.0)
     nio4r (2.2.0)
-    nokogiri (1.8.1)
+    nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     orm_adapter-sequel (0.1.0)
