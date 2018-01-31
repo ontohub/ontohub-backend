@@ -29,6 +29,8 @@ module Mutations
         params['public_access'] = params.delete('visibility') == 'public'
         repository = RepositoryCompound.new(params)
         repository.save
+        IndexingJob.
+          perform_later('class' => 'Repository', 'id' => repository.id)
         repository
       end
     end

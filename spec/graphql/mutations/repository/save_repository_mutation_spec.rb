@@ -50,6 +50,20 @@ RSpec.describe 'saveRepository mutation' do
         'visibility' => repository_data['visibility']
       )
     end
+
+    it 'enqueues a repository indexing job' do
+      subject
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'Repository',
+        'id' => repository.id
+      )
+    end
+  end
+
+  shared_examples 'does not enque repository indexing job' do
+    it 'does not index' do
+      expect(IndexingJob).not_to have_been_enqueued
+    end
   end
 
   context 'Repository does not exist' do
@@ -57,6 +71,8 @@ RSpec.describe 'saveRepository mutation' do
       {'id' => "bad-#{repository.to_param}",
        'data' => repository_data}
     end
+
+    include_examples('does not enque repository indexing job')
 
     it 'returns an error' do
       expect(subject['data']['saveRepository']).to be_nil
@@ -69,6 +85,8 @@ RSpec.describe 'saveRepository mutation' do
     let!(:repository) { create :repository_compound, :private }
     let(:context) { {} }
 
+    include_examples('does not enque repository indexing job')
+
     it 'returns an error' do
       expect(subject['data']['saveRepository']).to be(nil)
       expect(subject['errors']).
@@ -78,6 +96,8 @@ RSpec.describe 'saveRepository mutation' do
 
   context 'Not signed in' do
     let(:context) { {} }
+
+    include_examples('does not enque repository indexing job')
 
     it 'returns an error' do
       expect(subject['data']['saveRepository']).to be(nil)

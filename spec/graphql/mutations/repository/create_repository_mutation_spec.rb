@@ -59,6 +59,14 @@ RSpec.describe 'createRepository mutation' do
       repository = RepositoryCompound.first(name: repository_blueprint.name)
       expect(repository.git.repo_exists?).to be(true)
     end
+
+    it 'enqueues a repository indexing job' do
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'Repository',
+        'id' => Repository.
+          first(slug: subject['data']['createRepository']['id']).id
+      )
+    end
   end
 
   context 'Name is not available' do
@@ -91,5 +99,9 @@ RSpec.describe 'createRepository mutation' do
       expect(subject['errors']).
         to include(include('message' => "You're not authorized to do this"))
     end
+  end
+
+  it 'enqueues a repository indexing job' do
+    expect(IndexingJob).not_to have_been_enqueued
   end
 end

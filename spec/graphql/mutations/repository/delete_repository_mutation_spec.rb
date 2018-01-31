@@ -41,10 +41,26 @@ RSpec.describe 'deleteRepository mutation' do
       subject
       expect(repository.git.repo_exists?).to be(false)
     end
+
+    it 'enqueues a repository indexing job' do
+      subject
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'Repository',
+        'id' => repository.id
+      )
+    end
+  end
+
+  shared_examples 'does not enque repository indexing job' do
+    it 'does not index' do
+      expect(IndexingJob).not_to have_been_enqueued
+    end
   end
 
   context 'Repository does not exist' do
     let(:variables) { {'id' => repository.to_param + 'foo'} }
+
+    include_examples('does not enque repository indexing job')
 
     it 'returns an error' do
       expect(subject['data']['deleteRepository']).to be_nil
@@ -57,6 +73,8 @@ RSpec.describe 'deleteRepository mutation' do
     let!(:repository) { create :repository_compound, :private }
     let(:context) { {} }
 
+    include_examples('does not enque repository indexing job')
+
     it 'returns an error' do
       expect(subject['data']['deleteRepository']).to be(nil)
       expect(subject['errors']).
@@ -66,6 +84,8 @@ RSpec.describe 'deleteRepository mutation' do
 
   context 'Not signed in' do
     let(:context) { {} }
+
+    include_examples('does not enque repository indexing job')
 
     it 'returns an error' do
       expect(subject['data']['deleteRepository']).to be(nil)

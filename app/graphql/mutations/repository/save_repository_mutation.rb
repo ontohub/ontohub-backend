@@ -32,6 +32,8 @@ module Mutations
         params['public_access'] = params.delete('visibility') == 'public'
         params['description'] = nil if params['description'].empty?
         repository.update(params)
+        IndexingJob.
+          perform_later('class' => 'Repository', 'id' => repository.id)
         repository
       end
     end

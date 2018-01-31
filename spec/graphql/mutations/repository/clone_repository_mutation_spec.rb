@@ -83,6 +83,14 @@ RSpec.describe 'cloneRepository mutation' do
         with(subject['data']['cloneRepository']['id'])
     end
 
+    it 'enqueues a repository indexing job' do
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'Repository',
+        'id' => Repository.
+          first(slug: subject['data']['cloneRepository']['id']).id
+      )
+    end
+
     it 'creates the repository' do
       expect(subject).not_to be(nil)
     end
@@ -115,6 +123,10 @@ RSpec.describe 'cloneRepository mutation' do
     it 'does not enqueue a clone-repository job' do
       expect(RepositoryCloningJob).
         not_to have_been_enqueued
+    end
+
+    it 'does not enqueue a repository indexing job' do
+      expect(IndexingJob).not_to have_been_enqueued
     end
 
     it 'adds a GraphQL error' do
