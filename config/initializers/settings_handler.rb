@@ -9,9 +9,6 @@ class SettingsHandler
   end
 
   def call
-    SettingsPresenceValidator.new(settings).call
     SettingsNormalizer.new(settings).call
-    SettingsInitializer.new(settings).call
-    SettingsValidator.new(settings).call
   end
 end

@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :settings, class: OpenStruct do
+  factory :settings, class: Hash do
     skip_create
-    initialize_with { OpenStruct.new }
-    after(:create) do |settings|
-      settings.server_url = 'http://example.com'
+    initialize_with { attributes }
 
-      settings.jwt = OpenStruct.new
-      settings.jwt.expiration_hours = 24
+    server_url 'http://example.com'
 
-      settings.data_directory = 'tmp/data'
+    jwt expiration_hours: 24
 
-      worker_group = OpenStruct.new(workers: 2, classes: 'ApplicationWorker')
-      settings.sneakers = [worker_group]
-    end
+    data_directory 'tmp/data'
+
+    sneakers [{workers: 2, classes: 'ApplicationWorker'}]
   end
 end

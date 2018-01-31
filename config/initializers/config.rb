@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require Rails.root.join('config/initializers/settings_schema.rb')
+
 Config.setup do |config|
   # Name of the constant exposing loaded settings
   config.const_name = 'Settings'
@@ -39,4 +41,6 @@ Config.setup do |config|
   # Parse numeric values as integers instead of strings.
   #
   config.env_parse_values = true
+
+  config.schema = Dry::Validation::Schema(SettingsSchema)
 end

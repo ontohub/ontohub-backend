@@ -36,6 +36,7 @@ gem 'index', github: 'ontohub/index', branch: 'master', require: false
 gem 'bringit', '~> 1.0.0'
 
 gem 'config', '~> 1.6.1'
+gem 'dry-validation'
 
 # Use these gems for debugging
 gem 'awesome_print', '~> 1.8.0'
