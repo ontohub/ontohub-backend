@@ -37,6 +37,8 @@ module Mutations
       def call(user, arguments, _context)
         params = arguments[:data].to_h.compact
         user.update(params) if user.valid_password?(arguments[:password])
+        IndexingJob.
+          perform_later('class' => 'User', 'id' => resource.id)
         user
       end
     end

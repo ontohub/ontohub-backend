@@ -45,6 +45,8 @@ module Mutations
 
         return unless resource.persisted?
 
+        IndexingJob.perform_later('class' => 'User', 'id' => resource.id)
+
         if resource.active_for_authentication?
           sign_in_and_return_token(resource)
         else

@@ -77,6 +77,19 @@ RSpec.describe Mutations::Account::SignUpMutation,
 
       it_behaves_like 'a confirmation email sender'
     end
+
+    it 'enqueues a user indexing job' do
+      # Workaround: The IndexingJob needs to be called, but the test helper
+      # doesn't match it. It might be an RSpec configuration issue, but we 
+      # cannot find it. Let's see if the perform_later method was properly
+      # called:
+      allow(IndexingJob).to receive(:perform_later)
+      subject
+      expect(IndexingJob).to have_received(:perform_later).with(
+        'class' => 'User',
+        'id' => User.first(slug: subject['data']['signUp']['me']['id']).id
+      )
+    end
   end
 
   context 'unsuccessful' do
