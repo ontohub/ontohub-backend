@@ -12,27 +12,27 @@ class SettingsSchema < Dry::Validation::Schema
     )
   end
 
-  def scheme?(list, value)
+  def uri_has_scheme?(list, value)
     Array(list).include?(URI(value).scheme)
   end
 
-  def absolute?(value)
+  def uri_is_absolute?(value)
     URI(value).absolute?
   end
 
-  def no_path?(value)
+  def uri_has_no_path?(value)
     URI(value).path.empty?
   end
 
-  def no_query?(value)
+  def uri_has_no_query?(value)
     URI(value).query.nil?
   end
 
-  def no_fragment?(value)
+  def uri_has_no_fragment?(value)
     URI(value).fragment.nil?
   end
 
-  def no_userinfo?(value)
+  def uri_has_no_userinfo?(value)
     URI(value).userinfo.nil?
   end
 
@@ -60,12 +60,12 @@ class SettingsSchema < Dry::Validation::Schema
 
   define! do
     required(:server_url).filled(:str?,
-                                  :absolute?,
-                                  :no_path?,
-                                  :no_query?,
-                                  :no_fragment?,
-                                  :no_userinfo?,
-                                  scheme?: %w(http https))
+                                  :uri_is_absolute?,
+                                  :uri_has_no_path?,
+                                  :uri_has_no_query?,
+                                  :uri_has_no_fragment?,
+                                  :uri_has_no_userinfo?,
+                                  uri_has_scheme?: %w(http https))
 
     required(:jwt).schema do
       required(:expiration_hours).filled { int? | float? }

@@ -110,7 +110,7 @@ RSpec.describe(SettingsSchema) do
       end
 
       context 'workers' do
-        it 'is not a Numeric type' do
+        it 'is not an integer' do
           settings[:sneakers] = [workers: 'bad']
           expect(subject.errors).to include(
             sneakers: {0 => include(workers: ['must be an integer'])}

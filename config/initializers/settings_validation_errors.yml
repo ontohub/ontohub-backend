@@ -1,11 +1,11 @@
 en:
   errors:
-    scheme?: "has an invalid scheme (only %{list} are allowed)"
-    absolute?: "is not an absolute URL"
-    no_path?: "must not have a path"
-    no_query?: "must not have a query string"
-    no_fragment?: "must not have a fragment"
-    no_userinfo?: "must not have user info"
+    uri_has_scheme?: "has an invalid scheme (only %{list} are allowed)"
+    uri_is_absolute?: "is not an absolute URL"
+    uri_has_no_path?: "must not have a path"
+    uri_has_no_query?: "must not have a query string"
+    uri_has_no_fragment?: "must not have a fragment"
+    uri_has_no_userinfo?: "must not have user info"
     directory?: "is not a directory"
     worker_class?: "is not a class that defines the method `work'"
     worker_class_or_list_of_worker_classes?: "must be a worker class or a list of worker classes"
