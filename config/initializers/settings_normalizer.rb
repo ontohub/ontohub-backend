@@ -16,7 +16,7 @@ class SettingsNormalizer
   protected
 
   def normalize_paths
-    @settings.data_directory = normalize_path(@settings.data_directory)
+    @settings[:data_directory] = normalize_path(@settings[:data_directory])
   end
 
   def normalize_path(path)
@@ -39,9 +39,9 @@ class SettingsNormalizer
   end
 
   def normalize_worker_groups
-    groups = @settings.sneakers
+    groups = @settings[:sneakers]
     groups.map do |group|
-      group.tap { |g| g.classes = Array(g.classes) }
+      group.tap { |g| g[:classes] = Array(g[:classes]) }
     end
   end
 end

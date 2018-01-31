@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-Dir.glob('app/workers/*.rb').each do |file|
-  require_relative Rails.root.join(file).to_s
-end
+require Rails.root.join('config/initializers/settings_schema.rb')
 
-Config.setup do |c|
+Config.setup do |config|
   # Name of the constant exposing loaded settings
-  c.const_name = 'Settings'
+  config.const_name = 'Settings'
 
   # Ability to remove elements of the array set in earlier loaded settings file.
   # For example value: '--'.
@@ -16,7 +14,7 @@ Config.setup do |c|
   # Overwrite arrays found in previously loaded settings file. When set to
   # `false`, arrays will be merged.
   #
-  c.overwrite_arrays = true
+  config.overwrite_arrays = true
 
   # Load environment variables from the `ENV` object and override any settings
   # defined in files.
@@ -42,75 +40,7 @@ Config.setup do |c|
 
   # Parse numeric values as integers instead of strings.
   #
-  c.env_parse_values = true
+  config.env_parse_values = true
 
-  c.schema do
-    configure do
-      config.messages_file = Rails.root.join("config/initializers/settings_validation_errors.yml")
-
-      def scheme?(list, value)
-        Array(list).include?(URI(value).scheme)
-      end
-
-      def absolute?(value)
-        URI(value).absolute?
-      end
-
-      def has_no_path?(value)
-        URI(value).path.empty?
-      end
-
-      def has_no_query?(value)
-        URI(value).query.nil?
-      end
-
-      def has_no_fragment?(value)
-        URI(value).fragment.nil?
-      end
-
-      def has_no_userinfo?(value)
-        URI(value).userinfo.nil?
-      end
-
-      def is_directory?(value)
-        File.directory?(value)
-      end
-
-      def create_directory?(dir)
-        !!FileUtils.mkdir_p(dir) unless File.exist?(dir)
-      end
-
-      def is_worker_class?(value)
-        klass = value.constantize
-        klass.instance_methods.include?(:work)
-      rescue NameError
-        false
-      end
-    end
-
-    required(:server_url).filled(:str?,
-                                 :absolute?,
-                                 :has_no_path?,
-                                 :has_no_query?,
-                                 :has_no_fragment?,
-                                 :has_no_userinfo?,
-                                 scheme?: %w(http https))
-
-    required(:jwt).schema do
-      required(:expiration_hours).filled { int? | float? }
-    end
-
-    required(:data_directory).filled do
-      is_directory? | create_directory?
-    end
-
-    required(:sneakers).each do
-      schema do
-        required(:workers).filled(:int?)
-        required(:classes).filled do
-          (str? > is_worker_class?) | array? { each { is_worker_class? } }
-        end
-      end
-    end
-  end
+  config.schema = Dry::Validation::Schema(SettingsSchema)
 end
