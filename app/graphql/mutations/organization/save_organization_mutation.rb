@@ -29,6 +29,8 @@ module Mutations
         params = arguments[:data].to_h.compact
         params['description'] = nil if params['description'].empty?
         organization.update(params)
+        IndexingJob.
+          perform_later('class' => 'Organization', 'id' => organization.id)
         organization
       end
     end

@@ -35,6 +35,19 @@ RSpec.describe Mutations::Organization::DeleteOrganizationMutation do
     it 'returns true' do
       expect(subject['data']['deleteOrganization']).to be(true)
     end
+    it 'enqueues a organization indexing job' do
+      subject
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'Organization',
+        'id' => organization.id
+      )
+    end
+  end
+
+  shared_examples 'does not enque organization indexing job' do
+    it 'does not index' do
+      expect(IndexingJob).not_to have_been_enqueued
+    end
   end
 
   context 'Organization does not exist' do
@@ -45,6 +58,8 @@ RSpec.describe Mutations::Organization::DeleteOrganizationMutation do
       expect(subject['errors']).
         to include(include('message' => 'resource not found'))
     end
+
+    include_examples('does not enque organization indexing job')
   end
 
   context 'Not signed in' do
@@ -58,5 +73,7 @@ RSpec.describe Mutations::Organization::DeleteOrganizationMutation do
       expect(subject['errors']).
         to include(include('message' => "You're not authorized to do this"))
     end
+
+    include_examples('does not enque organization indexing job')
   end
 end
