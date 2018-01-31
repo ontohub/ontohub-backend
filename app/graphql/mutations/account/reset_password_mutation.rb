@@ -31,8 +31,7 @@ module Mutations
       # that action after stripping the rest away. Make sure that this code is
       # updated if Devise adds relevant code to the controller action.
       #
-      # For reference, see the V2::Users::PasswordController#recover_password
-      # and
+      # For reference, see
       # https://github.com/plataformatec/devise/blob/7a44233fb9439e7cc4d1503b14f02a1d9f6da7b9/app/controllers/devise/passwords_controller.rb#L31-L49
       def call(_root, arguments, context)
         setup_devise(context)
