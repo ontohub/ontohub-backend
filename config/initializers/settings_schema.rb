@@ -7,7 +7,9 @@ end
 # The Schema class to validate the Settings against
 class SettingsSchema < Dry::Validation::Schema
   configure do |config|
-    config.messages_file = Rails.root.join("config/initializers/settings_validation_errors.yml")
+    config.messages_file = Rails.root.join(
+      'config/initializers/settings_validation_errors.yml'
+    )
   end
 
   def scheme?(list, value)
