@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-Dir.glob('app/workers/*.rb').sort.each do |file|
-  require_relative Rails.root.join(file).to_s
-end
-
 # The Schema class to validate the Settings against
 class SettingsSchema < Dry::Validation::Schema
   configure do |config|
@@ -45,20 +41,22 @@ class SettingsSchema < Dry::Validation::Schema
   end
 
   def worker_class?(value)
-    klass = value.constantize
-    klass.instance_methods.include?(:work)
-  rescue NameError
-    false
+    %w(MailersWorker
+       ProcessCommitWorker
+       PostProcessHetsWorker
+       RepositoryPullingWorker
+       RepositoryCloningWorker).include?(value)
   end
 
   def worker_class_or_list_of_worker_classes?(value)
-    value.is_a?(String) && worker_class?(value) ||
-      value.is_a?(Array) && value.all? do |v|
-        v.is_a?(String) && worker_class?(v)
-      end
+    Array(value).all? do |v|
+      v.is_a?(String) && worker_class?(v)
+    end
   end
 
+  # rubocop:disable Metrics/BlockLength
   define! do
+    # rubocop:enable Metrics/BlockLength
     required(:server_url).filled(:str?,
                                   :uri_is_absolute?,
                                   :uri_has_no_path?,
@@ -73,6 +71,15 @@ class SettingsSchema < Dry::Validation::Schema
 
     required(:data_directory).filled do
       directory? | create_directory?
+    end
+
+    required(:rabbitmq).schema do
+      required(:host).filled { str? }
+      required(:port).filled { int? }
+      required(:username).filled { str? }
+      required(:password).filled { str? }
+      required(:prefix).filled { str? }
+      required(:exchange).filled { str? }
     end
 
     required(:sneakers).each do
