@@ -1,0 +1,3 @@
+rabbitmq:
+  prefix: ontohub_development
+  exchange: ontohub_development

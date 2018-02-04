@@ -36,6 +36,37 @@ RSpec.describe(SettingsSchema) do
         to include(data_directory: ['must be filled'])
     end
 
+    context 'rabbitmq' do
+      %i(host username password prefix exchange).each do |field|
+        context field.to_s do
+          it 'is nil' do
+            settings[:rabbitmq][field] = nil
+            expect(subject.errors).
+              to include(rabbitmq: {field => ['must be filled']})
+          end
+
+          it 'is maltyped' do
+            settings[:rabbitmq][field] = 0
+            expect(subject.errors).
+              to include(rabbitmq: {field => ['must be a string']})
+          end
+        end
+      end
+      context 'port' do
+        it 'is nil' do
+          settings[:rabbitmq][:port] = nil
+          expect(subject.errors).
+            to include(rabbitmq: {port: ['must be filled']})
+        end
+
+        it 'is maltyped' do
+          settings[:rabbitmq][:port] = 'string'
+          expect(subject.errors).
+            to include(rabbitmq: {port: ['must be an integer']})
+        end
+      end
+    end
+
     context 'server_url' do
       it 'is not a string' do
         settings[:server_url] = 0

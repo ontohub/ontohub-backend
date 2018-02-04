@@ -1,2 +1,6 @@
 server_url: 'http://example.test'
 data_directory: 'tmp/data'
+
+rabbitmq:
+  prefix: ontohub_test
+  exchange: ontohub_test

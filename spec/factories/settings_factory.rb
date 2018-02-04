@@ -11,6 +11,17 @@ FactoryBot.define do
 
     data_directory 'tmp/data'
 
-    sneakers [{workers: 2, classes: 'ApplicationWorker'}]
+    rabbitmq do
+      {
+        host: 'example.com',
+        port: 1234,
+        username: 'username',
+        password: 'password',
+        prefix: 'rabbitmq_test_prefix',
+        exchange: 'rabbitmq_test_exchange',
+      }
+    end
+
+    sneakers [{workers: 2, classes: 'MailersWorker'}]
   end
 end

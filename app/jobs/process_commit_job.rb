@@ -2,7 +2,7 @@
 
 # Post-processes a single commit
 class ProcessCommitJob < ApplicationJob
-  queue_as :process_commit
+  queue_as "#{Settings.rabbitmq.prefix}_process_commit"
 
   def perform(repository_id, commit_sha)
     FileVersionParentsCreator.new(repository_id, commit_sha).call
