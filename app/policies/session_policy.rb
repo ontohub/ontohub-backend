@@ -3,6 +3,6 @@
 # Policies for SessionsController
 class SessionPolicy < ApplicationPolicy
   def create?
-    !current_user
+    !signed_in?
   end
 end

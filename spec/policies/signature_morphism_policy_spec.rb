@@ -109,8 +109,8 @@ RSpec.describe SignatureMorphismPolicy do
       let(:current_user) { create(:hets_api_key) }
       subject { SignatureMorphismPolicy.new(current_user, signature_morphism) }
 
-      it 'does allow show?' do
-        expect(subject.show?).to be(true)
+      it 'does not allow show?' do
+        expect(subject.show?).to be(false)
       end
     end
   end

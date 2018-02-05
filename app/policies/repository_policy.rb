@@ -4,34 +4,29 @@
 # No need for policies for Tree, Diff, Commit; just use this policy
 class RepositoryPolicy < ApplicationPolicy
   # Scopes a repository dataset to accessible repositories of the current user
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      return scope if user.is_a?(HetsApiKey)
-      return scope.where(false) if user.is_a?(GitShellApiKey)
-      return scope if user&.admin?
-      return scope.where(public_access: true) unless user
+      return scope if hets_api_key?
+      return scope.where(false) if git_shell_api_key?
+      return scope if admin?
+      return scope.where(public_access: true) unless user?
 
-      scope.intersect(user.accessible_repositories_dataset.
+      scope.intersect(current_user.accessible_repositories_dataset.
                         or(public_access: true))
     end
   end
 
   def show?
     return false unless resource
+    return false if git_shell_api_key?
+    return true if hets_api_key?
     resource.public_access ||
       !!current_user&.accessible_repositories_dataset&.
         where(slug: resource.to_param)&.any?
   end
 
   def create?(owner)
-    return false unless current_user
+    return false unless user?
     if owner.is_a?(User)
       owner.id == current_user.id
     elsif owner.is_a?(Organization)
@@ -44,7 +39,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def update?
-    return false unless current_user
+    return false unless user?
     create?(resource.owner) || !!RepositoryMembership.
       find(member_id: current_user&.id, repository_id: resource&.id,
            role: 'admin')
@@ -63,7 +58,7 @@ class RepositoryPolicy < ApplicationPolicy
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
     owner = resource.owner
     return false if resource.remote_type == 'mirror'
-    return false unless current_user
+    return false unless user?
     return true if owner.id == current_user.id
 
     if owner.is_a?(Organization)

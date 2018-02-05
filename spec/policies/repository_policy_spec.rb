@@ -556,10 +556,18 @@ RSpec.describe RepositoryPolicy do
         end
       end
 
-      %i(create? update? index? destroy? write?).each do |method|
+      it 'does not allow create?' do
+        expect(subject.create?(nil)).to be(false)
+      end
+
+      %i(update? destroy? write?).each do |method|
         it "does not allow #{method}" do
           expect(subject.public_send(method)).to be(false)
         end
+      end
+
+      it "does allow index?" do
+        expect(subject.index?).to be(true)
       end
 
       it "does #{show_expectation || 'not '}allow show?" do
@@ -567,22 +575,32 @@ RSpec.describe RepositoryPolicy do
       end
     end
 
+    subject do
+      RepositoryPolicy.new(current_user, repository)
+    end
+
     context 'GitShellApiKey' do
       let(:current_user) { create(:git_shell_api_key) }
-      subject do
-        RepositoryPolicy.new(current_user)
+
+      include_examples 'ApiKey behavior', 0, false do
+        let(:repository) { create(:repository, public_access: true) }
       end
 
-      include_examples 'ApiKey behavior', 0, false
+      include_examples 'ApiKey behavior', 0, false do
+        let(:repository) { create(:repository, public_access: false) }
+      end
     end
 
     context 'HetsApiKey' do
       let(:current_user) { create(:hets_api_key) }
-      subject do
-        RepositoryPolicy.new(current_user)
+
+      include_examples 'ApiKey behavior', 5, true do
+        let(:repository) { create(:repository, public_access: true) }
       end
 
-      include_examples 'ApiKey behavior', 5, true
+      include_examples 'ApiKey behavior', 5, true do
+        let(:repository) { create(:repository, public_access: false) }
+      end
     end
   end
 end

@@ -4,11 +4,11 @@
 class ConfirmationPolicy < ApplicationPolicy
   # resend
   def create?
-    true
+    not_an_api_key?
   end
 
   # confirm
   def update?
-    true
+    not_an_api_key?
   end
 end

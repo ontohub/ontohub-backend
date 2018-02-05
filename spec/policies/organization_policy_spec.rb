@@ -163,8 +163,8 @@ RSpec.describe OrganizationPolicy do
         OrganizationPolicy.new(current_user)
       end
 
-      it 'does allow show?' do
-        expect(subject.show?).to be(true)
+      it 'does not allow show?' do
+        expect(subject.show?).to be(false)
       end
     end
   end

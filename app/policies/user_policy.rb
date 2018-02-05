@@ -3,14 +3,14 @@
 # Policies for UsersController
 class UserPolicy < ApplicationPolicy
   def show?
-    true
+    not_an_api_key?
   end
 
   def show_current_user?
-    !!current_user
+    user?
   end
 
   def access_private_data?
-    !!current_user && current_user.id == resource.id
+    user? && current_user.id == resource.id
   end
 end

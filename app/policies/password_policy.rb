@@ -3,10 +3,10 @@
 # Policies for PasswordsController
 class PasswordPolicy < ApplicationPolicy
   def recover_password?
-    true
+    not_an_api_key?
   end
 
   def resend_password_recovery_email?
-    true
+    not_an_api_key?
   end
 end

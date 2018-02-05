@@ -3,10 +3,10 @@
 # Policies for UnlockController
 class UnlockPolicy < ApplicationPolicy
   def resend_unlocking_email?
-    true
+    not_an_api_key?
   end
 
   def unlock_account?
-    true
+    not_an_api_key?
   end
 end

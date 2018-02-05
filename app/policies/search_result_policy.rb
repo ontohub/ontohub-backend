@@ -3,6 +3,6 @@
 # Policies for SearchController
 class SearchResultPolicy < ApplicationPolicy
   def search?
-    true
+    not_an_api_key?
   end
 end

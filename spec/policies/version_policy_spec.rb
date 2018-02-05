@@ -41,8 +41,8 @@ RSpec.describe VersionPolicy do
         VersionPolicy.new(current_user)
       end
 
-      it 'does not allow show?' do
-        expect(subject.show?).to be(false)
+      it 'does allow show?' do
+        expect(subject.show?).to be(true)
       end
     end
 
