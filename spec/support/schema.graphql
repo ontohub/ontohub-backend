@@ -608,6 +608,15 @@ type GeneratedAxiom {
   text: String!
 }
 
+# An action in git
+enum GitAction {
+  # Pull from a repository
+  pull
+
+  # Push to a repository
+  push
+}
+
 # Data of a git user
 type GitUser {
   # Corresponding Ontohub account of the user
@@ -1796,6 +1805,18 @@ type Query {
     # The id of the GeneratedAxiom
     id: Int!
   ): GeneratedAxiom
+
+  # Tells whether or not a public key has git access
+  gitAuthorization(
+    # The action to authorize
+    action: GitAction!
+
+    # The ID of the public key for authorization
+    keyId: Int!
+
+    # The ID of the repository for authorization
+    repositoryId: ID!
+  ): Boolean
 
   # A Language for the given ID
   language(

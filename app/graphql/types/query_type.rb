@@ -12,6 +12,44 @@ Types::QueryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :gitAuthorization, types.Boolean do
+    description 'Tells whether or not a public key has git access'
+
+    argument :keyId, !types.Int do
+      description 'The ID of the public key for authorization'
+    end
+
+    argument :repositoryId, !types.ID do
+      description 'The ID of the repository for authorization'
+    end
+
+    argument :action, !Types::GitActionEnum do
+      description 'The action to authorize'
+    end
+
+    resource(lambda do |_root, arguments, _context|
+      user = PublicKey.first(id: arguments[:keyId])&.user
+      repository = Repository.first(slug: arguments[:repositoryId])
+      {user: user, repository: repository}
+    end)
+
+    authorize(lambda do |_data, _arguments, context|
+      GitShellPolicy.new(context[:current_user]).authorize?
+    end)
+
+    resolve(lambda do |data, arguments, _context|
+      policy = RepositoryPolicy.new(data[:user], data[:repository])
+      case arguments[:action]
+      when 'push'
+        policy.write?
+      when 'pull'
+        policy.show?
+      else
+        false
+      end
+    end)
+  end
+
   field :organizationalUnit, Types::OrganizationalUnitType do
     description 'The organizational unit for the given ID'
 
