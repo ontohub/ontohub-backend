@@ -8,8 +8,10 @@ class ApplicationPolicy
     @current_user = current_user
     @resource = resource
 
-    if current_user.is_a?(ApiKey)
+    if current_user.is_a?(HetsApiKey)
       define_methods(false, show?: true)
+    elsif current_user.is_a?(GitShellApiKey)
+      define_methods(false)
     elsif current_user&.admin?
       define_methods(true)
     end

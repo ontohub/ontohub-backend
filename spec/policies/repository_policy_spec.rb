@@ -537,35 +537,52 @@ RSpec.describe RepositoryPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject { RepositoryPolicy.new(current_user) }
+    shared_examples 'ApiKey behavior' do |expected_scope_size, show_expectation|
+      describe RepositoryPolicy::Scope do
+        subject { RepositoryPolicy::Scope.new(current_user, scope) }
+        let(:scope) { Repository.dataset }
 
-    describe RepositoryPolicy::Scope do
-      subject { RepositoryPolicy::Scope.new(current_user, scope) }
-      let(:scope) { Repository.dataset }
-
-      before do
-        2.times do
-          create(:repository, public_access: false)
+        before do
+          2.times do
+            create(:repository, public_access: false)
+          end
+          3.times do
+            create(:repository, public_access: true)
+          end
         end
-        3.times do
-          create(:repository, public_access: true)
+
+        it 'returns all repositories' do
+          expect(subject.resolve.to_a.size).to eq(expected_scope_size)
         end
       end
 
-      it 'returns all repositories' do
-        expect(subject.resolve.to_a.size).to eq(5)
+      %i(create? update? index? destroy? write?).each do |method|
+        it "does not allow #{method}" do
+          expect(subject.public_send(method)).to be(false)
+        end
+      end
+
+      it "does #{show_expectation || 'not '}allow show?" do
+        expect(subject.show?).to be(show_expectation)
       end
     end
 
-    %i(create? update? index? destroy? write?).each do |method|
-      it "does not allow #{method}" do
-        expect(subject.public_send(method)).to be(false)
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        RepositoryPolicy.new(current_user)
       end
+
+      include_examples 'ApiKey behavior', 0, false
     end
 
-    it 'does allow show?' do
-      expect(subject.show?).to be(true)
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        RepositoryPolicy.new(current_user)
+      end
+
+      include_examples 'ApiKey behavior', 5, true
     end
   end
 end

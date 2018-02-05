@@ -13,7 +13,8 @@ class RepositoryPolicy < ApplicationPolicy
     end
 
     def resolve
-      return scope if user.is_a?(ApiKey)
+      return scope if user.is_a?(HetsApiKey)
+      return scope.where(false) if user.is_a?(GitShellApiKey)
       return scope if user&.admin?
       return scope.where(public_access: true) unless user
 

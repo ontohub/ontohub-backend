@@ -35,12 +35,25 @@ RSpec.describe SearchResultPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject { SearchResultPolicy.new(current_user) }
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        SearchResultPolicy.new(current_user)
+      end
 
-    %i(search?).each do |method|
-      it "does not allow #{method}" do
-        expect(subject.public_send(method)).to be(false)
+      it 'does not allow show?' do
+        expect(subject.search?).to be(false)
+      end
+    end
+
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        SearchResultPolicy.new(current_user)
+      end
+
+      it 'does not allow show?' do
+        expect(subject.search?).to be(false)
       end
     end
   end

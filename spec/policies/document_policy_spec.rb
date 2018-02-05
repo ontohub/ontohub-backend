@@ -67,14 +67,27 @@ RSpec.describe DocumentPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      describe DocumentPolicy::Scope do
+        subject { DocumentPolicy::Scope.new(current_user, scope) }
+        let(:scope) { Document.dataset }
 
-    describe DocumentPolicy::Scope do
-      subject { DocumentPolicy::Scope.new(current_user, scope) }
-      let(:scope) { Document.dataset }
+        it 'returns no documents' do
+          expect(subject.resolve.to_a).to be_empty
+        end
+      end
+    end
 
-      it 'returns all documents' do
-        expect(subject.resolve.to_a).to match_array(admin_documents)
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      describe DocumentPolicy::Scope do
+        subject { DocumentPolicy::Scope.new(current_user, scope) }
+        let(:scope) { Document.dataset }
+
+        it 'returns all documents' do
+          expect(subject.resolve.to_a).to match_array(admin_documents)
+        end
       end
     end
   end

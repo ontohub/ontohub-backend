@@ -97,13 +97,26 @@ RSpec.describe ReasonerConfigurationPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject do
-      ReasonerConfigurationPolicy.new(current_user, reasoner_configuration)
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        ReasonerConfigurationPolicy.new(current_user, reasoner_configuration)
+      end
+
+      it 'does not allow show?' do
+        expect(subject.show?).to be(false)
+      end
     end
 
-    it 'does allow show?' do
-      expect(subject.show?).to be(true)
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        ReasonerConfigurationPolicy.new(current_user, reasoner_configuration)
+      end
+
+      it 'does allow show?' do
+        expect(subject.show?).to be(true)
+      end
     end
   end
 end
