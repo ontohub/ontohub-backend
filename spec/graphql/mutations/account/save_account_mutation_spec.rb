@@ -54,6 +54,21 @@ RSpec.describe Mutations::Account::SaveAccountMutation do
       subject
       expect(user.valid_password?(new_password)).to be_truthy
     end
+
+    it 'enqueues a user indexing job' do
+      subject
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'User',
+        'id' => User.
+          first(slug: result['data']['saveAccount']['id']).id
+      )
+    end
+  end
+
+  shared_examples 'does not enque user indexing job' do
+    it 'does not index' do
+      expect(IndexingJob).not_to have_been_enqueued
+    end
   end
 
   context 'Incorrect password' do
@@ -66,6 +81,8 @@ RSpec.describe Mutations::Account::SaveAccountMutation do
         'email' => user.email
       )
     end
+
+    include_examples('does not enque user indexing job')
   end
 
   context 'User is not signed in' do
@@ -80,5 +97,7 @@ RSpec.describe Mutations::Account::SaveAccountMutation do
       expect(subject['errors']).
         to include(include('message' => "You're not authorized to do this"))
     end
+
+    include_examples('does not enque user indexing job')
   end
 end

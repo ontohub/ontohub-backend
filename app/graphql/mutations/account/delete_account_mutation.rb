@@ -26,7 +26,7 @@ module Mutations
       def call(user, arguments, _context)
         user.destroy if user.valid_password?(arguments[:password])
         IndexingJob.
-          perform_later('class' => 'User', 'id' => resource.id)
+          perform_later('class' => 'User', 'id' => user.id)
         true
       end
     end
