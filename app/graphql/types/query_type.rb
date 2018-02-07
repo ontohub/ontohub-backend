@@ -44,8 +44,6 @@ Types::QueryType = GraphQL::ObjectType.define do
         policy.write?
       when 'pull'
         policy.show?
-      else
-        false
       end
     end)
   end

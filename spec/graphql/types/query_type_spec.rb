@@ -88,11 +88,27 @@ RSpec.describe Types::QueryType do
       end
 
       context 'when not authorized to query this field' do
-        let(:current_user) { nil }
         let(:owner) { create(:user) }
 
-        it 'returns the correct result' do
-          expect(resolved_field).to be(nil)
+        shared_examples 'unauthorized' do
+          it 'returns the correct result' do
+            expect(resolved_field).to be(nil)
+          end
+        end
+
+        context 'as a user' do
+          let(:current_user) { create(:user) }
+          include_examples 'unauthorized'
+        end
+
+        context 'as a HetsApiKey' do
+          let(:current_user) { create(:hets_api_key) }
+          include_examples 'unauthorized'
+        end
+
+        context 'not signed in' do
+          let(:current_user) { nil }
+          include_examples 'unauthorized'
         end
       end
     end
