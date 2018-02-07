@@ -5,32 +5,45 @@ RSpec.describe(SettingsNormalizer) do
   subject { SettingsNormalizer.new(settings) }
 
   context 'normalize_paths' do
-    context 'on data_directory' do
+    shared_examples 'normalizing' do
       let(:relative_path) { 'relative/path' }
 
       it 'makes it a Pathname' do
         subject.call
-        expect(settings[:data_directory]).to be_a(Pathname)
+        expect(settings.dig(*setting_path)).to be_a(Pathname)
       end
 
       it 'makes a relative path absolute' do
-        settings[:data_directory] = relative_path
+        setter.call(relative_path)
         subject.call
-        expect(settings[:data_directory].absolute?).to be(true)
+        expect(settings.dig(*setting_path).absolute?).to be(true)
       end
 
       it 'prepends Rails.root to a relative path' do
-        settings[:data_directory] = relative_path
+        setter.call(relative_path)
         subject.call
-        expect(settings[:data_directory]).to eq(Rails.root.join(relative_path))
+        expect(settings.dig(*setting_path)).
+          to eq(Rails.root.join(relative_path))
       end
 
       it 'does not change an absolute path' do
         dir = File.join(Dir.pwd, relative_path)
-        settings[:data_directory] = dir
+        setter.call(dir)
         subject.call
-        expect(settings[:data_directory].to_s).to eq(dir)
+        expect(settings.dig(*setting_path).to_s).to eq(dir)
       end
+    end
+
+    context 'on data_directory' do
+      let(:setting_path) { %i(data_directory) }
+      let(:setter) { ->(value) { settings[:data_directory] = value } }
+      include_examples 'normalizing'
+    end
+
+    context 'on git_shell.path' do
+      let(:setting_path) { %i(git_shell path) }
+      let(:setter) { ->(value) { settings[:git_shell][:path] = value } }
+      include_examples 'normalizing'
     end
   end
 
