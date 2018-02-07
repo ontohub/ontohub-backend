@@ -9,6 +9,9 @@ jwt:
 # This directory will be created if it does not exist.
 data_directory: 'data'
 
+git_shell:
+  path: ../git-shell/bin/git-shell
+
 rabbitmq:
   host: localhost
   port: 5672

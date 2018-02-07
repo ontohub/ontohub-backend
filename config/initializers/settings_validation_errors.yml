@@ -7,6 +7,7 @@ en:
     uri_has_no_fragment?: "must not have a fragment"
     uri_has_no_userinfo?: "must not have user info"
     directory?: "is not a directory"
+    executable?: "is not an executable file"
     worker_class?: "is not a class that defines the method `work'"
     worker_class_or_list_of_worker_classes?: "must be a worker class or a list of worker classes"
     create_directory?: "cannot not be created"

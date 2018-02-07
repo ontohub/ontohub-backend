@@ -11,6 +11,10 @@ FactoryBot.define do
 
     data_directory 'tmp/data'
 
+    git_shell do
+      {path: 'tmp/git-shell'}
+    end
+
     rabbitmq do
       {
         host: 'example.com',
