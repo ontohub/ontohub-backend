@@ -56,6 +56,7 @@ class RepositoryPolicy < ApplicationPolicy
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def write?
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+    return false if resource.nil?
     owner = resource.owner
     return false if resource.remote_type == 'mirror'
     return false unless user?
