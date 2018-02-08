@@ -98,7 +98,7 @@ RSpec.describe PostProcessHetsJob, type: :job do
           expect { PostProcessHetsJob.new.perform(*job_message) }.
             to have_enqueued_job.
             with(*job_message).
-            on_queue("#{Settings.rabbitmq.prefix}_post_process_hets")
+            on_queue('post_process_hets')
         end
 
         it 'calls the ImportingDocumentsReanalyzer' do

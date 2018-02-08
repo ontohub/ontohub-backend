@@ -2,7 +2,7 @@
 
 # Post-processes a finished job that was sent to Hets
 class PostProcessHetsJob < ApplicationJob
-  queue_as "#{Settings.rabbitmq.prefix}_post_process_hets"
+  queue_as 'post_process_hets'
 
   def perform(result, original_job_message)
     return unless result == 'success'

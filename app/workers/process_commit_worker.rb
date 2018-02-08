@@ -2,6 +2,5 @@
 
 # Worker for the commit queue
 class ProcessCommitWorker < ApplicationWorker
-  from_queue "#{Settings.rabbitmq.prefix}_process_commit",
-    threads: 1, prefetch: 1
+  from_queue 'process_commit', threads: 1, prefetch: 1
 end

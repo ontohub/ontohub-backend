@@ -2,7 +2,7 @@
 
 # Git pull finished job that was sent to Hets
 class RepositoryPullingJob < ApplicationJob
-  queue_as "#{Settings.rabbitmq.prefix}_git_pull"
+  queue_as 'git_pull'
 
   def perform(repository_slug)
     repository = RepositoryCompound.first(slug: repository_slug)

@@ -2,7 +2,7 @@
 
 # Git clone finished job that was sent to Hets
 class RepositoryCloningJob < ApplicationJob
-  queue_as "#{Settings.rabbitmq.prefix}_git_clone"
+  queue_as 'git_clone'
 
   def perform(repository_slug)
     repository = Repository.first(slug: repository_slug)

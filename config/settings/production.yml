@@ -1,0 +1,2 @@
+rabbitmq:
+  virtual_host: ontohub

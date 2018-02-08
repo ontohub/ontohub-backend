@@ -2,7 +2,7 @@
 
 # A service class that defines and sends the Hets version requirement.
 class HetsAgentIninializer
-  EXCHANGE_NAME = "#{Settings.rabbitmq.exchange}_hets_version_requirement"
+  EXCHANGE_NAME = 'hets_version_requirement'
 
   attr_reader :connection
 
