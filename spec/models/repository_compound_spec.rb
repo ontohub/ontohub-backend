@@ -90,6 +90,15 @@ RSpec.describe RepositoryCompound do
         subject.save
         expect(subject.repository).to have_received(:save)
       end
+
+      %w(update post-receive).each do |hook|
+        it "creates the #{hook} hook" do
+          subject.save
+          file = File.join(subject.git.path, 'hooks', hook)
+          expect(File.file?(file) && File.executable?(file)).
+            to be(true)
+        end
+      end
     end
   end
 

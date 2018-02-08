@@ -42,7 +42,10 @@ class RepositoryCompound
     Sequel::Model.db.transaction do
       new = repository.new?
       repository.save
-      @git = Bringit::Wrapper.create(git_path) if repository.exists? && new
+      if repository.exists? && new
+        @git = Bringit::Wrapper.create(git_path)
+        recreate_hooks
+      end
       true
     end
   end
@@ -63,9 +66,36 @@ class RepositoryCompound
     repository == other.repository
   end
 
+  def recreate_hooks
+    delete_all_hooks
+    create_all_hooks
+  end
+
   protected
 
   def git_path
     self.class.git_directory.join("#{repository.to_param}.git")
+  end
+
+  def delete_all_hooks
+    Dir.glob(git_path.join('hooks/*').to_s).each do |hook|
+      FileUtils.rm_rf(hook)
+    end
+  end
+
+  def create_all_hooks
+    create_hook_file('update')
+    create_hook_file('post-receive')
+  end
+
+  def create_hook_file(hook)
+    template_file = Rails.root.join('git', 'hooks', "#{hook}.erb")
+
+    script = ERB.new(File.read(template_file)).result(binding)
+    path = git_path.join('hooks', hook).to_s
+
+    git_path.join('hooks').mkpath
+    File.write(path, script)
+    FileUtils.chmod('+x', path)
   end
 end
