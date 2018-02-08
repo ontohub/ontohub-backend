@@ -78,8 +78,7 @@ class SettingsSchema < Dry::Validation::Schema
       required(:port).filled { int? }
       required(:username).filled { str? }
       required(:password).filled { str? }
-      required(:prefix).filled { str? }
-      required(:exchange).filled { str? }
+      required(:virtual_host).filled { str? }
     end
 
     required(:sneakers).each do

@@ -14,8 +14,7 @@ rabbitmq:
   port: 5672
   username: guest
   password: guest
-  prefix: ontohub
-  exchange: ontohub
+  virtual_host: ontohub_development
 
 sneakers:
   - classes: MailersWorker

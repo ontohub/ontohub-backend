@@ -5,7 +5,7 @@ module HetsAgent
   # HetsAgent to analyze them.
   class Invoker
     WORKER_QUEUE_NAME =
-      "#{Settings.rabbitmq.prefix}_hets #{OntohubBackend::Application.config.hets_version_requirement}"
+      "hets #{OntohubBackend::Application.config.hets_version_requirement}"
 
     attr_reader :request_collection
 
