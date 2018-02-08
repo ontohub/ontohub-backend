@@ -37,7 +37,7 @@ RSpec.describe(SettingsSchema) do
     end
 
     context 'rabbitmq' do
-      %i(host username password prefix exchange).each do |field|
+      %i(host username password virtual_host).each do |field|
         context field.to_s do
           it 'is nil' do
             settings[:rabbitmq][field] = nil

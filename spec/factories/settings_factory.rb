@@ -17,8 +17,7 @@ FactoryBot.define do
         port: 1234,
         username: 'username',
         password: 'password',
-        prefix: 'rabbitmq_test_prefix',
-        exchange: 'rabbitmq_test_exchange',
+        virtual_host: 'rabbitmq_test',
       }
     end
 
