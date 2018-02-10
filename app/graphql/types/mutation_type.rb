@@ -51,4 +51,5 @@ Types::MutationType = GraphQL::ObjectType.define do
   field :deleteTag, Mutations::Repository::Git::DeleteTagMutation
 
   field :commit, Mutations::Repository::Git::CommitMutation
+  field :updateRefs, Mutations::Repository::Git::UpdateRefsMutation
 end

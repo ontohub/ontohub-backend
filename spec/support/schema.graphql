@@ -1298,6 +1298,18 @@ type Mutation {
     # The unlock account token from the unlock account email
     token: String!
   ): SessionToken
+
+  # Processes a git push. Can only be called by the GitShell.
+  updateRefs(
+    # The ID of the public key that was used to push
+    keyId: Int!
+
+    # The repository to create the branch in
+    repositoryId: ID!
+
+    # The refs that have been updated
+    updatedRefs: [UpdatedRef!]!
+  ): Boolean!
 }
 
 # A NativeDocument is a container for exactly one OMS
@@ -2545,6 +2557,18 @@ type Theorem implements Conjecture, LocIdBase, Sentence {
 
 # Represents the time
 scalar Time
+
+# Updated Git Ref
+input UpdatedRef {
+  # The (sha hash) of the ref after the update
+  after: ID
+
+  # The (sha hash) of the ref before the update
+  before: ID
+
+  # The name of the ref that was updated
+  ref: ID!
+}
 
 # Search and replace pattern for URLs inside documents
 type UrlMapping {
