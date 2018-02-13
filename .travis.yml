@@ -70,21 +70,24 @@ matrix:
         - sudo mkdir -p $SHAREDIR/extension/
         - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
+        - sudo rabbitmqctl add_vhost ontohub_system_test
+        - sudo rabbitmqctl set_permissions -p ontohub_system_test guest ".*" ".*" ".*"
         - |
+          rm -rf $HOME/system-test
           if [ -d $HOME/system-test/.git ]
           then
             pushd $HOME/system-test
             git pull
             popd
           else
-            git clone --depth=1 https://github.com/ontohub/system-test.git $HOME/system-test
+            git clone https://github.com/ontohub/system-test.git $HOME/system-test
           fi
         - pushd $HOME/system-test
+        - git checkout switch_to_rspec_and_add_git_shell_tests
         - bundle install
         - popd
-        - export RAILS_ENV=development
       script:
         - pushd $HOME/system-test
         - echo "Testing commit $TRAVIS_COMMIT"
-        - ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT cucumber
+        - INDEXER_VERSION=fix_production_environment ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT bundle exec rspec
         - popd
