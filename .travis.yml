@@ -72,22 +72,40 @@ matrix:
         - sudo mkdir -p $SHAREDIR/extension/
         - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
+        # Disable SSH host key checking for localhost (for testing the git-shell)
+        - echo "Host 127.0.0.1 localhost" > ~/.ssh/config
+        - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+        - echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+        - echo "  User travis" >> ~/.ssh/config
+        - echo "  IdentityFile ~/.ssh/self" >> ~/.ssh/config
+
+        # Create an SSH key and allow to connect with localhost (for testing the git-shell)
+        - ssh-keygen -t rsa -b 2048 -N '' -f ~/.ssh/self
+        - ls -la ~/.ssh
+        - cat ~/.ssh/self.pub > ~/.ssh/authorized_keys
+        - ssh travis@localhost echo "SSH setup complete"
+
+        # Set up RabbitMQ VirtualHost
         - sudo rabbitmqctl add_vhost ontohub_system_test
         - sudo rabbitmqctl set_permissions -p ontohub_system_test guest ".*" ".*" ".*"
+
+        # Set up the system-tests
         - |
           if [ -d $HOME/system-test/.git ]
           then
             pushd $HOME/system-test
-            git pull
+            git fetch
             popd
           else
             git clone https://github.com/ontohub/system-test.git $HOME/system-test
           fi
         - pushd $HOME/system-test
+        - git checkout origin/switch_to_rspec_and_add_git_shell_tests
+        - echo "Using system-test revision $(git log -1 --format=%H)"
         - bundle install
         - popd
       script:
         - pushd $HOME/system-test
         - echo "Testing commit $TRAVIS_COMMIT"
-        - ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT bundle exec rspec
+        - GIT_SHELL_VERSION=initialize_the_project ONTOHUB_BACKEND_VERSION=$TRAVIS_COMMIT bundle exec rspec
         - popd
