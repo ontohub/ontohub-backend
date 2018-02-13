@@ -66,13 +66,13 @@ group :production do
 end
 
 group :development do
+  gem 'fasterer', require: false
   gem 'graphiql-rails'
   # We want the process manager "invoker" to be present in the most current
   # version to be compatible with current OS versions.
   gem 'invoker'
   gem 'listen', '~> 3.1.5'
   gem 'rubocop', '~> 0.52.1', require: false
-  gem 'fasterer', require: false
   # Spring speeds up development by keeping your application running in the
   # background. Read more: https://github.com/rails/spring
   gem 'spring'
