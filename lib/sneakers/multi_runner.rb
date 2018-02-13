@@ -29,10 +29,17 @@ module Sneakers
         Signal.trap(signal) do
           @pids.each do |pid|
             Process.kill(signal, pid)
+          rescue Errno::ESRCH
+            warn_about_missing_process(signal, pid)
           end
         end
       end
       Process.waitall
+    end
+
+    def warn_about_missing_process(signal, pid)
+      warn("Failed to send signal #{signal} to PID #{pid}: "\
+           'Process does not exist.')
     end
   end
 end
