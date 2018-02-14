@@ -117,3 +117,17 @@ FactoryBot.create(:additional_commit,
                              content: to_be_created_content,
                              encoding: 'plain',
                              action: 'create'}])
+
+%w(bob/my-public-repository cam/my-private-repository).each do |slug|
+  repository = RepositoryCompound.wrap(Repository.first(slug: slug))
+
+  text = File.read(Rails.root.join('db/seeds/fixtures/ontohub.txt'))
+  path = 'texts/ontohub.txt'
+
+  FactoryBot.create(:additional_file,
+                     repository: repository,
+                     user: repository.owner,
+                     path: path,
+                     content: text,
+                     encoding: 'plain')
+end
