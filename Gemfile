@@ -35,7 +35,7 @@ gem 'index', github: 'ontohub/index', branch: 'master', require: false
 
 gem 'bringit', '~> 1.0.0'
 
-gem 'config', '~> 1.6.1'
+gem 'config', '~> 1.7.0'
 gem 'dry-validation'
 
 # Use these gems for debugging
