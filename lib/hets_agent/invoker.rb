@@ -14,14 +14,16 @@ module HetsAgent
     end
 
     def call
+      connection = Sneakers::CONFIG[:connection]
+      connection.start unless connection.open?
+      channel = connection.create_channel
+      exchange = channel.direct('sneakers', durable: true)
+
       request_collection.each do |request|
-        connection = Sneakers::CONFIG[:connection]
-        connection.start unless connection.open?
-        channel = connection.create_channel
-        exchange = channel.direct('sneakers', durable: true)
         exchange.publish(request.to_json, routing_key: WORKER_QUEUE_NAME)
-        connection.close
       end
+    ensure
+      connection.close
     end
   end
 end
