@@ -39,12 +39,12 @@ class Version
 
     # :nocov:
     def production?
-      Rails.env.production?
+      Rails.env.production? && ENV['ONTOHUB_SYSTEM_TEST'] != 'true'
     end
     # :nocov:
 
     def test?
-      Rails.env.test? && !ENV['ONTOHUB_SYSTEM_TEST']
+      Rails.env.test?
     end
 
     # :nocov:
