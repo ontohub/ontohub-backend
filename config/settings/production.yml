@@ -1,2 +1,5 @@
+git_shell:
+  copy_authorized_keys_executable:
+
 rabbitmq:
   virtual_host: ontohub

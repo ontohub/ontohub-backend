@@ -12,7 +12,8 @@ FactoryBot.define do
     data_directory 'tmp/data'
 
     git_shell do
-      {path: 'tmp/git-shell'}
+      {copy_authorized_keys_executable: 'tmp/copy_authorized_keys',
+       path: 'tmp/git-shell'}
     end
 
     rabbitmq do

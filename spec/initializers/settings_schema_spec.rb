@@ -9,7 +9,8 @@ RSpec.describe(SettingsSchema) do
     [settings[:data_directory]].each do |dir|
       allow(File).to receive(:directory?).with(dir).and_return(true)
     end
-    [settings[:git_shell][:path]].each do |file|
+    [settings[:git_shell][:copy_authorized_keys_executable],
+     settings[:git_shell][:path]].each do |file|
       allow(File).to receive(:file?).with(file).and_return(true)
       allow(File).to receive(:executable?).with(file).and_return(true)
     end
@@ -41,10 +42,12 @@ RSpec.describe(SettingsSchema) do
     end
 
     context 'git_shell' do
-      it 'path is nil' do
-        settings[:git_shell][:path] = nil
-        expect(subject.errors).
-          to include(git_shell: include(path: ['must be filled']))
+      %i(copy_authorized_keys_executable path).each do |field|
+        it "#{field} is nil" do
+          settings[:git_shell][field] = nil
+          expect(subject.errors).
+            to include(git_shell: include(field => ['must be filled']))
+        end
       end
     end
 
@@ -147,29 +150,40 @@ RSpec.describe(SettingsSchema) do
     end
 
     context 'git_shell' do
-      context 'path' do
-        let(:path) { settings[:git_shell][:path] }
+      %i(copy_authorized_keys_executable path).each do |field|
+        context 'path' do
+          let(:field_value) { settings[:git_shell][field] }
 
-        context 'bad type' do
-          let(:path) { 1 }
+          context 'bad type' do
+            let(:field_value) { 1 }
 
-          it 'is not a String type' do
-            settings[:git_shell][:path] = path
-            expect(subject.errors).
-              to include(git_shell: include(path: ['must be a string']))
+            it 'is not a String type' do
+              settings[:git_shell][field] = field_value
+              expect(subject.errors).
+                to include(git_shell: include(field => ['must be a string']))
+            end
           end
-        end
 
-        it 'is not a file' do
-          allow(File).to receive(:file?).with(path.to_s).and_return(false)
-          expect(subject.errors).
-            to include(git_shell: include(path: ['is not an executable file']))
-        end
+          it 'is not a file' do
+            allow(File).
+              to receive(:file?).
+              with(field_value.to_s).
+              and_return(false)
+            expect(subject.errors).
+              to include(git_shell:
+                           include(field => ['is not an executable file']))
+          end
 
-        it 'is not an _executable_ file' do
-          allow(File).to receive(:executable?).with(path.to_s).and_return(false)
-          expect(subject.errors).
-            to include(git_shell: include(path: ['is not an executable file']))
+          it 'is not an _executable_ file' do
+            allow(File).
+              to receive(:executable?).
+              with(field_value.to_s).
+              and_return(false)
+            expect(subject.errors).
+              to include(git_shell:
+                           include(field =>
+                                     ['is not an executable file']))
+          end
         end
       end
     end

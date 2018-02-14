@@ -11,6 +11,7 @@ RSpec.describe AuthorizedKeysFile do
   describe 'write' do
     let!(:public_keys) { create_list(:public_key, 2) }
     before do
+      allow(Kernel).to receive(:system)
       AuthorizedKeysFile.write
     end
 
@@ -60,6 +61,12 @@ RSpec.describe AuthorizedKeysFile do
         end
       end
       expect(expectation).to be(true)
+    end
+
+    it 'invokes the executable copying the authorized_keys_file' do
+      expect(Kernel).
+        to have_received(:system).
+        with(Rails.root.join('bin/copy_authorized_keys').to_s)
     end
   end
 end

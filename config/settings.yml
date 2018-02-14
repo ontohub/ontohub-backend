@@ -11,6 +11,11 @@ data_directory: 'data'
 
 git_shell:
   path: ../git-shell/bin/git-shell
+  # An executable file that copies (maintaining proper permissions of the
+  # target) tmp/$environment/data/authorized_keys to ~/.ssh/authorized_keys
+  # This executable does not receive any arguments and is invoked from the
+  # application root.
+  copy_authorized_keys_executable: bin/copy_authorized_keys
 
 rabbitmq:
   host: localhost

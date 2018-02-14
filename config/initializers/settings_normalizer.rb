@@ -17,6 +17,8 @@ class SettingsNormalizer
 
   def normalize_paths
     @settings[:data_directory] = normalize_path(@settings[:data_directory])
+    @settings[:git_shell][:copy_authorized_keys_executable] =
+      normalize_path(@settings[:git_shell][:copy_authorized_keys_executable])
     @settings[:git_shell][:path] = normalize_path(@settings[:git_shell][:path])
   end
 

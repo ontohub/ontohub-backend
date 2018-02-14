@@ -9,14 +9,29 @@ class AuthorizedKeysFile
 
   class << self
     def write
-      keys = PublicKey.all.map do |key|
-        command = "#{Settings.git_shell.path} #{key.id}"
-        %(command="#{command}"#{SSH_FLAGS} #{key.key.strip} #{key.name})
+      authorized_keys_lines = PublicKey.all.map do |key|
+        authorized_keys_line(key)
       end
 
       FileLockHelper.exclusively(LOCK_FILE, timeout: 5.seconds) do
         AUTHORIZED_KEYS_FILE.dirname.mkpath
-        File.write(AUTHORIZED_KEYS_FILE, keys.join("\n"))
+        File.write(AUTHORIZED_KEYS_FILE, authorized_keys_lines.join("\n"))
+      end
+
+      copy_authorized_keys_to_git_user
+    end
+
+    protected
+
+    def authorized_keys_line(key)
+      command = "#{Settings.git_shell.path} #{key.id}"
+      %(command="#{command}"#{SSH_FLAGS} #{key.key.strip} #{key.name})
+    end
+
+    def copy_authorized_keys_to_git_user
+      # Ensure that this is executed from the Rails root
+      Dir.chdir(Rails.root.to_s) do
+        Kernel.system(Settings.git_shell.copy_authorized_keys_executable.to_s)
       end
     end
   end

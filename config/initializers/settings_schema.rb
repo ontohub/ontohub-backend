@@ -78,6 +78,7 @@ class SettingsSchema < Dry::Validation::Schema
     end
 
     required(:git_shell).schema do
+      required(:copy_authorized_keys_executable).filled { str? & executable? }
       required(:path).filled { str? & executable? }
     end
 
