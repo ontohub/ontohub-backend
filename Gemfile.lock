@@ -193,7 +193,7 @@ GEM
       activesupport (>= 4.2.0)
     graphiql-rails (1.4.8)
       rails
-    graphql (1.7.9)
+    graphql (1.7.12)
     graphql-batch (0.3.9)
       graphql (>= 0.8, < 2)
       promise.rb (~> 0.7.2)
@@ -420,7 +420,7 @@ DEPENDENCIES
   filelock (~> 1.1.1)
   fuubar (~> 2.3.1)
   graphiql-rails
-  graphql (~> 1.7.9)
+  graphql (~> 1.7.12)
   graphql-batch (~> 0.3.9)
   graphql-pundit (~> 0.5.1)
   index!
