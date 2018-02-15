@@ -7,23 +7,30 @@ module HetsAgent
     WORKER_QUEUE_NAME =
       "hets #{OntohubBackend::Application.config.hets_version_requirement}"
 
-    attr_reader :request_collection
+    attr_reader :connection, :request_collection
 
     def initialize(request_collection)
       @request_collection = request_collection
+
+      @connection = Sneakers::CONFIG[:connection]
     end
 
     def call
-      connection = Sneakers::CONFIG[:connection]
-      connection.start unless connection.open?
-      channel = connection.create_channel
-      exchange = channel.direct('sneakers', durable: true)
-
       request_collection.each do |request|
         exchange.publish(request.to_json, routing_key: WORKER_QUEUE_NAME)
       end
     ensure
       connection.close
+    end
+
+    private
+
+    def exchange
+      @exchange ||= begin
+        connection.start unless connection.open?
+        channel = connection.create_channel
+        channel.direct('sneakers', durable: true)
+      end
     end
   end
 end
