@@ -15,20 +15,25 @@ RSpec.describe HetsAgent::Invoker do
     result
   end
 
+  let(:exchange) { subject.send(:exchange) }
+  let(:queue) do
+    exchange.channel.queue(HetsAgent::Invoker::WORKER_QUEUE_NAME).tap do |queue|
+      queue.bind(exchange, routing_key: HetsAgent::Invoker::WORKER_QUEUE_NAME)
+    end
+  end
+
   subject { HetsAgent::Invoker.new(request_collection) }
 
   before do
-    allow(Sneakers).to receive(:publish)
+    queue
     subject.call
   end
 
   context 'publishing' do
     it 'was made for every touched file' do
       arguments.each do |argument|
-        expect(Sneakers).
-          to have_received(:publish).
-          with(argument.to_json,
-               to_queue: HetsAgent::Invoker::WORKER_QUEUE_NAME)
+        payload = queue.pop
+        expect(payload[2]).to eq(argument.to_json)
       end
     end
   end
