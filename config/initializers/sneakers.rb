@@ -12,6 +12,6 @@ else
                         host: Settings.rabbitmq.host,
                         port: Settings.rabbitmq.port,
                         virtual_host: Settings.rabbitmq.virtual_host))
-  Sneakers.logger.level = Logger::INFO
+  Sneakers.logger.level = Logger::WARN
   # :nocov:
 end
