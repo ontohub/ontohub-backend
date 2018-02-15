@@ -16,6 +16,7 @@ module HetsAgent
     end
 
     def call
+      connection.start unless connection.open?
       request_collection.each do |request|
         exchange.publish(request.to_json, routing_key: WORKER_QUEUE_NAME)
       end
@@ -26,11 +27,8 @@ module HetsAgent
     private
 
     def exchange
-      @exchange ||= begin
-        connection.start unless connection.open?
-        channel = connection.create_channel
-        channel.direct('sneakers', durable: true)
-      end
+      channel = connection.create_channel
+      channel.direct('sneakers', durable: true)
     end
   end
 end
