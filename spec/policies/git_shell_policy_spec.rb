@@ -42,7 +42,6 @@ RSpec.describe GitShellPolicy do
       end
 
       it 'does allow authorize?' do
-        foo = subject.authorize?
         expect(subject.authorize?).to be(true)
       end
     end
