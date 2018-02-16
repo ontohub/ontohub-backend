@@ -22,6 +22,24 @@ namespace :db do
     task seed: 'db:recreate' do
       Rake::Task['db:seed'].invoke
     end
+
+    desc "Recreate all tables"
+    task tables: [:environment, 'repo:clean'] do
+      db = Sequel::Model.db
+      all_tables = db.tables.map do |table|
+        %("#{table}")
+      end.join(',')
+
+      db.run "DROP TABLE #{all_tables}"
+      Rake::Task['db:migrate'].invoke
+    end
+
+    namespace :tables do
+      desc 'Recreate all tables and seed'
+      task seed: 'db:recreate:tables' do
+        Rake::Task['db:seed'].invoke
+      end
+    end
   end
 
   namespace :truncate do

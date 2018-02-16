@@ -29,7 +29,7 @@ gem 'rack-cors'
 # * `app/graphql/mutations/unlock_account_mutation.rb`
 # when the models bring in a new version of Devise
 gem 'ontohub-models', github: 'ontohub/ontohub-models',
-                      branch: 'master'
+                      branch: 'drop_functions_if_exist'
 
 gem 'index', github: 'ontohub/index', branch: 'master', require: false
 
