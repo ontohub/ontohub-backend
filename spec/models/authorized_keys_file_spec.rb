@@ -26,7 +26,7 @@ RSpec.describe AuthorizedKeysFile do
     it 'writes a line for each public key' do
       expectation = public_keys.all? do |public_key|
         authorized_keys_lines.any? do |line|
-          line.match(%r{/bin/git-shell #{public_key.id}"})
+          line.match(%r{#{Settings.git_shell.path} #{public_key.id}"})
         end
       end
       expect(expectation).to be(true)
@@ -39,7 +39,7 @@ RSpec.describe AuthorizedKeysFile do
     it 'each line begins with the proper command' do
       authorized_keys_lines.all? do |line|
         expect(line).
-          to match(%r{\Acommand="/.*/bin/git-shell \d+"[^"]*\z})
+          to match(%r{\Acommand="#{Settings.git_shell.path} \d+"[^"]*\z})
       end
     end
 
@@ -66,7 +66,8 @@ RSpec.describe AuthorizedKeysFile do
     it 'invokes the executable copying the authorized_keys_file' do
       expect(Kernel).
         to have_received(:system).
-        with(Rails.root.join('bin/copy_authorized_keys').to_s)
+        with(Rails.root.join(Settings.git_shell.
+                               copy_authorized_keys_executable).to_s)
     end
   end
 end

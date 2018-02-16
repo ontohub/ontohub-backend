@@ -1,5 +1,9 @@
 server_url: 'http://example.test'
 data_directory: 'tmp/data'
 
+git_shell:
+  path: spec/support/git-shell
+  copy_authorized_keys_executable: spec/support/git-shell-copy-authorized-keys
+
 rabbitmq:
   virtual_host: ontohub_test
