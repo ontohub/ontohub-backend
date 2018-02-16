@@ -7,7 +7,7 @@ namespace :db do
   end
 
   desc "Truncate all tables"
-  task truncate: [:environment, 'repo:clean'] do
+  task truncate: ['rabbitmq:purge', 'repo:clean'] do
     db = Sequel::Model.db
     tables = db.tables - %i(schema_migrations)
     all_tables = tables.map do |table|
@@ -24,7 +24,7 @@ namespace :db do
     end
 
     desc "Recreate all tables"
-    task tables: [:environment, 'repo:clean'] do
+    task tables: ['rabbitmq:purge', 'repo:clean'] do
       db = Sequel::Model.db
       all_tables = db.tables.map do |table|
         %("#{table}")
