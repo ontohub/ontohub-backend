@@ -39,6 +39,11 @@ matrix:
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
         - sudo rabbitmqctl add_vhost ontohub_development
         - sudo rabbitmqctl set_permissions -p ontohub_development guest ".*" ".*" ".*"
+      before_script:
+        - |
+          echo "git_shell:" > config/settings.local.yml
+          echo "  path: spec/support/git-shell" >> config/settings.local.yml
+          echo "  copy_authorized_keys_executable: spec/support/git-shell-copy-authorized-keys" >> config/settings.local.yml
       script:
         - RAILS_ENV=development bundle exec rails db:recreate:seed
 
