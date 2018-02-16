@@ -37,8 +37,10 @@ matrix:
         # and rubygems
         - gem update --system
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
+        - sudo rabbitmqctl add_vhost ontohub_development
+        - sudo rabbitmqctl set_permissions -p ontohub_development guest ".*" ".*" ".*"
       script:
-        - bundle exec rails db:recreate:seed
+        - RAILS_ENV=development bundle exec rails db:recreate:seed
 
     - env: JOB=rspec
       before_install:
