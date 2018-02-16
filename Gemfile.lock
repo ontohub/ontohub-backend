@@ -10,8 +10,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 6dd88186e9ee6e9f58cddae043d050aa7561cb83
-  branch: drop_functions_if_exist
+  revision: c14842d4ab66d648a8711fcca577414d7ef6cd57
+  branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
