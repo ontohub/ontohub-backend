@@ -13,6 +13,7 @@ QUEUES = %w(
 namespace :rabbitmq do
   desc "Purge all rabbitmq queues"
   task :purge do
+    next if Rails.env.test?
     connection = Bunny.new(username: Settings.rabbitmq.username,
                            password: Settings.rabbitmq.password,
                            host: Settings.rabbitmq.host,
