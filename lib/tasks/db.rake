@@ -6,6 +6,10 @@ namespace :db do
     Rake::Task['invoker:start_all'].invoke
   end
 
+  task seed: ['rabbitmq:purge'] do
+    Rake::Task['db:seed'].invoke
+  end
+
   desc "Truncate all tables"
   task truncate: ['rabbitmq:purge', 'repo:clean'] do
     db = Sequel::Model.db
