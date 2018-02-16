@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Types::QueryType do
   let(:type) { OntohubBackendSchema.types['Query'] }
   let(:arguments) { {} }
-    let(:root) { nil }
+  let(:root) { nil }
 
   it_behaves_like 'having a GraphQL field for an object', 'language' do
     let(:language) { create(:language) }
@@ -51,7 +51,7 @@ RSpec.describe Types::QueryType do
     let(:field_name) { 'gitAuthorization' }
     let(:field) { OntohubBackendSchema.get_fields(type)[field_name] }
     let(:resolved_field) do
-      field.resolve(root, arguments, {current_user: current_user})
+      field.resolve(root, arguments, current_user: current_user)
     end
 
     let(:public_key) { create(:public_key) }
@@ -60,7 +60,7 @@ RSpec.describe Types::QueryType do
       {
         keyId: public_key.id,
         repositoryId: repository.to_param,
-        action: action
+        action: action,
       }
     end
 

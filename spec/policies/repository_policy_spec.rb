@@ -566,7 +566,7 @@ RSpec.describe RepositoryPolicy do
         end
       end
 
-      it "does allow index?" do
+      it 'does allow index?' do
         expect(subject.index?).to be(true)
       end
 

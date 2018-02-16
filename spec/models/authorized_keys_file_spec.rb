@@ -26,7 +26,7 @@ RSpec.describe AuthorizedKeysFile do
     it 'writes a line for each public key' do
       expectation = public_keys.all? do |public_key|
         authorized_keys_lines.any? do |line|
-          line.match(%r{#{Settings.git_shell.path} #{public_key.id}"})
+          line.match(/#{Settings.git_shell.path} #{public_key.id}"/)
         end
       end
       expect(expectation).to be(true)
@@ -39,7 +39,7 @@ RSpec.describe AuthorizedKeysFile do
     it 'each line begins with the proper command' do
       authorized_keys_lines.all? do |line|
         expect(line).
-          to match(%r{\Acommand="#{Settings.git_shell.path} \d+"[^"]*\z})
+          to match(/\Acommand="#{Settings.git_shell.path} \d+"[^"]*\z/)
       end
     end
 
