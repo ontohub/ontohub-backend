@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Run all examples in a temp directory
 module Tempdir
   def self.with_tempdir
     Dir.mktmpdir do |dir|

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-
-# rubocop:disable Metrics/BlockLength
 namespace :apidoc do
   # rubocop:enable Metrics/BlockLength
   APIDOC_DIR = Rails.root.join('apidoc').to_s

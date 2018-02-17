@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper functions for specs that check emails.
 module MailerHelpers
   def emails
     ActionMailer::Base.deliveries
