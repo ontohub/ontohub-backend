@@ -10,7 +10,7 @@ namespace :db do
     Rake::Task['db:seed'].invoke
   end
 
-  desc "Truncate all tables"
+  desc 'Truncate all tables'
   task truncate: ['rabbitmq:purge', 'repo:clean'] do
     db = Sequel::Model.db
     tables = db.tables - %i(schema_migrations)
@@ -27,7 +27,7 @@ namespace :db do
       Rake::Task['db:seed'].invoke
     end
 
-    desc "Recreate all tables"
+    desc 'Recreate all tables'
     task tables: ['rabbitmq:purge', 'repo:clean'] do
       db = Sequel::Model.db
       all_tables = db.tables.map do |table|

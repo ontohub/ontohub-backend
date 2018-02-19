@@ -2,6 +2,7 @@
 
 # Helper methods for user login handling in controller specs
 module ControllerLoginHelpers
+  # Helper methods for user login handling in controller spec contexts
   module ClassHelpers
     def create_user_and_sign_in
       before(:each) do
@@ -15,6 +16,7 @@ module ControllerLoginHelpers
     end
   end
 
+  # Helper methods for user login handling in controller spec examples
   module InstanceHelpers
     def create_user_and_set_token_header
       user = FactoryBot.create(:user)

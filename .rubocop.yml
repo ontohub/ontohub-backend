@@ -17,7 +17,8 @@ AllCops:
     - 'node_modules/**/*'
     - 'spec/dummy/**/*'
     - 'vendor/**/*'
-    - 'repos/**/*'
+    - 'repositories/**/*'
+    - 'tmp/**/*'
 
 Layout/AlignParameters:
   Enabled: false
@@ -37,6 +38,7 @@ Metrics/BlockLength:
     - 'config/routes.rb'
     - 'config/environments/**/*'
     - 'config/initializers/devise.rb'
+    - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
     - 'db/migrate/*'
     - '*.gemspec'
@@ -45,19 +47,23 @@ Metrics/LineLength:
   Exclude:
     - 'app/graphql/**/*_enum.rb'
     - 'config/initializers/devise.rb'
-    - 'features/steps/**/*.rb'
+
+Naming/FileName:
+  Exclude:
+    - lib/git-shell.rb
+    - lib/hets-agent.rb
+    - lib/ontohub-models.rb
+    - spec/lib/git-shell_spec.rb
+
+Style/Documentation:
+  Exclude:
+    - 'app/indexers/**/*'
 
 Style/DoubleNegation:
   Enabled: false
 
 Style/FormatStringToken:
   Enabled: false
-
-Style/GlobalVars:
-  Exclude:
-    - 'features/steps/**/*.rb'
-    - 'features/support/aruba.rb'
-    - 'features/support/hooks.rb'
 
 Style/NumericLiterals:
   Enabled: false

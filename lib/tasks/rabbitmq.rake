@@ -8,10 +8,10 @@ QUEUES = %w(
   mailers
   post_process_hets
   process_commit
-)
+).freeze
 
 namespace :rabbitmq do
-  desc "Purge all rabbitmq queues"
+  desc 'Purge all rabbitmq queues'
   task :purge do
     next if Rails.env.test?
     connection = Bunny.new(username: Settings.rabbitmq.username,
