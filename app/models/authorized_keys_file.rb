@@ -2,8 +2,7 @@
 
 # Class to rewrite the authorized_keys file
 class AuthorizedKeysFile
-  AUTHORIZED_KEYS_FILE =
-    Rails.root.join("tmp/#{Rails.env}/data/authorized_keys")
+  AUTHORIZED_KEYS_FILE = Settings.data_directory.join('ssh/authorized_keys')
   LOCK_FILE = 'authorized_keys.lock'
   SSH_FLAGS = ',no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty'
 

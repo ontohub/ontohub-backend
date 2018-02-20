@@ -2,7 +2,10 @@
 
 RSpec.describe AuthorizedKeysFile do
   describe 'filepath' do
-    let(:expected_filepath) { Rails.root.join('tmp/test/data/authorized_keys') }
+    let(:expected_filepath) do
+      Settings.data_directory.join('ssh/authorized_keys')
+    end
+
     it 'has the correct filepath' do
       expect(AuthorizedKeysFile::AUTHORIZED_KEYS_FILE).to eq(expected_filepath)
     end
