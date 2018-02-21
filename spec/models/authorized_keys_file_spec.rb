@@ -7,7 +7,7 @@ RSpec.describe AuthorizedKeysFile do
     end
 
     it 'has the correct filepath' do
-      expect(AuthorizedKeysFile::AUTHORIZED_KEYS_FILE).to eq(expected_filepath)
+      expect(AuthorizedKeysFile.authorized_keys_file).to eq(expected_filepath)
     end
   end
 
@@ -19,11 +19,11 @@ RSpec.describe AuthorizedKeysFile do
     end
 
     let(:authorized_keys_lines) do
-      File.read(AuthorizedKeysFile::AUTHORIZED_KEYS_FILE).lines
+      File.read(AuthorizedKeysFile.authorized_keys_file).lines
     end
 
     it 'the file exists' do
-      expect(File.exist?(AuthorizedKeysFile::AUTHORIZED_KEYS_FILE)).to be(true)
+      expect(File.exist?(AuthorizedKeysFile.authorized_keys_file)).to be(true)
     end
 
     it 'writes a line for each public key' do

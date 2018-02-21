@@ -2,7 +2,7 @@
 
 # Class to rewrite the authorized_keys file
 class AuthorizedKeysFile
-  AUTHORIZED_KEYS_FILE = Settings.data_directory.join('ssh/authorized_keys')
+  AUTHORIZED_KEYS_FILE = 'ssh/authorized_keys'
   LOCK_FILE = 'authorized_keys.lock'
   SSH_FLAGS = ',no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty'
 
@@ -13,11 +13,15 @@ class AuthorizedKeysFile
       end
 
       FileLockHelper.exclusively(LOCK_FILE, timeout: 5.seconds) do
-        AUTHORIZED_KEYS_FILE.dirname.mkpath
-        File.write(AUTHORIZED_KEYS_FILE, authorized_keys_lines.join("\n"))
+        authorized_keys_file.dirname.mkpath
+        File.write(authorized_keys_file, authorized_keys_lines.join("\n"))
       end
 
       copy_authorized_keys_to_git_user
+    end
+
+    def authorized_keys_file
+      Settings.data_directory.join(AUTHORIZED_KEYS_FILE)
     end
 
     protected
