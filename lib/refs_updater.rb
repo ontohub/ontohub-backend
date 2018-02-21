@@ -23,7 +23,8 @@ class RefsUpdater
     # This assumes that it was _not_ a force-push. It can _only_ be done because
     # force-pushes are prevented. With a force-push, we would need to find the
     # first common ancestor C of `before` and `after`, analyze all commits from
-    # C onwards and delete `FileVersion`s after C leading to `before`.
+    # C onwards and delete `FileVersion`s after C leading to `before` that are
+    # not part of another branch.
     log_options = {ref: "#{before}..#{after}",
                    unsafe_range: true,
                    only_commit_sha: true,

@@ -3,6 +3,6 @@
 # Policies for the GitShell
 class GitShellPolicy < ApplicationPolicy
   def authorize?
-    current_user.is_a?(GitShellApiKey)
+    git_shell_api_key?
   end
 end

@@ -570,7 +570,7 @@ RSpec.describe RepositoryPolicy do
         expect(subject.index?).to be(true)
       end
 
-      it "does #{show_expectation || 'not '}allow show?" do
+      it "does #{show_expectation ? '' : 'not '}allow show?" do
         expect(subject.show?).to be(show_expectation)
       end
     end
