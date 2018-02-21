@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 namespace :db do
-  task recreate: ['invoker:stop_all', 'rabbitmq:purge', 'index:clear',
-                  'repo:clean'] do
+  task recreate: ['invoker:stop_all', 'rabbitmq:purge', 'repo:clean'] do
     Rake::Task['db:recreate'].invoke
+    Rake::Task['index:clear'].invoke
     Rake::Task['invoker:start_all'].invoke
   end
 
