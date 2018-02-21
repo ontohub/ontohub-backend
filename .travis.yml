@@ -32,6 +32,8 @@ matrix:
     - env: JOB=seeds
       services:
         - rabbitmq
+        - elasticsearch
+        - postgresql
       before_install:
         # This is a workaround for a problem with a specific version of bundler
         # and rubygems
@@ -45,15 +47,21 @@ matrix:
           echo "  path: spec/support/git-shell" >> config/settings.local.yml
           echo "  copy_authorized_keys_executable: spec/support/git-shell-copy-authorized-keys" >> config/settings.local.yml
       script:
+        - ping_elasticsearch="curl localhost:9200"; while (! $ping_elasticsearch > /dev/null 2> /dev/null); do sleep 0.1; done
         - RAILS_ENV=development bundle exec rails db:recreate:seed
 
     - env: JOB=rspec
+      services:
+        - elasticsearch
+        - postgresql
       before_install:
         # This is a workaround for a problem with a specific version of bundler
         # and rubygems
         - gem update --system
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
+        - ping_elasticsearch="curl localhost:9200"; while (! $ping_elasticsearch > /dev/null 2> /dev/null); do sleep 0.1; done
+
       script:
         - bundle exec rspec --format progress
 
@@ -61,6 +69,8 @@ matrix:
       gemfile: $HOME/system-test/Gemfile
       services:
         - rabbitmq
+        - elasticsearch
+        - postgresql
       before_install:
         # This is a workaround for a problem with a specific version of bundler
         # and rubygems
@@ -109,6 +119,8 @@ matrix:
         - echo "Using system-test revision $(git log -1 --format=%H)"
         - bundle install
         - popd
+        - ping_elasticsearch="curl localhost:9200"; while (! $ping_elasticsearch > /dev/null 2> /dev/null); do sleep 0.1; done
+
       script:
         - pushd $HOME/system-test
         - echo "Testing commit $TRAVIS_COMMIT"
