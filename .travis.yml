@@ -105,7 +105,7 @@ matrix:
             git clone https://github.com/ontohub/system-test.git $HOME/system-test
           fi
         - pushd $HOME/system-test
-        - git checkout origin/master
+        - git checkout origin/fix_copy_authorized_keys
         - echo "Using system-test revision $(git log -1 --format=%H)"
         - bundle install
         - popd
