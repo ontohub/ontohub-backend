@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+%w(sneakers.rb hets_agent_initializer.rb).each do |path|
+  require_relative Rails.root.join('config/initializers').join(path).to_s
+end
+
 QUEUES = %w(
   git_clone
   git_pull
@@ -25,5 +29,10 @@ namespace :rabbitmq do
       channel.queue(queue, durable: true).purge
     end
     connection.close
+  end
+
+  desc 'Send hets version requirement'
+  task :send_hets_version do
+    HetsAgentInitializer.new.call
   end
 end

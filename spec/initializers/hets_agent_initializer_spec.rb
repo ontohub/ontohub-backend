@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe HetsAgentIninializer do
+RSpec.describe HetsAgentInitializer do
   let(:bunny_mock) { BunnyMock.new }
 
   before do
@@ -14,7 +14,7 @@ RSpec.describe HetsAgentIninializer do
 
   context 'connection' do
     before do
-      HetsAgentIninializer.new.call
+      HetsAgentInitializer.new.call
     end
 
     it 'has been started' do
@@ -36,16 +36,16 @@ RSpec.describe HetsAgentIninializer do
     end
 
     it 'creates the exchange' do
-      exchange_name = HetsAgentIninializer::EXCHANGE_NAME
-      expect { HetsAgentIninializer.new.call }.
+      exchange_name = HetsAgentInitializer::EXCHANGE_NAME
+      expect { HetsAgentInitializer.new.call }.
         to change { bunny_mock.exchange_exists?(exchange_name) }.
         from(false).
         to(true)
     end
 
     it 'creates the exchange with proper arguments' do
-      HetsAgentIninializer.new.call
-      exchange = bunny_mock.exchanges[HetsAgentIninializer::EXCHANGE_NAME]
+      HetsAgentInitializer.new.call
+      exchange = bunny_mock.exchanges[HetsAgentInitializer::EXCHANGE_NAME]
       received_exchange_data =
         {
           type: exchange.type,
@@ -59,15 +59,15 @@ RSpec.describe HetsAgentIninializer do
       let!(:receiver_queue) do
         channel = bunny_mock.channel
         # First, create the exchange
-        channel.exchange(HetsAgentIninializer::EXCHANGE_NAME, exchange_data)
+        channel.exchange(HetsAgentInitializer::EXCHANGE_NAME, exchange_data)
         # Then, create the queue and bind it to the exchange
         queue = channel.queue(generate(:username))
-        queue.bind(HetsAgentIninializer::EXCHANGE_NAME)
+        queue.bind(HetsAgentInitializer::EXCHANGE_NAME)
         queue
       end
 
       before do
-        HetsAgentIninializer.new.call
+        HetsAgentInitializer.new.call
       end
 
       it 'is sent' do

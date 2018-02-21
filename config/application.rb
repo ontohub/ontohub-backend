@@ -80,7 +80,7 @@ module OntohubBackend
       # Only interact with the HetsAgent if the application is not run via rake
       # but as the rails server
       unless defined?(Rake)
-        HetsAgentIninializer.new.call
+        HetsAgentInitializer.new.call
         HetsAgent::Invoker.new(HetsAgent::LogicGraphRequestCollection.new).call
       end
 

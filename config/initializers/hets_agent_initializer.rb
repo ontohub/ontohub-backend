@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # A service class that defines and sends the Hets version requirement.
-class HetsAgentIninializer
+class HetsAgentInitializer
   EXCHANGE_NAME = 'hets_version_requirement'
 
   attr_reader :connection
