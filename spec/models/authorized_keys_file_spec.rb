@@ -3,7 +3,7 @@
 RSpec.describe AuthorizedKeysFile do
   describe 'filepath' do
     let(:expected_filepath) do
-      Settings.data_directory.join('ssh/authorized_keys')
+      Settings.data_directory.join('.ssh/authorized_keys')
     end
 
     it 'has the correct filepath' do
