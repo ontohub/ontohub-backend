@@ -410,6 +410,7 @@ DEPENDENCIES
   bringit (~> 1.0.0)
   bunny
   bunny-mock (~> 1.7.0)
+  chewy (~> 0.10.1)
   codecov (~> 0.1.10)
   config (~> 1.7.0)
   database_cleaner (~> 1.6.2)

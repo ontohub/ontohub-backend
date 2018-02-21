@@ -48,6 +48,7 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 
 # Sneakers depends on bunny and has the version requirement
 gem 'bunny'
+gem 'chewy', '~> 0.10.1'
 gem 'factory_bot_rails', '~> 4.8.2' # Needed for the seeds
 gem 'faker', '~> 1.8.7' # Needed for the seeds
 gem 'filelock', '~> 1.1.1'

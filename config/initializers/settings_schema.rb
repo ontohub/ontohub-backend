@@ -82,6 +82,12 @@ class SettingsSchema < Dry::Validation::Schema
       required(:path).filled { str? & executable? }
     end
 
+    required(:elasticsearch).schema do
+      required(:host).filled { str? }
+      required(:port).filled { int? }
+      optional(:prefix).maybe { str? }
+    end
+
     required(:rabbitmq).schema do
       required(:host).filled { str? }
       required(:port).filled { int? }

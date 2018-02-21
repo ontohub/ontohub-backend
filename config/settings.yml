@@ -17,6 +17,11 @@ git_shell:
   # application root.
   copy_authorized_keys_executable: bin/copy_authorized_keys
 
+elasticsearch:
+  host: localhost
+  port: 9200
+  prefix:
+
 rabbitmq:
   host: localhost
   port: 5672

@@ -29,7 +29,7 @@ RSpec.describe(SettingsSchema) do
 
     context 'jwt' do
       it 'expiration_hours is nil' do
-        settings[:jwt][:expiration_hours] = nil
+        settings[:jwt] = settings[:jwt].merge(expiration_hours: nil)
         expect(subject.errors).
           to include(jwt: {expiration_hours: ['must be filled']})
       end
@@ -47,6 +47,42 @@ RSpec.describe(SettingsSchema) do
           settings[:git_shell][field] = nil
           expect(subject.errors).
             to include(git_shell: include(field => ['must be filled']))
+      end
+    end
+    
+    context 'elasticsearch' do
+      context 'host' do
+        it 'is nil' do
+          settings[:elasticsearch][:host] = nil
+          expect(subject.errors).
+            to include(elasticsearch: include(host: ['must be filled']))
+        end
+
+        it 'is maltyped' do
+          settings[:elasticsearch][:host] = 0
+          expect(subject.errors).
+            to include(elasticsearch: include(host: ['must be a string']))
+        end
+      end
+
+      context 'port' do
+        it 'is nil' do
+          settings[:elasticsearch][:port] = nil
+          expect(subject.errors).
+            to include(elasticsearch: include(port: ['must be filled']))
+        end
+
+        it 'is maltyped' do
+          settings[:elasticsearch][:port] = 'string'
+          expect(subject.errors).
+            to include(elasticsearch: include(port: ['must be an integer']))
+        end
+      end
+
+      context 'prefix' do
+        it 'is string' do
+          settings[:elasticsearch][:prefix] = 'string'
+          expect(subject.errors).to be_empty
         end
       end
     end
