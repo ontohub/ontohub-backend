@@ -35,12 +35,29 @@ RSpec.describe SessionPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject { SessionPolicy.new(current_user) }
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        SessionPolicy.new(current_user)
+      end
 
-    %i(create?).each do |method|
-      it "does not allow #{method}" do
-        expect(subject.public_send(method)).to be(false)
+      %i(create?).each do |method|
+        it "does not allow #{method}" do
+          expect(subject.public_send(method)).to be(false)
+        end
+      end
+    end
+
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        SessionPolicy.new(current_user)
+      end
+
+      %i(create?).each do |method|
+        it "does not allow #{method}" do
+          expect(subject.public_send(method)).to be(false)
+        end
       end
     end
   end

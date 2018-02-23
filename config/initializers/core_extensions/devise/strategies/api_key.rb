@@ -7,7 +7,10 @@ module Devise
     # Strategy for API key authentication
     class ApiKey < HttpAuthorization
       def authenticate!
-        api_key = ::ApiKey.
+        api_key = ::HetsApiKey.
+          verify(Rails.application.secrets.api_key_base, user_key)
+
+        api_key ||= ::GitShellApiKey.
           verify(Rails.application.secrets.api_key_base, user_key)
 
         success! api_key if api_key

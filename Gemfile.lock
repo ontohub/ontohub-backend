@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 5fb4244b0eb6a1bc33fe8a27bcd2a439eca3bf01
+  revision: 784aeaaddf425aac0e0bb711817923e33e9d900f
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -178,7 +178,7 @@ GEM
     fasterer (0.4.0)
       colorize (~> 0.7)
       ruby_parser (~> 3.9)
-    ffi (1.9.18)
+    ffi (1.9.21)
     filelock (1.1.1)
     formatador (0.2.5)
     fuubar (2.3.1)
@@ -250,8 +250,8 @@ GEM
       orm_adapter (>= 0.4.0)
       sequel (>= 3.18.0)
     parallel (1.12.1)
-    parser (2.4.0.2)
-      ast (~> 2.3)
+    parser (2.5.0.1)
+      ast (~> 2.4.0)
     pg (1.0.0)
     powerpack (0.1.1)
     promise.rb (0.7.4)
@@ -269,7 +269,7 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    public_suffix (3.0.1)
+    public_suffix (3.0.2)
     puma (3.11.2)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -340,7 +340,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
-    ruby_parser (3.10.1)
+    ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
@@ -362,7 +362,7 @@ GEM
       sequel
     serverengine (1.5.11)
       sigdump (~> 0.2.2)
-    sexp_processor (4.10.0)
+    sexp_processor (4.10.1)
     sigdump (0.2.4)
     simplecov (0.15.1)
       docile (~> 1.1.0)

@@ -40,6 +40,10 @@ class SettingsSchema < Dry::Validation::Schema
     !!FileUtils.mkdir_p(dir) unless File.exist?(dir)
   end
 
+  def executable?(value)
+    File.file?(value.to_s) && File.executable?(value.to_s)
+  end
+
   def worker_class?(value)
     %w(MailersWorker
        ProcessCommitWorker
@@ -71,6 +75,11 @@ class SettingsSchema < Dry::Validation::Schema
 
     required(:data_directory).filled do
       directory? | create_directory?
+    end
+
+    required(:git_shell).schema do
+      required(:copy_authorized_keys_executable).filled { str? & executable? }
+      required(:path).filled { str? & executable? }
     end
 
     required(:rabbitmq).schema do

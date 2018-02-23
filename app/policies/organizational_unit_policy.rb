@@ -3,6 +3,6 @@
 # Policies for OrganizationalUnitsController
 class OrganizationalUnitPolicy < ApplicationPolicy
   def show?
-    true
+    not_an_api_key?
   end
 end

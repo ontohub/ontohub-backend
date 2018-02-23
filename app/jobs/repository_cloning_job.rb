@@ -8,6 +8,7 @@ class RepositoryCloningJob < ApplicationJob
     repository = Repository.first(slug: repository_slug)
     path = RepositoryCompound.git_directory.join("#{repository.to_param}.git")
     Bringit::Wrapper.clone(path.to_s, repository.remote_address)
+    RepositoryCompound.wrap(repository).recreate_hooks
     repository.update(synchronized_at: Time.now)
   end
 end

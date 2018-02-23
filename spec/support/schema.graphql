@@ -608,6 +608,15 @@ type GeneratedAxiom {
   text: String!
 }
 
+# An action in git
+enum GitAction {
+  # Pull from a repository
+  pull
+
+  # Push to a repository
+  push
+}
+
 # Data of a git user
 type GitUser {
   # Corresponding Ontohub account of the user
@@ -1289,6 +1298,18 @@ type Mutation {
     # The unlock account token from the unlock account email
     token: String!
   ): SessionToken
+
+  # Processes a git push. Can only be called by the GitShell.
+  updateRefs(
+    # The ID of the public key that was used to push
+    keyId: Int!
+
+    # The repository to create the branch in
+    repositoryId: ID!
+
+    # The refs that have been updated
+    updatedRefs: [UpdatedRef!]!
+  ): Boolean!
 }
 
 # A NativeDocument is a container for exactly one OMS
@@ -1796,6 +1817,18 @@ type Query {
     # The id of the GeneratedAxiom
     id: Int!
   ): GeneratedAxiom
+
+  # Tells whether or not a public key has git access
+  gitAuthorization(
+    # The action to authorize
+    action: GitAction!
+
+    # The ID of the public key for authorization
+    keyId: Int!
+
+    # The ID of the repository for authorization
+    repositoryId: ID!
+  ): Boolean
 
   # A Language for the given ID
   language(
@@ -2524,6 +2557,18 @@ type Theorem implements Conjecture, LocIdBase, Sentence {
 
 # Represents the time
 scalar Time
+
+# Updated Git Ref
+input UpdatedRef {
+  # The (sha hash) of the ref after the update
+  after: ID
+
+  # The (sha hash) of the ref before the update
+  before: ID
+
+  # The name of the ref that was updated
+  ref: ID!
+}
 
 # Search and replace pattern for URLs inside documents
 type UrlMapping {

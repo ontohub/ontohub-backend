@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Mutations::Account::AddPublicKeyMutation do
+  before do
+    allow(AuthorizedKeysFile).to receive(:write).and_call_original
+  end
+
   let!(:user) { create :user }
 
   let(:context) { {current_user: current_user} }
@@ -45,6 +49,11 @@ RSpec.describe Mutations::Account::AddPublicKeyMutation do
         it 'returns the name' do
           expect(subject['data']['addPublicKey']['name']).
             to eq(key_name)
+        end
+
+        it 'writes the authorized_keys file' do
+          subject
+          expect(AuthorizedKeysFile).to have_received(:write)
         end
       end
 

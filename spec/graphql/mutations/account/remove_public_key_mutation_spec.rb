@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Mutations::Account::RemovePublicKeyMutation do
+  before do
+    allow(AuthorizedKeysFile).to receive(:write).and_call_original
+  end
+
   let!(:user) { create :user }
   let(:key_name) { 'stub@localhost' }
   let!(:existing_key) { create :public_key, user: user, name: key_name }
@@ -41,6 +45,11 @@ RSpec.describe Mutations::Account::RemovePublicKeyMutation do
 
       it 'returns true' do
         expect(subject['data']['removePublicKey']).to be(true)
+      end
+
+      it 'writes the authorized_keys file' do
+        subject
+        expect(AuthorizedKeysFile).to have_received(:write)
       end
     end
 

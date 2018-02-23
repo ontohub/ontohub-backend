@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This hook updates a ref (e.g. a branch or tag). If its exit status is zero, it
+# allows the update, otherwise it is prevented. It can be used to prevent
+# force-pushes.
+# https://git-scm.com/docs/githooks#update
+
+stdin = $stdin.read
+args = ARGV
+
+updated_ref = ARGV[0]
+revision_before_update = ARGV[1]
+revision_after_update = ARGV[2]
+
+Kernel.exec('<%= Settings.git_shell.path %>',
+            '<%= hook %>',
+            '<%= slug %>',
+            updated_ref,
+            revision_before_update,
+            revision_after_update)

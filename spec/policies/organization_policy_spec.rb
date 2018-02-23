@@ -146,17 +146,26 @@ RSpec.describe OrganizationPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject { OrganizationPolicy.new(current_user) }
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        OrganizationPolicy.new(current_user)
+      end
 
-    %i(create? update? destroy?).each do |method|
-      it "does not allow #{method}" do
-        expect(subject.public_send(method)).to be(false)
+      it 'does not allow show?' do
+        expect(subject.show?).to be(false)
       end
     end
 
-    it 'does allow show?' do
-      expect(subject.show?).to be(true)
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        OrganizationPolicy.new(current_user)
+      end
+
+      it 'does not allow show?' do
+        expect(subject.show?).to be(false)
+      end
     end
   end
 end

@@ -135,12 +135,6 @@ RSpec.describe GraphqlController do
   end
 
   context 'signed in via API key' do
-    let!(:api_key_data) { create_api_key_and_set_header }
-    let(:raw_key) { api_key_data[:raw] }
-    let(:api_key) { api_key_data[:api_key] }
-
-    let!(:repository) { create(:repository, :private) }
-
     let(:query) do
       <<-QUERY
         query Repository($id: ID!) {
@@ -158,7 +152,25 @@ RSpec.describe GraphqlController do
 
     let(:result) { JSON.parse(response.body) }
 
-    context 'with a valid API key' do
+    let(:raw_key) { api_key_data[:raw] }
+    let(:api_key) { api_key_data[:api_key] }
+
+    let!(:repository) { create(:repository, :private) }
+
+    context 'with a valid GitShellApiKey' do
+      let!(:api_key_data) { create_api_key_and_set_header(GitShellApiKey) }
+      before do
+        post :execute, params: params
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+      it 'returns the queried repository data' do
+        expect(result).to match('data' => {'repository' => nil})
+      end
+    end
+
+    context 'with a valid HetsApiKey' do
+      let!(:api_key_data) { create_api_key_and_set_header(HetsApiKey) }
       before do
         post :execute, params: params
       end

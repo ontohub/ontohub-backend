@@ -3,14 +3,14 @@
 # Policies for AccountController
 class AccountPolicy < ApplicationPolicy
   def create?
-    !current_user
+    !signed_in?
   end
 
   def update?
-    !!current_user
+    user?
   end
 
   def destroy?
-    !!current_user
+    user?
   end
 end

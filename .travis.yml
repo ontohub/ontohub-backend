@@ -39,6 +39,11 @@ matrix:
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
         - sudo rabbitmqctl add_vhost ontohub_development
         - sudo rabbitmqctl set_permissions -p ontohub_development guest ".*" ".*" ".*"
+      before_script:
+        - |
+          echo "git_shell:" > config/settings.local.yml
+          echo "  path: spec/support/git-shell" >> config/settings.local.yml
+          echo "  copy_authorized_keys_executable: spec/support/git-shell-copy-authorized-keys" >> config/settings.local.yml
       script:
         - RAILS_ENV=development bundle exec rails db:recreate:seed
 
@@ -72,18 +77,36 @@ matrix:
         - sudo mkdir -p $SHAREDIR/extension/
         - sudo cp $EMAJ_SQL_FILE $EMAJ_CONTROL_FILE $SHAREDIR/extension/
       before_script:
+        # Disable SSH host key checking for localhost (for testing the git-shell)
+        - echo "Host 127.0.0.1 localhost" > ~/.ssh/config
+        - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+        - echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+        - echo "  User travis" >> ~/.ssh/config
+        - echo "  IdentityFile ~/.ssh/self" >> ~/.ssh/config
+
+        # Create an SSH key and allow to connect with localhost (for testing the git-shell)
+        - ssh-keygen -t rsa -b 2048 -N '' -f ~/.ssh/self
+        - ls -la ~/.ssh
+        - cat ~/.ssh/self.pub > ~/.ssh/authorized_keys
+        - ssh travis@localhost echo "SSH setup complete"
+
+        # Set up RabbitMQ VirtualHost
         - sudo rabbitmqctl add_vhost ontohub_system_test
         - sudo rabbitmqctl set_permissions -p ontohub_system_test guest ".*" ".*" ".*"
+
+        # Set up the system-tests
         - |
           if [ -d $HOME/system-test/.git ]
           then
             pushd $HOME/system-test
-            git pull
+            git fetch
             popd
           else
             git clone https://github.com/ontohub/system-test.git $HOME/system-test
           fi
         - pushd $HOME/system-test
+        - git checkout origin/master
+        - echo "Using system-test revision $(git log -1 --format=%H)"
         - bundle install
         - popd
       script:

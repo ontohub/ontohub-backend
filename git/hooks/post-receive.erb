@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This hook is invoked after the update hook has succeeded. It receives
+# information on the updated refs on stdin. Updating has already finished.
+# This hook is used to notify the backend about the update details.
+# https://git-scm.com/docs/githooks#post-receive
+
+updated_refs = $stdin.read
+
+Kernel.exec('<%= Settings.git_shell.path %>',
+            '<%= hook %>',
+            '<%= slug %>',
+            updated_refs)

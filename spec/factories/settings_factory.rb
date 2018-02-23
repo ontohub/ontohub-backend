@@ -11,6 +11,11 @@ FactoryBot.define do
 
     data_directory 'tmp/data'
 
+    git_shell do
+      {copy_authorized_keys_executable: 'tmp/copy_authorized_keys',
+       path: 'tmp/git-shell'}
+    end
+
     rabbitmq do
       {
         host: 'example.com',

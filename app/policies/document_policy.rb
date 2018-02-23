@@ -3,18 +3,12 @@
 # Policies for Document
 class DocumentPolicy < ApplicationPolicy
   # Scopes a document dataset to accessible document of the current user
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      return scope if user.is_a?(ApiKey)
-      return scope if user&.admin?
-      return public_scope unless user
+      return scope if hets_api_key?
+      return scope.where(false) if git_shell_api_key?
+      return scope if admin?
+      return public_scope unless user?
       private_scope
     end
 
@@ -41,7 +35,7 @@ class DocumentPolicy < ApplicationPolicy
     def private_scope
       joint_scope.
         where(Sequel[:document_policy_scope_repositories][:id] =>
-                user.accessible_repositories_dataset.
+                current_user.accessible_repositories_dataset.
                   select(Sequel[:repositories][:id])).
         or(Sequel[:document_policy_scope_repositories][:public_access] => true)
     end

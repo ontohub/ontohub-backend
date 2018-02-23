@@ -26,6 +26,24 @@ ada_fixtures_repo =
         description: 'This is a fixture repository from the user ada.')
 ada_fixtures_repo.save
 
+bob_public_repo =
+  RepositoryCompound.
+    new(owner: User.first(slug: 'bob'),
+        name: 'My public repository',
+        content_type: 'specification',
+        public_access: true,
+        description: 'This is a seed repository from the user bob.')
+bob_public_repo.save
+
+cam_secret_repo =
+  RepositoryCompound.
+    new(owner: User.first(slug: 'cam'),
+        name: 'My private repository',
+        content_type: 'specification',
+        public_access: false,
+        description: 'This is a seed repository from the user cam.')
+cam_secret_repo.save
+
 organization_math_repo =
   RepositoryCompound.
     new(owner: Organization.first(slug: 'seed-user-organization'),

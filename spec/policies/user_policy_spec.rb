@@ -98,17 +98,34 @@ RSpec.describe UserPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject { UserPolicy.new(current_user) }
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        UserPolicy.new(current_user)
+      end
 
-    %i(show_current_user? access_private_data?).each do |method|
-      it "does not allow #{method}" do
-        expect(subject.public_send(method)).to be(false)
+      %i(show? show_current_user? access_private_data?).each do |method|
+        it "does not allow #{method}" do
+          expect(subject.public_send(method)).to be(false)
+        end
       end
     end
 
-    it 'does allow show?' do
-      expect(subject.show?).to be(true)
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        UserPolicy.new(current_user)
+      end
+
+      %i(show_current_user? access_private_data?).each do |method|
+        it "does not allow #{method}" do
+          expect(subject.public_send(method)).to be(false)
+        end
+      end
+
+      it 'does not allow show?' do
+        expect(subject.show?).to be(false)
+      end
     end
   end
 end

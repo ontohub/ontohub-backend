@@ -88,12 +88,27 @@ RSpec.describe AccountPolicy do
   end
 
   context 'when current_user is an ApiKey' do
-    let(:current_user) { create(:api_key) }
-    subject { AccountPolicy.new(current_user) }
+    context 'GitShellApiKey' do
+      let(:current_user) { create(:git_shell_api_key) }
+      subject do
+        AccountPolicy.new(current_user)
+      end
 
-    %i(create? update? destroy?).each do |method|
-      context method.to_s do
-        it 'does not allow the action' do
+      %i(create? update? destroy?).each do |method|
+        it "does not allow #{method}" do
+          expect(subject.public_send(method)).to be(false)
+        end
+      end
+    end
+
+    context 'HetsApiKey' do
+      let(:current_user) { create(:hets_api_key) }
+      subject do
+        AccountPolicy.new(current_user)
+      end
+
+      %i(create? update? destroy?).each do |method|
+        it "does not allow #{method}" do
           expect(subject.public_send(method)).to be(false)
         end
       end

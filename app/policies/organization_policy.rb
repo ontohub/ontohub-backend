@@ -3,16 +3,16 @@
 # Policies for OrganizationsController
 class OrganizationPolicy < ApplicationPolicy
   def create?
-    !!current_user
+    user?
   end
 
   def show?
-    true
+    not_an_api_key?
   end
 
   def update?
-    return false unless current_user && resource
-    !!OrganizationMembership.
+    return false unless resource
+    user? && !!OrganizationMembership.
       find(member: current_user, organization: resource, role: 'admin')
   end
 

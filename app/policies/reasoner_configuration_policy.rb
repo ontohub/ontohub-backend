@@ -3,7 +3,7 @@
 # Policies for the ReasonerConfiguration
 class ReasonerConfigurationPolicy < ApplicationPolicy
   def show?
-    !!resource&.repositories&.any? do |repository|
+    not_an_api_key? && !!resource&.repositories&.any? do |repository|
       RepositoryPolicy.new(current_user, repository).show?
     end
   end
