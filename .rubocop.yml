@@ -13,6 +13,7 @@ AllCops:
     - 'bin/setup'
     - 'bin/spring'
     - 'bin/update'
+    - 'data/**/*'
     - 'db/schema.rb'
     - 'node_modules/**/*'
     - 'spec/dummy/**/*'
