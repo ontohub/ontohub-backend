@@ -47,6 +47,7 @@ RSpec.describe(SettingsSchema) do
           settings[:git_shell][field] = nil
           expect(subject.errors).
             to include(git_shell: include(field => ['must be filled']))
+        end
       end
     end
     
