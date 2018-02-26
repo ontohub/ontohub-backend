@@ -7,7 +7,7 @@ namespace :db do
     Rake::Task['invoker:start_all'].invoke
   end
 
-  task seed: ['rabbitmq:purge', 'chewy:reset'] do
+  task :seed do
     Rake::Task['db:seed'].invoke
   end
 
