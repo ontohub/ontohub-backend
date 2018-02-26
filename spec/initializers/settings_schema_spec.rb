@@ -158,7 +158,7 @@ RSpec.describe(SettingsSchema) do
     context 'jwt' do
       context 'expiration_hours' do
         it 'is not a Numeric type' do
-          settings[:jwt][:expiration_hours] = 'bad'
+          settings[:jwt] = settings[:jwt].merge(expiration_hours: 'bad')
           expect(subject.errors).to include(
             jwt: {expiration_hours: ['must be an integer or must be a float']}
           )
