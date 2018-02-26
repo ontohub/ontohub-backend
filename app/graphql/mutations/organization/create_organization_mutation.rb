@@ -25,6 +25,8 @@ module Mutations
           organization.save
           organization.add_member(context[:current_user])
         end
+        IndexingJob.
+          perform_later('class' => 'Organization', 'id' => organization.id)
         organization
       end
     end

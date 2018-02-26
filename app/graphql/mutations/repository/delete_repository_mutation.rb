@@ -25,6 +25,8 @@ module Mutations
     class DeleteRepositoryResolver
       def call(repository, _arguments, _context)
         repository.destroy
+        IndexingJob.
+          perform_later('class' => 'Repository', 'id' => repository.id)
         true
       end
     end

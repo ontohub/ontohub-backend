@@ -55,6 +55,8 @@ module Mutations
                             target: url_mapping['target'])
         end
         RepositoryCloningJob.perform_later(repository.to_param)
+        IndexingJob.
+          perform_later('class' => 'Repository', 'id' => repository.id)
         repository
       end
 

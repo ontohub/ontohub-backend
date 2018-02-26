@@ -32,11 +32,13 @@ module Mutations
       # that action after stripping the rest away. Make sure that this code is
       # updated if Devise adds relevant code to the controller action.
       #
-      # For reference, see the V2::Users::AccountController#update and
+      # For reference, see
       # https://github.com/plataformatec/devise/blob/7a44233fb9439e7cc4d1503b14f02a1d9f6da7b9/app/controllers/devise/registrations_controller.rb#L44-L63
       def call(user, arguments, _context)
         params = arguments[:data].to_h.compact
         user.update(params) if user.valid_password?(arguments[:password])
+        IndexingJob.
+          perform_later('class' => 'User', 'id' => user.id)
         user
       end
     end

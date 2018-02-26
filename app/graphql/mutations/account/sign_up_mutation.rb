@@ -37,13 +37,15 @@ module Mutations
       # that action after stripping the rest away. Make sure that this code is
       # updated if Devise adds relevant code to the controller action.
       #
-      # For reference, see the V2::Users::AccountController#create and
+      # For reference, see the
       # https://github.com/plataformatec/devise/blob/7a44233fb9439e7cc4d1503b14f02a1d9f6da7b9/app/controllers/devise/registrations_controller.rb#L14-L34
       def call(_root, arguments, context)
         setup_devise(context)
         create_resource(arguments)
 
         return unless resource.persisted?
+
+        IndexingJob.perform_later('class' => 'User', 'id' => resource.id)
 
         if resource.active_for_authentication?
           sign_in_and_return_token(resource)

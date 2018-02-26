@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'a confirmation email sender' do
+RSpec.shared_examples 'a confirmation email sender' do |additional_jobs = 0|
   it 'sends an email' do
-    expect(performed_jobs.size).to eq(1)
+    expect(performed_jobs.size).to eq(1 + additional_jobs)
     expect(UsersMailer.deliveries.size).to eq(1)
   end
 

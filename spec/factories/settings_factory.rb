@@ -16,6 +16,14 @@ FactoryBot.define do
        path: 'tmp/git-shell'}
     end
 
+    elasticsearch do
+      {
+        host: 'localhost',
+        port: 9200,
+        prefix: nil,
+      }
+    end
+
     rabbitmq do
       {
         host: 'example.com',

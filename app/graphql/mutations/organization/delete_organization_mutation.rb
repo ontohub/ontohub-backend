@@ -26,6 +26,8 @@ module Mutations
     class DeleteOrganizationResolver
       def call(organization, _arguments, _context)
         organization.destroy
+        IndexingJob.
+          perform_later('class' => 'Organization', 'id' => organization.id)
         true
       end
     end

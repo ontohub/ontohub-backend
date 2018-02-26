@@ -54,7 +54,7 @@ RSpec.describe Mutations::Account::SignUpMutation,
       it 'saves and returns the user' do
         expect(subject['data']['signUp']['me']['id']).to eq(user.to_param)
       end
-      it_behaves_like 'a confirmation email sender'
+      it_behaves_like 'a confirmation email sender', 1
     end
 
     context 'without immediate access' do
@@ -75,11 +75,30 @@ RSpec.describe Mutations::Account::SignUpMutation,
         expect(subject['errors']).to be(nil)
       end
 
-      it_behaves_like 'a confirmation email sender'
+      it_behaves_like 'a confirmation email sender', 1
+    end
+
+    it 'enqueues a user indexing job' do
+      # Workaround: The IndexingJob needs to be called, but the test helper
+      # doesn't match it. It might be an RSpec configuration issue, but we
+      # cannot find it. Let's see if the perform_later method was properly
+      # called:
+      allow(IndexingJob).to receive(:perform_later)
+      subject
+      expect(IndexingJob).to have_received(:perform_later).with(
+        'class' => 'User',
+        'id' => User.first(slug: subject['data']['signUp']['me']['id']).id
+      )
     end
   end
 
   context 'unsuccessful' do
+    shared_examples 'does not enque user indexing job' do
+      it 'does not index' do
+        expect(IndexingJob).not_to have_been_enqueued
+      end
+    end
+
     context 'name is not available' do
       before do
         create :user, name: user_data['username']
@@ -93,6 +112,8 @@ RSpec.describe Mutations::Account::SignUpMutation,
         expect(subject['errors']).
           to include(include('message' => 'name is already taken'))
       end
+
+      include_examples('does not enque user indexing job')
     end
 
     context 'invalid data' do
@@ -113,6 +134,8 @@ RSpec.describe Mutations::Account::SignUpMutation,
             to include(include('message' => include(error)))
         end
       end
+
+      include_examples('does not enque user indexing job')
     end
 
     context 'already signed in' do
@@ -126,6 +149,8 @@ RSpec.describe Mutations::Account::SignUpMutation,
         expect(subject['errors']).
           to include(include('message' => "You're not authorized to do this"))
       end
+
+      include_examples('does not enque user indexing job')
     end
   end
 end

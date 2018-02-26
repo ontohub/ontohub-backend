@@ -3,15 +3,16 @@
 namespace :db do
   task recreate: ['invoker:stop_all', 'rabbitmq:purge', 'repo:clean'] do
     Rake::Task['db:recreate'].invoke
+    Rake::Task['chewy:reset'].invoke
     Rake::Task['invoker:start_all'].invoke
   end
 
-  task seed: ['rabbitmq:purge'] do
+  task seed: ['rabbitmq:purge', 'chewy:reset'] do
     Rake::Task['db:seed'].invoke
   end
 
   desc 'Truncate all tables'
-  task truncate: ['rabbitmq:purge', 'repo:clean'] do
+  task truncate: ['rabbitmq:purge', 'chewy:reset', 'repo:clean'] do
     db = Sequel::Model.db
     tables = db.tables - %i(schema_migrations)
     all_tables = tables.map do |table|
@@ -28,7 +29,7 @@ namespace :db do
     end
 
     desc 'Recreate all tables'
-    task tables: ['rabbitmq:purge', 'repo:clean'] do
+    task tables: ['rabbitmq:purge', 'chewy:reset', 'repo:clean'] do
       db = Sequel::Model.db
       all_tables = db.tables.map do |table|
         %("#{table}")

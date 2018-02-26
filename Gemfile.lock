@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/index.git
-  revision: f5be5efc72c3e720cbfb4441e88700ce22253094
+  revision: aae9eaa9402d0a2f9d727d89f66d618b71c51e73
   branch: master
   specs:
     index (0.0.0)
@@ -178,7 +178,7 @@ GEM
     fasterer (0.4.0)
       colorize (~> 0.7)
       ruby_parser (~> 3.9)
-    ffi (1.9.21)
+    ffi (1.9.23)
     filelock (1.1.1)
     formatador (0.2.5)
     fuubar (2.3.1)
@@ -250,7 +250,7 @@ GEM
       orm_adapter (>= 0.4.0)
       sequel (>= 3.18.0)
     parallel (1.12.1)
-    parser (2.5.0.1)
+    parser (2.5.0.2)
       ast (~> 2.4.0)
     pg (1.0.0)
     powerpack (0.1.1)
@@ -410,6 +410,7 @@ DEPENDENCIES
   bringit (~> 1.0.0)
   bunny
   bunny-mock (~> 1.7.0)
+  chewy (~> 0.10.1)
   codecov (~> 0.1.10)
   config (~> 1.7.0)
   database_cleaner (~> 1.6.2)

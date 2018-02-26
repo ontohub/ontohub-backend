@@ -58,6 +58,21 @@ RSpec.describe Mutations::Organization::CreateOrganizationMutation do
         ]
       )
     end
+
+    it 'enqueues a organization indexing job' do
+      subject
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'Organization',
+        'id' => Organization.
+          first(slug: result['data']['createOrganization']['id']).id
+      )
+    end
+  end
+
+  shared_examples 'does not enque organization indexing job' do
+    it 'does not index' do
+      expect(IndexingJob).not_to have_been_enqueued
+    end
   end
 
   context 'Name is not available' do
@@ -73,6 +88,8 @@ RSpec.describe Mutations::Organization::CreateOrganizationMutation do
       expect(subject['errors']).
         to include(include('message' => 'name is already taken'))
     end
+
+    include_examples('does not enque organization indexing job')
   end
 
   context 'Not signed in' do
@@ -86,5 +103,7 @@ RSpec.describe Mutations::Organization::CreateOrganizationMutation do
       expect(subject['errors']).
         to include(include('message' => "You're not authorized to do this"))
     end
+
+    include_examples('does not enque organization indexing job')
   end
 end

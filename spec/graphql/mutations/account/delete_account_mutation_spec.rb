@@ -33,6 +33,20 @@ RSpec.describe Mutations::Account::DeleteAccountMutation do
       subject
       expect(User.first(id: user.id)).to be(nil)
     end
+
+    it 'enqueues a user indexing job' do
+      subject
+      expect(IndexingJob).to have_been_enqueued.with(
+        'class' => 'User',
+        'id' => user.id
+      )
+    end
+  end
+
+  shared_examples 'does not enque user indexing job' do
+    it 'does not index' do
+      expect(IndexingJob).not_to have_been_enqueued
+    end
   end
 
   context 'Incorrect password' do
@@ -42,6 +56,8 @@ RSpec.describe Mutations::Account::DeleteAccountMutation do
       subject
       expect(User.first(id: user.id)).to_not be(nil)
     end
+
+    include_examples('does not enque user indexing job')
   end
 
   context 'Current user does not exist' do
@@ -56,5 +72,7 @@ RSpec.describe Mutations::Account::DeleteAccountMutation do
     it 'returns no data' do
       expect(subject['data']['deleteAccount']).to be(nil)
     end
+
+    include_examples('does not enque user indexing job')
   end
 end
