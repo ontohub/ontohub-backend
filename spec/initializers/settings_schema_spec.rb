@@ -50,7 +50,7 @@ RSpec.describe(SettingsSchema) do
         end
       end
     end
-    
+
     context 'elasticsearch' do
       context 'host' do
         it 'is nil' do
