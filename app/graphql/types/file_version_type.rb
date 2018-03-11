@@ -20,8 +20,7 @@ Types::FileVersionType = GraphQL::ObjectType.define do
     end)
   end
 
-  field :evaluationState, !Types::EvaluationStateEnum do
-    description 'The state of evaluation'
-    property :evaluation_state
+  field :action, !Types::ActionType do
+    description 'Information about the (to be) performed action'
   end
 end

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/index.git
-  revision: aae9eaa9402d0a2f9d727d89f66d618b71c51e73
+  revision: f5be5efc72c3e720cbfb4441e88700ce22253094
   branch: master
   specs:
     index (0.0.0)
@@ -10,8 +10,8 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 784aeaaddf425aac0e0bb711817923e33e9d900f
-  branch: master
+  revision: 646361505ac26cd9e46357d779f0b2cf44a45473
+  branch: add_reasoning_fields
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
@@ -351,7 +351,7 @@ GEM
       devise
       orm_adapter-sequel
       sequel (>= 3.11.0)
-    sequel-rails (1.0.0)
+    sequel-rails (1.0.1)
       actionpack (>= 4.0.0)
       activemodel (>= 4.0.0)
       railties (>= 4.0.0)

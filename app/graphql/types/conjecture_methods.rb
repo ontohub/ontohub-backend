@@ -16,14 +16,13 @@ module Types::ConjectureMethods
     Types::SentenceMethods.get(scope)
     # because of https://github.com/rmosolgo/graphql-ruby/issues/1067
 
-    scope.field :evaluationState, !Types::EvaluationStateEnum do
-      description 'The state of evaluation'
-      property :evaluation_state
+    scope.field :action, !Types::ActionType do
+      description 'Information about the (to be) performed action'
     end
 
-    scope.field :reasoningStatus, !Types::ReasoningStatusEnum do
-      description 'The reasoning status of this Conjecture'
-      property :reasoning_status
+    scope.field :proofStatus, !Types::ProofStatusEnum do
+      description 'The proof status of this Conjecture'
+      property :proof_status
     end
 
     scope.field :proofAttempts, !scope.types[!Types::ProofAttemptType] do

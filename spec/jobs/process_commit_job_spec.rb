@@ -60,9 +60,12 @@ RSpec.describe ProcessCommitJob, type: :job do
     end
 
     it 'sets the non-document-file versions finished' do
-      expect(FileVersion.
-               where(evaluation_state: 'finished_successfully').map(:id)).
-        to eq([file_versions.last.id])
+      finished_file_version_ids =
+        FileVersion.join(:actions,
+                         Sequel[:file_versions][:action_id] =>
+                           Sequel[:actions][:id]).
+          where(evaluation_state: 'finished_successfully').map(:id)
+      expect(finished_file_version_ids).to eq([file_versions.last.id])
     end
 
     it 'creates the HetsAgentInvoker' do

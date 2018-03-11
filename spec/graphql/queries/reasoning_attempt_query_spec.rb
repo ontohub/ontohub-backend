@@ -9,7 +9,10 @@ RSpec.describe 'reasoningAttempt query' do
     <<-QUERY
     query ($id: Int!) {
       reasoningAttempt(id: $id) {
-        evaluationState
+        action {
+          evaluationState
+          message
+        }
         generatedAxioms {
           id
         }
@@ -27,17 +30,18 @@ RSpec.describe 'reasoningAttempt query' do
             id
           }
         }
-        reasoningStatus
         timeTaken
         usedReasoner {
           id
         }
         ... on ConsistencyCheckAttempt {
+          consistencyStatus
           oms {
             locId
           }
         }
         ... on ProofAttempt {
+          proofStatus
           conjecture {
             locId
           }
@@ -76,7 +80,10 @@ RSpec.describe 'reasoningAttempt query' do
 
   let(:expectation_base) do
     {
-      'evaluationState' => reasoning_attempt.evaluation_state,
+      'action' => {
+        'evaluationState' => reasoning_attempt.action.evaluation_state,
+        'message' => reasoning_attempt.action.message,
+      },
       'generatedAxioms' =>
         match_array(generated_axioms.map { |ga| {'id' => ga.id} }),
       'id' => reasoning_attempt.id,
@@ -84,7 +91,7 @@ RSpec.describe 'reasoningAttempt query' do
       'reasonerConfiguration' =>
         {'id' => reasoning_attempt.reasoner_configuration.id},
       'reasonerOutput' => expected_reasoner_output,
-      'reasoningStatus' => reasoning_attempt.reasoning_status,
+      reasoning_status_key => reasoning_status,
       'timeTaken' => expected_time_taken,
       'usedReasoner' => {'id' => reasoning_attempt.used_reasoner.to_param},
     }
@@ -126,6 +133,8 @@ RSpec.describe 'reasoningAttempt query' do
 
   context 'on ConsistencyCheckAttempt' do
     let(:reasoning_attempt) { consistency_check_attempt }
+    let(:reasoning_status_key) { 'consistencyStatus' }
+    let(:reasoning_status) { consistency_check_attempt.consistency_status }
     let(:expected_reasoning_attempt) do
       oms = consistency_check_attempt.oms
       expectation_base.merge('oms' => {'locId' => oms.loc_id})
@@ -139,6 +148,8 @@ RSpec.describe 'reasoningAttempt query' do
 
   context 'on ProofAttempt' do
     let(:reasoning_attempt) { proof_attempt }
+    let(:reasoning_status_key) { 'proofStatus' }
+    let(:reasoning_status) { proof_attempt.proof_status }
     let(:expected_reasoning_attempt) do
       conjecture = proof_attempt.conjecture
       expectation_base.merge('conjecture' => {'locId' => conjecture.loc_id})

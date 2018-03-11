@@ -245,8 +245,12 @@ class MultiBlob
 
   def create_file_version(commit_sha, file)
     options = file_options(file)
-    FileVersion.create(options.merge(commit_sha: commit_sha,
-                                     repository_id: repository.pk))
+    Sequel::Model.db.transaction do
+      action = Action.create(evaluation_state: 'not_yet_enqueued')
+      FileVersion.create(options.merge(action_id: action.id,
+                                       commit_sha: commit_sha,
+                                       repository_id: repository.pk))
+    end
   end
 
   def file_options(file)

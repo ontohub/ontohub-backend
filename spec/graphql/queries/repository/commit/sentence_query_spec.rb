@@ -31,22 +31,31 @@ RSpec.describe 'repository/commit/sentence query' do
             }
             text
             ... on OpenConjecture {
-              evaluationState
-              reasoningStatus
+              action {
+                evaluationState
+                message
+              }
+              proofStatus
               proofAttempts {
                 id
               }
             }
             ... on CounterTheorem {
-              evaluationState
-              reasoningStatus
+              action {
+                evaluationState
+                message
+              }
+              proofStatus
               proofAttempts {
                 id
               }
             }
             ... on Theorem {
-              evaluationState
-              reasoningStatus
+              action {
+                evaluationState
+                message
+              }
+              proofStatus
               proofAttempts {
                 id
               }
@@ -128,8 +137,11 @@ RSpec.describe 'repository/commit/sentence query' do
 
   let(:conjecture_data) do
     axiom_data.merge(
-      'evaluationState' => conjecture.evaluation_state,
-      'reasoningStatus' => conjecture.reasoning_status,
+      'action' => {
+        'evaluationState' => conjecture.action.evaluation_state,
+        'message' => conjecture.action.message,
+      },
+      'proofStatus' => conjecture.proof_status,
       'proofAttempts' => proof_attempts.map { |pa| {'id' => pa.id} }
     )
   end

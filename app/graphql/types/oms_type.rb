@@ -5,6 +5,10 @@ Types::OMSType = GraphQL::ObjectType.define do
   description 'An Ontology, Model or Specification (OMS)'
   implements Types::LocIdBaseType, inherit: true
 
+  field :action, !Types::ActionType do
+    description 'Information about the (to be) performed action'
+  end
+
   field :document, !Types::DocumentType do
     description 'The Document containing this OMS'
   end
@@ -48,6 +52,11 @@ Types::OMSType = GraphQL::ObjectType.define do
   field :conservativityStatus, !Types::ConservativityStatusType do
     description 'The conservativity status of this OMS'
     property :conservativity_status
+  end
+
+  field :consistencyStatus, !Types::ConsistencyStatusEnum do
+    description 'The consistency status of this ConsistencyCheckAttempt'
+    property :consistency_status
   end
 
   field :nameFileRange, Types::FileRangeType do

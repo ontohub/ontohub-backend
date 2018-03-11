@@ -11,6 +11,11 @@ RSpec.describe 'repository/commit/oms query' do
       repository(id: $repositoryId) {
         commit(revision: $commitRevision) {
           oms(locId: $locId) {
+            action {
+              evaluationState
+              message
+            }
+            consistencyStatus
             conservativityStatus {
               proved
               required
@@ -139,6 +144,11 @@ RSpec.describe 'repository/commit/oms query' do
 
   let(:base_expectation) do
     {
+      'action' => {
+        'evaluationState' => oms.action.evaluation_state,
+        'message' => oms.action.message,
+      },
+      'consistencyStatus' => oms.consistency_status,
       'conservativityStatus' =>
         {'proved' => oms.conservativity_status.proved,
          'required' => oms.conservativity_status.required},

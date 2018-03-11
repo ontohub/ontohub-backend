@@ -4,7 +4,7 @@ RSpec.describe ImportingDocumentsReanalyzer do
   let(:repository) { create(:repository_compound) }
   let(:file_version) do
     create(:file_version,
-           evaluation_state: 'finished_successfully',
+           action: create(:action, evaluation_state: 'finished_successfully'),
            repository: repository)
   end
 
@@ -21,10 +21,12 @@ RSpec.describe ImportingDocumentsReanalyzer do
       allow(subject).to receive(:process)
     end
 
-    %w(not_yet_enqueued enqueued processing).each do |state|
-      context "with evaluation_state #{state}" do
+    %w(not_yet_enqueued enqueued processing).each do |evaluation_state|
+      context "with evaluation_state #{evaluation_state}" do
         let(:older_file_version) do
-          create(:file_version, evaluation_state: state, repository: repository)
+          create(:file_version,
+                 action: create(:action, evaluation_state: evaluation_state),
+                 repository: repository)
         end
 
         it 'returns :requeue' do
@@ -33,10 +35,12 @@ RSpec.describe ImportingDocumentsReanalyzer do
       end
     end
 
-    %w(finished_successfully finished_unsuccessfully).each do |state|
-      context "with evaluation_state #{state}" do
+    %w(finished_successfully finished_unsuccessfully).each do |evaluation_state|
+      context "with evaluation_state #{evaluation_state}" do
         let(:older_file_version) do
-          create(:file_version, evaluation_state: state, repository: repository)
+          create(:file_version,
+                 action: create(:action, evaluation_state: evaluation_state),
+                 repository: repository)
         end
 
         it 'returns :done' do
@@ -71,7 +75,7 @@ RSpec.describe ImportingDocumentsReanalyzer do
         commit_sha = create(:additional_commit, options)
 
         file_version = FileVersion.first(commit_sha: commit_sha)
-        file_version.evaluation_state = 'finished_successfully'
+        file_version.action.update(evaluation_state: 'finished_successfully')
         file_version.save
         file_version
       end

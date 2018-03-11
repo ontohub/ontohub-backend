@@ -1,3 +1,12 @@
+# Describes a evaluation state and contains a possible message
+type Action {
+  # The state of evaluation
+  evaluationState: EvaluationState!
+
+  # A message describing details of the state
+  message: String
+}
+
 # An axiom
 type Axiom implements LocIdBase, Sentence {
   # The FileRange of this Sentence's definition
@@ -175,8 +184,8 @@ enum CommitAction {
 
 # A conjecture
 interface Conjecture {
-  # The state of evaluation
-  evaluationState: EvaluationState!
+  # Information about the (to be) performed action
+  action: Action!
 
   # The FileRange of this Sentence's definition
   fileRange: FileRange
@@ -202,8 +211,8 @@ interface Conjecture {
     skip: Int = 0
   ): [ProofAttempt!]!
 
-  # The reasoning status of this Conjecture
-  reasoningStatus: ReasoningStatus!
+  # The proof status of this Conjecture
+  proofStatus: ProofStatus!
 
   # The symbols used in this sentence
   symbols(
@@ -229,8 +238,11 @@ type ConservativityStatus {
 
 # An attempt to check consistency of an OMS
 type ConsistencyCheckAttempt implements ReasoningAttempt {
-  # The state of evaluation
-  evaluationState: EvaluationState!
+  # Information about the (to be) performed action
+  action: Action!
+
+  # The consistency status of this ConsistencyCheckAttempt
+  consistencyStatus: ConsistencyStatus!
 
   # Axioms that have been generated during reasoning
   generatedAxioms: [GeneratedAxiom!]!
@@ -250,9 +262,6 @@ type ConsistencyCheckAttempt implements ReasoningAttempt {
   # The output of the Reasoner
   reasonerOutput: ReasonerOutput
 
-  # The reasoning status of this ReasoningAttempt
-  reasoningStatus: ReasoningStatus!
-
   # The time it took to run the reasoner
   timeTaken: Int
 
@@ -260,10 +269,32 @@ type ConsistencyCheckAttempt implements ReasoningAttempt {
   usedReasoner: Reasoner!
 }
 
+# Specifies the consistency status of an OMS
+enum ConsistencyStatus {
+  # The OMS is consistent.
+  Consistent
+
+  # There are concistency attempts that found a proof as well as some that found a
+  # counter example. This indicates a malfunction of the reasoning system.
+  Contradictory
+
+  # A concistency attempt has failed.
+  Error
+
+  # The OMS is inconsistent.
+  Inconsistent
+
+  # No concistency attempt has been finished.
+  Open
+
+  # The reasoner ran out of time.
+  Timeout
+}
+
 # A counter-theorem (disproved conjecture)
 type CounterTheorem implements Conjecture, LocIdBase, Sentence {
-  # The state of evaluation
-  evaluationState: EvaluationState!
+  # Information about the (to be) performed action
+  action: Action!
 
   # The FileRange of this Sentence's definition
   fileRange: FileRange
@@ -289,8 +320,8 @@ type CounterTheorem implements Conjecture, LocIdBase, Sentence {
     skip: Int = 0
   ): [ProofAttempt!]!
 
-  # The reasoning status of this Conjecture
-  reasoningStatus: ReasoningStatus!
+  # The proof status of this Conjecture
+  proofStatus: ProofStatus!
 
   # The symbols used in this sentence
   symbols(
@@ -583,11 +614,11 @@ type FileRange {
 
 # A versioned file
 type FileVersion {
+  # Information about the (to be) performed action
+  action: Action!
+
   # The Commit that introduced this FileVersion
   commit: Commit!
-
-  # The state of evaluation
-  evaluationState: EvaluationState!
 
   # The path of this file
   path: String!
@@ -1427,6 +1458,9 @@ input NewUser {
 
 # An Ontology, Model or Specification (OMS)
 type OMS implements LocIdBase {
+  # Information about the (to be) performed action
+  action: Action!
+
   # The conservativity status of this OMS
   conservativityStatus: ConservativityStatus!
 
@@ -1438,6 +1472,9 @@ type OMS implements LocIdBase {
     # Skip the first n entries
     skip: Int = 0
   ): [ConsistencyCheckAttempt!]!
+
+  # The consistency status of this ConsistencyCheckAttempt
+  consistencyStatus: ConsistencyStatus!
 
   # The description of this OMS
   description: String
@@ -1616,8 +1653,8 @@ enum OMSOrigin {
 
 # An open (unproved) conjecture
 type OpenConjecture implements Conjecture, LocIdBase, Sentence {
-  # The state of evaluation
-  evaluationState: EvaluationState!
+  # Information about the (to be) performed action
+  action: Action!
 
   # The FileRange of this Sentence's definition
   fileRange: FileRange
@@ -1643,8 +1680,8 @@ type OpenConjecture implements Conjecture, LocIdBase, Sentence {
     skip: Int = 0
   ): [ProofAttempt!]!
 
-  # The reasoning status of this Conjecture
-  reasoningStatus: ReasoningStatus!
+  # The proof status of this Conjecture
+  proofStatus: ProofStatus!
 
   # The symbols used in this sentence
   symbols(
@@ -1767,11 +1804,11 @@ interface PremiseSelection {
 
 # An attempt to prove a conjecture
 type ProofAttempt implements ReasoningAttempt {
+  # Information about the (to be) performed action
+  action: Action!
+
   # The conjecture of interest
   conjecture: Conjecture!
-
-  # The state of evaluation
-  evaluationState: EvaluationState!
 
   # Axioms that have been generated during reasoning
   generatedAxioms: [GeneratedAxiom!]!
@@ -1782,20 +1819,49 @@ type ProofAttempt implements ReasoningAttempt {
   # The number of this ReasoningAttempt
   number: Int!
 
+  # The proof status of this ProofAttempt
+  proofStatus: ProofStatus!
+
   # The used ReasonerConfiguration
   reasonerConfiguration: ReasonerConfiguration!
 
   # The output of the Reasoner
   reasonerOutput: ReasonerOutput
 
-  # The reasoning status of this ReasoningAttempt
-  reasoningStatus: ReasoningStatus!
-
   # The time it took to run the reasoner
   timeTaken: Int
 
   # The used Reasoner
   usedReasoner: Reasoner!
+}
+
+# Specifies the proof status of a Conjecture
+enum ProofStatus {
+  # Contradictory: There are proof attempts that found a proof as well as some
+  # that found a counter example. This indicates a malfunction of the reasoning system.
+  CONTR
+
+  # CounterSatisfiable: A counter example was found.
+  CSA
+
+  # CounterSatisfiable on a subset of axioms: A counter example was found but only
+  # a subset of the axioms was used. There is no conclusive result.
+  CSAS
+
+  # Error: A proof attempt has failed.
+  ERR
+
+  # Open: No proof attempt has been finished.
+  OPN
+
+  # ResourceOut: The reasoner ran out of time/memory.
+  RSO
+
+  # Theorem: A proof was found.
+  THM
+
+  # Unknown: There is no solution.
+  UNK
 }
 
 # A SSH public key
@@ -1972,8 +2038,8 @@ type ReasonerOutput {
 
 # An attempt to prove a conjecture or check consistency of an OMS
 interface ReasoningAttempt {
-  # The state of evaluation
-  evaluationState: EvaluationState!
+  # Information about the (to be) performed action
+  action: Action!
 
   # Axioms that have been generated during reasoning
   generatedAxioms: [GeneratedAxiom!]!
@@ -1990,43 +2056,11 @@ interface ReasoningAttempt {
   # The output of the Reasoner
   reasonerOutput: ReasonerOutput
 
-  # The reasoning status of this ReasoningAttempt
-  reasoningStatus: ReasoningStatus!
-
   # The time it took to run the reasoner
   timeTaken: Int
 
   # The used Reasoner
   usedReasoner: Reasoner!
-}
-
-# Specifies the reasoning status of a Conjecture
-enum ReasoningStatus {
-  # Contradictory: There are reasoning attempts that found a proof as well as some
-  # that found a counter example. This indicates a malfunction of the reasoning system.
-  CONTR
-
-  # CounterSatisfiable: A counter example was found.
-  CSA
-
-  # CounterSatisfiable on a subset of axioms: A counter example was found but only
-  # a subset of the axioms was used. There is no conclusive result.
-  CSAS
-
-  # Error: A reasoning attempt has failed.
-  ERR
-
-  # Open: No reasoning attempt has been finished.
-  OPN
-
-  # ResourceOut: The reasoner ran out of time/memory.
-  RSO
-
-  # Theorem: A proof was found.
-  THM
-
-  # Unknown: There is no solution.
-  UNK
 }
 
 # A git reference
@@ -2512,8 +2546,8 @@ type Tag implements Reference {
 
 # A theorem (proved conjecture)
 type Theorem implements Conjecture, LocIdBase, Sentence {
-  # The state of evaluation
-  evaluationState: EvaluationState!
+  # Information about the (to be) performed action
+  action: Action!
 
   # The FileRange of this Sentence's definition
   fileRange: FileRange
@@ -2539,8 +2573,8 @@ type Theorem implements Conjecture, LocIdBase, Sentence {
     skip: Int = 0
   ): [ProofAttempt!]!
 
-  # The reasoning status of this Conjecture
-  reasoningStatus: ReasoningStatus!
+  # The proof status of this Conjecture
+  proofStatus: ProofStatus!
 
   # The symbols used in this sentence
   symbols(
