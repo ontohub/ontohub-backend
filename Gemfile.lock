@@ -305,7 +305,7 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    recaptcha (4.6.4)
+    recaptcha (4.6.6)
       json
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
@@ -439,7 +439,7 @@ DEPENDENCIES
   pundit (~> 1.1.0)
   rack-cors
   rails (~> 5.1.5)
-  recaptcha (~> 4.6.4)
+  recaptcha (~> 4.6.6)
   rspec (~> 3.7.0)
   rspec-rails (~> 3.7.2)
   rubocop (~> 0.53.0)
