@@ -162,7 +162,7 @@ GEM
       multi_json
     em-proxy (0.1.9)
       eventmachine
-    erubi (1.7.0)
+    erubi (1.7.1)
     escape_utils (1.1.1)
     eventmachine (1.0.9.1)
     facter (2.5.1)
@@ -191,8 +191,9 @@ GEM
       rugged (>= 0.25.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    graphiql-rails (1.4.9)
-      rails
+    graphiql-rails (1.4.10)
+      railties
+      sprockets-rails
     graphql (1.7.12)
     graphql-batch (0.3.9)
       graphql (>= 0.8, < 2)
@@ -275,7 +276,7 @@ GEM
       activesupport (>= 3.0.0)
     rack (2.0.4)
     rack-cors (1.0.2)
-    rack-test (0.8.2)
+    rack-test (0.8.3)
       rack (>= 1.0, < 3)
     rails (5.1.5)
       actioncable (= 5.1.5)
