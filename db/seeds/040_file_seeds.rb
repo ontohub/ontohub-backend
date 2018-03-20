@@ -3,7 +3,7 @@
 repository = RepositoryCompound.wrap(Repository.first(slug: 'ada/fixtures'))
 
 # Commit new images
-%w(jpg png svg).each do |file_type|
+%w(jpg png svg svg.zip).each do |file_type|
   file = Base64.encode64(File.read(Rails.root.
     join("db/seeds/fixtures/ontohub.#{file_type}")))
 
