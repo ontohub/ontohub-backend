@@ -61,7 +61,7 @@ Types::DocumentType = GraphQL::InterfaceType.define do
       document.imported_by_dataset
     end)
 
-    scope DocumentPolicy
+    before_scope DocumentPolicy
 
     resolve(lambda do |imported_by_dataset, arguments, _context|
       imported_by_dataset.
@@ -87,7 +87,7 @@ Types::DocumentType = GraphQL::InterfaceType.define do
       document.imports_dataset
     end)
 
-    scope DocumentPolicy
+    before_scope DocumentPolicy
 
     resolve(lambda do |imports_dataset, arguments, _context|
       imports_dataset.

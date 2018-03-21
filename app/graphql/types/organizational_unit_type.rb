@@ -27,7 +27,7 @@ Types::OrganizationalUnitType = GraphQL::InterfaceType.define do
       default_value 0
     end
 
-    scope RepositoryPolicy
+    before_scope RepositoryPolicy
 
     resource!(lambda do |org_unit, _arguments, _context|
       org_unit.repositories_dataset
