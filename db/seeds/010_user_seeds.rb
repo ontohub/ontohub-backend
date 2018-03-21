@@ -14,4 +14,5 @@
   user.password = 'changemenow'
   user.confirmed_at = Time.now
   user.save
+  IndexingJob.perform_later('class' => 'User', 'id' => user.id)
 end

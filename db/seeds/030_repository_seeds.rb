@@ -16,6 +16,8 @@ organization_fixtures_repo =
         public_access: true,
         description: 'This is a fixture repository from the organization.')
 organization_fixtures_repo.save
+IndexingJob.
+  perform_later('class' => 'Repository', 'id' => organization_fixtures_repo.id)
 
 ada_fixtures_repo =
   RepositoryCompound.
@@ -25,6 +27,7 @@ ada_fixtures_repo =
         public_access: true,
         description: 'This is a fixture repository from the user ada.')
 ada_fixtures_repo.save
+IndexingJob.perform_later('class' => 'Repository', 'id' => ada_fixtures_repo.id)
 
 bob_public_repo =
   RepositoryCompound.
@@ -34,6 +37,7 @@ bob_public_repo =
         public_access: true,
         description: 'This is a seed repository from the user bob.')
 bob_public_repo.save
+IndexingJob.perform_later('class' => 'Repository', 'id' => bob_public_repo.id)
 
 cam_secret_repo =
   RepositoryCompound.
@@ -43,6 +47,7 @@ cam_secret_repo =
         public_access: false,
         description: 'This is a seed repository from the user cam.')
 cam_secret_repo.save
+IndexingJob.perform_later('class' => 'Repository', 'id' => cam_secret_repo.id)
 
 organization_math_repo =
   RepositoryCompound.
@@ -52,6 +57,8 @@ organization_math_repo =
         public_access: true,
         description: 'This is a mathematical repository.')
 organization_math_repo.save
+IndexingJob.
+  perform_later('class' => 'Repository', 'id' => organization_math_repo.id)
 
 top_secret_repo =
   RepositoryCompound.
@@ -61,6 +68,7 @@ top_secret_repo =
         public_access: false,
         description: 'This is a top secret private repository.')
 top_secret_repo.save
+IndexingJob.perform_later('class' => 'Repository', 'id' => top_secret_repo.id)
 
 repo_fixtures = Rails.root.join('db/seeds/fixtures/repositories')
 {'git/empty.git' =>
@@ -101,5 +109,6 @@ repo_fixtures = Rails.root.join('db/seeds/fixtures/repositories')
                  public_access: true,
                  remote_address: "file://#{repo_fixtures.join(remote_path)}"}
   repository = Repository.create(base_params.merge(params))
+  IndexingJob.perform_later('class' => 'Repository', 'id' => repository.id)
   RepositoryCloningJob.new.perform(repository.to_param)
 end
