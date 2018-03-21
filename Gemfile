@@ -52,7 +52,7 @@ gem 'chewy', '~> 0.10.1'
 gem 'factory_bot_rails', '~> 4.8.2' # Needed for the seeds
 gem 'faker', '~> 1.8.7' # Needed for the seeds
 gem 'filelock', '~> 1.1.1'
-gem 'graphql', '~> 1.7.12'
+gem 'graphql', '~> 1.7.13'
 gem 'graphql-batch', '~> 0.3.9'
 gem 'graphql-pundit', '~> 0.6.0'
 gem 'jwt', '~> 2.1.0'
