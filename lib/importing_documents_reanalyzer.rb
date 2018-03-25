@@ -24,15 +24,23 @@ class ImportingDocumentsReanalyzer
 
   protected
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def previous_versions_still_processing?
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
     # TODO: This method can be optimized:
     # Find the newest commit C that is finished processing for sure.
     # instead of `ref: commit_sha`, use `ref: "#{C}..#{commit_sha}"
     # for the git log.
     unfinished_shas =
-      FileVersion.
-        where(evaluation_state: %w(not_yet_enqueued enqueued processing),
-              repository_id: file_version.repository_id).
+      FileVersion.join(:actions,
+                       Sequel[:file_versions][:action_id] =>
+                         Sequel[:actions][:id]).
+        where(Sequel[:actions][:evaluation_state] =>
+                %w(not_yet_enqueued enqueued processing),
+              Sequel[:file_versions][:repository_id] =>
+                file_version.repository_id).
         map(:commit_sha)
     # Go all the way back to the root commit (this can be optimized)
     git.log(ref: commit_sha, limit: 0, only_commit_sha: true).any? do |log_sha|
@@ -69,8 +77,10 @@ class ImportingDocumentsReanalyzer
   end
 
   def reanalyze_importer(importer)
+    action = Action.create(evaluation_state: 'not_yet_enqueued')
     new_file_version =
-      FileVersion.create(repository_id: repository.id,
+      FileVersion.create(action: action,
+                         repository_id: repository.id,
                          commit_sha: commit_sha,
                          path: importer.file_version.path)
     modify_file_version_parents(importer, new_file_version)

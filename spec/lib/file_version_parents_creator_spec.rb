@@ -19,7 +19,10 @@ RSpec.describe(FileVersionParentsCreator) do
                               branch: repository.git.default_branch}}
       sha = repository.git.commit_multichange(commit_info, nil)
       files_to_commit.each do |file|
-        FileVersion.create(repository: repository, commit_sha: sha, path: file)
+        FileVersion.create(action: create(:action),
+                           repository: repository,
+                           commit_sha: sha,
+                           path: file)
       end
       sha
     end

@@ -5,7 +5,9 @@
 class RepositoryPolicy < ApplicationPolicy
   # Scopes a repository dataset to accessible repositories of the current user
   class Scope < ApplicationPolicy::Scope
+    # rubocop:disable Metrics/AbcSize
     def resolve
+      # rubocop:enable Metrics/AbcSize
       return scope if hets_api_key?
       return scope.where(false) if git_shell_api_key?
       return scope if admin?

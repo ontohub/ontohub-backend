@@ -27,14 +27,8 @@ Types::ReasoningAttemptType = GraphQL::InterfaceType.define do
     property :time_taken
   end
 
-  field :evaluationState, !Types::EvaluationStateEnum do
-    description 'The state of evaluation'
-    property :evaluation_state
-  end
-
-  field :reasoningStatus, !Types::ReasoningStatusEnum do
-    description 'The reasoning status of this ReasoningAttempt'
-    property :reasoning_status
+  field :action, !Types::ActionType do
+    description 'Information about the (to be) performed action'
   end
 
   field :generatedAxioms, !types[!Types::GeneratedAxiomType] do

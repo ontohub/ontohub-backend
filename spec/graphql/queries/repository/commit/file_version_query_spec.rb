@@ -11,7 +11,10 @@ RSpec.describe 'repository/commit/fileVersion query' do
       repository(id: $repositoryId) {
         commit(revision: $commitRevision) {
           fileVersion(path: $path) {
-            evaluationState
+            action {
+              evaluationState
+              message
+            }
             path
             commit {
               id
@@ -60,7 +63,9 @@ RSpec.describe 'repository/commit/fileVersion query' do
   it_behaves_like 'a GraphQL query', %w(repository commit fileVersion) do
     let(:expectation_signed_in_existent) do
       file_version_data =
-        {'evaluationState' => 'not_yet_enqueued',
+        {'action' =>
+          {'evaluationState' => 'not_yet_enqueued',
+           'message' => nil},
          'path' => file_path,
          'commit' => {'id' => commit.id},
          'repository' => {'id' => repository.to_param}}

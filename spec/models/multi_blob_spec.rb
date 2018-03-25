@@ -39,7 +39,8 @@ RSpec.describe MultiBlob do
       end
       commit_sha = git.commit_multichange(info)
       old_files.each do |old_file|
-        FileVersion.create(repository_id: repository.id,
+        FileVersion.create(action: create(:action),
+                           repository_id: repository.id,
                            commit_sha: commit_sha,
                            path: old_file)
       end

@@ -42,8 +42,12 @@ class RefsUpdater
   end
 
   def create_file_version(commit_sha, file)
-    FileVersion.create(repository_id: repository.pk,
-                       commit_sha: commit_sha,
-                       path: file)
+    Sequel::Model.db.transaction do
+      action = Action.create(evaluation_state: 'not_yet_enqueued')
+      FileVersion.create(action: action,
+                         repository_id: repository.pk,
+                         commit_sha: commit_sha,
+                         path: file)
+    end
   end
 end
