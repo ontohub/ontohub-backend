@@ -46,6 +46,9 @@ RSpec.describe Types::RepositoryType do
   end
   let(:diff_field) { OntohubBackendSchema.get_fields(repository_type)['diff'] }
   let(:log_field) { OntohubBackendSchema.get_fields(repository_type)['log'] }
+  let(:readme_field) do
+    OntohubBackendSchema.get_fields(repository_type)['readme']
+  end
 
   context 'empty repository' do
     let(:repository) { create :repository_compound }
@@ -129,6 +132,42 @@ RSpec.describe Types::RepositoryType do
       it 'returns master' do
         default_branch = default_branch_field.resolve(repository, arguments, {})
         expect(default_branch).to eq('master')
+      end
+    end
+
+    context 'readme field' do
+      let(:repository) { create :repository_compound }
+
+      shared_examples 'returns the readme file' do |filepath|
+        it 'returns the readme file' do
+          readme = readme_field.resolve(repository, arguments, {})
+          expect(readme.path).to eq(filepath)
+        end
+      end
+
+      context 'without any readme file' do
+        it 'returns nil' do
+          readme = readme_field.resolve(repository, arguments, {})
+          expect(readme).to be_nil
+        end
+      end
+
+      %w(readme.txt README Readme.md rEaDmE.mArKdOwN).each do |filepath|
+        context "with '#{filepath}'" do
+          let!(:revision) do
+            create(:additional_file, repository: repository, path: filepath)
+          end
+
+          context 'without revision' do
+            include_examples('returns the readme file', filepath)
+          end
+
+          context 'with revision' do
+            include_examples('returns the readme file', filepath) do
+              let(:arguments) { {revision: revision} }
+            end
+          end
+        end
       end
     end
 

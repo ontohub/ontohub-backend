@@ -14,6 +14,26 @@ Types::RepositoryType = GraphQL::ObjectType.define do
     end)
   end
 
+  field :readme, Types::Git::FileType do
+    description "The repository's readme file"
+
+    argument :revision, types.ID do
+      description "The repository's revision"
+    end
+
+    resolve(lambda do |repository, arguments, _context|
+      revision = arguments['revision'] || repository.git.default_branch
+      commit = repository.git.commit(revision)
+      return unless commit
+      bringit_wrapper = Bringit::Wrapper.new(repository.git.path)
+      file = bringit_wrapper.tree(commit.id, '/').find do |entry|
+        entry.type != :tree && entry.path.match(/^readme/i)
+      end
+      return unless file
+      GitFile.new(commit, file.path, name: file.name)
+    end)
+  end
+
   field :branches, !types[!types.String] do
     description 'Branches of the repository'
     resolve(lambda do |repository, _arguments, _context|
