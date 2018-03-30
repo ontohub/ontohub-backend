@@ -9,7 +9,7 @@ cache:
     - $HOME/system-test
 
 rvm:
-  - 2.5.0
+  - 2.5.1
 
 services:
   - postgresql
