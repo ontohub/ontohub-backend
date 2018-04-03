@@ -35,9 +35,7 @@ matrix:
         - elasticsearch
         - postgresql
       before_install:
-        # This is a workaround for a problem with a specific version of bundler
-        # and rubygems
-        - gem update --system
+        - gem install bundler
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
         - sudo rabbitmqctl add_vhost ontohub_development
         - sudo rabbitmqctl set_permissions -p ontohub_development guest ".*" ".*" ".*"
@@ -55,9 +53,7 @@ matrix:
         - elasticsearch
         - postgresql
       before_install:
-        # This is a workaround for a problem with a specific version of bundler
-        # and rubygems
-        - gem update --system
+        - gem install bundler
       before_script:
         - RAILS_ENV=test bundle exec rails db:recreate
         - ping_elasticsearch="curl localhost:9200"; while (! $ping_elasticsearch > /dev/null 2> /dev/null); do sleep 0.1; done
@@ -72,9 +68,7 @@ matrix:
         - elasticsearch
         - postgresql
       before_install:
-        # This is a workaround for a problem with a specific version of bundler
-        # and rubygems
-        - gem update --system
+        - gem install bundler
         - sudo rabbitmq-plugins enable rabbitmq_recent_history_exchange
       install:
         - EMAJ_VERSION=2.1.0
