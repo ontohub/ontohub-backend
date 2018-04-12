@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 987392508f04859d48e2492065c3de0bf582d3f5
+  revision: 0f22d8c798b68caddf66fb3f064820e3bae3588c
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -18,7 +18,7 @@ GIT
       chewy (>= 0.10.1, < 5.1.0)
       devise (>= 4.3, < 4.5)
       pry (~> 0.11.0)
-      rails (~> 5.1.4)
+      rails (>= 5.1.4, < 5.3.0)
       sequel (>= 5.2, < 5.8)
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 1.0.0)
@@ -111,7 +111,7 @@ GEM
       activesupport (>= 3.0)
       deep_merge (~> 1.2.1)
       dry-validation (>= 0.10.4)
-    crass (1.0.3)
+    crass (1.0.4)
     database_cleaner (1.6.2)
     debug_inspector (0.0.3)
     deep_merge (1.2.1)
