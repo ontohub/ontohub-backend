@@ -26,7 +26,7 @@ module OntohubBackend
     # does not exist AND it should be created by the currently running rake
     # task. This is a workaround:
     tasks_without_connection =
-      %w(db:drop db:create db:recreate db:recreate:seed)
+      %w(db:drop db:create db:recreate db:recreate:seed graphql:write)
     # :nocov:
     inside_database_rake_task =
       defined?(Rake) &&

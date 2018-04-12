@@ -62,7 +62,7 @@ Rails.application.routes.draw do
       # load the models. When loading the models, the database needs to exist,
       # or else it throws an error.
       unless rake_task?(%w(db:create db:migrate db:drop
-                           db:recreate db:recreate:seed))
+                           db:recreate db:recreate:seed graphql:write))
         devise_for :users,
           skip: %i(registrations confirmations sessions unlocks passwords)
       end

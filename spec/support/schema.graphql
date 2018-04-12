@@ -8,7 +8,7 @@ type Action {
 }
 
 # An axiom
-type Axiom implements LocIdBase, Sentence {
+type Axiom implements LocIdBase & Sentence {
   # The FileRange of this Sentence's definition
   fileRange: FileRange
 
@@ -292,7 +292,7 @@ enum ConsistencyStatus {
 }
 
 # A counter-theorem (disproved conjecture)
-type CounterTheorem implements Conjecture, LocIdBase, Sentence {
+type CounterTheorem implements Conjecture & LocIdBase & Sentence {
   # Information about the (to be) performed action
   action: Action!
 
@@ -760,7 +760,7 @@ type LanguageMapping {
 }
 
 # A Library is a container for any number of OMS
-type Library implements Document, LocIdBase {
+type Library implements Document & LocIdBase {
   # All DocumentLinks that this Document is part of
   documentLinks(
     # Maximum number of entries to list
@@ -1344,7 +1344,7 @@ type Mutation {
 }
 
 # A NativeDocument is a container for exactly one OMS
-type NativeDocument implements Document, LocIdBase {
+type NativeDocument implements Document & LocIdBase {
   # All DocumentLinks that this Document is part of
   documentLinks(
     # Maximum number of entries to list
@@ -1652,7 +1652,7 @@ enum OMSOrigin {
 }
 
 # An open (unproved) conjecture
-type OpenConjecture implements Conjecture, LocIdBase, Sentence {
+type OpenConjecture implements Conjecture & LocIdBase & Sentence {
   # Information about the (to be) performed action
   action: Action!
 
@@ -2545,7 +2545,7 @@ type Tag implements Reference {
 }
 
 # A theorem (proved conjecture)
-type Theorem implements Conjecture, LocIdBase, Sentence {
+type Theorem implements Conjecture & LocIdBase & Sentence {
   # Information about the (to be) performed action
   action: Action!
 
