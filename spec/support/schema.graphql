@@ -1833,6 +1833,9 @@ type ProofAttempt implements ReasoningAttempt {
 
   # The used Reasoner
   usedReasoner: Reasoner!
+
+  # The sentences used by this ProofAttempt
+  usedSentences: [Sentence!]!
 }
 
 # Specifies the proof status of a Conjecture

@@ -14,4 +14,9 @@ Types::ProofAttemptType = GraphQL::ObjectType.define do
   field :conjecture, !Types::ConjectureType do
     description 'The conjecture of interest'
   end
+
+  field :usedSentences, !types[!Types::SentenceType] do
+    description 'The sentences used by this ProofAttempt'
+    property :used_sentences
+  end
 end
