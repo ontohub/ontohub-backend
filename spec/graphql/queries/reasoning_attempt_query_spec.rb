@@ -45,6 +45,9 @@ RSpec.describe 'reasoningAttempt query' do
           conjecture {
             locId
           }
+          usedSentences {
+            locId
+          }
         }
       }
     }
@@ -56,6 +59,12 @@ RSpec.describe 'reasoningAttempt query' do
     create(:consistency_check_attempt, time_taken: time_taken)
   end
   let!(:proof_attempt) { create(:proof_attempt, time_taken: time_taken) }
+  let!(:used_sentences) { create_list(:sentence, 2) }
+  before do
+    used_sentences.each do |used_sentence|
+      proof_attempt.add_used_sentence(used_sentence)
+    end
+  end
   let!(:generated_axioms) do
     create_list(:generated_axiom, 2, reasoning_attempt: reasoning_attempt)
   end
@@ -152,7 +161,10 @@ RSpec.describe 'reasoningAttempt query' do
     let(:reasoning_status) { proof_attempt.proof_status }
     let(:expected_reasoning_attempt) do
       conjecture = proof_attempt.conjecture
-      expectation_base.merge('conjecture' => {'locId' => conjecture.loc_id})
+      expectation_base.merge('conjecture' => {'locId' => conjecture.loc_id},
+                             'usedSentences' => used_sentences.map do |sentence|
+                                                  {'locId' => sentence.loc_id}
+                                                end)
     end
     before do
       reasoning_attempt.repository.update(public_access: false,
