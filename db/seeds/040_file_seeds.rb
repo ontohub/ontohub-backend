@@ -38,6 +38,17 @@ FactoryBot.create(:additional_commit,
                              encoding: 'plain',
                              action: 'update'}])
 
+# Commit new readme
+text = File.read(Rails.root.join('db/seeds/fixtures/readme.md'))
+path = 'readme.md'
+
+FactoryBot.create(:additional_file,
+                   repository: repository,
+                   user: repository.owner,
+                   path: path,
+                   content: text,
+                   encoding: 'plain')
+
 # Commit new pdf
 pdf = Base64.encode64(File.read(Rails.root.
   join('db/seeds/fixtures/ontohub.pdf')))

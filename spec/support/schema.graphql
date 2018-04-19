@@ -2161,6 +2161,12 @@ type Repository implements BaseRepository {
   # The current_user's permissions for this repository
   permissions: RepositoryPermissions
 
+  # The repository's readme file
+  readme(
+    # The repository's revision
+    revision: ID
+  ): File
+
   # Details of a tag
   tag(
     # The name of the tag
