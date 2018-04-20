@@ -116,7 +116,7 @@ GEM
       deep_merge (~> 1.2.1)
       dry-validation (>= 0.10.4)
     crass (1.0.4)
-    database_cleaner (1.6.2)
+    database_cleaner (1.7.0)
     debug_inspector (0.0.3)
     deep_merge (1.2.1)
     devise (4.4.3)
@@ -422,7 +422,7 @@ DEPENDENCIES
   chewy (~> 0.10.1)
   codecov (~> 0.1.10)
   config (~> 1.7.0)
-  database_cleaner (~> 1.6.2)
+  database_cleaner (~> 1.7.0)
   dry-validation
   factory_bot_rails (~> 4.8.2)
   faker (~> 1.8.7)
