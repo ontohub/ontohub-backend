@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/index.git
-  revision: f5be5efc72c3e720cbfb4441e88700ce22253094
+  revision: 3a7378094ce8c66f60168d949031e9b831c9e915
   branch: master
   specs:
     index (0.0.0)
