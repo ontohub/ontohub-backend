@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 76fb3d2da5fd265e53621c5b46a8b18260fbd20b
+  revision: 22c0e2d765789befb96eec6cb65c8e45f3ba19a2
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -19,7 +19,7 @@ GIT
       devise (>= 4.3, < 4.5)
       pry (~> 0.11.0)
       rails (>= 5.1.4, < 5.3.0)
-      sequel (>= 5.2, < 5.8)
+      sequel (>= 5.2, < 5.9)
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 1.0.0)
       sequel_pg (~> 1.8.0)
@@ -249,7 +249,7 @@ GEM
     msgpack (1.2.4)
     multi_json (1.13.1)
     multipart-post (2.0.0)
-    nio4r (2.3.0)
+    nio4r (2.3.1)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
@@ -281,7 +281,7 @@ GEM
     puma (3.11.4)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
-    rack (2.0.4)
+    rack (2.0.5)
     rack-cors (1.0.2)
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
@@ -354,7 +354,7 @@ GEM
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.26.3)
-    sequel (5.7.1)
+    sequel (5.8.0)
     sequel-devise (0.0.13)
       devise
       orm_adapter-sequel
