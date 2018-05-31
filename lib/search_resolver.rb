@@ -16,7 +16,11 @@ class SearchResolver
                     {match: {description: query}},
                   ]}).entries
     end
-    # Struktur siehe Toms gitter
-
-  end
+    result = result.flatten
+    graphQLResult = OpenStruct.new(
+      global: OpenStruct.new(
+        
+      )
+    )
+d  end
 end
