@@ -9,20 +9,27 @@ class SearchResolver
     result = [::Index::RepositoryIndex::Repository,
               ::Index::OrganizationIndex::Organization,
               ::Index::UserIndex::User].map do |index|
-      index.query(bool: {should: [
-                    {match: {display_name: query}},
-                    {match: {slug: query}},
-                    {match: {name: query}},
-                    {match: {description: query}},
-                  ]}).entries
+      #index.query(bool: {should: [
+      #              {match: {display_name: query}},
+      #              {match: {slug: query}},
+      #              {match: {name: query}},
+      #              {match: {description: query}},
+      #            ]}).entries
+      index.query(multi_match: {query: query,
+                                fuzziness: 'auto',
+                                fields: [
+                                  :display_name,
+                                  :slug,
+                                  :name,
+                                  :description]}).entries
     end
     result = result.flatten
     graphQLResult = OpenStruct.new(
       global: OpenStruct.new(
-        entries: createEntries(result)
+        entries: createEntries(result),
         count: OpenStruct.new(
           all: result.size,
-          organizationalUnits: allOrganizationalUnits(result),
+          organizational_units: allOrganizationalUnits(result),
           repositories: allRepositories(result)
         )
       )
@@ -55,21 +62,18 @@ class SearchResolver
 
   private
   def createEntries(result)
-    entries = []
-    result.each do |element|
-      entries.append(
-        OpenStruct.new(
-          ranking: element._data["score"]
-          entry: if element._data["_type"] == 'user'
-            User.first(slug: element.attributes["slug"])
-          elsif element._data["_type"] == 'repository'
-            Repostiroy.first(slug: element.attributes["slug"])
-          else
-            Organization.first(slug: element.attributes["slug"])
-          end
-        )
+    result.map do |element|
+      #binding.pry
+      OpenStruct.new(
+        ranking: element._data["_score"],
+        entry: if element._data["_type"] == 'user'
+          User.first(slug: element.attributes["slug"])
+        elsif element._data["_type"] == 'repository'
+          Repository.first(slug: element.attributes["slug"])
+        else
+          Organization.first(slug: element.attributes["slug"])
+        end
       )
     end
-    entries
   end
 end
