@@ -1,11 +1,11 @@
 GIT
   remote: git://github.com/ontohub/index.git
-  revision: 3a7378094ce8c66f60168d949031e9b831c9e915
+  revision: 5278458b926de30c46429575b684fb426f4ff413
   branch: master
   specs:
     index (0.0.0)
       awesome_print (~> 1.8.0)
-      chewy (~> 0.10.1)
+      chewy (~> 5.0.0)
       pry (~> 0.11.0)
 
 GIT
@@ -100,7 +100,7 @@ GEM
       bunny (>= 1.7)
     byebug (10.0.1)
     charlock_holmes (0.7.6)
-    chewy (0.10.1)
+    chewy (5.0.0)
       activesupport (>= 4.0)
       elasticsearch (>= 2.0.0)
       elasticsearch-dsl
@@ -177,7 +177,7 @@ GEM
       railties (>= 3.0.0)
     faker (1.8.7)
       i18n (>= 0.7)
-    faraday (0.15.1)
+    faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
     fasterer (0.4.1)
       colorize (~> 0.7)
@@ -419,7 +419,7 @@ DEPENDENCIES
   bringit (~> 1.0.0)
   bunny
   bunny-mock (~> 1.7.0)
-  chewy (~> 0.10.1)
+  chewy (~> 5.0.0)
   codecov (~> 0.1.10)
   config (~> 1.7.0)
   database_cleaner (~> 1.7.0)
