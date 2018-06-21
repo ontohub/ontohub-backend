@@ -9,12 +9,6 @@ class SearchResolver
     result = [::Index::RepositoryIndex::Repository,
               ::Index::OrganizationIndex::Organization,
               ::Index::UserIndex::User].map do |index|
-      #index.query(bool: {should: [
-      #              {match: {display_name: query}},
-      #              {match: {slug: query}},
-      #              {match: {name: query}},
-      #              {match: {description: query}},
-      #            ]}).entries
       index.query(multi_match: {query: query,
                                 fuzziness: 'auto',
                                 fields: [
@@ -63,7 +57,6 @@ class SearchResolver
   private
   def createEntries(result)
     result.map do |element|
-      #binding.pry
       OpenStruct.new(
         ranking: element._data["_score"],
         entry: if element._data["_type"] == 'user'
