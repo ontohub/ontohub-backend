@@ -17,9 +17,22 @@ end
 RSpec.describe 'Search query' do
   let(:user) { create :user }
   before do
-    create :user
-    3.times { create :organization }
-    5.times { create :repository, owner: user }
+    ::Index::UserIndex.purge
+    ::Index::OrganizationIndex.purge
+    ::Index::RepositoryIndex.purge
+    
+    ::Index::UserIndex.import(create :user, display_name: 'Ada')
+    ::Index::UserIndex.import(create :user, display_name: 'Adc')
+    ::Index::UserIndex.import(create :user, display_name: 'Bob')
+
+    ::Index::OrganizationIndex.import(create :organization, display_name: 'Ada')
+    ::Index::OrganizationIndex.import(create :organization, display_name: 'Bda Organization')
+    ::Index::OrganizationIndex.import(create :organization, display_name: 'Abc_Organization')
+
+    ::Index::RepositoryIndex.import(create :repository, name: 'Ada/repository', owner: user)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Bob/repository', owner: user)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Adc/repository', owner: user)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Bob/AdaRepository', owner: user)
   end
 
   let(:context) { {} }
@@ -71,11 +84,11 @@ RSpec.describe 'Search query' do
   context 'with global scope' do
     let(:scope) { 'global' }
     context 'no categories' do
-      let(:variables) { {'query' => ''} }
-      let(:expected_num_entries) { 10 }
-      let(:expected_count_all) { 10 }
-      let(:expected_count_organizational_units) { 5 }
-      let(:expected_count_repositories) { 5 }
+      let(:variables) { {'query' => 'Ada'} }
+      let(:expected_num_entries) { 7 }
+      let(:expected_count_all) { 7 }
+      let(:expected_count_organizational_units) { 4 }
+      let(:expected_count_repositories) { 3 }
 
       include_examples 'number of entries'
 
@@ -83,25 +96,25 @@ RSpec.describe 'Search query' do
         repositories = search_result['entries'].select do |e|
           e['entry']['__typename'] == 'Repository'
         end
-        expect(repositories.length).to eq(5)
+        expect(repositories.length).to eq(expected_count_repositories)
       end
 
       it 'returns the organizational units' do
         organizational_units = search_result['entries'].select do |e|
           %w(User Organization).include?(e['entry']['__typename'])
         end
-        expect(organizational_units.length).to eq(5)
+        expect(organizational_units.length).to eq(expected_count_organizational_units)
       end
     end
 
     context 'category: all' do
       let(:variables) do
-        {'query' => '', 'categories' => %w(repositories organizationalUnits)}
+        {'query' => 'Ada', 'categories' => %w(repositories organizationalUnits)}
       end
-      let(:expected_num_entries) { 10 }
-      let(:expected_count_all) { 10 }
-      let(:expected_count_organizational_units) { 5 }
-      let(:expected_count_repositories) { 5 }
+      let(:expected_num_entries) { 7 }
+      let(:expected_count_all) { 7 }
+      let(:expected_count_organizational_units) { 4 }
+      let(:expected_count_repositories) { 3 }
 
       include_examples 'number of entries'
 
@@ -109,23 +122,23 @@ RSpec.describe 'Search query' do
         repositories = search_result['entries'].select do |e|
           e['entry']['__typename'] == 'Repository'
         end
-        expect(repositories.length).to eq(5)
+        expect(repositories.length).to eq(expected_count_repositories)
       end
 
       it 'returns the organizational units' do
         organizational_units = search_result['entries'].select do |e|
           %w(User Organization).include?(e['entry']['__typename'])
         end
-        expect(organizational_units.length).to eq(5)
+        expect(organizational_units.length).to eq(expected_count_organizational_units)
       end
     end
 
     context 'category: repositories' do
-      let(:variables) { {'query' => '', 'categories' => %w(repositories)} }
-      let(:expected_num_entries) { 5 }
-      let(:expected_count_all) { 10 }
-      let(:expected_count_organizational_units) { 5 }
-      let(:expected_count_repositories) { 5 }
+      let(:variables) { {'query' => 'Ada', 'categories' => %w(repositories)} }
+      let(:expected_num_entries) { 3 }
+      let(:expected_count_all) { 3 }
+      let(:expected_count_organizational_units) { 0 }
+      let(:expected_count_repositories) { 3 }
 
       include_examples 'number of entries'
 
@@ -133,18 +146,18 @@ RSpec.describe 'Search query' do
         repositories = search_result['entries'].select do |e|
           e['entry']['__typename'] == 'Repository'
         end
-        expect(repositories.length).to eq(5)
+        expect(repositories.length).to eq(expected_count_repositories)
       end
     end
 
     context 'category: organizationalUnits' do
       let(:variables) do
-        {'query' => '', 'categories' => %w(organizationalUnits)}
+        {'query' => 'Ada', 'categories' => %w(organizationalUnits)}
       end
-      let(:expected_num_entries) { 5 }
-      let(:expected_count_all) { 10 }
-      let(:expected_count_organizational_units) { 5 }
-      let(:expected_count_repositories) { 5 }
+      let(:expected_num_entries) { 4 }
+      let(:expected_count_all) { 4 }
+      let(:expected_count_organizational_units) { 4 }
+      let(:expected_count_repositories) { 0 }
 
       include_examples 'number of entries'
 
@@ -152,7 +165,7 @@ RSpec.describe 'Search query' do
         organizational_units = search_result['entries'].select do |e|
           %w(User Organization).include?(e['entry']['__typename'])
         end
-        expect(organizational_units.length).to eq(5)
+        expect(organizational_units.length).to eq(expected_count_organizational_units)
       end
     end
   end
