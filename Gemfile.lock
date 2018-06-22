@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 601abc061e8a2c01a83e04605099df0109c72958
+  revision: d0aafea575de14e2220d5f4492700116cdb56743
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -19,10 +19,10 @@ GIT
       devise (>= 4.3, < 4.5)
       pry (~> 0.11.0)
       rails (>= 5.1.4, < 5.3.0)
-      sequel (>= 5.2, < 5.9)
+      sequel (>= 5.2, < 5.10)
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 1.0.0)
-      sequel_pg (~> 1.8.0)
+      sequel_pg (>= 1.8, < 1.10)
       sequel_postgresql_triggers (>= 1.3, < 1.5)
 
 GIT
@@ -155,13 +155,13 @@ GEM
       dry-equalizer (~> 0.2)
       dry-logic (~> 0.4, >= 0.4.0)
       dry-types (~> 0.13.1)
-    elasticsearch (6.0.2)
-      elasticsearch-api (= 6.0.2)
-      elasticsearch-transport (= 6.0.2)
-    elasticsearch-api (6.0.2)
+    elasticsearch (6.1.0)
+      elasticsearch-api (= 6.1.0)
+      elasticsearch-transport (= 6.1.0)
+    elasticsearch-api (6.1.0)
       multi_json
     elasticsearch-dsl (0.1.5)
-    elasticsearch-transport (6.0.2)
+    elasticsearch-transport (6.1.0)
       faraday
       multi_json
     em-proxy (0.1.9)
@@ -355,7 +355,7 @@ GEM
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.26.3)
-    sequel (5.8.0)
+    sequel (5.9.0)
     sequel-devise (0.0.13)
       devise
       orm_adapter-sequel
@@ -365,7 +365,7 @@ GEM
       activemodel (>= 4.0.0)
       railties (>= 4.0.0)
       sequel (>= 3.28, < 6.0)
-    sequel_pg (1.8.1)
+    sequel_pg (1.9.0)
       pg (>= 0.18.0)
       sequel (>= 4.34.0)
     sequel_postgresql_triggers (1.4.0)
