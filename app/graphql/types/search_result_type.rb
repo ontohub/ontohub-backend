@@ -14,8 +14,6 @@ Types::SearchResultType = GraphQL::ObjectType.define do
       description 'Limit search to certain categories'
     end
 
-    resolve(lambda do |_root, arguments, _context|
-      SearchResult.new(categories: arguments['categories'])
-    end)
+    resolve SearchResolver.new
   end
 end
