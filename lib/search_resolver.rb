@@ -39,7 +39,9 @@ class SearchResolver
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def reduce_categories(categories)
+    # rubocop:enable Metrics/MethodLength
     categories.reduce([]) do |indices, category|
       case category
       when 'organizationalUnits'
@@ -66,7 +68,9 @@ class SearchResolver
     end
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def map_entries_to_models(result)
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
     result.map do |element|
       OpenStruct.new(
         ranking: element._data['_score'],
