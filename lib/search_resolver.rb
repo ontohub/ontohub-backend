@@ -35,13 +35,11 @@ class SearchResolver
     end
     result = result.flatten
     graphQLResult = OpenStruct.new(
-      global: OpenStruct.new(
-        entries: createEntries(result),
-        count: OpenStruct.new(
-          all: result.size,
-          organizational_units: allOrganizationalUnits(result),
-          repositories: allRepositories(result)
-        )
+      entries: createEntries(result),
+      count: OpenStruct.new(
+        all: result.size,
+        organizational_units: allOrganizationalUnits(result),
+        repositories: allRepositories(result)
       )
     )
   end

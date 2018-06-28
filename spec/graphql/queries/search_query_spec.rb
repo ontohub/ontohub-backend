@@ -15,24 +15,26 @@ RSpec.shared_examples 'number of entries' do
 end
 
 RSpec.describe 'Search query' do
-  let(:user) { create :user }
   before do
     ::Index::UserIndex.purge
     ::Index::OrganizationIndex.purge
     ::Index::RepositoryIndex.purge
     
-    ::Index::UserIndex.import(create :user, display_name: 'Ada')
-    ::Index::UserIndex.import(create :user, display_name: 'Adc')
-    ::Index::UserIndex.import(create :user, display_name: 'Bob')
+    ada = create :user, display_name: 'Ada'
+    ::Index::UserIndex.import(ada)
+    adc = create :user, display_name: 'Adc'
+    ::Index::UserIndex.import(adc)
+    bob = create :user, display_name: 'Bob'
+    ::Index::UserIndex.import(bob)
 
     ::Index::OrganizationIndex.import(create :organization, display_name: 'Ada')
     ::Index::OrganizationIndex.import(create :organization, display_name: 'Bda Organization')
     ::Index::OrganizationIndex.import(create :organization, display_name: 'Abc_Organization')
 
-    ::Index::RepositoryIndex.import(create :repository, name: 'Ada/repository', owner: user)
-    ::Index::RepositoryIndex.import(create :repository, name: 'Bob/repository', owner: user)
-    ::Index::RepositoryIndex.import(create :repository, name: 'Adc/repository', owner: user)
-    ::Index::RepositoryIndex.import(create :repository, name: 'Bob/AdaRepository', owner: user)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Ada/repository', owner: ada)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Bob/repository', owner: bob)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Adc/repository', owner: adc)
+    ::Index::RepositoryIndex.import(create :repository, name: 'Bob/AdaRepository', owner: bob)
   end
 
   let(:context) { {} }
