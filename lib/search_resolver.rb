@@ -20,11 +20,12 @@ class SearchResolver
     result = indices.map do |index|
       index.query(multi_match: {query: query,
                                 fuzziness: 'auto',
-                                fields: [
-                                  :display_name,
-                                  :slug,
-                                  :name,
-                                  :description]}).entries
+                                fields: %i(
+                                  display_name
+                                  slug
+                                  name
+                                  description
+                                )}).entries
     end
     result.flatten
   end
@@ -53,9 +54,7 @@ class SearchResolver
     search_result = 0
     result.each do |element|
       elem = element._data['_index']
-      if elem == 'user' || elem == 'organization'
-        search_result += 1
-      end
+      search_result += 1 if elem == 'user' || elem == 'organization'
     end
     search_result
   end
@@ -64,9 +63,7 @@ class SearchResolver
     search_result = 0
     result.each do |element|
       elem = element._data['_index']
-      if elem == 'repository'
-        search_result += 1
-      end
+      search_result += 1 if elem == 'repository'
     end
     search_result
   end
