@@ -27,14 +27,25 @@ RSpec.describe 'Search query' do
     bob = create :user, display_name: 'Bob'
     ::Index::UserIndex.import(bob)
 
-    ::Index::OrganizationIndex.import(create(:organization, display_name: 'Ada'))
-    ::Index::OrganizationIndex.import(create(:organization, display_name: 'Bda Organization'))
-    ::Index::OrganizationIndex.import(create(:organization, display_name: 'Abc_Organization'))
+    ::Index::OrganizationIndex.import(create :organization,
+                                             display_name: 'Ada')
+    ::Index::OrganizationIndex.import(create :organization,
+                                             display_name: 'Bda Organization')
+    ::Index::OrganizationIndex.import(create :organization,
+                                             display_name: 'Abc_Organization')
 
-    ::Index::RepositoryIndex.import(create(:repository, name: 'Ada/repository', owner: ada))
-    ::Index::RepositoryIndex.import(create(:repository, name: 'Bob/repository', owner: bob))
-    ::Index::RepositoryIndex.import(create(:repository, name: 'Adc/repository', owner: adc))
-    ::Index::RepositoryIndex.import(create(:repository, name: 'Bob/AdaRepository', owner: bob))
+    ::Index::RepositoryIndex.import(create :repository,
+                                           name: 'Ada/repository',
+                                           owner: ada)
+    ::Index::RepositoryIndex.import(create :repository,
+                                           name: 'Bob/repository',
+                                           owner: bob)
+    ::Index::RepositoryIndex.import(create :repository,
+                                           name: 'Adc/repository',
+                                           owner: adc)
+    ::Index::RepositoryIndex.import(create :repository,
+                                           name: 'Bob/AdaRepository',
+                                           owner: bob)
   end
 
   let(:context) { {} }
@@ -105,7 +116,8 @@ RSpec.describe 'Search query' do
         organizational_units = search_result['entries'].select do |e|
           %w(User Organization).include?(e['entry']['__typename'])
         end
-        expect(organizational_units.length).to eq(expected_count_organizational_units)
+        expect(organizational_units.length).
+          to eq(expected_count_organizational_units)
       end
     end
 
@@ -124,14 +136,16 @@ RSpec.describe 'Search query' do
         repositories = search_result['entries'].select do |e|
           e['entry']['__typename'] == 'Repository'
         end
-        expect(repositories.length).to eq(expected_count_repositories)
+        expect(repositories.length).
+          to eq(expected_count_repositories)
       end
 
       it 'returns the organizational units' do
         organizational_units = search_result['entries'].select do |e|
           %w(User Organization).include?(e['entry']['__typename'])
         end
-        expect(organizational_units.length).to eq(expected_count_organizational_units)
+        expect(organizational_units.length).
+          to eq(expected_count_organizational_units)
       end
     end
 
@@ -166,7 +180,8 @@ RSpec.describe 'Search query' do
         organizational_units = search_result['entries'].select do |e|
           %w(User Organization).include?(e['entry']['__typename'])
         end
-        expect(organizational_units.length).to eq(expected_count_organizational_units)
+        expect(organizational_units.length).
+          to eq(expected_count_organizational_units)
       end
     end
   end
