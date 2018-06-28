@@ -5,13 +5,14 @@ require 'ostruct'
 # Returns a search result to the GraphQL API
 class SearchResolver
   def call(root, arguments, _context)
-    result = search_index(root[:query], create_indices(arguments[:categories]))
+    result = search_index(root[:query],
+             map_categories_to_indices(arguments[:categories]))
     OpenStruct.new(
-      entries: create_entries(result),
+      entries: map_entries_to_models(result),
       count: OpenStruct.new(
         all: result.size,
-        organizational_units: all_organizational_units(result),
-        repositories: all_repositories(result)
+        organizational_units: organizational_units_count(result),
+        repositories: repositories_count(result)
       )
     )
   end
