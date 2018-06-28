@@ -53,24 +53,13 @@ class SearchResolver
   def all_organizational_units(result)
     result.count do |element|
       elem = element._data['_index']
-<<<<<<< HEAD
-      search_result += 1 if elem == 'user' || elem == 'organization'
-=======
       elem == 'organization' || elem == 'user'
->>>>>>> Obey review comments
     end
   end
 
   def all_repositories(result)
-<<<<<<< HEAD
-    search_result = 0
-    result.each do |element|
-      elem = element._data['_index']
-      search_result += 1 if elem == 'repository'
-=======
     result.count do |element|
       element._data['_index'] == 'repository'
->>>>>>> Obey review comments
     end
   end
 
