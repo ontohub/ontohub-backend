@@ -13,5 +13,7 @@ Types::SearchResultType = GraphQL::ObjectType.define do
       type types[Types::SearchResult::GlobalScope::CategoryEnum]
       description 'Limit search to certain categories'
     end
+
+    resolve SearchResolver.new
   end
 end

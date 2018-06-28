@@ -83,7 +83,7 @@ Types::QueryType = GraphQL::ObjectType.define do
       description 'The query string'
     end
 
-    resolve SearchResolver.new
+    resolve ->(_root, arguments, _context) { arguments }
   end
 
   field :version, !Types::VersionType do

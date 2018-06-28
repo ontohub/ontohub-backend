@@ -4,11 +4,27 @@ require 'ostruct'
 
 # Returns a search result to the GraphQL API
 class SearchResolver
-  def call(_root, arguments, _context)
-    query = arguments[:query]
-    result = [::Index::RepositoryIndex::Repository,
-              ::Index::OrganizationIndex::Organization,
-              ::Index::UserIndex::User].map do |index|
+  def call(root, arguments, _context)
+    query = root[:query]
+    categories = arguments[:categories]
+    if categories.blank?
+      indices = [::Index::RepositoryIndex::Repository,
+                  ::Index::OrganizationIndex::Organization,
+                  ::Index::UserIndex::User]
+    else
+      indices = categories.map do |category|
+        case category
+        when 'organizationalUnits'
+          [::Index::OrganizationIndex::Organization, ::Index::UserIndex::User]
+        when 'repositories'
+          [::Index::RepositoryIndex::Repository]
+        else
+          []
+        end
+      end
+      indices = indices.flatten
+    end
+    result = indices.map do |index|
       index.query(multi_match: {query: query,
                                 fuzziness: 'auto',
                                 fields: [
