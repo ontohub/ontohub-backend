@@ -17,7 +17,7 @@ class SearchResolver
   end
 
   def search_index(query, indices)
-    result = indices.map do |index|
+    indices.map do |index|
       index.query(multi_match: {query: query,
                                 fuzziness: 'auto',
                                 fields: %i(
@@ -26,8 +26,7 @@ class SearchResolver
                                   name
                                   description
                                 )}).entries
-    end
-    result.flatten
+    end.flatten
   end
 
   def create_indices(categories)
@@ -36,16 +35,20 @@ class SearchResolver
        ::Index::OrganizationIndex::Organization,
        ::Index::UserIndex::User]
     else
-      indices = categories.reduce([]) do |indices, category|
-        case category
-        when 'organizationalUnits'
-          indices + [::Index::OrganizationIndex::Organization,
-                     ::Index::UserIndex::User]
-        when 'repositories'
-          indices + [::Index::RepositoryIndex::Repository]
-        else
-          indices + []
-        end
+      reduce_categories(categories)
+    end
+  end
+
+  def reduce_categories(categories)
+    categories.reduce([]) do |indices, category|
+      case category
+      when 'organizationalUnits'
+        indices + [::Index::OrganizationIndex::Organization,
+                   ::Index::UserIndex::User]
+      when 'repositories'
+        indices + [::Index::RepositoryIndex::Repository]
+      else
+        indices + []
       end
     end
   end
