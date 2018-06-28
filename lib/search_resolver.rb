@@ -29,7 +29,7 @@ class SearchResolver
     end.flatten
   end
 
-  def create_indices(categories)
+  def map_categories_to_indices(categories)
     if categories.blank?
       [::Index::RepositoryIndex::Repository,
        ::Index::OrganizationIndex::Organization,
@@ -48,25 +48,25 @@ class SearchResolver
       when 'repositories'
         indices + [::Index::RepositoryIndex::Repository]
       else
-        indices + []
+        indices
       end
     end
   end
 
-  def all_organizational_units(result)
+  def organizational_units_count(result)
     result.count do |element|
       elem = element._data['_index']
       elem == 'organization' || elem == 'user'
     end
   end
 
-  def all_repositories(result)
+  def repositories_count(result)
     result.count do |element|
       element._data['_index'] == 'repository'
     end
   end
 
-  def create_entries(result)
+  def map_entries_to_models(result)
     result.map do |element|
       OpenStruct.new(
         ranking: element._data['_score'],
