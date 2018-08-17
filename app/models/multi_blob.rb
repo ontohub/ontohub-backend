@@ -124,7 +124,7 @@ class MultiBlob
       prefix = "files/#{index}/"
 
       if file[:path].blank?
-        field = file[:action].to_s.match?(/\Arename/) ? 'new_path' : 'path'
+        field = file[:action].to_s.start_with?('Arename') ? 'new_path' : 'path'
         @errors.add("#{prefix}#{field}", 'must be present')
       end
 

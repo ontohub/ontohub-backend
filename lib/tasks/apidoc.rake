@@ -2,7 +2,6 @@
 
 require 'fileutils'
 namespace :apidoc do
-  # rubocop:enable Metrics/BlockLength
   APIDOC_DIR = Rails.root.join('apidoc').to_s
 
   desc <<~DESC.tr("\n", ' ')

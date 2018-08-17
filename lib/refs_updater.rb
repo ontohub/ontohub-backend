@@ -29,7 +29,7 @@ class RefsUpdater
                    unsafe_range: true,
                    only_commit_sha: true,
                    limit: nil}
-    git.log(log_options).reverse.each do |commit_sha|
+    git.log(log_options).reverse_each do |commit_sha|
       process_new_commit(commit_sha)
       ProcessCommitJob.perform_later(repository.pk, commit_sha)
     end
