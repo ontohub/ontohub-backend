@@ -10,19 +10,19 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: 601abc061e8a2c01a83e04605099df0109c72958
+  revision: 44f66373b04972bad549e89a004078278a87ae4f
   branch: master
   specs:
     ontohub-models (0.1.0)
       awesome_print (~> 1.8.0)
       chewy (>= 0.10.1, < 5.1.0)
-      devise (>= 4.3, < 4.5)
+      devise (>= 4.3, < 4.6)
       pry (~> 0.11.0)
       rails (>= 5.1.4, < 5.3.0)
-      sequel (>= 5.2, < 5.9)
+      sequel (>= 5.2, < 5.18)
       sequel-devise (~> 0.0.11)
       sequel-rails (~> 1.0.0)
-      sequel_pg (~> 1.8.0)
+      sequel_pg (>= 1.8, < 1.12)
       sequel_postgresql_triggers (>= 1.3, < 1.5)
 
 GIT
@@ -119,7 +119,7 @@ GEM
     database_cleaner (1.7.0)
     debug_inspector (0.0.3)
     deep_merge (1.2.1)
-    devise (4.4.3)
+    devise (4.5.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 6.0)
@@ -260,7 +260,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.2)
       ast (~> 2.4.0)
-    pg (1.0.0)
+    pg (1.1.4)
     powerpack (0.1.2)
     promise.rb (0.7.4)
     pry (0.11.3)
@@ -316,9 +316,9 @@ GEM
       ffi (>= 0.5.0, < 2)
     recaptcha (4.8.0)
       json
-    responders (2.4.0)
-      actionpack (>= 4.2.0, < 5.3)
-      railties (>= 4.2.0, < 5.3)
+    responders (2.4.1)
+      actionpack (>= 4.2.0, < 6.0)
+      railties (>= 4.2.0, < 6.0)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -355,7 +355,7 @@ GEM
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.26.3)
-    sequel (5.8.0)
+    sequel (5.17.0)
     sequel-devise (0.0.13)
       devise
       orm_adapter-sequel
@@ -365,9 +365,9 @@ GEM
       activemodel (>= 4.0.0)
       railties (>= 4.0.0)
       sequel (>= 3.28, < 6.0)
-    sequel_pg (1.8.1)
+    sequel_pg (1.11.0)
       pg (>= 0.18.0)
-      sequel (>= 4.34.0)
+      sequel (>= 4.38.0)
     sequel_postgresql_triggers (1.4.0)
       sequel
     serverengine (2.0.6)
@@ -459,4 +459,4 @@ DEPENDENCIES
   sprockets-rails
 
 BUNDLED WITH
-   1.16.1
+   1.17.3
