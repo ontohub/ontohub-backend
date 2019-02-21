@@ -50,7 +50,7 @@ gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
 gem 'bunny'
 gem 'chewy', '~> 5.0.0'
 gem 'factory_bot_rails', '~> 4.10.0' # Needed for the seeds
-gem 'faker', '~> 1.8.7' # Needed for the seeds
+gem 'faker', '~> 1.9.3' # Needed for the seeds
 gem 'filelock', '~> 1.1.1'
 gem 'graphql', '~> 1.7.14'
 gem 'graphql-batch', '~> 0.3.9'

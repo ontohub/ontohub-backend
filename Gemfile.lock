@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: c9168e345de9aa38ac94be607b61f19535d45afe
+  revision: 430b5a6b247e554cfe61c01008e523efebb27ff8
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -175,7 +175,7 @@ GEM
     factory_bot_rails (4.10.0)
       factory_bot (~> 4.10.0)
       railties (>= 3.0.0)
-    faker (1.8.7)
+    faker (1.9.3)
       i18n (>= 0.7)
     faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
@@ -426,7 +426,7 @@ DEPENDENCIES
   database_cleaner (~> 1.7.0)
   dry-validation
   factory_bot_rails (~> 4.10.0)
-  faker (~> 1.8.7)
+  faker (~> 1.9.3)
   fasterer
   filelock (~> 1.1.1)
   fuubar (~> 2.3.2)
