@@ -185,7 +185,7 @@ GEM
     ffi (1.9.23)
     filelock (1.1.1)
     formatador (0.2.5)
-    fuubar (2.3.1)
+    fuubar (2.3.2)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
     github-linguist (5.3.3)
@@ -348,7 +348,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
-    ruby-progressbar (1.9.0)
+    ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
@@ -429,7 +429,7 @@ DEPENDENCIES
   faker (~> 1.8.7)
   fasterer
   filelock (~> 1.1.1)
-  fuubar (~> 2.3.1)
+  fuubar (~> 2.3.2)
   graphiql-rails
   graphql (~> 1.7.14)
   graphql-batch (~> 0.3.9)
