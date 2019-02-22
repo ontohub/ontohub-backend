@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/ontohub/ontohub-models.git
-  revision: ef7c94f2b34b65991a8008c0ed017e6047cb4291
+  revision: 41a98ce56fb241f02efe9a7b035a31b4cd710d0e
   branch: master
   specs:
     ontohub-models (0.1.0)
@@ -314,7 +314,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    recaptcha (4.8.0)
+    recaptcha (4.13.1)
       json
     responders (2.4.1)
       actionpack (>= 4.2.0, < 6.0)
@@ -449,7 +449,7 @@ DEPENDENCIES
   pundit (~> 1.1.0)
   rack-cors
   rails (~> 5.2.2)
-  recaptcha (~> 4.8.0)
+  recaptcha (~> 4.13.1)
   rspec (~> 3.7.0)
   rspec-rails (~> 3.7.2)
   rubocop (~> 0.58.2)
