@@ -89,6 +89,6 @@ group :test do
   # As soon as a version > 2.8.0 of json-schema is released, use it instead of
   # master.
   gem 'json-schema', github: 'ruby-json-schema/json-schema', branch: 'master'
-  gem 'rspec', '~> 3.7.0'
-  gem 'rspec-rails', '~> 3.7.2'
+  gem 'rspec', '~> 3.8.0'
+  gem 'rspec-rails', '~> 3.8.2'
 end
