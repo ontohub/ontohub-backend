@@ -53,7 +53,7 @@ gem 'factory_bot_rails', '~> 4.10.0' # Needed for the seeds
 gem 'faker', '~> 1.9.3' # Needed for the seeds
 gem 'filelock', '~> 1.1.1'
 gem 'graphql', '~> 1.7.14'
-gem 'graphql-batch', '~> 0.3.9'
+gem 'graphql-batch', '~> 0.4.0'
 gem 'graphql-pundit', '~> 0.7.1'
 gem 'jwt', '~> 2.1.0'
 gem 'pundit', '~> 1.1.0'
