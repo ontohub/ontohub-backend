@@ -83,7 +83,7 @@ end
 
 group :test do
   gem 'bunny-mock', '~> 1.7.0'
-  gem 'codecov', '~> 0.1.10', require: false
+  gem 'codecov', '~> 0.1.14', require: false
   gem 'database_cleaner', '~> 1.7.0'
   gem 'fuubar', '~> 2.3.2'
   # As soon as a version > 2.8.0 of json-schema is released, use it instead of
