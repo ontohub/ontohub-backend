@@ -68,7 +68,7 @@ RSpec.describe ImportingDocumentsReanalyzer do
     let(:file_version_creator) do
       lambda do |path = nil|
         options = {repository: repository,
-                   files: [{path: path ? path : generate(:filepath),
+                   files: [{path: path || generate(:filepath),
                             content: generate(:content),
                             encoding: 'plain',
                             action: path ? 'update' : 'create'}]}
