@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ontohub/index.git
-  revision: 5278458b926de30c46429575b684fb426f4ff413
+  revision: 628994d09e38ad28308f3ecf537fa42e3b811c50
   branch: master
   specs:
     index (0.0.0)
@@ -156,13 +156,13 @@ GEM
       dry-equalizer (~> 0.2)
       dry-logic (~> 0.5, >= 0.5.0)
       dry-types (~> 0.14, >= 0.14)
-    elasticsearch (6.0.2)
-      elasticsearch-api (= 6.0.2)
-      elasticsearch-transport (= 6.0.2)
-    elasticsearch-api (6.0.2)
+    elasticsearch (6.1.0)
+      elasticsearch-api (= 6.1.0)
+      elasticsearch-transport (= 6.1.0)
+    elasticsearch-api (6.1.0)
       multi_json
-    elasticsearch-dsl (0.1.5)
-    elasticsearch-transport (6.0.2)
+    elasticsearch-dsl (0.1.6)
+    elasticsearch-transport (6.1.0)
       faraday
       multi_json
     em-proxy (0.1.9)
@@ -178,7 +178,7 @@ GEM
       railties (>= 3.0.0)
     faker (1.9.3)
       i18n (>= 0.7)
-    faraday (0.15.2)
+    faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     fasterer (0.4.1)
       colorize (~> 0.7)
