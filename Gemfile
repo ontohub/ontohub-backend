@@ -58,7 +58,7 @@ gem 'graphql-pundit', '~> 0.7.1'
 gem 'jwt', '~> 2.1.0'
 gem 'pundit', '~> 1.1.0'
 gem 'recaptcha', '~> 4.13.1'
-gem 'sneakers', '2.7.0'
+gem 'sneakers', '2.11.0'
 
 group :development, :test do
 end
