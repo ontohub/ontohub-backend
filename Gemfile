@@ -44,7 +44,7 @@ gem 'pry', '~> 0.11.3'
 gem 'pry-byebug', '~> 3.6.0', platform: :mri
 gem 'pry-rails', '~> 0.3.9'
 gem 'pry-rescue', '~> 1.4.4', platform: :mri
-gem 'pry-stack_explorer', '~> 0.4.9.2', platform: :mri
+gem 'pry-stack_explorer', '~> 0.4.9.3', platform: :mri
 
 # Sneakers depends on bunny and has the version requirement
 gem 'bunny'
