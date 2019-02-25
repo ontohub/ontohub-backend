@@ -27,10 +27,10 @@ GIT
 
 GIT
   remote: git://github.com/ruby-json-schema/json-schema.git
-  revision: 2f95d53d62428d603601a1346d6e12a70e7a505d
+  revision: ab1253a874f05a811fdb3280ca1f77ebc9af2902
   branch: master
   specs:
-    json-schema (2.8.0)
+    json-schema (2.8.1)
       addressable (>= 2.4)
 
 GEM
@@ -77,7 +77,7 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.2)
+    addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     amq-protocol (2.3.0)
     arel (9.0.0)
@@ -278,7 +278,7 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     puma (3.12.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
